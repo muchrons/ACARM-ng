@@ -9,6 +9,7 @@
 #include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
+#include "Preprocessor/Checkers/RegExp.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
 
 using namespace std;
@@ -155,16 +156,24 @@ Rule::Rule(const Path &path, Mode mode, const Value &value):
       checker_.reset( new Checkers::Contains(value) );
       break;
 
+    case Mode::REGEXP:
+      checker_.reset( new Checkers::RegExp(value, true) );
+      break;
+
+    case Mode::REGEXPCI:
+      checker_.reset( new Checkers::RegExp(value, false) );
+      break;
+
     default:
       assert(!"unknown mode requested");
-      checker_.reset( new Checkers::Equals(value) );    // fallback...
-      break;
+      throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
+      break;    // never reached
   } // switch(mode)
   assert( checker_.get()!=NULL );
 }
 
 
-bool Rule::compute(const Persistency::Alert &alert) const
+bool Rule::compute(const Persistency::ConstGraphNodePtrNN &node) const
 {
   // for preprocessor we use standard handle map, except for changed collection
   // handle to the one supporting wildcards.
@@ -185,7 +194,7 @@ bool Rule::compute(const Persistency::Alert &alert) const
   typedef Params<PreprocHandleMap, CallbackHandle> ParamsImpl;
   CallbackHandle cb(checker_.get());
   ParamsImpl     p(path_, cb);
-  return MainDispatcher::process(alert, p);
+  return MainDispatcher::process(node, p);
 }
 
 } // namespace Expressions

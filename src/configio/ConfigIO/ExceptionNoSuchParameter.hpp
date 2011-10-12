@@ -24,7 +24,7 @@ public:
    *  \param param parameter name that was null.
    */
   ExceptionNoSuchParameter(const Location &where, const std::string &param):
-    ExceptionParseError(where, cc("no such paramter parameter: ", param) )
+    ExceptionParseError(where, cc("no such parameter: ", param) )
   {
   }
 }; // class ExceptionNoSuchParameter

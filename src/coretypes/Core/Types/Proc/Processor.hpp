@@ -11,9 +11,11 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "ConfigIO/Preprocessor/Config.hpp"
 #include "Logger/Node.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Threads/Thread.hpp"
+#include "Preprocessor/Logic.hpp"
 #include "Core/Types/SignedNodesFifo.hpp"
 #include "Core/Types/UniqueNodesFifo.hpp"
 #include "Core/Types/Proc/Interface.hpp"
@@ -39,13 +41,16 @@ public:
    *  \param outputQueue core changed node's queue - each new/changed node
    *                     is puth there to be signalized later on.
    *  \param interface   processing unit to use with this processor.
+   *  \param ppCfg       configuration of the preprocessor for this processor.
+   *
    *  \note use InterfaceImpl<> template to provide generic implementations
    *        instead of directly deriving from Interface object. InterfaceImpl<>
    *        ensures user does not reimplement process() call, if further virtual
    *        calls are used.
    */
-  Processor(Core::Types::SignedNodesFifo &outputQueue,
-            InterfaceAutoPtr              interface);
+  Processor(Core::Types::SignedNodesFifo         &outputQueue,
+            InterfaceAutoPtr                      interface,
+            const ConfigIO::Preprocessor::Config &ppCfg);
   /** \brief stops background thread and deallocates internal data.
    */
   ~Processor(void);
@@ -59,6 +64,7 @@ private:
   Core::Types::SignedNodesFifo &outputQueue_;
   Core::Types::UniqueNodesFifo  inputQueue_;
   Logger::Node                  log_;
+  Preprocessor::Logic           preproc_;
   boost::scoped_ptr<Interface>  interface_;
   Commons::Threads::Thread      th_;
 }; // class Processor

@@ -186,6 +186,12 @@ Connection::Connection(DBHandlePtrNN handle):
   detail::ConnectionBase(handle),
   log_("persistency.io.postgres.connection")
 {
+  // in order for the string escaping mechanism to work as it should, strings must be set to
+  // work in a SQL's standard-conformant way. otherwise bad things may happen.
+  // this had to be added, since PostgreSQL 9.1 changed the default behaviour and, by default,
+  // turned away from non-standard strings. and since escaping functions does not check this
+  // setting, it has to be enforced manually...
+  handle->getConnection().get().set_variable("standard_conforming_strings", "on");
 }
 
 size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)

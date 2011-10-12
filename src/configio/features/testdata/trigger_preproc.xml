@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+    <cleanupOlder>13</cleanupOlder>
+    <pluginsDir>/some/dir</pluginsDir>
+  </general>
+
+  <persistency>
+    <type>stubs</type>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="default">
+        <output>loggerfile.log</output>
+      </file>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <preprocessor/>
+
+  <filters>
+  </filters>
+
+  <triggers>
+    <trig_with_pp name="t_with_pp_name">
+      <preprocessor>
+        <reject>
+          <true/>
+        </reject>
+        <reject>
+          <false/>
+        </reject>
+      </preprocessor>
+    </trig_with_pp>
+  </triggers>
+
+  <inputs>
+  </inputs>
+
+</acarm_ng>

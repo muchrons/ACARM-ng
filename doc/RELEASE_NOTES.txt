@@ -1,7 +1,16 @@
 -- dev --
+* comparisons with regular expressions in preprocessor rules.
+* support for SnortSam firewall reconfiguration tool (as a trigger).
+* fixed compatibility issue with postgres 9.1 and previous releases.
+* fixed condition for warning on data abse cleanup taking too long.
+* added preprocessors for triggers.
 * added heartbeats for external service (dshiled), when using ipblacklist filter.
 * unified string-access between preprocessor and Python API - the same syntax is used now (except for the collections).
 * Python interface for writing filters has been created.
+
+
+-- v0.3.2 --
+* fixed "path too long" bug in string-access facade.
 
 
 -- v0.3.1 --

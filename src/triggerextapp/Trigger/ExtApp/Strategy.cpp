@@ -110,7 +110,7 @@ private:
 } // unnamed namespace
 
 
-void Strategy::triggerImpl(const ConstNode &n)
+void Strategy::triggerImpl(BackendFacade &/*bf*/, const ConstNode &n)
 {
   // prepare basic info
   const size_t count    =Algo::countCorrelatedAlerts(n);

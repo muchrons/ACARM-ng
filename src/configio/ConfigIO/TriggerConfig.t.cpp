@@ -32,8 +32,21 @@ void testObj::test<1>(void)
 {
   const TriggerConfig::TypeName type("sometrigger");
   const TriggerConfig::Options  opts;
-  const TriggerConfig pc(type, opts);
+  const TriggerConfig           pc(type, opts);
   ensure_equals("invalid type", pc.getType(), "sometrigger");
+  ensure("preprocessor is set", pc.getPreprocessorConfig()==NULL);
+}
+
+// test creating valid data, with preprocessor
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  const TriggerConfig::TypeName type("sometrigger");
+  const TriggerConfig::Options  opts;
+  const Preprocessor::Config    ppCfg;
+  const TriggerConfig           pc(type, opts, ppCfg);
+  ensure("preprocessor not set", pc.getPreprocessorConfig()!=NULL);
 }
 
 } // namespace tut

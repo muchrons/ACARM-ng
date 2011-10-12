@@ -27,7 +27,7 @@ public:
   Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg);
 
 private:
-  virtual void triggerImpl(const ConstNode &n);
+  virtual void triggerImpl(BackendFacade &bf, const ConstNode &n);
 
   detail::StrategyIO       io_;
   Commons::Threads::Thread pingThread_;

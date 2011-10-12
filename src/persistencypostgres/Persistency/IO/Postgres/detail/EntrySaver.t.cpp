@@ -1116,12 +1116,16 @@ void testObj::test<31>(void)
   ensure_equals("thread 6 failed", out[5], "");
 }
 
-// test for proper istring escaping
+// test for proper in/string escaping
 // INSERT INTO reference_urls VALUES(default, 'abc', 'a\'bc');
 // WARNING:  nonstandard use of \' in a string literal
 // LINE 1: INSERT INTO reference_urls VALUES(default, 'abc', 'a\'bc');
 //                                                           ^
 // HINT:  Use '' to write quotes in strings, or use the escape string syntax (E'...').
+//
+// this means using: INSERT INTO reference_urls VALUES(default, 'abc', E'a\'bc\\');
+// or
+// this means using: INSERT INTO reference_urls VALUES(default, 'abc', 'a''bc\');
 //
 template<>
 template<>
@@ -1131,12 +1135,12 @@ void testObj::test<32>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host( new Host( Host::IPv4::from_string("1.2.3.4"),
-                         NULL,
-                         "myos",
-                         url,
-                         Host::Services(),
-                         Host::Processes(),
-                         NULL ) );
+                            NULL,
+                            "myos",
+                            url,
+                            Host::Services(),
+                            Host::Processes(),
+                            NULL ) );
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID anlzID  = es_.saveAnalyzer(*analyzer_.get());
   // save data in table alert_analyzers

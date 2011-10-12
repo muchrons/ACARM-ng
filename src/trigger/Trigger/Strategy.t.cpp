@@ -7,6 +7,8 @@
 
 #include "Base/Threads/ThreadJoiner.hpp"
 #include "Trigger/Strategy.hpp"
+#include "Trigger/Factory.hpp"
+#include "Commons/Factory/RegistratorHelper.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -29,14 +31,14 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const Persistency::ConstGraphNodePtrNN &n) const
+  virtual bool matchesCriteria(BackendFacade &, const Persistency::ConstGraphNodePtrNN &n) const
   {
     ++callsCriteria_;
     checkNode(n);
     return criteria_;
   }
 
-  virtual void trigger(const Persistency::ConstGraphNodePtrNN &n)
+  virtual void trigger(BackendFacade &, const Persistency::ConstGraphNodePtrNN &n)
   {
     ++callsTrigger_;
     checkNode(n);
@@ -54,7 +56,7 @@ struct TestTrigger: public Strategy
 };
 
 
-struct TestClass: private TestHelpers::Persistency::TestStubs
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestTrigger::ChangedNodes cn_;
   TestTrigger               tt_;
@@ -103,12 +105,12 @@ struct TestLoopTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const Persistency::ConstGraphNodePtrNN &) const
+  virtual bool matchesCriteria(BackendFacade &, const Persistency::ConstGraphNodePtrNN &) const
   {
     return true;
   }
 
-  virtual void trigger(const Persistency::ConstGraphNodePtrNN &)
+  virtual void trigger(BackendFacade &, const Persistency::ConstGraphNodePtrNN &)
   {
     for(;;)
     {

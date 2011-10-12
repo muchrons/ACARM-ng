@@ -168,10 +168,12 @@ private:
 } // unnamed namespace
 
 
-Processor::Processor(Core::Types::SignedNodesFifo &outputQueue,
-                     InterfaceAutoPtr              interface):
+Processor::Processor(Core::Types::SignedNodesFifo         &outputQueue,
+                     InterfaceAutoPtr                      interface,
+                     const ConfigIO::Preprocessor::Config &ppCfg):
   outputQueue_(outputQueue),
   log_( makeNodeName("core.types.proc.processor.", interface.get() ) ),
+  preproc_(ppCfg),
   interface_( interface.release() ),
   th_( ThreadImpl(outputQueue_, inputQueue_, interface_.get() ) )
 {
@@ -203,13 +205,21 @@ void Processor::process(const Core::Types::SignedNode &node)
   // skip if we were the ones that reported this
   if( interface_->getName()==node.getReporterName() && interface_->getType()==node.getReporterType() )
   {
-    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName().str()<<"' has been rejected since it comes out from this processor";
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName().str()
+                        <<"' has been rejected since it comes out from this processor";
     return;
   }
   // if entry from given processor is not allowed for this one, skip this call
   if( !interface_->getECL().isAcceptable( node.getReporterType() ) )
   {
     LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName().str()<<"' has been rejected by ECL...";
+    return;
+  }
+  // check if preprocessor for this processor accepts this (meta-)alert
+  if( !preproc_.checkAccept(node.getNode()) )
+  {
+    LOGMSG_DEBUG_S(log_)<<"node "<<node.getNode()->getMetaAlert()->getID().get()
+                        <<" has been rejected by the processor's preprocessor";
     return;
   }
   // if everything's fine - accept this.

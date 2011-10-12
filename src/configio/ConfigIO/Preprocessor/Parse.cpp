@@ -20,6 +20,10 @@ Rule::Mode parseRuleMode(const std::string &mode)
     return Rule::Mode::EQUALS;
   if(mode=="contains")
     return Rule::Mode::CONTAINS;
+  if(mode=="regexp")
+    return Rule::Mode::REGEXP;
+  if(mode=="regexpci")
+    return Rule::Mode::REGEXPCI;
 
   // Ooops...
   throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "unknown rule's mode: " + mode);

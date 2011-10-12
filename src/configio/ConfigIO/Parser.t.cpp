@@ -14,31 +14,10 @@ using namespace ConfigIO;
 
 namespace
 {
-const char *defaultFile="acarm_ng_config.xml";
-
-struct ParserTestClass
+struct TestClass
 {
-  ParserTestClass(void)
-  {
-    unlink(defaultFile);
-  }
-
-  ~ParserTestClass(void)
-  {
-    unlink(defaultFile);
-  }
-
-  void copyAsDefaultConfig(const char *path) const
-  {
-    assert(path!=NULL);
-    stringstream ss;
-    ss<<"cp '"<<path<<"' '"<<defaultFile<<"'";
-    tut::ensure_equals("copying file as default config failed",
-                       system( ss.str().c_str() ), 0);
-  }
 };
 
-typedef ParserTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -119,8 +98,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser p;
+  const Parser p("testdata/sample_config.xml");
   const LoggerConfig &lc=p.getLoggerConfig();
   // check random field
   ensure_equals("invalid default appender",
@@ -132,8 +110,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser p;
+  const Parser p("testdata/sample_config.xml");
   p.getFiltersConfig();
 }
 
@@ -142,8 +119,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser p;
+  const Parser p("testdata/sample_config.xml");
   p.getTriggersConfig();
 }
 
@@ -152,8 +128,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser p;
+  const Parser p("testdata/sample_config.xml");
   p.getInputsConfig();
 }
 
@@ -162,8 +137,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser p;
+  const Parser p("testdata/sample_config.xml");
   p.getPreprocessorConfig();
 }
 
@@ -181,6 +155,19 @@ void testObj::test<11>(void)
   {
     // this is expected
   }
+}
+
+// test getting preprocessor's configuration in trigger
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Parser                p("testdata/trigger_preproc.xml");
+  const TriggerConfig        &cfg  =p.getTriggersConfig().at(0);
+  ensure_equals("invalid type name", cfg.getType(), "trig_with_pp");
+  const Preprocessor::Config *ppcfg=cfg.getPreprocessorConfig();
+  ensure("pointer is NULL", ppcfg!=NULL);
+  ensure_equals("invalid number of rules", ppcfg->getSections().size(), 2u);
 }
 
 } // namespace tut

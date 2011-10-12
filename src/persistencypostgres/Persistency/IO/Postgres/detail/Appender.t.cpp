@@ -30,16 +30,7 @@ struct TestClass
   IO::Transaction         t_;
 
   template<typename T>
-  void check(const T *in, const string &out)
-  {
-    Appender     ap(t_);
-    stringstream ss;
-    ap.append(ss, in);
-    tut::ensure_equals("invalid string appended", ss.str(), out);
-  }
-
-  template<typename T>
-  void checkRef(const T &in, const string &out)
+  void check(const T &in, const string &out)
   {
     stringstream ss;
     Appender     ap(t_);
@@ -86,7 +77,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  check("abc", "E'abc'");
+  check("abc", "'abc'");
 }
 
 // test non-null std::string
@@ -95,7 +86,7 @@ template<>
 void testObj::test<5>(void)
 {
   const string tmp="abc";
-  check(&tmp, "E'abc'");
+  check(&tmp, "'abc'");
 }
 
 // test integer
@@ -131,7 +122,7 @@ template<>
 void testObj::test<9>(void)
 {
   const string tmp="abc";
-  checkRef(tmp, "E'abc'");
+  check(tmp, "'abc'");
 }
 
 // test integer
@@ -140,7 +131,7 @@ template<>
 void testObj::test<10>(void)
 {
   const int tmp=42;
-  checkRef(tmp, "42");
+  check(tmp, "42");
 }
 
 // test long
@@ -149,7 +140,7 @@ template<>
 void testObj::test<11>(void)
 {
   const long tmp=42;
-  checkRef(tmp, "42");
+  check(tmp, "42");
 }
 
 // test double
@@ -158,7 +149,7 @@ template<>
 void testObj::test<12>(void)
 {
   const double tmp=3.1416;
-  checkRef(tmp, "3.1416");
+  check(tmp, "3.1416");
 }
 
 // test appending timestamp
@@ -167,7 +158,7 @@ template<>
 void testObj::test<13>(void)
 {
   const Persistency::Timestamp tmp(42);
-  checkRef(tmp, "42::abstime::timestamp WITH TIME ZONE AT TIME ZONE 'UTC'");
+  check(tmp, "42::abstime::timestamp WITH TIME ZONE AT TIME ZONE 'UTC'");
 }
 
 // test appending timestamp as pointer
@@ -187,4 +178,29 @@ void testObj::test<15>(void)
   const Persistency::Timestamp *tmp=NULL;
   check(tmp, "NULL");
 }
+
+// test terminaing "'" cahracter
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  check("a'c", "'a''c'");
+}
+
+// test terminaing "\" cahracter
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  check("a\\c", "'a\\c'");
+}
+
+// test terminaing "\'" sequence, that would normaly break statement
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  check("ac\\", "'ac\\'");
+}
+
 } // namespace tut

@@ -7,7 +7,7 @@
 
 #include "System/Enum.hpp"
 #include "ConfigIO/Preprocessor/Section.hpp"
-#include "Persistency/Alert.hpp"
+#include "Persistency/GraphNode.hpp"
 #include "Preprocessor/Expressions/Base.hpp"
 #include "Preprocessor/Expressions/Set.hpp"
 
@@ -45,13 +45,13 @@ public:
   explicit Section(const ConfigIO::Preprocessor::Section &cfg);
 
   /** \brief process given alert and return decision.
-   *  \param alert alert to be checked.
+   *  \param node (meta-)alert to be checked.
    *  \return Decision::ACCEPT when this alert is to be acceopted,
    *          Decision::REJECT when this alert is to be rejected or
    *          Decision::CONTINUE if this section cannot decide
    *          faith of this alert.
    */
-  Decision process(const Persistency::Alert &alert) const;
+  Decision process(const Persistency::ConstGraphNodePtrNN &node) const;
 
 private:
   Expressions::Set create(const ConfigIO::Preprocessor::Expression::Expressions &cfg) const;
