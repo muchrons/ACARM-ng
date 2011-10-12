@@ -19,6 +19,7 @@ triggers:
 * encrypted connections in Trigger::Mail.
 * editable triggers' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * add trigger sending reports on problematic machines to admins found via WHOIS.
+* give possibility to pass config-file options to a python scripts (as is done by the factories).
 
 filters:
 --------
@@ -26,6 +27,7 @@ filters:
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
+* give possibility to pass config-file options to a python scripts (as is done by the factories).
 
 docs:
 -----
@@ -35,7 +37,6 @@ misc:
 -----
 * consider appending description to correlation of meta-alerts (ex. in form of change history? maybe automatically generated?).
 * implement persistency::sqlite.
-* add regex comaprisons to preprocessor.
 * add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.

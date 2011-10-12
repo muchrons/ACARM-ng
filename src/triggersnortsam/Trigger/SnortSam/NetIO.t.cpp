@@ -19,7 +19,7 @@ namespace
 
 struct NetIOMock: public NetIO
 {
-  explicit NetIOMock(const std::string &host=boost::asio::ip::host_name()):
+  explicit NetIOMock(const std::string &host="127.0.0.1"):
     NetIO(host, 4242, 10),
     connected_(false)
   {

@@ -38,8 +38,10 @@ struct RuleMode
   /** \brief implementaiton enum. only to be used via Rule::Mode. */
   typedef enum
   {
-    EQUALS,
-    CONTAINS
+    EQUALS,     // string is identical with given pattern
+    CONTAINS,   // string contains given pattern
+    REGEXP,     // string matches given regular expression
+    REGEXPCI    // string matches given regular expression (case insensitive)
   }
   Type;
 };

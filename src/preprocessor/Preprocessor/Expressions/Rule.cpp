@@ -9,6 +9,7 @@
 #include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
+#include "Preprocessor/Checkers/RegExp.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
 
 using namespace std;
@@ -155,10 +156,18 @@ Rule::Rule(const Path &path, Mode mode, const Value &value):
       checker_.reset( new Checkers::Contains(value) );
       break;
 
+    case Mode::REGEXP:
+      checker_.reset( new Checkers::RegExp(value, true) );
+      break;
+
+    case Mode::REGEXPCI:
+      checker_.reset( new Checkers::RegExp(value, false) );
+      break;
+
     default:
       assert(!"unknown mode requested");
-      checker_.reset( new Checkers::Equals(value) );    // fallback...
-      break;
+      throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
+      break;    // never reached
   } // switch(mode)
   assert( checker_.get()!=NULL );
 }

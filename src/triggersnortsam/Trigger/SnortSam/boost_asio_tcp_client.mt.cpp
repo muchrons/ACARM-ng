@@ -18,14 +18,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include <boost/lambda/bind.hpp>
-#include <boost/lambda/lambda.hpp>
 
+#include "Trigger/SnortSam/AsioLambdaHelpers.hpp"
+
+using namespace Trigger::SnortSam;
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
-using boost::lambda::bind;
-using boost::lambda::var;
-using boost::lambda::_1;
 
 //----------------------------------------------------------------------
 
@@ -97,7 +95,7 @@ class client
       // object is used as a callback and will update the ec variable when the
       // operation completes. The blocking_udp_client.cpp example shows how you
       // can use boost::bind rather than boost::lambda.
-      socket_.async_connect(iter->endpoint(), var(ec) = _1);
+      socket_.async_connect( iter->endpoint(), (ErrorCodeSetter(ec)) );
 
       // Block until the asynchronous operation has completed.
       do io_service_.run_one(); while (ec == boost::asio::error::would_block);
@@ -133,7 +131,8 @@ class client
     // object is used as a callback and will update the ec variable when the
     // operation completes. The blocking_udp_client.cpp example shows how you
     // can use boost::bind rather than boost::lambda.
-    boost::asio::async_read_until(socket_, input_buffer_, '\n', var(ec) = _1);
+    size_t tmp;
+    boost::asio::async_read_until(socket_, input_buffer_, '\n', (ErrorCodeWithSizeSetter(ec, tmp)) );
 
     // Block until the asynchronous operation has completed.
     do io_service_.run_one(); while (ec == boost::asio::error::would_block);
@@ -168,7 +167,8 @@ class client
     // object is used as a callback and will update the ec variable when the
     // operation completes. The blocking_udp_client.cpp example shows how you
     // can use boost::bind rather than boost::lambda.
-    boost::asio::async_write(socket_, boost::asio::buffer(data), var(ec) = _1);
+    size_t tmp;
+    boost::asio::async_write(socket_, boost::asio::buffer(data), (ErrorCodeWithSizeSetter(ec, tmp)) );
 
     // Block until the asynchronous operation has completed.
     do io_service_.run_one(); while (ec == boost::asio::error::would_block);
@@ -180,23 +180,8 @@ class client
   private:
   void check_deadline()
   {
-    // Check whether the deadline has passed. We compare the deadline against
-    // the current time since a new asynchronous operation may have moved the
-    // deadline before this actor had a chance to run.
-    if (deadline_.expires_at() <= deadline_timer::traits_type::now())
-    {
-      // The deadline has passed. The socket is closed so that any outstanding
-      // asynchronous operations are cancelled. This allows the blocked
-      // connect(), read_line() or write_line() functions to return.
-      socket_.close();
-
-      // There is no longer an active deadline. The expiry is set to positive
-      // infinity so that the actor takes no action until a new deadline is set.
-      deadline_.expires_at(boost::posix_time::pos_infin);
-    }
-
-    // Put the actor back to sleep.
-    deadline_.async_wait(bind(&client::check_deadline, this));
+    DeadlineChecker dc(deadline_, socket_);
+    dc();
   }
 
   boost::asio::io_service io_service_;
