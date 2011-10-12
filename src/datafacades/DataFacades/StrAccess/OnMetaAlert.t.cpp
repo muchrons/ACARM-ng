@@ -134,7 +134,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  ensureProc("invalid alert's name", *metaalertLeaf_, "metaalert.alert.name", "abc");
+  ensureProc("invalid alert's name", *metaalertLeaf_, "metaalert.alert.name", "some alert");
 }
 
 // test accessing alert's data (when node)
