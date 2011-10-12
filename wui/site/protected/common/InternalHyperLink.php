@@ -23,10 +23,11 @@ class InternalHyperLink extends THyperLink
     $variables = "";
     if(is_array($value))
       {
-        foreach($value as $k=>$v){
-          if($variables != "") $variables .="&";
-          $variables .= "$k=$v";
-        }
+        foreach($value as $k=>$v)
+          {
+            if($variables != "") $variables .="&";
+            $variables .= "$k=$v";
+          }
       }
     else
       $variables = $value;

@@ -19,7 +19,8 @@ class MetaAlert extends TPage
 
         if($this->metaAlert_->id_alert != null)
           $this->alert_=SQLWrapper::queryForObject('SelectAlert', $this->metaAlert_->id_alert);
-      } else
+      }
+    else
       {//we have an AlertId
         $this->alert_=SQLWrapper::queryForObject('SelectAlert', $aid);
         $this->metaAlert_=SQLWrapper::queryForObject('SelectMetaAlertID', $this->alert_->id_meta_alert);
@@ -155,7 +156,8 @@ class MetaAlert extends TPage
             }
           else
             $tree->addSubElement($this->addSubtreeForMetaAlert($child));
-      } else
+      }
+    else
       {//Inform that there are too many components
         $node=new MyTreeList();
         $node->setTitle("Siakalaka");

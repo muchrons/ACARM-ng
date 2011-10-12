@@ -149,17 +149,18 @@ class MyTreeList extends TWebControl
   {
     $script = 'function toggleSub(id)
                  {
-		     sub = document.getElementById(id+"'.MyTreeList::SUB_ID_UL.'");
-		     li = document.getElementById(id+"'.MyTreeList::SUB_ID_LI.'");
+                     sub = document.getElementById(id+"'.MyTreeList::SUB_ID_UL.'");
+                     li = document.getElementById(id+"'.MyTreeList::SUB_ID_LI.'");
 
-		     if (sub == null)
+                     if (sub == null)
                          return;
 
                      if(sub.style.display == "none")
                          {sub.style.display = "block"; li.className = "node";}
                      else
                          {sub.style.display = "none"; li.className = "nodeDeployed";}
-                     }';
+                 }
+              ';
     return $script;
   }
 
