@@ -36,7 +36,7 @@ class ComputeLinkForMetaAlerts
 };
 
 
-class MetaAlerts2 extends TPage
+class MetaAlerts extends TPage
 {
   public function onLoad($param)
   {
@@ -47,14 +47,32 @@ class MetaAlerts2 extends TPage
         $srcip=$this->Request->itemAt('srcip');
         $dstip=$this->Request->itemAt('dstip');
         $this->Range->setSrcDst($srcip,$dstip);
+
+        $date_from=$this->Request->itemAt('from');
+        $date_to=$this->Request->itemAt('to');
+        $this->Range->setDates($date_from,$date_to);
+
+        $type=$this->Request->itemAt('type');
+        $this->Range->setType($type);
+
+        $parentid=$this->Request->itemAt('parent');
+
+        $severities=$this->Request->itemAt('severities');
+        if( $severities!==null )
+          $this->Range->CB->setSelectedValues(explode('.',$severities));
       }
 
     $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
 
-    if($this->Range->Srcip->Text!='any' or $this->Range->Dstip->Text!='any')
-      $this->MetaAlerts->Query="MetaAlertsSumaryByIP";
-
     $this->MetaAlerts->params_=$this->Range->getRangeData();
+
+    if($parentid!=null)
+      {
+        $this->MetaAlerts->Query="SelectMetaAlertsSummaryByParent";
+        $this->MetaAlerts->params_->extra=$parentid;
+      }
+    elseif($this->Range->Srcip->Text!='any' or $this->Range->Dstip->Text!='any')
+      $this->MetaAlerts->Query="SelectMetaAlertsSummaryByIP";
   }
 };
 

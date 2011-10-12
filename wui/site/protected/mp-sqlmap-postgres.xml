@@ -88,6 +88,16 @@
           WHERE t.id_node=#value#
   </select>
 
+  <select id="SelectMetaAlertsChildrenFullGroup" resultClass="CLinkPair" parameterClass="int">
+    SELECT ma.name as name, count(*) as id
+      FROM meta_alerts AS ma
+        RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
+        LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id
+          WHERE t.id_node=#value#
+          GROUP BY ma.name;
+  </select>
+
+
   <select id="SelectAlertForMetaAlert" resultClass="CLinkTriple" parameterClass="int">
     SELECT name as name,id as alertid
       FROM alert_to_meta_alert_map as map
@@ -134,7 +144,7 @@
     ]]>
   </select>
 
-  <select id="MetaAlertsSumaryByIPRangeCount" resultClass="int" parameterClass="CParamRange">
+  <select id="SelectMetaAlertsSummaryByIPRangeCount" resultClass="int" parameterClass="CParamRange">
     <![CDATA[
     WITH RECURSIVE temp(id_node,id_child) AS
     (                                                                                                          
@@ -159,7 +169,7 @@
     ]]>
   </select>
 
-  <select id="MetaAlertsSumaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+  <select id="SleectMetaAlertsSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
     <![CDATA[
     SELECT id,name,create_time from meta_alerts WHERE id in
     (
@@ -192,7 +202,8 @@
   <select id="SelectMetaAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
     <![CDATA[
     SELECT count(*) FROM meta_alerts
-      WHERE  create_time<=#date_to# AND create_time>=#date_from#;
+      WHERE  create_time<=#date_to# AND create_time>=#date_from#
+        AND (name ~ #type# OR 1=#ignoretype#);
     ]]>
   </select>
 
@@ -211,6 +222,7 @@
            AND create_time<=#date_to# AND create_time>=#date_from#;
     ]]>
   </select>
+
 
   <select id="SelectMetaAlertsChildrenCount" resultClass="int" parameterClass="int">
     SELECT count(*) FROM meta_alerts AS ma
@@ -291,10 +303,25 @@
   <select id="SelectMetaAlertsSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
     <![CDATA[
          SELECT id, name, create_time FROM meta_alerts
-          WHERE  create_time<=#date_to# AND create_time>=#date_from#
+          WHERE create_time<=#date_to# AND create_time>=#date_from#
+            AND (name ~ #type# OR 1=#ignoretype#)
           ORDER BY create_time DESC
           LIMIT #limit# OFFSET #offset#;
     ]]>
+  </select>
+
+  <select id="SelectMetaAlertsSummaryByParentRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    SELECT id, name, create_time FROM meta_alerts
+     WHERE id in (SELECT id_child from meta_alerts_tree WHERE id_node=#extra#)
+       AND (name ~ #type# OR 1=#ignoretype#)
+     ORDER BY create_time DESC
+     LIMIT #limit# OFFSET #offset#;
+  </select>
+
+  <select id="SelectMetaAlertsSummaryByParentRangeCount" resultClass="int" parameterClass="CParamRange">
+    SELECT count(*) FROM meta_alerts
+     WHERE id in (SELECT id_child from meta_alerts_tree WHERE id_node=#extra#)
+       AND (name ~ #type# OR 1=#ignoretype#)
   </select>
 
   <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">

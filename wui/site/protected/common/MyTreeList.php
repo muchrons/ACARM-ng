@@ -56,6 +56,16 @@ class MyTreeList extends TWebControl
     $this->setViewState('Title',TPropertyValue::ensureString($value),'');
   }
 
+  public function getIcon()
+  {
+    return $this->getViewState('TitleIcon','none');
+  }
+
+  public function setIcon($value)
+  {
+    $this->setViewState('TitleIcon',TPropertyValue::ensureString($value),'');
+  }
+
   public function getTitleClass()
   {
     return $this->getViewState('TitleClass','');
@@ -194,6 +204,7 @@ class MyTreeList extends TWebControl
         $title->setToPage($this->getToPage(),$this->getGetVariables());
         if($this->getCanDeploy())
           $title->setDeployID($this->getID());
+        $title->setIcon($this->getIcon());
       }
 
     $title->setCssClass($this->getTitleClass());

@@ -10,6 +10,9 @@ class MetaAlert extends TPage
     $mid=$this->Request->itemAt('mid');
     $aid=$this->Request->itemAt('aid');
 
+    $this->group_count_=10;
+    $this->max_children_=50;
+
     if ($mid===null && $aid===null)
       throw new TConfigurationException("No valid Meta Alert ID or Alert ID specified");
 
@@ -123,8 +126,35 @@ class MetaAlert extends TPage
     $children=SQLWrapper::queryForList('SelectMetaAlertsChildrenFull', $this->metaAlert_->id);
     $children_count=count($children);
 
+    $children_groupped_tmp=CSQLMap::get()->queryForList('SelectMetaAlertsChildrenFullGroup', $this->metaAlert_->id);
+
+    $children_groupped=array();
+
+    foreach($children_groupped_tmp as $child)
+      $children_groupped[$child->name]=$child->id;
+
+    if($children_count==0)
+      {
+        $tree->setCanDeploy(false);
+        return $tree;
+      }
+
+    if(count($children_groupped)>=$this->max_children_)
+      {
+        $tree->addSubElement($this->addGrouppedMetaAlert("A great number of different meta-alerts are here.",count($children_groupped),$this->metaAlert_->id,false));
+        return $tree;
+      }
+
+
+    $added=array();
     foreach($children as $child)
-      $tree->addSubElement($this->addSubtreeForMetaAlert($child));
+      if ($children_groupped[$child->name]<$this->group_count_)
+        $tree->addSubElement($this->addSubtreeForMetaAlert($child));
+    elseif(!isset($added[$child->name]))
+      {
+        $tree->addSubElement($this->addGrouppedMetaAlert($child->name,$children_groupped[$child->name],$this->metaAlert_->id,true));
+        $added[$child->name]=true;
+      }
   }
 
   private function addSubtreeForMetaAlert($ma)
@@ -132,18 +162,35 @@ class MetaAlert extends TPage
     $children=CSQLMap::get()->queryForList('SelectMetaAlertsChildrenFull', $ma->metaalertid);
     $children_count=count($children);
 
+    $children_groupped_tmp=CSQLMap::get()->queryForList('SelectMetaAlertsChildrenFullGroup', $ma->metaalertid);
+
+    $children_groupped=array();
+    foreach($children_groupped_tmp as $child)
+      $children_groupped[$child->name]=$child->id;
+
     $tree=new MyTreeList();
     $tree->setTitle($ma->name);
+    $tree->setIcon("show");
     $tree->setNodeType(MyTreeList::NODE_TYPE_LINK);
     $tree->setToPage("MetaAlert");
     $tree->setGetVariables(array("mid"=>"$ma->metaalertid"));
 
     if($children_count==0)
-      $tree->setCanDeploy(false);
-
-    if($children_count<5)
       {
-        foreach($children as $child)
+        $tree->setCanDeploy(false);
+        return $tree;
+      }
+
+    if(count($children_groupped)>=$this->max_children_)
+      {
+        $tree->addSubElement($this->addGrouppedMetaAlert("A great number of different meta-alerts are here.",$children_groupped[$child->name],$ma->metaalertid,false));
+        return $tree;
+      }
+
+    $added=array();
+    foreach($children as $child)
+      if ($children_groupped[$child->name]<$this->group_count_)
+        {
           if ($child->alertid!=null)
             {//If this is an alert terminate recurrent call.
               $node=new MyTreeList();
@@ -151,19 +198,35 @@ class MetaAlert extends TPage
               $node->setNodeType(MyTreeList::NODE_TYPE_LINK);
               $node->setToPage("MetaAlert");
               $node->setGetVariables(array("aid"=>"$child->alertid"));
+              $node->setIcon("show");
               $node->setCanDeploy(false);
               $tree->addSubElement($node);
             }
           else
             $tree->addSubElement($this->addSubtreeForMetaAlert($child));
-      }
+        }
+      else
+        {
+          if(!isset($added[$child->name]))
+            {
+              $tree->addSubElement($this->addGrouppedMetaAlert($child->name,$children_groupped[$child->name],$ma->metaalertid,true));
+              $added[$child->name]=true;
+            }
+        }
+    return $tree;
+  }
+
+  private function addGrouppedMetaAlert($name, $count, $mid, $includetype)
+  {
+    $tree=new MyTreeList();
+    $tree->setTitle($name." x ".$count." ");
+    $tree->setNodeType(MyTreeList::NODE_TYPE_LINK);
+    $tree->setToPage("MetaAlerts");
+    if ($includetype)
+      $tree->setGetVariables(array("parent"=>"$mid","type"=>"$name"));
     else
-      {//Inform that there are too many components
-        $node=new MyTreeList();
-        $node->setTitle("Siakalaka");
-        $node->setNodeType(MyTreeList::NODE_TYPE_LINK);
-        $tree->addSubElement($node);
-      }
+      $tree->setGetVariables(array("parent"=>"$mid"));
+    $tree->setIcon("showall");
     return $tree;
   }
 
@@ -287,6 +350,8 @@ class MetaAlert extends TPage
     return $out;
   }
 
+  private $max_children_;
+  private $group_count_;
   private $alert_;
   private $metaAlert_;
 }
