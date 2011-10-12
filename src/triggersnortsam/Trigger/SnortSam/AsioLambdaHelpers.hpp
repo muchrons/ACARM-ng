@@ -3,6 +3,9 @@
  *
  * helper classes that replaces lambdas, that are not available in required form in boost before 1.42.
  */
+#ifndef INCLUDE_TRIGGER_SNORTSAM_ASIOLAMBDAHELPERS_HPP_FILE
+#define INCLUDE_TRIGGER_SNORTSAM_ASIOLAMBDAHELPERS_HPP_FILE
+
 #include <boost/asio.hpp>
 #include <boost/date_time.hpp>
 
@@ -53,7 +56,6 @@ private:
   boost::asio::deadline_timer  *deadline_;
   boost::asio::ip::tcp::socket *sock_;
 }; // struct DeadlineChecker
-
 
 
 /** \brief this code replaces lambda that requres boost over 1.40 to work.
@@ -113,3 +115,5 @@ private:
 
 } // namespace SnortSam
 } // namespace Trigger
+
+#endif
