@@ -68,6 +68,18 @@ class RangeSelector extends TTemplateControl
     return $this->getRegisteredObject('To');
   }
 
+  public function getSrcip()
+  {
+    $this->ensureChildControls();
+    return $this->getRegisteredObject('srcip');
+  }
+
+  public function getDstip()
+  {
+    $this->ensureChildControls();
+    return $this->getRegisteredObject('dstip');
+  }
+
   public function setView($p)
   {
     $this->view=$p;
@@ -89,6 +101,17 @@ class RangeSelector extends TTemplateControl
 
     if( $dst!==null )
       $this->dstip->Text=$dst;
+  }
+
+  public function setSeverities($var)
+  {
+    $this->CB->setEnabled($var);
+  }
+
+  public function setWarning($text)
+  {
+    $this->Warning->Text=$text;
+    $this->Warning->setVisible($text!=null);
   }
 
   public function setType($type)

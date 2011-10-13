@@ -3,7 +3,7 @@
  */
 body
 {
-  margin:      0; /* to avoid margins */
+  margin: 0;
   font-family: "Times New Roman";
   text-align: center;
 }
@@ -15,6 +15,34 @@ table { border: 1px solid green; }
 table tr { border: 1px dotted green; }
 table td { border: 1px dotted gray; }
 */
+
+/* treeview */
+.leaf
+{
+  color: #ffff00;
+  font-size: 120%;
+  list-style-image:url('pics/tree/arrow-empty-right.gif');
+}
+
+.node
+{
+  font-size: 120%;
+  list-style-image:url('pics/tree/arrow-down.gif');
+}
+
+.nodeDeployed
+{  
+  font-size: 120%;
+  list-style-image:url('pics/tree/arrow-right.gif');
+}
+
+ul.config
+{ 
+  color: #ffffff;  
+  margin: 0em;
+  margin-left: 20px;
+  padding-left: 1.5em;
+}
 
 /* top-most div */
 div#mainDiv
@@ -64,30 +92,17 @@ td.menuTd
   text-align: center;
 }
 
-/* menu links */
-a.menuLink:visited
+
+a:visited
 {
-  color:           #eeeeee;
-  font-size:       150%;
-  text-decoration: none;
-  letter-spacing:  2px;
+  color:           #777777;
 }
 
-a.menuLink:link
+a:link
 {
-  color:           white;
-  font-size:       150%;
-  text-decoration: none;
-  letter-spacing:  2px;
+  color:           #000000;
 }
 
-a.menuLink:hover
-{
-  color:           #ff0000;
-  font-size:       150%;
-  border-bottom:   5px solid #84cbe3;
-  letter-spacing:  2px;
-}
 
 /* content */
 td#mainContentPart
@@ -103,44 +118,13 @@ div#calendarDiv
   text-align: center;
 }
 
-td.calTh
-{
-  width: 100px;
-  color: #fff;
-  background-color: #f775a5;
-  text-align: center;
-}
-
-td.calTd
-{
-  width: 100px;
-  border: 1px solid gray;
-  text-align: center;
-}
-
-td.calResTd
-{
-  background-color: #4775a5;
-  color: #fff;
-  border: 1px solid gray;
-}
-
-
-td.pic
-{
-  width: 225px;
-  height: 225px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-#AlertTag
+.AlertTag
 {
     background-color:  #8989a2;
     font-size:       18px;
 }
 
-#AlertContent
+.AlertContent
 {
   background-color: #a9a9c2;
   font-size:        18px;
@@ -148,25 +132,11 @@ td.pic
 }
 
 
-a.apic:link, a.apic:visited, a.apic:hover
-{
-  border: none;
-}
-
-img.test
-{
-  border: none;
-}
-
-img.apic
-{
-  border: none;
-}
-
 /* footer part */
 div#footerDiv
 {
 }
+
 table#footerBar
 {
   margin-top:   1em;
@@ -178,15 +148,19 @@ table#footerBar
   margin-right: 20px;
   width:        910px;
 }
+
 td#w3cValidator
 {
   text-align:   left;
 }
+
 td#logos
 {
   text-align: right;
 }
-img.FooterLogoImage
+
+/*No border around images for Mariusz*/
+img
 {
   border:     0px;
 }

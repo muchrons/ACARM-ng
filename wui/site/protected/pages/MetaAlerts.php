@@ -18,7 +18,7 @@ class ComputeLinkForMetaAlerts
 
   private function computeLink($id)
   {
-    $url=$this->service_->constructUrl( 'MetaAlert', array('id' => $id) );
+    $url=$this->service_->constructUrl( 'MetaAlert', array('mid' => $id) );
     return "<a href=\"$url\">details</a>";
   }
 
@@ -47,10 +47,32 @@ class MetaAlerts extends TPage
         $srcip=$this->Request->itemAt('srcip');
         $dstip=$this->Request->itemAt('dstip');
         $this->Range->setSrcDst($srcip,$dstip);
+
+        $date_from=$this->Request->itemAt('from');
+        $date_to=$this->Request->itemAt('to');
+        $this->Range->setDates($date_from,$date_to);
+
+        $type=$this->Request->itemAt('type');
+        $this->Range->setType($type);
+
+        $severities=$this->Request->itemAt('severities');
+        if( $severities!==null )
+          $this->Range->CB->setSelectedValues(explode('.',$severities));
       }
 
+    $parentid=$this->Request->itemAt('parent');
+
     $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
+
     $this->MetaAlerts->params_=$this->Range->getRangeData();
+
+    if($parentid!=null)
+      {
+        $this->MetaAlerts->Query="SelectMetaAlertsSummaryByParent";
+        $this->MetaAlerts->params_->extra=$parentid;
+      }
+    elseif($this->Range->Srcip->Text!='any' or $this->Range->Dstip->Text!='any')
+      $this->MetaAlerts->Query="SelectMetaAlertsSummaryByIP";
   }
 };
 

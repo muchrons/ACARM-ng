@@ -22,6 +22,7 @@ class CParamRange
   public $offset;
   public $orderdir;
   public $ordercol;
+  public $extra;
 }
 
 ?>

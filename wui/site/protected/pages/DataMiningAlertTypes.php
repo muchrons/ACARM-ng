@@ -33,8 +33,6 @@ class DataMiningAlertTypes extends TPage
   {
     parent::onLoad($param);
 
-    //$this->Range->CB->setEnabled(false);
-
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();
   }
@@ -55,7 +53,7 @@ class DataMiningAlertTypes extends TPage
   {
     $selection=$this->Alerts->getSelectedTypes();
     $range=$this->Range->getRangeData();
-    $link=$this->constructUrl($range->date_from,$range->date_to,$range->srct,$range->dstt,$range->severities,$selection);
+    $link=$this->constructUrl($range->date_from, $range->date_to, $range->srct, $range->dstt, $range->severities, $selection);
     $this->Response->redirect($link);
   }
 }

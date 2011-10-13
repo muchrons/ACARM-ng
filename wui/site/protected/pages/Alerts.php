@@ -19,7 +19,7 @@ class ComputeLinkForAlerts
 
   private function computeLink($id)
   {
-    $url=$this->service_->constructUrl( 'Alert', array('id' => $id) );
+    $url=$this->service_->constructUrl( 'MetaAlert', array('aid' => $id) );
     return "<a href=\"$url\">details</a>";
   }
 
@@ -35,18 +35,14 @@ class ComputeLinkForAlerts
 
     if ($value=="4")
       $ret->Severity.=" color=\"red\"";
-    else
-      if ($value=="3")
-        $ret->Severity.=" color=\"orange\"";
-      else
-        if ($value=="2")
-          $ret->Severity.=" color=\"yellow\"";
-        else
-          if ($value=="1")
-            $ret->Severity.=" color=\"green\"";
-          else
-            if ($value=="0")
-              $ret->Severity.=" color=\"blue\"";
+    elseif ($value=="3")
+      $ret->Severity.=" color=\"orange\"";
+    elseif ($value=="2")
+      $ret->Severity.=" color=\"yellow\"";
+    elseif ($value=="1")
+      $ret->Severity.=" color=\"green\"";
+    elseif ($value=="0")
+      $ret->Severity.=" color=\"blue\"";
 
     $ret->Severity.="><b>".$this->severityToName($value)."</b></font>";
 
@@ -101,6 +97,5 @@ class Alerts extends TPage
     $this->Alerts->params_=$this->Range->getRangeData();
   }
 };
-
 
 ?>
