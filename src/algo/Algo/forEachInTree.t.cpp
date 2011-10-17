@@ -16,31 +16,20 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
+template<typename T>
 struct FuncObj: private TestHelpers::Persistency::TestStubs
 {
   FuncObj(void):
     cnt_(0)
   {
   }
-  void operator()(ConstGraphNodePtrNN)
+  void operator()(T)
   {
     ++cnt_;
   }
   int cnt_;
 };
 
-struct FuncObjPtr: private TestHelpers::Persistency::TestStubs
-{
-  FuncObjPtr(void):
-    cnt_(0)
-  {
-  }
-  void operator()(const GraphNode *)
-  {
-    ++cnt_;
-  }
-  int cnt_;
-};
 
 struct TestClass
 {
@@ -67,8 +56,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const FuncObj out=forEachInTree(root_, FuncObj() );
-  ensure_equals("invalid number of elements", out.cnt_, 9);
+  FuncObj<ConstGraphNodePtrNN> fo;
+  fo=forEachInTree(root_, fo);
+  ensure_equals("invalid number of elements", fo.cnt_, 9);
 }
 
 // check leaf traversal
@@ -76,8 +66,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const FuncObj out=forEachInTree( makeNewLeaf(), FuncObj() );
-  ensure_equals("invalid traversal count for leaf", out.cnt_, 1);
+  FuncObj<ConstGraphNodePtrNN> fo;
+  fo=forEachInTree( makeNewLeaf(), fo );
+  ensure_equals("invalid traversal count for leaf", fo.cnt_, 1);
 }
 
 // check traversal for const object
@@ -85,44 +76,59 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const ConstGraphNodePtrNN cRoot=root_;
-  const FuncObj             out  =forEachInTree( cRoot, FuncObj() );
-  ensure_equals("invalid number of elements", out.cnt_, 9);
+  const ConstGraphNodePtrNN    cRoot=root_;
+  FuncObj<ConstGraphNodePtrNN> fo;
+  fo=forEachInTree(cRoot, fo);
+  ensure_equals("invalid number of elements", fo.cnt_, 9);
 }
 
-// check trawersing through all elements via reference
+// check traversal via pointer to const object
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  const FuncObjPtr out=forEachInTree(root_.get(), FuncObjPtr() );
-  ensure_equals("invalid number of elements", out.cnt_, 9);
+  const GraphNode           *cRoot=root_.get();
+  FuncObj<const GraphNode*>  fo;
+  fo=forEachInTree(cRoot, fo);
+  ensure_equals("invalid number of elements", fo.cnt_, 9);
 }
 
-// check traversal for reference to const object
+// test exceptionon on NULL pointer
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  const GraphNode  *cRoot=root_.get();
-  const FuncObjPtr  out  =forEachInTree( cRoot, FuncObjPtr() );
-  ensure_equals("invalid number of elements", out.cnt_, 9);
-}
-
-// test exceptionon NULL pointer
-template<>
-template<>
-void testObj::test<6>(void)
-{
+  FuncObj<const GraphNode*> fo;
   try
   {
-    forEachInTree(static_cast<GraphNode*>(NULL), FuncObjPtr() );
+    forEachInTree(static_cast<GraphNode*>(NULL), fo);
     fail("NULL pointer accepted");
   }
   catch(const Algo::Exception&)
   {
     // this is expected
   }
+}
+
+// check traversal via pointer to non-const object
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  GraphNode           *cRoot=root_.get();
+  FuncObj<GraphNode*>  fo;
+  fo=forEachInTree(cRoot, fo);
+  ensure_equals("invalid number of elements", fo.cnt_, 9);
+}
+
+// check traversal via smart pointer to non-const object
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  FuncObj<GraphNodePtrNN> fo;
+  fo=forEachInTree(root_, fo);
+  ensure_equals("invalid number of elements", fo.cnt_, 9);
 }
 
 } // namespace tut
