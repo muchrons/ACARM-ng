@@ -62,6 +62,7 @@ void testObj::test<1>(void)
   p->doSth();
   p->doSthConst();
   ensure("invalid type of pointer", is_same<Data*, Ptr::pointer>::type::value);
+  ensure("invalid type of smart pointer", is_same<Commons::SharedPtrNotNULL<Data>, Ptr::smart_pointer>::type::value);
 }
 
 // test const raw pointer
@@ -77,6 +78,7 @@ void testObj::test<2>(void)
   p.get()->doSthConst();
   p->doSthConst();
   ensure("invalid type of pointer", is_same<const Data*, Ptr::pointer>::type::value);
+  ensure("invalid type of smart pointer", is_same<Commons::SharedPtrNotNULL<const Data>, Ptr::smart_pointer>::type::value);
 }
 
 // test shared pointer
@@ -92,6 +94,7 @@ void testObj::test<3>(void)
   p.get()->doSthConst();
   p->doSthConst();
   ensure("invalid type of pointer", is_same<Data*, Ptr::pointer>::type::value);
+  ensure("invalid type of smart pointer", is_same<Commons::SharedPtrNotNULL<Data>, Ptr::smart_pointer>::type::value);
 }
 
 // test const shared pointer
@@ -107,6 +110,7 @@ void testObj::test<4>(void)
   p.get()->doSthConst();
   p->doSthConst();
   ensure("invalid type of pointer", is_same<const Data*, Ptr::pointer>::type::value);
+  ensure("invalid type of smart pointer", is_same<Commons::SharedPtrNotNULL<const Data>, Ptr::smart_pointer>::type::value);
 }
 
 // test shared pointer not null
@@ -122,6 +126,7 @@ void testObj::test<5>(void)
   p.get()->doSthConst();
   p->doSthConst();
   ensure("invalid type of pointer", is_same<Data*, Ptr::pointer>::type::value);
+  ensure("invalid type of smart pointer", is_same<Commons::SharedPtrNotNULL<Data>, Ptr::smart_pointer>::type::value);
 }
 
 // test const shared pointer not null
@@ -137,6 +142,7 @@ void testObj::test<6>(void)
   p.get()->doSthConst();
   p->doSthConst();
   ensure("invalid type of pointer", is_same<const Data*, Ptr::pointer>::type::value);
+  ensure("invalid type of smart pointer", is_same<Commons::SharedPtrNotNULL<const Data>, Ptr::smart_pointer>::type::value);
 }
 
 // test exception when raw pointer is null
@@ -171,6 +177,48 @@ void testObj::test<8>(void)
   {
     // this is expected
   }
+}
+
+// test common conversions from Commons::SharedPtrNotNULL<> - smoke test (must compile)
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  PointerWrapper< Commons::SharedPtrNotNULL<Data> > ptr(spnn_);
+
+  PointerWrapper< Commons::SharedPtrNotNULL<Data> >       ptr1(ptr);
+  PointerWrapper< Commons::SharedPtrNotNULL<const Data> > ptr2(ptr);
+
+  PointerWrapper< boost::shared_ptr<Data> >       ptr3(ptr);
+  PointerWrapper< boost::shared_ptr<const Data> > ptr4(ptr);
+
+  PointerWrapper<Data*>       ptr5(ptr);
+  PointerWrapper<const Data*> ptr6(ptr);
+}
+
+// test common conversions from boost:shared_ptr<> - smoke test (must compile)
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  PointerWrapper< boost::shared_ptr<Data> > ptr(sp_);
+
+  PointerWrapper< boost::shared_ptr<Data> >       ptr1(ptr);
+  PointerWrapper< boost::shared_ptr<const Data> > ptr2(ptr);
+
+  PointerWrapper<Data*>       ptr3(ptr);
+  PointerWrapper<const Data*> ptr4(ptr);
+}
+
+// test common conversions from raw pointers - smoke test (must compile)
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  PointerWrapper<Data*> ptr(sp_);
+
+  PointerWrapper<Data*>       ptr1(ptr);
+  PointerWrapper<const Data*> ptr2(ptr);
 }
 
 } // namespace tut
