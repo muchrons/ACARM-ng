@@ -3,7 +3,9 @@
  *
  */
 #include <tut.h>
+#include <cmath>
 
+#include "Algo/computeSeverity.hpp"
 #include "DataFacades/StrAccess/OnMetaAlert.hpp"
 #include "DataFacades/StrAccess/TestBaseData.t.hpp"
 
@@ -13,6 +15,15 @@ namespace
 {
 struct TestClass: public TestBaseData<OnMetaAlert>
 {
+  void ensureProcDouble(const char *errMsg, const GraphNode &node, const char *path, const double expected)
+  {
+    TestParams p(Path(path), cb_);
+    tut::ensure("error response returned", OnMetaAlert::process(node, p) );
+    // check
+    const double last=Commons::Convert::to<double>(cb_.lastValue_);
+    if( fabs(last-expected)>0.01 )
+      tut::ensure_equals(errMsg, last, expected);
+  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -237,6 +248,22 @@ void testObj::test<24>(void)
   ensureProc("non-leaf element 0", *ma, "metaalert.leafs.0.isleaf", "true");
   ensureProc("non-leaf element 1", *ma, "metaalert.leafs.1.isleaf", "true");
   ensureProc("non-leaf element 2", *ma, "metaalert.leafs.2.isleaf", "true");
+}
+
+// test accessing severity of a leaf
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  ensureProcDouble("invalid severity of a leaf", *metaalertLeaf_, "metaalert.severity", 1.042);
+}
+
+// test accessing severity of a node
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  ensureProcDouble("invalid severity of a node", *metaalertNode_, "metaalert.severity", 1.580);
 }
 
 } // namespace tut
