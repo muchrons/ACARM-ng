@@ -95,8 +95,13 @@ template<typename PtrType>
 class PointerWrapper
 {
 public:
+  /** \brief exact element type, given by the user. */
+  typedef PtrType                                                                  element_type;
+  /** \brief exact element type, given by the user. */
+  typedef element_type                                                             value_type;
   /** \brief raw pointer type. */
   typedef typename MPL::EnsureRawPtr<PtrType>::type                                pointer;
+  /** \brief smart pointer to data */
   typedef Commons::SharedPtrNotNULL<typename boost::remove_pointer<pointer>::type> smart_pointer;
 
   template<typename T>

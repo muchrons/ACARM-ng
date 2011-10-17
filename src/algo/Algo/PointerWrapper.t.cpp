@@ -221,4 +221,24 @@ void testObj::test<11>(void)
   PointerWrapper<const Data*> ptr2(ptr);
 }
 
+// test for element_type typedef
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  typedef boost::shared_ptr<Data> PtrImpl;
+  typedef PointerWrapper<PtrImpl> Ptr;
+  ensure("invalid typedef for element_type", is_same<PtrImpl, Ptr::element_type>::type::value);
+}
+
+// test for value_type typedef
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  typedef boost::shared_ptr<Data> PtrImpl;
+  typedef PointerWrapper<PtrImpl> Ptr;
+  ensure("invalid typedef for value_type", is_same<PtrImpl, Ptr::value_type>::type::value);
+}
+
 } // namespace tut
