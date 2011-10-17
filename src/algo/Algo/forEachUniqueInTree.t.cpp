@@ -15,13 +15,14 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
+template<typename T>
 struct CountNodes: private TestHelpers::Persistency::TestStubs
 {
   CountNodes(void):
     cnt_(0)
   {
   }
-  void operator()(Persistency::ConstGraphNodePtrNN)
+  void operator()(T)
   {
     ++cnt_;
   }
@@ -48,7 +49,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  CountNodes cn=forEachUniqueInTree( makeNewTree1(), CountNodes() );
+  CountNodes<Persistency::ConstGraphNodePtrNN> cn;
+  cn=forEachUniqueInTree( makeNewTree1(), cn );
   ensure_equals("invalid number of elements", cn.cnt_, 9);
 }
 
@@ -57,7 +59,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  CountNodes cn=forEachUniqueInTree( makeNewLeaf(), CountNodes() );
+  CountNodes<Persistency::ConstGraphNodePtrNN> cn;
+  cn=forEachUniqueInTree( makeNewLeaf(), cn );
   ensure_equals("invalid count for leaf", cn.cnt_, 1);
 }
 
@@ -66,7 +69,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  CountNodes cn=forEachUniqueInTree( makeNewTree2(), CountNodes() );
+  CountNodes<Persistency::ConstGraphNodePtrNN> cn;
+  cn=forEachUniqueInTree( makeNewTree2(), cn );
   ensure_equals("invalid number of elements", cn.cnt_, 7);
 }
 
@@ -75,8 +79,39 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const ConstGraphNodePtrNN node=makeNewTree2();
-  const CountNodes          cn  =forEachUniqueInTree( node, CountNodes() );
+  const ConstGraphNodePtrNN                    node=makeNewTree2();
+  CountNodes<Persistency::ConstGraphNodePtrNN> cn;
+  cn=forEachUniqueInTree(node, cn);
+  ensure_equals("invalid number of elements", cn.cnt_, 7);
+}
+
+// test counting nodes/leafs via pointer
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  CountNodes<Persistency::GraphNode*> cn;
+  cn=forEachUniqueInTree( makeNewTree1().get(), cn );
+  ensure_equals("invalid number of elements", cn.cnt_, 9);
+}
+
+// test counting nodes/leafs via const pointer
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  CountNodes<const Persistency::GraphNode*> cn;
+  cn=forEachUniqueInTree( makeNewTree1().get(), cn );
+  ensure_equals("invalid number of elements", cn.cnt_, 9);
+}
+
+// check tree with non-const smart pointers
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  CountNodes<Persistency::GraphNodePtrNN> cn;
+  cn=forEachUniqueInTree( makeNewTree2(), cn );
   ensure_equals("invalid number of elements", cn.cnt_, 7);
 }
 
