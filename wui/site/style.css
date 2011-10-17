@@ -163,4 +163,6 @@ td#logos
 img
 {
   border:     0px;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -moz-crisp-edges;
 }

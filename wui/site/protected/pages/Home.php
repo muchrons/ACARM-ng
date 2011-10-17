@@ -8,11 +8,11 @@ class Home extends TPage
       return "No data";
     TPropertyValue::ensureInteger($number);
     if ($number>1e9)
-      return round($number/1e9)." G&nbsp";
+      return (round($number/1e7)/100)." G&nbsp";
     if ($number>1e6)
-      return round($number/1e6)." M&nbsp";
+      return (round($number/1e4)/100)." M&nbsp";
     if ($number>1e3)
-      return round($number/1e3)." k&nbsp";
+      return (round($number/10)/100)." k&nbsp";
     return $number;
   }
 
