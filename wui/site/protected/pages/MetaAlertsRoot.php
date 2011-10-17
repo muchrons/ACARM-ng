@@ -18,7 +18,7 @@ class ComputeLinkForMetaAlerts
 
   private function computeLink($id)
   {
-    $url=$this->service_->constructUrl( 'MetaAlert', array('id' => $id) );
+    $url=$this->service_->constructUrl( 'MetaAlert', array('mid' => $id) );
     return "<a href=\"$url\">details</a>";
   }
 
@@ -41,15 +41,30 @@ class MetaAlertsRoot extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
+
     if (!$this->isPostBack)
       {
         $srcip=$this->Request->itemAt('srcip');
         $dstip=$this->Request->itemAt('dstip');
         $this->Range->setSrcDst($srcip,$dstip);
-      }
 
+        $date_from=$this->Request->itemAt('from');
+        $date_to=$this->Request->itemAt('to');
+        $this->Range->setDates($date_from,$date_to);
+
+        $type=$this->Request->itemAt('type');
+        $this->Range->setType($type);
+
+        $severities=$this->Request->itemAt('severities');
+        if( $severities!==null )
+          $this->Range->CB->setSelectedValues(explode('.',$severities));
+      }
     $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
+
     $this->MetaAlerts->params_=$this->Range->getRangeData();
+
+    if($this->Range->Srcip->Text!='any' or $this->Range->Dstip->Text!='any')
+      $this->MetaAlerts->Query="SelectMetaAlertsRootSummaryByIP";
   }
 };
 
