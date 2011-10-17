@@ -3,11 +3,15 @@
 <div width="800px">
 
 <com:DataTableTemplate
-        ID="MetaAlerts"
-        Text="The most recent meta-alerts:"
-        Query="SelectMetaAlertsSummary"/>
+   ID="MetaAlerts"
+   Text="The most recent meta-alerts:"
+   Query="SelectMetaAlertsSummary"/>
 </div>
 
-<com:RangeSelector ID="Range" View="0"/>
+<com:RangeSelector
+   ID="Range"
+   View="1"
+   Severities="true"
+   Warning="Warning: Setting source or destination IP address implies an execution of a complex SQL query. This can take a long time."/>
 
 </com:TContent>

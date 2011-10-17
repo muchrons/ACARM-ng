@@ -11,6 +11,7 @@ class CAlertEntry
   public $description;
   public $src_ip;
   public $dst_ip;
+  public $id_meta_alert;
 }
 
 ?>
