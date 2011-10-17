@@ -7,134 +7,308 @@ class MetaAlert extends TPage
   public function __construct()
   {
     parent::__construct();
-    $id=$this->Request->itemAt('id');
+    $mid=$this->Request->itemAt('mid');
+    $aid=$this->Request->itemAt('aid');
 
-    //in case there is no id try to get sys_id and convert to id
-    if ($id===null)
-      {
-        $sysid=$this->Request->itemAt('sys_id');
-        $id=SQLWrapper::queryForObject('MetaAlert_SysID_ID', $sysid);
+    $msysid=$this->Request->itemAt('sys_id');
+
+    if ($msysid!=null)
+      $mid=CSQLMap::get()->queryForObject('MetaAlert_SysID_ID', $msysid);
+
+    $this->group_count_=10;
+    $this->max_children_=50;
+
+    if ($mid===null && $aid===null)
+      throw new TConfigurationException("No valid Meta Alert ID or Alert ID specified");
+
+    if ($mid!=null)
+      {//we have a MetaAlertID
+        $this->metaAlert_=SQLWrapper::queryForObject('SelectMetaAlertID', $mid);
+
+        if($this->metaAlert_->id_alert != null)
+          $this->alert_=SQLWrapper::queryForObject('SelectAlert', $this->metaAlert_->id_alert);
       }
-
-    //neither id nor sys_id specified
-    if ($id===null)
-      throw new TConfigurationException("No valis SysID or ID specified");
-
-    $this->metaAlert_=SQLWrapper::queryForObject('SelectMetaAlertID', $id);
+    else
+      {//we have an AlertId
+        $this->alert_=SQLWrapper::queryForObject('SelectAlert', $aid);
+        $this->metaAlert_=SQLWrapper::queryForObject('SelectMetaAlertID', $this->alert_->id_meta_alert);
+      }
   }
 
   public function onLoad()
   {
-    if( $this->metaAlert_===null )
-      die("invalid meta-alert / meta-alert not set");
-    $this->RelatedAlerts->PageSize=$this->per_page;
-    // initialization of GridData
+    if($this->metaAlert_===null && $this->alert_===null)
+      die("invalid (meta-)alert ID");
+
     if(!$this->IsPostBack)
       {
-        $this->MetaAlertCreateTime->Text=$this->metaAlert_->create_time;
-        $this->MetaAlertUpdateTime->Text=$this->metaAlert_->last_update_time;
-        $this->SeverityDelta->Text=$this->metaAlert_->severity_delta;
-        $this->CertaintyDelta->Text=$this->metaAlert_->certainty_delta;
-
-        $idAlert=$this->metaAlert_->id;
-
-        //get out alert in case we are a leaf
-        $alerts=SQLWrapper::queryForList('SelectAlertForMetaAlert', $idAlert);
-
-        if (count($alerts) == 0)
-          {//we are a node not a leaf
-            $params=new CDMQuad();
-            $params->value1=$idAlert;
-            $params->value2=$this->per_page; //limit
-            $params->value3=0; //offset
-            $alerts=SQLWrapper::queryForList('SelectMetaAlertsChildren', $params);
+        if($this->metaAlert_!=null)
+          {
+            $this->MetaAlert->setVisible(true);
+            $this->fillMetaAlertForm();
           }
 
-        //get number of child alerts to show
-        $children_count=SQLWrapper::queryForObject('SelectMetaAlertsChildrenCount', $idAlert);
+        //show either Alarm form or RelatedAlerts list
+        if($this->alert_!=null)
+          {
+            $this->Alert->setVisible(true);
+            $this->fillAlertForm();
+          }
+        else
+          {
+            $this->AlertList->setVisible(true);
+            $this->fillRelatedAlerts();
+          }
+      }
+  }
 
-        if ($children_count>$this->per_page)
-          $this->RelatedAlerts->AllowPaging=true;
+  private function fillMetaAlertForm()
+  {
+    $this->MetaAlertCreateTime->Text=$this->metaAlert_->create_time;
+    $this->MetaAlertUpdateTime->Text=$this->metaAlert_->last_update_time;
+    $this->SeverityDelta->Text=$this->metaAlert_->severity_delta;
+    $this->CertaintyDelta->Text=$this->metaAlert_->certainty_delta;
 
-        $data=array();
+    $inUse=SQLWrapper::queryForObject('CheckInUse', $this->metaAlert_->id);
+    if ($inUse!=0)
+      $this->MetaAlertTags->Text.="<font color=\"yellow\"><b>In use</b></font></br>";
 
-        foreach ($alerts as $a)
-          if ($a->alertid === null)
-            $data[]=array('name'=>$this->makeLinkTo('MetaAlert', $a->metaalertid, $a->name));
+    $isRoot=SQLWrapper::queryForObject('CheckRoot', $this->metaAlert_->id);
+    if ($isRoot!=0)
+      $this->MetaAlertTags->Text.="<font color=\"red\"><b>Root</b></font> ";
+
+    $triggers_tab=SQLWrapper::queryForList('SelectTriggered', $this->metaAlert_->id);
+
+    $content="";
+
+    foreach ($triggers_tab as $t)
+      {
+        $temp=explode("_",$t->trigger."_",2);
+        $content.="<table border=\"0\" cellpadding=\"2\">
+                     <td align=\"center\">
+                       <img height=\"48\" width=\"48\" src=\"pics/triggers/$temp[0].png\" alt=\"$temp[0]\">
+                     </td>";
+        $content.="<td>".substr($temp[1],0,-1)."</td></table>";
+      }
+
+    $this->Triggered->Text=$content;
+
+    $filters=preg_split('/\s+/', $this->metaAlert_->name);
+
+    $this->MetaAlertName->Text="";
+
+    foreach($filters as $f)
+      if ($f=='[many2one]')
+        $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/mto.png\" border=0> ";
+    elseif ($f=='[one2many]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/otm.png\" border=0> ";
+    elseif ($f=='[one2one]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/oto.png\" border=0> ";
+    elseif ($f=='[samename]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/name.png\" border=0> ";
+    elseif ($f=='[many2many]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/mtm.png\" border=0> ";
+    elseif ($f=='[similarity]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/similarity.png\" border=0> ";
+    elseif ($f=='[usersmonitor]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/sameuser.png\" border=0> ";
+    elseif ($f=='[eventchain]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/eventchain.png\" border=0> ";
+    elseif ($f=='[ipblacklist]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/ipblacklist.png\" border=0> ";
+    elseif ($f=='[newevent]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/newevent.png\" border=0> ";
+    elseif ($f=='[python]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/python.png\" border=0> ";
+    else
+      $this->MetaAlertName->Text.=$f." ";
+  }
+
+  private function fillRelatedAlerts()
+  {
+    $tree=$this->RelatedAlertsTree;
+    $tree->setTitle($this->MetaAlertName->Text);
+    $tree->setNodeType(MyTreeList::NODE_TYPE_PLAIN);
+
+    $children=SQLWrapper::queryForList('SelectMetaAlertsChildrenFull', $this->metaAlert_->id);
+    $children_count=count($children);
+
+    $children_groupped_tmp=CSQLMap::get()->queryForList('SelectMetaAlertsChildrenFullGroup', $this->metaAlert_->id);
+
+    $children_groupped=array();
+
+    foreach($children_groupped_tmp as $child)
+      $children_groupped[$child->name]=$child->id;
+
+    if($children_count==0)
+      {
+        $tree->setCanDeploy(false);
+        return $tree;
+      }
+
+    if(count($children_groupped)>=$this->max_children_)
+      {
+        $tree->addSubElement($this->addGrouppedMetaAlert("A great number of different meta-alerts are here.",count($children_groupped),$this->metaAlert_->id,false));
+        return $tree;
+      }
+
+    $added=array();
+    foreach($children as $child)
+      if ($children_groupped[$child->name]<$this->group_count_)
+        $tree->addSubElement($this->addSubtreeForMetaAlert($child));
+    elseif(!isset($added[$child->name]))
+      {
+        $tree->addSubElement($this->addGrouppedMetaAlert($child->name,$children_groupped[$child->name],$this->metaAlert_->id,true));
+        $added[$child->name]=true;
+      }
+  }
+
+  private function addSubtreeForMetaAlert($ma)
+  {
+    $children=CSQLMap::get()->queryForList('SelectMetaAlertsChildrenFull', $ma->metaalertid);
+    $children_count=count($children);
+
+    $children_groupped_tmp=CSQLMap::get()->queryForList('SelectMetaAlertsChildrenFullGroup', $ma->metaalertid);
+
+    $children_groupped=array();
+    foreach($children_groupped_tmp as $child)
+      $children_groupped[$child->name]=$child->id;
+
+    $tree=new MyTreeList();
+    $tree->setTitle($ma->name);
+    $tree->setIcon("show");
+    $tree->setNodeType(MyTreeList::NODE_TYPE_LINK);
+    $tree->setToPage("MetaAlert");
+    $tree->setGetVariables(array("mid"=>"$ma->metaalertid"));
+
+    if($children_count==0)
+      {
+        $tree->setCanDeploy(false);
+        return $tree;
+      }
+
+    if(count($children_groupped)>=$this->max_children_)
+      {
+        $tree->addSubElement($this->addGrouppedMetaAlert("A great number of different meta-alerts are here.",$children_groupped[$child->name],$ma->metaalertid,false));
+        return $tree;
+      }
+
+    $added=array();
+    foreach($children as $child)
+      if ($children_groupped[$child->name]<$this->group_count_)
+        {
+          if ($child->alertid!=null)
+            {//If this is an alert terminate recurrent call.
+              $node=new MyTreeList();
+              $node->setTitle($child->name);
+              $node->setNodeType(MyTreeList::NODE_TYPE_LINK);
+              $node->setToPage("MetaAlert");
+              $node->setGetVariables(array("aid"=>"$child->alertid"));
+              $node->setIcon("show");
+              $node->setCanDeploy(false);
+              $tree->addSubElement($node);
+            }
           else
-            $data[]=array('name'=>$this->makeLinkTo('Alert', $a->alertid, $a->name));
+            $tree->addSubElement($this->addSubtreeForMetaAlert($child));
+        }
+      else
+        {
+          if(!isset($added[$child->name]))
+            {
+              $tree->addSubElement($this->addGrouppedMetaAlert($child->name,$children_groupped[$child->name],$ma->metaalertid,true));
+              $added[$child->name]=true;
+            }
+        }
+    return $tree;
+  }
 
-        if (count($data)==0)
-          $data[]=array('name'=>'This shouldn\'t be null. Your database seems to be corrupted.');
+  private function addGrouppedMetaAlert($name, $count, $mid, $includetype)
+  {
+    $tree=new MyTreeList();
+    $tree->setTitle($name." x ".$count." ");
+    $tree->setNodeType(MyTreeList::NODE_TYPE_LINK);
+    $tree->setCanDeploy(false);
+    $tree->setToPage("MetaAlerts");
+    if ($includetype)
+      $tree->setGetVariables(array("parent"=>"$mid","type"=>"$name"));
+    else
+      $tree->setGetVariables(array("parent"=>"$mid"));
+    $tree->setIcon("showall");
+    return $tree;
+  }
 
-        $this->RelatedAlerts->DataSource=$data;
-        $this->RelatedAlerts->VirtualItemCount=$children_count;
-        $this->RelatedAlerts->CurrentPageIndex=0;
-        $this->RelatedAlerts->dataBind();
+  private function fillAlertForm()
+  {
+    if ($this->alert_->detect !=null)
+      $this->AlertDetectTime->Text =$this->alert_->detect;
 
+    if ($this->alert_->create !=null)
+      $this->AlertCreateTime->Text =$this->alert_->create;
 
+    $this->AlertCertainty->Text=($this->alert_->certainty === null) ? "N/A" : $this->alert_->certainty;
 
-        $filters=preg_split('/\s+/', $this->metaAlert_->name);
+    if($this->alert_->description!= null)
+      $this->AlertDescription->Text=$this->alert_->description;
 
-        $this->MetaAlertName->Text="";
+    if($this->alert_->severity!= null)
+      {
+        $text="<font";
+        $value=trim($this->alert_->severity);
 
-        foreach($filters as $f)
-          {
-            if ($f=='[many2one]')
-              $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/mto.png\" border=0> ";
-            else
-              if ($f=='[one2many]')
-                $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/otm.png\" border=0> ";
-              else
-                if ($f=='[one2one]')
-                  $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/oto.png\" border=0> ";
-                else
-                  if ($f=='[samename]')
-                    $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/name.png\" border=0> ";
-                  else
-                    if ($f=='[many2many]')
-                      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/mtm.png\" border=0> ";
-                    else
-                      if ($f=='[similarity]')
-                        $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/similarity.png\" border=0> ";
-                      else
-                        if ($f=='[usersmonitor]')
-                          $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/sameuser.png\" border=0> ";
-                        else
-                          if ($f=='[eventchain]')
-                            $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/eventchain.png\" border=0> ";
-                          else
-                            if ($f=='[ipblacklist]')
-                              $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/ipblacklist.png\" border=0> ";
-                            else
-                              if ($f=='[newevent]')
-                                $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/newevent.png\" border=0> ";
-                              else
-                                $this->MetaAlertName->Text.=$f." ";
-          }
+        if ($value=="4")
+          $text.=" color=\"red\"";
+        elseif ($value=="3")
+          $text.=" color=\"#CC3300\"";
+        elseif ($value=="2")
+          $text.=" color=\"black\"";
+        elseif ($value=="1")
+          $text.=" color=\"green\"";
+        elseif ($value=="0")
+          $text.=" color=\"blue\"";
 
-        $inUse=SQLWrapper::queryForObject('CheckInUse', $idAlert);
-        if ($inUse!=0)
-          $this->MetaAlertTags->Text.="<font color=\"yellow\"><b>In use</b></font></br>";
+        $text.=">".$this->severityToName($value)."</font>";
+        $this->AlertSeverity->Text=$text;
+      }
 
-        $isRoot=SQLWrapper::queryForObject('CheckRoot', $idAlert);
-        if ($isRoot!=0)
-          $this->MetaAlertTags->Text.="<font color=\"red\"><b>Root</b></font> ";
+    //Get all analyzers for the alert
+    $analyzers=SQLWrapper::queryForList('SelectAnalyzersForAlert', $this->alert_->id);
+    $data=array();
+    foreach ($analyzers as $a)
+      $data[]=array('link'=>$this->makeAnalyzerLink($a->id),'name'=>$a->name,'IP'=>$a->ip,'ver'=>$a->version, 'OS'=>$a->os);
+    //data can be null
+    $this->AlertAnalyzers->DataSource=$data;
+    $this->AlertAnalyzers->dataBind();
 
-        $triggers_tab=SQLWrapper::queryForList('SelectTriggered', $idAlert);
+    //Get all hosts for the alert
+    $hosts=SQLWrapper::queryForList('SelectHostsForAlert', $this->alert_->id);
+    $sources=array();
+    $destinations=array();
+    foreach ($hosts as $h)
+      if ($h->role == "src")
+        $sources[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
+      else
+        $destinations[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
 
-        $content="";
+    $this->AlertSources->DataSource=$sources; //can be null
+    $this->AlertSources->dataBind();
 
-        foreach ($triggers_tab as $t)
-          {
-            $temp=explode("_",$t->trigger."_",2);
-            $content.="<table border=\"0\" cellpadding=\"2\"><td align=\"center\"><img height=\"48\" width=\"48\" src=\"pics/triggers/$temp[0].png\" alt=\"$temp[0]\"></td>";
-            $content.="<td>".substr($temp[1],0,-1)."</td></table>";
-          }
+    $this->AlertDestinations->DataSource=$destinations; //can be null
+    $this->AlertDestinations->dataBind();
+  }
 
-        $this->Triggered->Text=$content;
-
-      } // if(!post_back)
+  private function severityToName($n)
+  {
+    if ($n=="0")
+      return "debug";
+    if ($n=="1")
+      return "info";
+    if ($n=="2")
+      return "low";
+    if ($n=="3")
+      return "medium";
+    if ($n=="4")
+      return "high";
+    return "unknown";
   }
 
   public function changePage($sender,$param)
@@ -153,9 +327,9 @@ class MetaAlert extends TPage
 
     foreach ($alerts as $a)
       if ($a->alertid === null)
-        $data[]=array('name'=>$this->makeLinkTo('MetaAlert', $a->metaalertid, $a->name));
+        $data[]=array('name'=>$this->makeLinkTo('MetaAlert', "mid", $a->metaalertid, $a->name));
       else
-        $data[]=array('name'=>$this->makeLinkTo('Alert', $a->alertid, $a->name));
+        $data[]=array('name'=>$this->makeLinkTo('MetaAlert', "aid", $a->alertid, $a->name));
 
     if (count($data)==0)
       $data[]=array('name'=>'This shouldn\'t be null. Your database seems to be corrupted.');
@@ -164,14 +338,28 @@ class MetaAlert extends TPage
     $this->RelatedAlerts->dataBind();
   }
 
-
-  private function makeLinkTo($page, $id, $name)
+  private function makeLinkTo($page, $id_name, $id, $name)
   {
-    $url =$this->Service->constructUrl( $page, array('id' => $id) );
+    $url =$this->Service->constructUrl( $page, array($id_name => $id) );
     $href="<a href=\"$url\">$name</a>";
     return $href;
   }
 
+  private function makeHostLink($id)
+  {
+    $out=$this->makeLinkTo('Host', "id", $id, '<img src="pics/dot.png" border="0">');
+    return $out;
+  }
+
+  private function makeAnalyzerLink($id)
+  {
+    $out=$this->makeLinkTo('Analyzer', "id", $id, '<img src="pics/dot.png" border="0">');
+    return $out;
+  }
+
+  private $max_children_;
+  private $group_count_;
+  private $alert_;
   private $metaAlert_;
 }
 

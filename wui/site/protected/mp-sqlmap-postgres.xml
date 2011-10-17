@@ -6,72 +6,436 @@
     <property name="CacheSize" value="100"/>
   </cacheModel>
 
+  <!-- Home -->
 
-  <!-- Queries for single items -->
-  <select id="MetaAlert_SysID_ID" resultClass="int" parameterClass="int">
-    SELECT id FROM meta_alerts WHERE sys_id=#value#;
+
+  <!-- Analyzer / List of Analyzers -->
+  <select id="SelectAnalyzersCount" resultClass="int">
+    SELECT count(*) FROM analyzers
   </select>
 
-  <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
-    SELECT r.id AS id, r.role AS role, h.ip AS ip, h.mask AS mask, h.os AS os, h.name AS name, u.name as ref_name, u.url AS ref_url FROM ( reported_hosts as r LEFT JOIN hosts as h ON r.id_host=h.id ) LEFT JOIN reference_urls as u ON r.id_ref=u.id WHERE r.id=#value#
+  <select id="SelectAnalyzers" resultClass="CAnalyzerListEntry" parameterClass="CParamLimitOffset">
+    SELECT * FROM analyzers
+      ORDER BY name,ip ASC
+        LIMIT #limit#
+        OFFSET #offset#
   </select>
 
-  <select id="SelectReportedService" resultClass="CReportedServiceEntry" parameterClass="int">
-    SELECT s.id AS id, s.name AS name, s.port AS port, s.protocol AS protocol, u.name AS ref_name, u.url AS ref_url FROM ( reported_services AS r LEFT JOIN services AS s ON r.id_service=s.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE s.id=#value# ORDER BY name
-  </select>
-
-  <select id="SelectReportedProcess" resultClass="CReportedProcessEntry" parameterClass="int">
-    SELECT r.id AS id, p.name AS name, p.path AS path, p.md5 AS md5, r.pid AS pid, r.uid AS uid, r.username AS username, r.arguments AS arguments, u.name AS ref_name, u.url AS ref_url FROM ( reported_procs AS r LEFT JOIN procs AS p ON r.id_proc=p.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE r.id=#value# ORDER BY name
-  </select>
-
-  <select id="SelectAlertAnalyzers" resultClass="CLinkPair" parameterClass="int">
-    SELECT aa.id_analyzer AS id, an.name AS name FROM alert_analyzers AS aa LEFT JOIN analyzers AS an ON aa.id_analyzer=an.id WHERE aa.id_alert=#value#
-  </select>
-
-  <select id="SelectAlertSourceHosts" resultClass="CLinkPair" parameterClass="int">
-    SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='src' ORDER BY name
-  </select>
-
-  <select id="SelectAlertDestinationHosts" resultClass="CLinkPair" parameterClass="int">
-    SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='dst' ORDER BY name
-  </select>
-
-  <select id="SelectReportedHostsProcesses" resultClass="CLinkPair" parameterClass="int">
-    SELECT r.id AS id, p.name AS name FROM reported_procs AS r LEFT JOIN procs as p ON r.id_proc=p.id WHERE r.id_reported_host=#value# ORDER BY name
-  </select>
-
-  <select id="SelectReportedHostsServices" resultClass="CLinkPair" parameterClass="int">
-    SELECT r.id_service AS id, s.name AS name FROM reported_services AS r LEFT JOIN services as s ON r.id_service=s.id WHERE r.id_reported_host=#value# ORDER BY name
-  </select>
-
-  <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-    SELECT name, detect_time AS detect, create_time AS create, description, certainty, severity FROM alerts WHERE id=#VALUE#;
-  </select>
-
-  <select id="SelectHost" resultClass="CReportedHostEntry" parameterClass="int">
-    SELECT h.id, h.role, h.ip, h.mask, h.os, h.name, r.name as ref_name, r.url as ref_url FROM hosts AS h LEFT JOIN reference_urls AS r ON h.id_ref=r.id WHERE h.id=#value#
-  </select>
-
-  <select id="SelectMetaAlertID" resultClass="CMetaAlertEntry" parameterClass="int">
-    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
-      FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
+  <!-- TODO paging -->
+  <select id="SelectAnalyzer" resultClass="CAnalyzerListEntry" parameterClass="int">
+    SELECT * FROM analyzers
       WHERE id=#value#
   </select>
 
-  <select id="SelectAnalyzer" resultClass="CAnalyzerListEntry" parameterClass="int">
-    SELECT * FROM analyzers WHERE id=#value#
+
+
+
+  <!-- Host -->
+  <select id="SelectHost" resultClass="CReportedHostEntry" parameterClass="int">
+    SELECT h.id, h.role, h.ip, h.mask, h.os, h.name, r.name as ref_name, r.url as ref_url
+      FROM hosts AS h
+      LEFT JOIN reference_urls AS r ON h.id_ref=r.id
+        WHERE h.id=#value#
   </select>
 
-  <select id="MapSysIDtoDatabaseID" resultClass="int" parameterClass="int">
-    SELECT id FROM meta_alerts WHERE sys_id=#value#
+  <select id="SelectServicesForHost" resultClass="CReportedServiceEntry" parameterClass="int">
+    SELECT name, port, protocol, id_ref as ref_name
+      FROM services
+        WHERE id_host=#VALUE#
+  </select>
+
+  <select id="SelectProcessesForHost" resultClass="CReportedProcessEntry" parameterClass="int">
+    SELECT name, path, md5, pid, uid, username, arguments, id_ref as ref_name, arguments
+      FROM procs
+        WHERE id_host=#VALUE#
+  </select>
+
+
+
+
+
+
+
+
+
+  <!-- Alert -->
+  <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
+    SELECT a.id, a.name, a.detect_time AS detect, a.create_time AS create, a.description, a.certainty, a.severity, m.id_meta_alert
+      FROM alerts as a
+      LEFT JOIN alert_to_meta_alert_map AS m ON m.id_alert=a.id
+        WHERE id=#VALUE#;
+  </select>
+
+  <select id="SelectHostsForAlert" resultClass="CReportedHostEntry" parameterClass="int">
+    SELECT hosts.name,ip,role,os,hosts.id
+      FROM alerts JOIN hosts ON hosts.id_alert=alerts.id
+        WHERE alerts.id=#VALUE#
+  </select>
+
+  <select id="SelectAnalyzersForAlert" resultClass="CAnalyzerListEntry" parameterClass="int">
+    SELECT id, name, ip, version, os
+      FROM alert_analyzers
+        JOIN analyzers ON alert_analyzers.id_analyzer=analyzers.id
+        WHERE alert_analyzers.id_alert=#VALUE#
+  </select>
+
+
+
+
+
+
+
+  <!-- List Alerts -->
+  <select id="SelectAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+    <![CDATA[
+         SELECT count(*) FROM alerts
+            LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='src') as h1 on h1.id_alert=alerts.id
+            LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst') as h2 on h2.id_alert=alerts.id
+          WHERE create_time<=#date_to#  AND create_time>=#date_from#
+            AND (h1.ip=#src# OR 1=#ignoresrc#)
+            AND (h2.ip=#dst# OR 1=#ignoredst#)
+            AND (alerts.name ~ #type# OR 1=#ignoretype#)
+            AND ((severity='4' AND #severities# LIKE '%high%')
+              OR (severity='3' AND #severities# LIKE '%medium%')
+              OR (severity='2' AND #severities# LIKE '%low%')
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'))
+    ]]>
+  </select>
+
+  <!-- Fixed problem with alerts containing 1 or 0 hosts -->
+  <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
+    <![CDATA[
+         SELECT alerts.id, alerts.name, create_time, severity FROM alerts
+            LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='src') as h1 on h1.id_alert=alerts.id
+            LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst') as h2 on h2.id_alert=alerts.id
+          WHERE create_time<=#date_to#  AND create_time>=#date_from#
+            AND (h1.ip=#src# OR 1=#ignoresrc#)
+            AND (h2.ip=#dst# OR 1=#ignoredst#)
+            AND (alerts.name ~ #type# OR 1=#ignoretype#)
+            AND ((severity='4' AND #severities# LIKE '%high%')
+              OR (severity='3' AND #severities# LIKE '%medium%')
+              OR (severity='2' AND #severities# LIKE '%low%')
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'))
+            ORDER BY $ordercol$ $orderdir$
+            LIMIT #limit#
+            OFFSET #offset#
+    ]]>
+  </select>
+
+
+
+
+
+
+
+
+
+
+
+  <!--Meta Alert -->
+
+  <select id="SelectMetaAlertID" resultClass="CMetaAlertEntry" parameterClass="int">
+    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
+      FROM meta_alerts AS ma 
+      LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
+      WHERE id=#value#
+  </select>
+
+  <select id="SelectMetaAlertsChildrenCount" resultClass="int" parameterClass="int">
+    SELECT count(*) FROM meta_alerts AS ma
+      RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
+      LEFT JOIN alert_to_meta_alert_map as g 
+        ON g.id_meta_alert=ma.id
+        WHERE t.id_node=#value#
   </select>
 
   <select id="SelectMetaAlertsChildren" resultClass="CLinkTriple" parameterClass="CDMQuad">
-    SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value1# limit #value2# offset #value3#
+    SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid
+      FROM meta_alerts AS ma
+        RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
+        LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id
+          WHERE t.id_node=#value1#
+        LIMIT #value2#
+        OFFSET #value3#
   </select>
 
-  <select id="SelectAlertForMetaAlert" resultClass="CLinkTriple" parameterClass="int">
-    SELECT name as name,id as alertid FROM alert_to_meta_alert_map as map JOIN alerts as a ON a.id=map.id_alert WHERE map.id_meta_alert=#value#
+  <select id="SelectMetaAlertsChildrenFull" resultClass="CLinkTriple" parameterClass="int">
+    SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid
+      FROM meta_alerts AS ma
+        RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
+        LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id
+          WHERE t.id_node=#value#
+        ORDER BY name
+  </select>
+
+  <select id="SelectMetaAlertsChildrenFullGroup" resultClass="CLinkPair" parameterClass="int">
+    SELECT ma.name as name, count(*) as id
+      FROM meta_alerts AS ma
+        RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
+        LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id
+          WHERE t.id_node=#value#
+          GROUP BY ma.name
+  </select>
+
+  <select id="SelectTriggered" resultClass="CTriggered" parameterClass="int">
+    SELECT trigger_name as trigger
+      FROM meta_alerts_already_triggered
+        WHERE id_meta_alert=#VALUE#
+  </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- List MetaAlerts -->
+
+    <!-- standard query for everything -->
+    <select id="SelectMetaAlertsSummaryCount" resultClass="int">
+      SELECT count(*)
+        FROM meta_alerts
+    </select>
+
+    <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
+      SELECT id, name, create_time
+        FROM meta_alerts
+        ORDER BY create_time DESC limit #limit# offset #offset#
+    </select>
+
+    <!-- query with time and/or type specified -->
+    <select id="SelectMetaAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+      <![CDATA[
+      SELECT count(*) FROM meta_alerts
+        WHERE  create_time<=#date_to# AND create_time>=#date_from#
+          AND (name ~ #type# OR 1=#ignoretype#);
+      ]]>
+    </select>
+
+    <select id="SelectMetaAlertsSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+      <![CDATA[
+        SELECT id, name, create_time FROM meta_alerts
+         WHERE create_time<=#date_to# AND create_time>=#date_from#
+           AND (name ~ #type# OR 1=#ignoretype#)
+         ORDER BY create_time DESC
+         LIMIT #limit# OFFSET #offset#;
+      ]]>
+    </select>
+
+    <!-- recursive query for meta-alerts with specified IP/severity -->
+    <select id="SelectMetaAlertsSummaryByIPRangeCount" resultClass="int" parameterClass="CParamRange">
+      <![CDATA[
+        WITH RECURSIVE temp(id_node,id_child) AS
+        (
+          SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
+          (
+            SELECT id_meta_alert FROM ALERTS
+              JOIN (SELECT id_alert,ip FROM hosts WHERE role='src' AND (ip=#src# OR 1=#ignoresrc#)) as h1 on h1.id_alert=alerts.id
+              JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst' AND (ip=#dst# OR 1=#ignoredst#)) as h2 on h2.id_alert=alerts.id
+          JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
+          WHERE create_time<=#date_to# AND create_time>=#date_from#
+            AND ((severity='4' AND #severities# LIKE '%high%')
+              OR (severity='3' AND #severities# LIKE '%medium%')
+              OR (severity='2' AND #severities# LIKE '%low%')
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'))
+          )
+        UNION ALL
+          SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
+           WHERE m.id_child=t.id_node
+       ) SELECT count(distinct id_node)
+         FROM TEMP;
+     ]]>
+    </select>
+
+    <select id="SelectMetaAlertsSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    <![CDATA[
+        SELECT id,name,create_time from meta_alerts WHERE id in
+        (
+          WITH RECURSIVE temp(id_node,id_child) AS
+          (
+            SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
+             (
+              SELECT id_meta_alert FROM ALERTS
+                JOIN (SELECT id_alert,ip FROM hosts WHERE role='src' AND (ip=#src# OR 1=#ignoresrc#)) as h1 on h1.id_alert=alerts.id
+                JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst' AND (ip=#dst# OR 1=#ignoredst#)) as h2 on h2.id_alert=alerts.id
+             JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
+             WHERE create_time<=#date_to# AND create_time>=#date_from#
+              AND ((severity='4' AND #severities# LIKE '%high%')
+                OR (severity='3' AND #severities# LIKE '%medium%')
+                OR (severity='2' AND #severities# LIKE '%low%')
+                OR (severity='1' AND #severities# LIKE '%info%')
+                OR (severity='0' AND #severities# LIKE '%debug%'))
+             )
+          UNION ALL
+            SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
+            WHERE m.id_child=t.id_node
+          ) SELECT DISTINCT id_node
+            FROM TEMP
+            LIMIT #limit#
+            OFFSET #offset#
+        ) order by create_time DESC;
+    ]]>
+    </select>
+
+    <!-- Select meta-alerts for given parent (for "showall" option) -->
+    <select id="SelectMetaAlertsSummaryByParentRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+      SELECT id, name, create_time FROM meta_alerts
+        WHERE id in (SELECT id_child from meta_alerts_tree WHERE id_node=#extra#)
+          AND (name ~ #type# OR 1=#ignoretype#)
+        ORDER BY create_time DESC
+        LIMIT #limit# OFFSET #offset#;
+    </select>
+
+    <select id="SelectMetaAlertsSummaryByParentRangeCount" resultClass="int" parameterClass="CParamRange">
+      SELECT count(*) FROM meta_alerts
+        WHERE id in (SELECT id_child from meta_alerts_tree WHERE id_node=#extra#)
+          AND (name ~ #type# OR 1=#ignoretype#)
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- List RootMetaAlerts -->
+    <!-- standard query for everything -->
+    <select id="SelectMetaAlertsRootSummaryCount" resultClass="int">
+      SELECT count(*)
+        FROM meta_alerts_roots;
+    </select>
+
+    <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
+      SELECT id, name, create_time FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+        ORDER BY create_time DESC
+        LIMIT #limit# offset #offset#
+    </select>
+
+    <!-- query with time and/or type specified -->
+    <select id="SelectMetaAlertsRootSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+      <![CDATA[
+       SELECT id, name, create_time FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+           AND create_time<=#date_to# AND create_time>=#date_from#
+         ORDER BY create_time DESC
+         limit #limit# offset #offset#
+      ]]>
+    </select>
+
+    <select id="SelectMetaAlertsRootSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+      <![CDATA[
+       SELECT count(id) FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+           AND create_time<=#date_to# AND create_time>=#date_from#;
+      ]]>
+  </select>
+
+    <!-- recursive query for meta-alerts with specified IP/severity -->
+    <select id="SelectMetaAlertsRootSummaryByIPRangeCount" resultClass="int" parameterClass="CParamRange">
+      <![CDATA[
+        SELECT count(*) from meta_alerts JOIN meta_alerts_roots ON id=id_root AND id in (
+        WITH RECURSIVE temp(id_node,id_child) AS
+        (
+          SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
+          (
+            SELECT id_meta_alert FROM ALERTS
+              JOIN (SELECT id_alert,ip FROM hosts WHERE role='src' AND (ip=#src# OR 1=#ignoresrc#)) as h1 on h1.id_alert=alerts.id
+              JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst' AND (ip=#dst# OR 1=#ignoredst#)) as h2 on h2.id_alert=alerts.id
+          JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
+          WHERE create_time<=#date_to# AND create_time>=#date_from#
+            AND ((severity='4' AND #severities# LIKE '%high%')
+              OR (severity='3' AND #severities# LIKE '%medium%')
+              OR (severity='2' AND #severities# LIKE '%low%')
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'))
+          )
+        UNION ALL
+          SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
+           WHERE m.id_child=t.id_node
+       ) SELECT distinct id_node
+         FROM TEMP
+       )
+     ]]>
+    </select>
+
+    <select id="SelectMetaAlertsRootSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    <![CDATA[
+        SELECT id,name,create_time from meta_alerts
+        JOIN meta_alerts_roots on id=id_root WHERE id in
+        (
+          WITH RECURSIVE temp(id_node,id_child) AS
+          (
+            SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
+             (
+              SELECT id_meta_alert FROM ALERTS
+                JOIN (SELECT id_alert,ip FROM hosts WHERE role='src' AND (ip=#src# OR 1=#ignoresrc#)) as h1 on h1.id_alert=alerts.id
+                JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst' AND (ip=#dst# OR 1=#ignoredst#)) as h2 on h2.id_alert=alerts.id
+             JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
+             WHERE create_time<=#date_to# AND create_time>=#date_from#
+              AND ((severity='4' AND #severities# LIKE '%high%')
+                OR (severity='3' AND #severities# LIKE '%medium%')
+                OR (severity='2' AND #severities# LIKE '%low%')
+                OR (severity='1' AND #severities# LIKE '%info%')
+                OR (severity='0' AND #severities# LIKE '%debug%'))
+             )
+          UNION ALL
+            SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
+            WHERE m.id_child=t.id_node
+          ) SELECT DISTINCT id_node
+            FROM TEMP
+        ) order by create_time DESC
+            LIMIT #limit#
+            OFFSET #offset#;
+    ]]>
+    </select>
+
+
+
+
+
+
+  <!-- Helpers -->
+  <select id="MetaAlert_SysID_ID" resultClass="int" parameterClass="int">
+    SELECT id FROM meta_alerts WHERE sys_id=#value#;
   </select>
 
   <select id="CheckInUse" resultClass="int" parameterClass="int">
@@ -86,69 +450,6 @@
     SELECT value FROM config_rdonly WHERE owner='acarm-ng' AND key='db-version';
   </select>    
 
-  <!-- Queries for tables' sizes -->
-
-  <select id="SelectUsersCount" resultClass="int">
-    SELECT count(*) FROM wui_users
-  </select>
-
-  <select id="SelectAnalyzersCount" resultClass="int">
-    SELECT count(*) FROM analyzers
-  </select>
-
-  <select id="SelectAlertsSummaryCount" resultClass="int">
-    SELECT count(*) FROM alerts
-  </select>
-
-  <select id="SelectAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
-    <![CDATA[
-         SELECT count(*) FROM alerts
-            JOIN hosts as h1 on h1.id_alert=alerts.id
-            JOIN hosts as h2 on h2.id_alert=alerts.id
-          WHERE create_time<=#date_to#  AND create_time>=#date_from#
-            AND (h1.ip=#src# OR 1=#ignoresrc#) AND h1.role='src'
-            AND (h2.ip=#dst# OR 1=#ignoredst#) AND h2.role='dst'
-            AND (alerts.name ~ #type# OR 1=#ignoretype#)
-            AND ((severity='4' AND #severities# LIKE '%high%')
-              OR (severity='3' AND #severities# LIKE '%medium%')         
-              OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%info%')
-              OR (severity='0' AND #severities# LIKE '%debug%'));
-    ]]>
-  </select>
-
-  <select id="SelectMetaAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
-    <![CDATA[
-    SELECT count(*) FROM meta_alerts
-      WHERE  create_time<=#date_to# AND create_time>=#date_from#;
-    ]]>
-  </select>
-
-  <select id="SelectMetaAlertsSummaryCount" resultClass="int">
-    SELECT count(*) FROM meta_alerts
-  </select>
-
-  <select id="SelectMetaAlertsRootSummaryCount" resultClass="int">
-    SELECT count(*) FROM meta_alerts_roots;
-  </select>
-
-  <select id="SelectMetaAlertsRootSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
-    <![CDATA[
-       SELECT count(id) FROM meta_alerts
-         WHERE id in (SELECT id FROM meta_alerts_roots)
-           AND create_time<=#date_to# AND create_time>=#date_from#;
-    ]]>
-  </select>
-
-  <select id="SelectMetaAlertsChildrenCount" resultClass="int" parameterClass="int">
-    SELECT count(*) FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value#
-  </select>
-
-  <select id="SelectLogRangeCount" resultClass="int">
-    SELECT count(*) FROM pradolog;
-  </select>
-
-  <!-- Queries for statistics -->
   <select id="SMetaAlertsInUse" resultClass="int">
     SELECT count(*) FROM meta_alerts_in_use;
   </select>
@@ -160,99 +461,23 @@
   <select id="SMetaAlertCount" resultClass="int">
     SELECT count(*) FROM meta_alerts;
   </select>
-
-  <!-- Queries for lists of items -->
-
-  <select id="SelectUsers" resultClass="CUserRecord" parameterClass="CParamLimitOffset">
-    SELECT * FROM wui_users ORDER BY login ASC limit #limit# offset #offset#
-  </select>
-
-  <select id="SelectAnalyzers" resultClass="CAnalyzerListEntry" parameterClass="CParamLimitOffset">
-    SELECT * FROM analyzers ORDER BY name,ip ASC limit #limit# offset #offset#
-  </select>
-
-  <select id="SelectAnalyzersForAlert" resultClass="CAnalyzerListEntry" parameterClass="int">
-    SELECT id, name, ip, version, os FROM alert_analyzers JOIN analyzers ON alert_analyzers.id_analyzer=analyzers.id WHERE alert_analyzers.id_alert=#VALUE#
-  </select>
-
-  <select id="SelectHostsForAlert" resultClass="CReportedHostEntry" parameterClass="int">
-    SELECT hosts.name,ip,role,os,hosts.id FROM alerts JOIN hosts ON hosts.id_alert=alerts.id WHERE alerts.id=#VALUE#
-  </select>
-
-  <select id="SelectServicesForHost" resultClass="CReportedServiceEntry" parameterClass="int">
-    SELECT name, port, protocol, id_ref as ref_name FROM services WHERE id_host=#VALUE#
-  </select>
-
-  <select id="SelectProcessesForHost" resultClass="CReportedProcessEntry" parameterClass="int">
-    select name, path, md5, pid, uid, username, arguments, id_ref as ref_name, arguments from procs where id_host=#VALUE#
-  </select>
-
-  <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
-    <![CDATA[
-         SELECT alerts.id, alerts.name, create_time, severity FROM alerts
-            JOIN hosts as h1 on h1.id_alert=alerts.id
-            JOIN hosts as h2 on h2.id_alert=alerts.id
-          WHERE create_time<=#date_to#  AND create_time>=#date_from#
-            AND (h1.ip=#src# OR 1=#ignoresrc#) AND h1.role='src'
-            AND (h2.ip=#dst# OR 1=#ignoredst#) AND h2.role='dst'
-            AND (alerts.name ~ #type# OR 1=#ignoretype#)
-            AND ((severity='4' AND #severities# LIKE '%high%')
-              OR (severity='3' AND #severities# LIKE '%medium%')
-              OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%info%')
-              OR (severity='0' AND #severities# LIKE '%debug%'))
-            ORDER BY $ordercol$ $orderdir$
-            LIMIT #limit#
-            OFFSET #offset#
-    ]]>
-  </select>
-
-  <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-    SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC limit #limit# offset #offset#
-  </select>
-
-  <select id="SelectMetaAlertsSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
-    <![CDATA[
-         SELECT id, name, create_time FROM meta_alerts
-          WHERE  create_time<=#date_to# AND create_time>=#date_from#
-          ORDER BY create_time DESC
-          LIMIT #limit# OFFSET #offset#;
-    ]]>
-  </select>
-
-  <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-    SELECT id, name, create_time FROM meta_alerts
-     WHERE id in (SELECT id FROM meta_alerts_roots)
-     ORDER BY create_time DESC
-     limit #limit# offset #offset#
-  </select>
-
-  <select id="SelectMetaAlertsRootSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
-    <![CDATA[
-       SELECT id, name, create_time FROM meta_alerts
-         WHERE id in (SELECT id FROM meta_alerts_roots)
-           AND create_time<=#date_to# AND create_time>=#date_from#
-         ORDER BY create_time DESC
-         limit #limit# offset #offset#
-    ]]>
+1
+  <select id="SelectLogRangeCount" resultClass="int">
+    SELECT count(*) FROM pradolog;
   </select>
 
   <select id="SelectLogRange" resultClass="CLogRecord" parameterClass="CParamRange">
     <![CDATA[
-    SELECT log_id AS id, level, category AS node, logtime, message FROM pradolog WHERE logtime<=date_part('epoch',timestamp #date_to#)::varchar AND logtime>=date_part('epoch',timestamp #date_from#)::varchar
-      ORDER BY logtime DESC limit #limit# offset #offset#
+      SELECT log_id AS id, level, category AS node, logtime, message
+        FROM pradolog
+          WHERE logtime<=date_part('epoch',timestamp #date_to#)::varchar
+            AND logtime>=date_part('epoch',timestamp #date_from#)::varchar
+          ORDER BY logtime DESC
+        LIMIT #limit#
+        OFFSET #offset#
     ]]>
   </select>
 
-  <select id="SelectHeartbeats" resultClass="CHeartbeat">
-    <![CDATA[
-      SELECT owner, module, timestamp + cast(timeout || ' seconds' AS INTERVAL) >= now() AS alive FROM heartbeats ORDER BY alive, owner, module;
-    ]]>
-  </select>
-
-  <select id="SelectTriggered" resultClass="CTriggered" parameterClass="int">
-    SELECT trigger_name as trigger FROM meta_alerts_already_triggered WHERE id_meta_alert=#VALUE#
-  </select>
 
 
 <!-- Queries for Data Mining -->
@@ -272,7 +497,7 @@
     ]]>
   </select>
 
-<!-- The same query but with removed two joins for the sake of performance -->
+<!-- The same query but with two joins removed for the sake of performance -->
   <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT severity as key,count(*) as value FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#
@@ -300,24 +525,15 @@
     ]]>
   </select>
 
-  <select id="DMAlertTypes" resultClass="CDMPair" cacheModel="querycache">
-    <![CDATA[
-    SELECT name AS key,count(name) AS value FROM Alerts
-       WHERE ((severity='4' AND #severities# LIKE '%high%')
-           OR (severity='3' AND #severities# LIKE '%medium%')         
-           OR (severity='2' AND #severities# LIKE '%low%')
-           OR (severity='1' AND #severities# LIKE '%info%')
-           OR (severity='0' AND #severities# LIKE '%debug%'))
-       GROUP BY name
-       ORDER BY count(name) DESC;
-    ]]>
-  </select>
-
   <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT name AS key,count(name) AS value FROM Alerts
+         LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='src') as h1 on h1.id_alert=alerts.id
+         LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst') as h2 on h2.id_alert=alerts.id
        WHERE create_time<=#date_to# AND create_time>=#date_from#
-         AND ((severity='4' AND #severities# LIKE '%high%')
+          AND (h1.ip=#src# OR 1=#ignoresrc#)
+          AND (h2.ip=#dst# OR 1=#ignoredst#)
+          AND ((severity='4' AND #severities# LIKE '%high%')
            OR (severity='3' AND #severities# LIKE '%medium%')         
            OR (severity='2' AND #severities# LIKE '%low%')
            OR (severity='1' AND #severities# LIKE '%info%')
@@ -329,34 +545,51 @@
 
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
+      SELECT date_trunc('day', create_time) AS key ,count(*) AS value
+        FROM meta_alerts
+          WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0
+        GROUP BY key
+        ORDER BY key;
     ]]>
   </select>
 
   <!-- HeatMap Query -->
   <select id="DMHeatMapRange" resultClass="CDMHeatMap" parameterClass="CDMPair"  cacheModel="querycache">
     <![CDATA[
-       select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#key# AND a.id_alert<#value# group by a.ip, b.ip;
+       SELECT a.ip as source, b.ip as destination, count(*) as count from hosts as a
+         JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#key# AND a.id_alert<#value#
+         GROUP BY a.ip, b.ip;
      ]]>
   </select>
 
   <select id="DMHeatMapHostcount" resultClass="CDMPair" parameterClass="CDMPair" cacheModel="querycache">
     <![CDATA[
-    SELECT min(id) AS key,max(id) AS value FROM alerts WHERE create_time<=#value# AND create_time>=#key#;
+       SELECT min(id) AS key,max(id) AS value
+         FROM alerts
+           WHERE create_time<=#value#
+             AND create_time>=#key#;
      ]]>
   </select>
 
   <select id="DMHeatMapNumAlerts" resultClass="int" parameterClass="CDMQuadruple" cacheModel="querycache">
     <![CDATA[
-       select count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#value1# AND a.id_alert<#value2# AND a.ip=#value3# AND b.ip=#value4#;
+       SELECT count(*) as count
+         FROM hosts as a
+         JOIN hosts as b ON a.id_alert=b.id_alert
+           WHERE a.role='src' AND b.role='dst' AND a.id_alert>#value1# AND a.id_alert<#value2# AND a.ip=#value3# AND b.ip=#value4#;
      ]]>
   </select>
 
-  <!-- Non-select Queries -->
 
+  <!-- Heartbeats -->
   <delete id="DeleteHeartbeat" parameterClass="CDMPair">
     delete FROM heartbeats WHERE owner=#key# AND module=#value#;
   </delete>
 
+  <select id="SelectHeartbeats" resultClass="CHeartbeat">
+    <![CDATA[
+      SELECT owner, module, timestamp + cast(timeout || ' seconds' AS INTERVAL) >= now() AS alive FROM heartbeats ORDER BY alive, owner, module;
+    ]]>
+  </select>
 
 </sqlMapConfig>

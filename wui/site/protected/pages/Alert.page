@@ -3,20 +3,20 @@
 <br/>
 <table border="1" width="100%" cellpadding="5">
   <tr>
-    <td id="AlertTag" width="10%">Name</td>
-    <td id="AlertContent" colspan="3"><com:TLiteral ID="AlertName" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Name</td>
+    <td class="AlertContent" colspan="3"><com:TLiteral ID="AlertName" Text="&nbsp" Encode="true"/></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Detected:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="AlertDetectTime" Text="&nbsp" Encode="true"/></td>
-    <td id="AlertTag" width="10%">Created:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="AlertCreateTime" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Detected:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="AlertDetectTime" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Created:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="AlertCreateTime" Text="&nbsp" Encode="true"/></td>
   </tr>
 </table>
 <table  border="1" width="100%" cellpadding="5">
   <tr>
-    <td id="AlertTag" width="10%">Source:</td>
-    <td id="AlertContent" width="40%">
+    <td class="AlertTag" width="10%">Source:</td>
+    <td class="AlertContent" width="40%">
       <com:TDataGrid
          ID="AlertSources"
          WIDTH="100%"
@@ -29,12 +29,12 @@
          AlternatingItemStyle.BackColor="#b9b9d2"
          />
     </td>
-    <td id="AlertTag" width="10%">Severity:</td>
-    <td id="AlertContent" width="40%"> <com:TLiteral ID="AlertSeverity" Text="&nbsp" Encode="false"/></td>
+    <td class="AlertTag" width="10%">Severity:</td>
+    <td class="AlertContent" width="40%"> <com:TLiteral ID="AlertSeverity" Text="&nbsp" Encode="false"/></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Destination:</td>
-    <td id="AlertContent" width="40%">
+    <td class="AlertTag" width="10%">Destination:</td>
+    <td class="AlertContent" width="40%">
       <com:TDataGrid
          ID="AlertDestinations"
          WIDTH="100%"
@@ -47,12 +47,12 @@
          AlternatingItemStyle.BackColor="#b9b9d2"
          />
     </td>
-    <td id="AlertTag" width="10%">Certainty:</td>
-    <td id="AlertContent" width="40%"> <com:TLiteral ID="AlertCertainty" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Certainty:</td>
+    <td class="AlertContent" width="40%"> <com:TLiteral ID="AlertCertainty" Text="&nbsp" Encode="true"/></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Analyzers:</td>
-    <td id="AlertContent" colspan="3">
+    <td class="AlertTag" width="10%">Analyzers:</td>
+    <td class="AlertContent" colspan="3">
       <com:TDataGrid
          ID="AlertAnalyzers"
          WIDTH="100%"
@@ -67,8 +67,8 @@
     </td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Description:</td>
-    <td id="AlertContent" colspan="3"><com:TLiteral ID="AlertDescription" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Description:</td>
+    <td class="AlertContent" colspan="3"><com:TLiteral ID="AlertDescription" Text="&nbsp" Encode="true"/></td>
   </tr>
 </table>
 </com:TPanel>
