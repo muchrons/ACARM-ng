@@ -9,9 +9,8 @@
 
 #include <cassert>
 
-#include "Persistency/GraphNode.hpp"
 #include "Algo/forEach.hpp"
-#include "Algo/MPL/EnsurePtrNotNULL.hpp"
+#include "Algo/PointerWrapper.hpp"
 
 namespace Algo
 {
@@ -20,7 +19,7 @@ namespace detail
 {
 /** \brief helper object for algorithm forEachInTree.
  */
-template<typename FuncObj, typename NodePtrType>
+template<typename FuncObj, typename DefaultNodePtrType>
 class TreeFuncObj
 {
 public:
@@ -35,12 +34,14 @@ public:
   /** \brief work procedure itself.
    *  \param node root to start search from.
    */
+  template<typename NodePtrType>
   void operator()(NodePtrType node)
   {
+    PointerWrapper<DefaultNodePtrType> nodePtr(node);
     assert(f_!=NULL);
-    (*f_)(node);
-    if( !node->isLeaf() )
-      forEach(node->begin(), node->end(), *this);
+    (*f_)( nodePtr.get() );
+    if( !nodePtr->isLeaf() )
+      forEach(nodePtr->begin(), nodePtr->end(), *this);
   }
 
 private:
@@ -59,8 +60,7 @@ private:
 template<typename FuncObj, typename NodePtrType>
 FuncObj forEachInTree(NodePtrType root, FuncObj f)
 {
-  typedef typename MPL::EnsurePtrNotNULL<NodePtrType>::type Node;
-  detail::TreeFuncObj<FuncObj, Node> tfo(&f);
+  detail::TreeFuncObj<FuncObj, NodePtrType> tfo(&f);
   tfo(root);
   return f;
 } // forEachInTree()
