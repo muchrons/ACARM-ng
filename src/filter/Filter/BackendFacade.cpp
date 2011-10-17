@@ -6,7 +6,7 @@
 #include <cassert>
 
 #include "Filter/BackendFacade.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
+#include "DataFacades/IDAssigner.hpp"
 
 using namespace Persistency;
 
@@ -108,7 +108,7 @@ Persistency::GraphNodePtrNN BackendFacade::correlate(
 Persistency::MetaAlert::ID BackendFacade::getNextFreeID(void)
 {
   beginTransaction();
-  return Facades::IDAssigner::get()->assignMetaAlertID( getConnection(), getTransaction() );
+  return DataFacades::IDAssigner::get()->assignMetaAlertID( getConnection(), getTransaction() );
 }
 
 void BackendFacade::markNodeAsChanged(Node node)
