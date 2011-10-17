@@ -115,4 +115,21 @@ void testObj::test<7>(void)
   ensure_equals("invalid number of elements", cn.cnt_, 7);
 }
 
+// test exceptionon on NULL pointer
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  CountNodes<const GraphNode*> cn;
+  try
+  {
+    forEachUniqueInTree(static_cast<GraphNode*>(NULL), cn);
+    fail("NULL pointer accepted");
+  }
+  catch(const Algo::Exception&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
