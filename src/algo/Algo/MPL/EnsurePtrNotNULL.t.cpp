@@ -29,7 +29,7 @@ factory tf("Algo/MPL/EnsurePtrNotNULL");
 namespace tut
 {
 
-// check type for shared_ptr<GraphNode>
+// check type for shared_ptr<>
 template<>
 template<>
 void testObj::test<1>(void)
