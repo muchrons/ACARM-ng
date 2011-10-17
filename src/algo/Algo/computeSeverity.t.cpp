@@ -85,4 +85,30 @@ void testObj::test<4>(void)
   checkMatch( computeSeverity(leaf), 1.14, 0.05);
 }
 
+// test computing severity via raw pointer
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  GraphNodePtrNN node=makeNewTree2();
+  checkMatch( computeSeverity(node.get()), 1.51, 0.05);
+}
+
+// test exception on NULL pointer
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const GraphNode *null=NULL;
+  try
+  {
+    computeSeverity(null);
+    fail("no exception on NULL pointer");
+  }
+  catch(const Algo::Exception&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
