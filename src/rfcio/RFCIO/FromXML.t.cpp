@@ -8,7 +8,6 @@
 
 #include "RFCIO/FromXML.hpp"
 #include "Persistency/IO/create.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 

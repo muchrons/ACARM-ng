@@ -4,8 +4,8 @@
  */
 #include "ConfigIO/Singleton.hpp"
 #include "Logger/Logger.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
+#include "DataFacades/IDAssigner.hpp"
 #include "Core/Sources.hpp"
 
 using namespace Persistency;
@@ -41,7 +41,7 @@ Persistency::GraphNodePtrNN Sources::read(void)
     // write it to data base along with creating proper graph-node object.
     IO::Transaction      t( conn_->createNewTransaction("core_save_graphnode") );
     LOGMSG_DEBUG(log_, "new transaction opened");
-    const GraphNode::ID  id=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t);
+    const GraphNode::ID  id=DataFacades::IDAssigner::get()->assignMetaAlertID(conn_, t);
     const GraphNodePtrNN leaf( new GraphNode(alert, id, conn_, t) );
     LOGMSG_DEBUG(log_, "creating object done - commiting transaction");
     t.commit();

@@ -19,7 +19,7 @@ namespace detail
 {
 struct BackendFacadeStubData
 {
-  ::Persistency::Facades::AnalyzersCreator ac_;
+  DataFacades::AnalyzersCreator ac_;
 }; // struct BackendFacadeStubData
 } // namespace detail
 

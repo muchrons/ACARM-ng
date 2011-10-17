@@ -2,6 +2,7 @@ preprocessor
 filter
 input
 trigger
+datafacades
 persistency
 coretypes
 plugins

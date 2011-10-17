@@ -18,7 +18,7 @@
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/IO/Connection.hpp"
-#include "Persistency/Facades/AnalyzersCreator.hpp"
+#include "DataFacades/AnalyzersCreator.hpp"
 #include "RFCIO/ExceptionMissingElement.hpp"
 #include "RFCIO/ExceptionInvalidElement.hpp"
 
@@ -142,10 +142,10 @@ private:
   Persistency::HostPtrNN parseHost(const xmlpp::Element &host);
   Hosts parseHosts(const xmlpp::Element::NodeList &list);
 
-  Logger::Node                            log_;
-  Persistency::IO::ConnectionPtrNN        conn_;
-  Persistency::IO::Transaction           &t_;
-  Persistency::Facades::AnalyzersCreator  analyzersCreator_;
+  Logger::Node                      log_;
+  Persistency::IO::ConnectionPtrNN  conn_;
+  Persistency::IO::Transaction     &t_;
+  DataFacades::AnalyzersCreator     analyzersCreator_;
 }; // class FromXML
 
 } // namespace RFCIO
