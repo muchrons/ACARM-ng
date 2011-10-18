@@ -1,4 +1,9 @@
 -- dev --
+* added pseudo-collection of all leafs to meta-alert's tree element, when accessed with string facade.
+* added severity and certainty as a meta-alert's tree element, when accessed with string facade.
+* algorithms dedicated for use in C++ are now more robust:
+  - const and non-const versions are supported.
+  - smart and raw pointers are supported as arguments.
 * comparisons with regular expressions in preprocessor rules.
 * support for SnortSam firewall reconfiguration tool (as a trigger).
 * fixed compatibility issue with postgres 9.1 and previous releases.
