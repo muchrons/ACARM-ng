@@ -22,18 +22,28 @@ namespace Algo
 
 namespace detail
 {
+/** \brief helper object returning pointer from pointer (i.e. forward).
+ */
 template<bool isPointer, typename RawPointer>
 struct PointerGetImpl: private System::NoInstance
 {
+  /** \brief forwards argument, for interface comatibility.
+   */
   static RawPointer get(RawPointer p)
   {
     return p;
   }
 }; // struct PointerGetImpl
 
+/** \brief helper object returning raw pointer from smart pointer.
+ */
 template<typename RawPointer>
 struct PointerGetImpl<false, RawPointer>: private System::NoInstance
 {
+  /** \brief gets raw pointer from given smart pointer.
+   *  \param p smart pointer to extrac raw pointer from.
+   *  \return extracted raw pointer.
+   */
   template<typename T>
   static RawPointer get(T &p)
   {
@@ -41,11 +51,16 @@ struct PointerGetImpl<false, RawPointer>: private System::NoInstance
   }
 }; // struct PointerGetImpl
 
+
 /** \brief basic (autoamtic) conversion.
  */
 template<typename To, typename From>
 struct PointerConverter
 {
+  /** \brief generic implementation performing automatic conversions.
+   *  \param in source type to convert from.
+   *  \return destination type to convert to.
+   */
   static To convert(From in)
   {
     // NOTE: this blocks problematic conversion, when trying to create smart pointer from raw pointer (double delete).
@@ -59,6 +74,10 @@ struct PointerConverter
 template<typename T, typename U>
 struct PointerConverter< boost::shared_ptr<T>, Commons::SharedPtrNotNULL<U> >
 {
+  /** \brief convert smart pointer types.
+   *  \param in pointer to conver from.
+   *  \return destination pointer type.
+   */
   static boost::shared_ptr<T> convert(Commons::SharedPtrNotNULL<U> in)
   {
     return in.shared_ptr();
@@ -70,6 +89,10 @@ struct PointerConverter< boost::shared_ptr<T>, Commons::SharedPtrNotNULL<U> >
 template<typename T, typename U>
 struct PointerConverter<T*, Commons::SharedPtrNotNULL<U> >
 {
+  /** \brief converts smart pointer to raw pointer type.
+   *  \param in source to convert from.
+   *  \return raw pointer.
+   */
   static T* convert(Commons::SharedPtrNotNULL<U> in)
   {
     return in.get();
@@ -81,6 +104,10 @@ struct PointerConverter<T*, Commons::SharedPtrNotNULL<U> >
 template<typename T, typename U>
 struct PointerConverter<T*, boost::shared_ptr<U> >
 {
+  /** \brief converts smart pointer to raw pointer type.
+   *  \param in source to convert from.
+   *  \return raw pointer.
+   */
   static T* convert(boost::shared_ptr<U> in)
   {
     return in.get();
@@ -104,12 +131,17 @@ public:
   /** \brief smart pointer to data */
   typedef Commons::SharedPtrNotNULL<typename boost::remove_pointer<pointer>::type> smart_pointer;
 
+  /** \brief create object from corresponding type.
+   *  \param p corresponding type to create object from.
+   */
   template<typename T>
   PointerWrapper(const PointerWrapper<T> &p):
     p_( detail::PointerConverter<PtrType, T>::convert(p.get()) )
   {
   }
-
+  /** \brief create object from any, possible type.
+   *  \param p element to create from.
+   */
   template<typename T>
   explicit PointerWrapper(T p):
     p_( detail::PointerConverter<PtrType, T>::convert(p) )
@@ -118,12 +150,17 @@ public:
       throw Exception(SYSTEM_SAVE_LOCATION, "pointer cannot be NULL");
   }
 
+  /** \brief gets pointer, as held inside the object.
+   *  \return pointer is a user-requested form.
+   */
   PtrType get(void) const
   {
     assert( rawPtr()!=NULL );
     return p_;
   }
-
+  /** \brief arrow operator to get access to pointer's data.
+   *  \return raw pointer type.
+   */
   pointer operator->(void) const
   {
     assert( rawPtr()!=NULL );
