@@ -37,11 +37,11 @@ struct TestClass: public TestStubs
     remove(fifo_);
   }
 
-  const path                fifo_;
-  Reader                    r_;
-  IO::ConnectionPtrNN       conn_;
-  Facades::AnalyzersCreator ac_;
-  Input::BackendFacade      bf_;
+  const path                    fifo_;
+  Reader                        r_;
+  IO::ConnectionPtrNN           conn_;
+  DataFacades::AnalyzersCreator ac_;
+  Input::BackendFacade          bf_;
 };
 
 typedef tut::test_group<TestClass> factory;

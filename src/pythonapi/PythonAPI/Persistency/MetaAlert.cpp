@@ -6,12 +6,12 @@
 
 #include "Commons/Convert.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Persistency/Facades/StrAccess/StrAccess.hpp"
+#include "DataFacades/StrAccess/StrAccess.hpp"
 #include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/Persistency/MetaAlert.hpp"
 
 
-namespace StrFc=Persistency::Facades::StrAccess;
+namespace StrFc=DataFacades::StrAccess;
 
 
 namespace PythonAPI

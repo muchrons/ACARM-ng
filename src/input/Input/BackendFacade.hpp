@@ -9,7 +9,7 @@
 
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Persistency/Facades/AnalyzersCreator.hpp"
+#include "DataFacades/AnalyzersCreator.hpp"
 #include "Core/Types/BackendFacade.hpp"
 
 namespace Input
@@ -31,10 +31,10 @@ public:
    *  \param name    name of input this object is created for.
    *  \param creator creator of analyzers.
    */
-  BackendFacade(Persistency::IO::ConnectionPtrNN          conn,
-                const Core::Types::Proc::TypeName        &type,
-                const Core::Types::Proc::InstanceName    &name,
-                Persistency::Facades::AnalyzersCreator   &creator);
+  BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
+                const Core::Types::Proc::TypeName     &type,
+                const Core::Types::Proc::InstanceName &name,
+                DataFacades::AnalyzersCreator         &creator);
 
   /** \brief gets mapping from given originalID to analyzer. if ID's not mapped,
    *         new entry's created and returned.
@@ -50,8 +50,8 @@ public:
                                          const Persistency::Analyzer::IP              *ip);
 
 private:
-  Logger::Node                            log_;
-  Persistency::Facades::AnalyzersCreator &creator_;
+  Logger::Node                   log_;
+  DataFacades::AnalyzersCreator &creator_;
 }; // class BackendFacade
 
 } // namespace Input

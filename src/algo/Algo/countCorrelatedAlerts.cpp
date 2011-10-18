@@ -3,6 +3,7 @@
  *
  */
 #include <set>
+#include <cassert>
 
 #include "Algo/countCorrelatedAlerts.hpp"
 #include "Algo/forEachInTree.hpp"
@@ -20,10 +21,11 @@ public:
   /** \brief work procedure itself.
    *  \param node node to count (if it is alert)
    */
-  void operator()(Persistency::ConstGraphNodePtrNN node)
+  void operator()(const Persistency::GraphNode *node)
   {
+    assert(node!=NULL);
     if( node->isLeaf() )
-      set_.insert( node.get() );        // keep the pointer - it is unique.
+      set_.insert(node);                // keep the pointer - it is unique.
   }
   /** \brief gets the counter value.
    *  \return number of alerts counted.
@@ -41,7 +43,12 @@ private:
 
 size_t countCorrelatedAlerts(Persistency::ConstGraphNodePtrNN root)
 {
+  return countCorrelatedAlerts(root.get());
+} // countCorrelatedAlerts()
+
+size_t countCorrelatedAlerts(const Persistency::GraphNode *root)
+{
   return forEachInTree(root, AlertsCounter() ).get();
-} // forEach()
+} // countCorrelatedAlerts()
 
 } // namespace Algo

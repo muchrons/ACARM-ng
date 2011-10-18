@@ -9,7 +9,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "ConfigIO/Preprocessor/Rule.hpp"
-#include "Persistency/Facades/StrAccess/StrAccess.hpp"
+#include "DataFacades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
 #include "Preprocessor/Expressions/Base.hpp"
 #include "Preprocessor/ExceptionInvalidPath.hpp"
@@ -26,11 +26,11 @@ class Rule: public Base
 {
 public:
   /** \brief forward definition of rule's mode. */
-  typedef ConfigIO::Preprocessor::Rule::Mode    Mode;
+  typedef ConfigIO::Preprocessor::Rule::Mode  Mode;
   /** \brief forward definition of rule's value to operate on. */
-  typedef ConfigIO::Preprocessor::Rule::Value   Value;
+  typedef ConfigIO::Preprocessor::Rule::Value Value;
   /** \brief short name for Path. */
-  typedef Persistency::Facades::StrAccess::Path Path;
+  typedef DataFacades::StrAccess::Path        Path;
 
   /** \brief create complex rule.
    *  \param path  path to alert's element

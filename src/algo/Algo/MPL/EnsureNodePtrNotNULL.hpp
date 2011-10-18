@@ -11,6 +11,7 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/static_assert.hpp>
 
+#include "System/NoInstance.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Algo/MPL/EnsurePtrNotNULL.hpp"
 
@@ -34,7 +35,7 @@ namespace MPL
  *  </code>
  */
 template<typename T>
-struct EnsureNodePtrNotNULL
+struct EnsureNodePtrNotNULL: private System::NoInstance
 {
 private:
   // short cut :)
@@ -50,10 +51,6 @@ public:
   /** \brief non-null smart pointer type to a given element, respecting const and volatiles.
    */
   typedef typename EnsurePtrNotNULL<T>::type type;
-
-private:
-  // no instances needed
-  EnsureNodePtrNotNULL(void);
 }; // struct EnsureNodePtrNotNULL
 
 } // namespace MPL

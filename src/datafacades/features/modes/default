@@ -1,0 +1,4 @@
+DataFacades/*.?pp
+DataFacades/detail/*.?pp
+DataFacades/StrAccess/*.?pp
+DataFacades/StrAccess/detail/*.?pp

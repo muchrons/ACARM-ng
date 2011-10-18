@@ -8,6 +8,7 @@
 /* public header */
 
 #include "Persistency/GraphNode.hpp"
+#include "Algo/Exception.hpp"
 
 namespace Algo
 {
@@ -16,6 +17,12 @@ namespace Algo
  *  \return computed severity.
  */
 double computeSeverity(Persistency::ConstGraphNodePtrNN root);
+
+/** \brief returns severity of a given subtree (via pointer).
+ *  \param root root node of the computation.
+ *  \return computed severity.
+ */
+double computeSeverity(const Persistency::GraphNode *root);
 
 } // namespace Algo
 

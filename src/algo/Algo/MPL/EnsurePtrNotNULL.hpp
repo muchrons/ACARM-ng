@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include "System/NoInstance.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 
 namespace Algo
@@ -29,7 +30,7 @@ namespace MPL
  *  </code>
  */
 template<typename T>
-struct EnsurePtrNotNULL
+struct EnsurePtrNotNULL: private System::NoInstance
 {
 private:
   // short cut :)
@@ -39,10 +40,6 @@ public:
   /** \brief non-null smart pointer type to a given element, respecting const and volatiles.
    */
   typedef Commons::SharedPtrNotNULL<elem> type;
-
-private:
-  // no instances needed
-  EnsurePtrNotNULL(void);
 }; // struct EnsurePtrNotNULL
 
 } // namespace MPL
