@@ -8,6 +8,7 @@
 #include "Algo/forEach.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Algo/computeSeverity.hpp"
+#include "Algo/computeCertainty.hpp"
 #include "DataFacades/StrAccess/OnMetaAlert.hpp"
 
 namespace DataFacades
@@ -80,6 +81,11 @@ OnMetaAlert::Nodes OnMetaAlert::getAllLeafs(const Persistency::GraphNode &root)
 double OnMetaAlert::getSeverity(const Persistency::GraphNode &root)
 {
   return Algo::computeSeverity(&root);
+}
+
+double OnMetaAlert::getCertainty(const Persistency::GraphNode &root)
+{
+  return Algo::computeCertainty(&root);
 }
 
 } // namespace StrAccess

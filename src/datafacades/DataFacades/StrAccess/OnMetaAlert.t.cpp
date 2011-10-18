@@ -266,4 +266,20 @@ void testObj::test<26>(void)
   ensureProcDouble("invalid severity of a node", *metaalertNode_, "metaalert.severity", 1.580);
 }
 
+// test accessing certainty of a leaf
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  ensureProcDouble("invalid certainty of a leaf", *metaalertLeaf_, "metaalert.certainty", 0.42);
+}
+
+// test accessing certainty of a node
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  ensureProcDouble("invalid certainty of a node", *metaalertNode_, "metaalert.certainty", -0.08);
+}
+
 } // namespace tut

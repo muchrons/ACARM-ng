@@ -65,6 +65,8 @@ struct OnMetaAlert: private System::NoInstance
       return MainDispatcher::process( getAllLeafs(e), p);
     if(p.get()=="severity")
       return MainDispatcher::process( getSeverity(e), p);
+    if(p.get()=="certainty")
+      return MainDispatcher::process( getCertainty(e), p);
 
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
@@ -76,6 +78,7 @@ private:
   static Nodes getAllChildren(const Persistency::GraphNode &root);
   static Nodes getAllLeafs(const Persistency::GraphNode &root);
   static double getSeverity(const Persistency::GraphNode &root);
+  static double getCertainty(const Persistency::GraphNode &root);
 }; // struct OnMetaAlert
 
 } // namespace StrAccess
