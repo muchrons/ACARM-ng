@@ -18,7 +18,8 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
-typedef GatherHosts<Persistency::ConstHostPtrNN> DefaultGatherHosts;
+typedef GatherHosts<Persistency::ConstHostPtrNN> GatherConstHosts;
+typedef GatherHosts<Persistency::HostPtrNN>      GatherNonConstHosts;
 
 struct TestClass: public TestStubs
 {
@@ -39,7 +40,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  DefaultGatherHosts gh( makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, NULL, NULL) ) );
+  GatherConstHosts gh( makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, NULL, NULL) ) );
   ensure_equals("source hosts found", gh.getSourceHosts().size(), 0u);
   ensure_equals("target hosts found", gh.getTargetHosts().size(), 0u);
 }
@@ -49,7 +50,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  DefaultGatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL) ) );
+  GatherConstHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL) ) );
   ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
   ensure_equals("target hosts found",     gh.getTargetHosts().size(), 0u);
 }
@@ -59,7 +60,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  DefaultGatherHosts gh( makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL) ) );
+  GatherConstHosts gh( makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL) ) );
   ensure_equals("source hosts found",     gh.getSourceHosts().size(), 0u);
   ensure_equals("target hosts not found", gh.getTargetHosts().size(), 1u);
 }
@@ -69,7 +70,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  DefaultGatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
+  GatherConstHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
                                                             "2.3.4.5", "1.2.3.4") ) );
   ensure_equals("source hosts not found", gh.getSourceHosts().size(), 2u);
   ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
@@ -80,7 +81,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  DefaultGatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "1.2.3.4",
+  GatherConstHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "1.2.3.4",
                                                             NULL,      NULL) ) );
   ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
   ensure_equals("target hosts found",     gh.getTargetHosts().size(), 0u);
@@ -91,7 +92,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  DefaultGatherHosts gh( makeNewNode(
+  GatherConstHosts gh( makeNewNode(
                            makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "5.6.7.8",
                                                               "2.3.4.5", "6.7.8.9") ),
                            makeNewLeaf( makeNewAlertWithHosts("2.3.4.5", "1.2.3.4",
@@ -108,7 +109,7 @@ void testObj::test<7>(void)
 {
   const HostPtrNN h1=makeNewHost("1.2.3.4");
   const HostPtrNN h2=makeNewHost("9.8.7.6");
-  DefaultGatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
+  GatherConstHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
                                                             "9.8.7.6", NULL) ) );
   // check numbers
   ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
@@ -151,9 +152,51 @@ void testObj::test<10>(void)
 {
   ConstGraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
                                                               "2.3.4.5", "1.2.3.4") );
-  const DefaultGatherHosts gh(root);
+  const GatherConstHosts gh(root);
   ensure_equals("source hosts not found", gh.getSourceHosts().size(), 2u);
   ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
+}
+
+// test const version via raw pointer
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ConstGraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
+                                                              "2.3.4.5", "1.2.3.4") );
+  const GatherConstHosts gh(root.get());
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
+}
+
+// test non-const version via raw pointer
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  GraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
+                                                         "2.3.4.5", "1.2.3.4") );
+  GatherNonConstHosts gh(root.get());
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
+  // check if write access is possible
+  HostPtrNN src=*gh.getSourceHosts().begin();
+  HostPtrNN dst=*gh.getTargetHosts().begin();
+}
+
+// test non-const version via smart pointer
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  GraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
+                                                         "2.3.4.5", "1.2.3.4") );
+  GatherNonConstHosts gh(root);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
+  // check if write access is possible
+  HostPtrNN src=*gh.getSourceHosts().begin();
+  HostPtrNN dst=*gh.getTargetHosts().begin();
 }
 
 } // namespace tut

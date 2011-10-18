@@ -15,7 +15,6 @@
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Algo/PointerWrapper.hpp"
 
-// TODO: this algorithm should be fixed to provide const and non-const support.
 
 namespace Algo
 {
@@ -42,9 +41,13 @@ struct HostViaIPSWO
 }; // sutrct HostSWO
 
 
+/** \brief helper function object, that gather hosts.
+ */
 template<typename HostSet, typename DefaultNodePtrType>
 struct GatherHostsFuncObj
 {
+  /** \brief create gatherer for source and target hosts.
+   */
   GatherHostsFuncObj(HostSet &source, HostSet &target):
     source_(&source),
     target_(&target)
