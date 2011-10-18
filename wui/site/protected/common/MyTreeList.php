@@ -83,7 +83,7 @@ class MyTreeList extends TWebControl
   {
     if($this->getViewState('CssClass',''))
       return $this->getViewState('CssClass','');
-    // TODO: i think it should be: if(getParent()) return ...->getCssCalss; return null; 
+    // TODO: i think it should be: if(getParent()) return ...->getCssCalss; return null;
     //       it's logically equivalent, but more readable and straight forward.
     return ($this->getParent())?$this->getParent()->getCssClass() : $this->getViewState('CssClass','');
   }
