@@ -7,7 +7,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Persistency/Facades/AnalyzersCreator.hpp"
+#include "DataFacades/AnalyzersCreator.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
 
@@ -35,7 +35,7 @@ public:
 private:
   void sendHeartbeat(unsigned int timeout, unsigned int deadline);
 
-  typedef Commons::SharedPtrNotNULL<Persistency::Facades::AnalyzersCreator> AnalyzersCreatorPtrNN;
+  typedef Commons::SharedPtrNotNULL<DataFacades::AnalyzersCreator> AnalyzersCreatorPtrNN;
 
   ReaderPtrNN                             reader_;
   Logger::Node                            log_;

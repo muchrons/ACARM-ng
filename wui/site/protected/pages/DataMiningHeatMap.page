@@ -112,12 +112,10 @@
   <tr>
     <td align="center" colspan="4">
       <com:TActiveHyperLink ID="AlertsLink">
-        <img src="pics/buttons/buttDBSourcreAlertsD.png">
-<!--        <com:TImageButton ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/> -->
+        <com:TImage ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>
       </com:TActiveHyperLink>
       <com:TActiveHyperLink  ID="SeveritiesLink">
-        <img src="pics/buttons/buttDMSeverityD.png">
-<!--        <com:TImageButton ImageUrl="pics/buttons/buttDMSeverityD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMSeverityU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDMSeverityD.png'"/> -->
+        <com:TImage ImageUrl="pics/buttons/buttDMSeverityD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMSeverityU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDMSeverityD.png'"/>
       </com:TActiveHyperLink>
     </td>
   </tr>

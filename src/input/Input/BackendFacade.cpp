@@ -12,10 +12,10 @@ using namespace Persistency;
 namespace Input
 {
 
-BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN        conn,
-                             const Core::Types::Proc::TypeName      &type,
-                             const Core::Types::Proc::InstanceName  &name,
-                             Persistency::Facades::AnalyzersCreator &creator):
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
+                             const Core::Types::Proc::TypeName     &type,
+                             const Core::Types::Proc::InstanceName &name,
+                             DataFacades::AnalyzersCreator         &creator):
   Core::Types::BackendFacade(conn, Core::Types::Proc::CategoryName("input"), type, name),
   log_("input.backendfacade"),
   creator_(creator)

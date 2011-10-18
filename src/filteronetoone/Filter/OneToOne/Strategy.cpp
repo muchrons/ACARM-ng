@@ -32,7 +32,7 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 
 Data Strategy::makeThisEntryUserData(const Node n) const
 {
-  const Algo::GatherHosts gh(n);
+  const Algo::GatherHosts<ConstHostPtrNN> gh(n);
   if( gh.getSourceHosts().size()!=1 ||
       gh.getTargetHosts().size()!=1    )
     return Data();
@@ -72,8 +72,8 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
   // compute unique hosts
-  const Algo::GatherHosts ghThis (thisEntry.node_);
-  const Algo::GatherHosts ghOther(otherEntry.node_);
+  const Algo::GatherHosts<ConstHostPtrNN> ghThis (thisEntry.node_);
+  const Algo::GatherHosts<ConstHostPtrNN> ghOther(otherEntry.node_);
 
   if( thisEntry.t_.from_!=otherEntry.t_.from_ )
     return false;

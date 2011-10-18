@@ -118,6 +118,8 @@ class MetaAlert extends TPage
       $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/ipblacklist.png\" border=0> ";
     elseif ($f=='[newevent]')
       $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/newevent.png\" border=0> ";
+    elseif ($f=='[python]')
+      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/python.png\" border=0> ";
     else
       $this->MetaAlertName->Text.=$f." ";
   }

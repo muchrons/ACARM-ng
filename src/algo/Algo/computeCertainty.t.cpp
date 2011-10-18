@@ -58,8 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  checkMatch( computeCertainty( makeNewNode() ),
-              2*alertCertainty_/2.0 + 1*0.2);
+  checkMatch( computeCertainty( makeNewNode() ), 2*alertCertainty_/2.0 + 1*0.2);
 }
 
 // compute certainty on non-unique tree
@@ -67,8 +66,32 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  checkMatch( computeCertainty( makeNewTree2() ),
-              3*alertCertainty_/3.0 + 4*0.2);
+  checkMatch( computeCertainty( makeNewTree2() ), 3*alertCertainty_/3.0 + 4*0.2);
+}
+
+// compute certainty via raw pointer
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  checkMatch( computeCertainty( makeNewTree2().get() ), 3*alertCertainty_/3.0 + 4*0.2);
+}
+
+// test for exception when got NULL
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const GraphNode *null=NULL;
+  try
+  {
+    computeCertainty(null);
+    fail("no exception on NULL");
+  }
+  catch(const Algo::Exception &ex)
+  {
+    // this is expected.
+  }
 }
 
 } // namespace tut

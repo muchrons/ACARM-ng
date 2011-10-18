@@ -23,7 +23,7 @@ Thread::Thread(ReaderPtrNN                       reader,
   conn_(conn),
   output_(&output),
   lastHeartbeat_(0u),
-  creator_(new Persistency::Facades::AnalyzersCreator)          // local cache
+  creator_(new DataFacades::AnalyzersCreator)                   // local cache
 {
 }
 

@@ -133,4 +133,16 @@ void testObj::test<9>(void)
   ensure_equals("target IPs not found", gip.getTargetIPs().size(), 2u);
 }
 
+// test pointer version
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const ConstGraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
+                                                                    "2.3.4.5", "1.2.3.4") );
+  const GatherIPs gip(root.get());
+  ensure_equals("source IPs not found", gip.getSourceIPs().size(), 1u);
+  ensure_equals("target IPs not found", gip.getTargetIPs().size(), 2u);
+}
+
 } // namespace tut
