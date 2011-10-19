@@ -22,7 +22,7 @@
     <com:TForm>
       <div id="contentDiv">
         <table id="contentTable" cellpadding="0" border="0" cellspacing="0" bgcolor="#545468" width="100%">
-          <tr id="contentTR" valign="top" height="600">
+          <tr id="contentTR" align="center" valign="top" height="600">
             <!-- LEFT MENU -->
             <td id="sideMenuPart" bgcolor="#40404f">
               <!-- MENU HEADER -->

@@ -1,0 +1,12 @@
+<com:TContent ID="content">
+<h1 style="color:white;">Credits:</h1>
+
+<p style="color:white;">
+ACARM-ng has been developed at Wroclaw Centre for Networking and Supercomputing and is co-funded by the European Regional Development Fund as part of the Innovative Economy program.<br/>
+The Managing Authority of the Innovative Economy Operational Program is the Polish Ministry of Regional Development.<br/>
+The Intermediate Body in implementation of the priority 2. "Research and Development infrastructure" is the Polish Ministry of Science and Higher Education.<br/>
+</p>
+
+
+<com:TClientScript PradoScripts="effects" />
+</com:TContent>
