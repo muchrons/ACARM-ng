@@ -1,0 +1,10 @@
+Source alerts;buttDBSourcreAlerts
+Meta alerts;buttDBMetaAlerts
+Root Meta alerts;buttDBRootMetaAlerts
+Analyzers;buttDBAnalyzers
+Severities;buttDMSeverity
+Alert types;buttDMAlertTypes
+Alert count;buttDMAlertCount
+Meta alert count;buttDMMetaAlertCount
+Heatmap;buttHeatmap
+Info;buttTeam

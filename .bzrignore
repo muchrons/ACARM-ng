@@ -15,3 +15,4 @@ acceptance_tests_plan.pdf
 *.orig
 configure-output.mk
 misc/bzr_plugins/bzr_buildbot.pyc
+wui/misc/buttons/out
