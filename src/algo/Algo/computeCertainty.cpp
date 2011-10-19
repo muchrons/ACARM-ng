@@ -29,8 +29,9 @@ public:
   /** \brief work procedure itself.
    *  \param node root node to start computation from.
    */
-  void operator()(Persistency::ConstGraphNodePtrNN node)
+  void operator()(const Persistency::GraphNode *node)
   {
+    assert(node!=NULL);
     if( node->isLeaf() )
     {
       assert( node->getMetaAlert()->getCertaintyDelta()==0 &&
@@ -61,6 +62,11 @@ private:
 
 
 double computeCertainty(Persistency::ConstGraphNodePtrNN root)
+{
+  return computeCertainty(root.get());
+} // computeSeverity()
+
+double computeCertainty(const Persistency::GraphNode *root)
 {
   return forEachUniqueInTree(root, CertComput() ).get();
 } // computeSeverity()

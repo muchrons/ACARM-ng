@@ -12,7 +12,6 @@
 
 #include "Base/NullValue.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
 #include "RFCIO/FromXML.hpp"
 #include "RFCIO/TimeConverter.hpp"
 

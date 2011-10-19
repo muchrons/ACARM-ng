@@ -33,7 +33,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   const InstanceName                              name_;
   Persistency::IO::ConnectionPtrNN                conn_;
   boost::scoped_ptr<Persistency::IO::Transaction> t_;
-  Persistency::Facades::AnalyzersCreator          ac_;
+  DataFacades::AnalyzersCreator                   ac_;
   BackendFacade                                   bf_;
 };
 

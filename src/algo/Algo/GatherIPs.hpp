@@ -9,10 +9,8 @@
 
 #include <map>
 
-#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Host.hpp"
-#include "Algo/forEachUniqueLeaf.hpp"
 
 namespace Algo
 {
@@ -54,39 +52,34 @@ public:
 
   /** \brief set of hosts. */
   typedef std::map<Persistency::Host::IP, Counter> IPSet;
-  /** \brief shared poitner to set to avoid copying. */
-  typedef Commons::SharedPtrNotNULL<IPSet>         IPSetPtr;
 
   /** \brief creates object's instance.
    *  \param node node to take hosts from;
    */
   explicit GatherIPs(Persistency::ConstGraphNodePtrNN node);
-
-  /** \brief adds unique source/target IPs to internall collection.
-   *  \param node node (i.e. leaf) to be processed.
+  /** \brief creates object's instance (via pointer).
+   *  \param node node to take hosts from;
    */
-  void operator()(Persistency::ConstGraphNodePtrNN node);
+  explicit GatherIPs(const Persistency::GraphNode *node);
 
   /** \brief gets set of source IPs.
    *  \return hosts' set.
    */
   const IPSet &getSourceIPs(void) const
   {
-    return *source_;
+    return source_;
   }
   /** \brief gets set of target IPs.
    *  \return hosts' set.
    */
   const IPSet &getTargetIPs(void) const
   {
-    return *target_;
+    return target_;
   }
 
 private:
-  void addIPs(IPSetPtr out, const Persistency::Alert::Hosts &in);
-
-  IPSetPtr source_;
-  IPSetPtr target_;
+  IPSet source_;
+  IPSet target_;
 }; // struct GatherIPs
 
 } // namespace Algo

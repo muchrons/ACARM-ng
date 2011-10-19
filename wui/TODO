@@ -1,4 +1,3 @@
-* create meta-alert overview, that would show all the meta-alerts' content (i.e.: children nodes) on one page.
 * correlation count for each filter type.
 * add checking of data model version in WUI with proper warning displaying, if needed.
 * add session mechanism to prevent CSRF in WUI.

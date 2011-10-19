@@ -64,4 +64,30 @@ void testObj::test<3>(void)
   ensure_equals("invalid number of elements", cnt, 3u);
 }
 
+// check tree via pointer
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const size_t cnt=countCorrelatedAlerts(nonUniqueTree_.get());
+  ensure_equals("invalid number of elements", cnt, 3u);
+}
+
+// check exception on NULL pointer
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const GraphNode *null=NULL;
+  try
+  {
+    countCorrelatedAlerts(null);
+    fail("call didn't failed for NULL pointer");
+  }
+  catch(const Algo::Exception&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
