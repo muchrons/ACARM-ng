@@ -1,7 +1,5 @@
 <?php
 
-// TODO: can content of view state be trusted?
-
 class MyTreeList extends TWebControl
 {
   const NODE_TYPE_PLAIN = 0;
