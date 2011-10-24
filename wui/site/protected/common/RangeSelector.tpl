@@ -29,10 +29,9 @@
       </com:TView>
     </com:TMultiView>
   </table>
-  <com:TLabel ID="Warning" ForeColor="Orange" Visible="no"/>
-<br/>
+  <com:TLabel ID="Warning" ForeColor="Orange" Visible="no"/><br/>
   <com:TTextBox ID="Type" Text="any" Visible="no"/>
-  <com:TButton ID="Submit" Text="update" />
+  <com:TImageButton ID="Submit" Text="update" ImageUrl="pics/buttons/buttUpdateD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttUpdateU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttUpdateD.png'"/>
 </com:TPanel>
 <br/>
 

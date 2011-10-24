@@ -22,7 +22,7 @@
     <com:TForm>
       <div id="contentDiv">
         <table id="contentTable" cellpadding="0" border="0" cellspacing="0" bgcolor="#545468" width="100%">
-          <tr id="contentTR" valign="top" height="600">
+          <tr id="contentTR" align="center" valign="top" height="600">
             <!-- LEFT MENU -->
             <td id="sideMenuPart" bgcolor="#40404f">
               <!-- MENU HEADER -->
@@ -58,7 +58,7 @@
           <tr>
             <td bgcolor="#696982" width="97%" align="right">
               <font face="lucida, verdana, sans-serif" size="2">
-                <b>copyright:</b> &copy; 2010 <a href="http://www.wcss.wroc.pl">WCSS</a>.&nbsp;&nbsp;&nbsp;
+                <b>copyright:</b> &copy; 2009-2011 <a href="http://www.wcss.wroc.pl">WCSS</a>.&nbsp;&nbsp;&nbsp;
               </font>
             </td>
             <td bgcolor="#545468">&nbsp;&nbsp;</td>
