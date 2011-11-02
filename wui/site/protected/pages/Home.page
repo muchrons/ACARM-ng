@@ -1,9 +1,10 @@
 <com:TContent ID="content">
-<com:TPanel GroupingText="<font size=6 color=white>System status</font>" Width="100%">
+
 <br/>
 
 <center>
-<h2 style="color:white;">Counters</h2>
+<com:TPanel GroupingText="<font size=6 color=white>Counters</font>" Width="100%">
+
 <com:TDataGrid
    CellPadding="4"
    Width="600px"
@@ -31,9 +32,9 @@
     DataField="value"
     />
 </com:TDataGrid>
-
+</com:TPanel>
 <br/><br/>
-<h2 style="color:white;">Heartbeats</h2>
+<com:TPanel GroupingText="<font size=6 color=white>Heartbeats</font>" Width="100%">
 <com:TDataGrid
    CellPadding="4"
    Width="600px"
@@ -76,9 +77,9 @@
    CommandName="delete"
    />
 </com:TDataGrid>
-</center>
-<br/><br/>
 </com:TPanel>
+<br/><br/>
+
 
 
 <com:TClientScript PradoScripts="effects" />

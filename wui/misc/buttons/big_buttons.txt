@@ -1,0 +1,4 @@
+Home;buttHome
+Database->;buttDB
+Data mining->;buttDM
+WUI logs;buttWUILogs

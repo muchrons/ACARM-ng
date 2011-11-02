@@ -10,15 +10,7 @@ class CSQLMap
   // returns instance of properly configures SQL map.
   public static function get()
   {
-    // TODO: i don't like this implementation - it gives config file name explicitly.
-    //       it should not be done this way. to be fixed later on.
-    // TODO: I've found a different syntax for obtaining SQLMap:
-    // $this->sqlmap = $this->Application->Modules['sqlmap']->Client;
-    // what's the difference?
-    $conn=TActiveRecordManager::getInstance()->getDbConnection();
-    if($conn===null)
-      throw new TInvalidDataValueException("unable to create connection object");
-    $conn->Active=true;     // ensure connection is established
+    $conn=CSQLMap::getConnection();
 
     $manager=new TSqlMapManager($conn);
     if($manager===null)
@@ -34,9 +26,31 @@ class CSQLMap
   // starts new transaction and returns handle to it.
   public static function beginTransaction()
   {
-    $conn=TActiveRecordManager::getInstance()->getDbConnection();
-    $conn->Active=true;     // ensure connection is established
+    $conn=CSQLMap::getConnection();
     return $conn->beginTransaction();
+  }
+
+  // gets connection, with proper setup
+  private static function getConnection()
+  {
+    // TODO: i don't like this implementation - it gives config file name explicitly.
+    //       it should not be done this way. to be fixed later on.
+    // TODO: I've found a different syntax for obtaining SQLMap:
+    // $this->sqlmap = $this->Application->Modules['sqlmap']->Client;
+    // what's the difference?
+    $conn=TActiveRecordManager::getInstance()->getDbConnection();
+    if($conn===null)
+      throw new TInvalidDataValueException("unable to create connection object");
+
+    $conn->Active=true;     // ensure connection is established
+
+    $tzSetup=$conn->createCommand("SET TIMEZONE TO UTC;");
+    if($tzSetup===null)
+      throw new TInvalidDataValueException("cannot create SQL command to change timezone");
+    $tzSetup->execute();
+
+    // return properly configured connection
+    return $conn;
   }
 }
 

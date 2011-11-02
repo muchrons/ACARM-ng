@@ -36,13 +36,13 @@ case "$1" in
       exit 1
     fi
     "$DAEMON" >> "$RUNLOG" 2>&1 &
-    while ! pidof acarmng > /dev/null 2>&1 && test -f /proc/$!/cmdline
+    while ! pidof acarm-ng.bin > /dev/null 2>&1 && test -f /proc/$!/cmdline
     do
       echo -n '.'
       sleep 1
     done
     echo
-    pidof acarmng > "$PIDFILE"
+    pidof acarm-ng.bin > "$PIDFILE"
   ;;
   stop)
     # not running?
