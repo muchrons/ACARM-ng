@@ -1,8 +1,9 @@
 <?php
+
 class MyTreeList extends TWebControl
 {
   const NODE_TYPE_PLAIN = 0;
-  const NODE_TYPE_INTERNAL_LINK = 1;
+  const NODE_TYPE_INTERNAL_LINK = 1; // TODO: unused constant
   const NODE_TYPE_LINK = 2;
   const SUB_ID_TAG = "__ctlSon";
   const SUB_ID_UL = "__UL";
@@ -80,7 +81,8 @@ class MyTreeList extends TWebControl
   {
     if($this->getViewState('CssClass',''))
       return $this->getViewState('CssClass','');
-
+    // TODO: i think it should be: if(getParent()) return ...->getCssCalss; return null;
+    //       it's logically equivalent, but more readable and straight forward.
     return ($this->getParent())?$this->getParent()->getCssClass() : $this->getViewState('CssClass','');
   }
 
@@ -94,6 +96,7 @@ class MyTreeList extends TWebControl
     $id = $this->getViewState('ID', '');
     if($id != '')
       return $id;
+    // TODO: make following two lines if/else for better readability
     $id = ($this->getParent())?$this->getParent()->getID().MyTreeList::SUB_ID_TAG:"";
     $id .= $this->getOrder();
     $this->getViewState('ID',TPropertyValue::ensureString($id));
@@ -189,6 +192,9 @@ class MyTreeList extends TWebControl
 
   private function processChildren($writer)
   {
+    // TODO: very long function - consider splitting it into smaller functionalities
+    // TODO: fix indentation
+    // TODO: perhaps switch would be better here?
     if($this->getNodeType() == MyTreeList::NODE_TYPE_PLAIN)
       {
         $title = new TLabel();
@@ -206,14 +212,17 @@ class MyTreeList extends TWebControl
           $title->setDeployID($this->getID());
         $title->setIcon($this->getIcon());
       }
+     // TODO: what about NODE_TYPE_INTERNAL_LINK?
+     // TODO: what is the action, when NodeType() is invalid?
 
     $title->setCssClass($this->getTitleClass());
     $title->setText($this->getTitle());
 
-    $i=0;
+    $i=0;   // TODO: should be bool, not int
 
     foreach($this->subTree as $c)
       {
+        // TODO: i'd suggest extra brackets here. will it work if $c is bool?
         if(!$c instanceof TWebControl)
           continue;
         $i++;
@@ -229,6 +238,7 @@ class MyTreeList extends TWebControl
       {
         $class = ($this->getDeploy())?"node":"nodeDeployed";
         $fct="";
+        // TODO: dead code or unfinished functionality?
         //$fct = ($this->getCanDeploy())?"onClick='toggleSub(\"".$this->getID()."\")'":"";
       }
 
@@ -247,9 +257,11 @@ class MyTreeList extends TWebControl
 
     foreach($this->subTree as $c)
       {
+        // TODO: i'd suggest extra brackets here. will it work if $c is bool?
         if(!$c instanceof TWebControl)
           continue;
 
+        // TODO: i'd suggest extra brackets here. will it work if $c is bool?
         if($c instanceof MyTreeList)
           {
             $c->Parent = $this;
@@ -286,8 +298,10 @@ class MyTreeList extends TWebControl
     $elts = array();
     foreach($this->Controls as $c)
       {
+        // TODO: i'd suggest extra brackets here. will it work if $c is bool?
         if(!$c instanceof TWebControl)
           continue;
+        // TODO: i'd suggest extra brackets here. will it work if $c is bool?
         if($c instanceof MyTreeList)
           $elts = array_merge($elts, $c->getElements());
         else

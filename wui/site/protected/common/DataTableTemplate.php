@@ -17,6 +17,7 @@ class DataTableTemplate extends TTemplateControl
     if ($this->DataGrid === null)
      return;
 
+    $this->DataGrid->setPageSize($this->DownList->SelectedValue);
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
 
@@ -101,18 +102,10 @@ class DataTableTemplate extends TTemplateControl
     return $ret; //ok to be null
   }
 
-  public function selectionChanged($sender, $param)
-  {
-    $this->DataGrid->PageSize=$sender->SelectedValue;
-    $this->DataGrid->CurrentPageIndex=0;
-    $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
-    $this->DataGrid->dataBind();
-  }
-
   public function changePage($sender, $param)
   {
     $this->DataGrid->CurrentPageIndex=$param->NewPageIndex;
-    $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
+    $this->DataGrid->DataSource=$this->getDataRows($this->DownList->SelectedValue,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->dataBind();
   }
 
@@ -182,7 +175,6 @@ class DataTableTemplate extends TTemplateControl
   public $log_;
   private $sortup;
   private $sortdown;
-  //  private $sorting;
 }
 
 ?>

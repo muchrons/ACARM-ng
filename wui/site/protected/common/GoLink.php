@@ -44,7 +44,9 @@ class GoLink extends TTemplateControl
 
   public function setIcon($icon)
   {
+    // TODO: consider checking if $icon is null, rather than some arbitarry magic value
     if($icon!="none")
+    // TODO: fix indentation (notice that if and else parts differ in indentation
       {
         $this->Image->ImageUrl="pics/".$icon."D.png";
         $this->Image->Attributes["onMouseOver"]="$(this).src='pics/".$icon."U.png'";
