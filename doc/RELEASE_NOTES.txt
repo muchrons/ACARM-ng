@@ -1,3 +1,7 @@
+-- v0.3.3 --
+* fixed timezone in WUI, when DB server is not configured in UTC.
+
+
 -- v0.3.2 --
 * fixed "path too long" bug in string-access facade.
 
