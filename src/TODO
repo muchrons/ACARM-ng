@@ -26,6 +26,7 @@ filters:
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * give possibility to pass config-file options to a python scripts (as is done by the factories).
+* add filter creating action's profiles (what actions do happen and are probable, which are not) and change prioryty according to this.
 
 docs:
 -----

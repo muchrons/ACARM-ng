@@ -1,4 +1,5 @@
 -- dev --
+* data base creation scripts are now automatically installed when 'make install' is run.
 * added pseudo-collection of all leafs to meta-alert's tree element, when accessed with string facade.
 * added severity and certainty as a meta-alert's tree element, when accessed with string facade.
 * algorithms dedicated for use in C++ are now more robust:
@@ -12,7 +13,10 @@
 * added heartbeats for external service (dshiled), when using ipblacklist filter.
 * unified string-access between preprocessor and Python API - the same syntax is used now (except for the collections).
 * Python interface for writing filters has been created.
-* fixed bug when connecting to DB server from WIO with non-UTC default timezone.
+
+
+-- v0.3.3 --
+* fixed timezone in WUI, when DB server is not configured in UTC.
 
 
 -- v0.3.2 --
