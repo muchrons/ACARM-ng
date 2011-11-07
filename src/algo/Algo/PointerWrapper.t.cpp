@@ -73,6 +73,7 @@ void testObj::test<2>(void)
   typedef const Data*             PtrImpl;
   typedef PointerWrapper<PtrImpl> Ptr;
   Ptr p(rp_);
+  //TODO: dead code
   //p.get()->doSth(); // cannot call non-const
   //p->doSth();
   p.get()->doSthConst();
@@ -105,6 +106,7 @@ void testObj::test<4>(void)
   typedef boost::shared_ptr<const Data> PtrImpl;
   typedef PointerWrapper<PtrImpl>       Ptr;
   Ptr p(sp_);
+  //TODO: dead code
   //p.get()->doSth(); // cannot call non-const
   //p->doSth();
   p.get()->doSthConst();
@@ -137,6 +139,7 @@ void testObj::test<6>(void)
   typedef Commons::SharedPtrNotNULL<const Data> PtrImpl;
   typedef PointerWrapper<PtrImpl>               Ptr;
   Ptr p(spnn_);
+  //TODO: dead code
   //p.get()->doSth();
   //p->doSth();
   p.get()->doSthConst();
