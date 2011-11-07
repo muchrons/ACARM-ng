@@ -24,7 +24,20 @@ build-plugins: ensure-configure
 	done
 
 .PHONY: install
-install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui
+install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui install-db-schemas
+	@echo
+	@echo '---------------------------------------------------'
+	@echo
+	@echo '           INSTALLATION SUCCESSFUL                 '
+	@echo
+	@echo ' to proceed with configuration read documentation: '
+	@echo ' $(INSTALL_DIR)/share/doc                          '
+	@echo
+	@echo ' data base preparation scripts are placed under:   '
+	@echo ' $(INSTALL_DIR)/share/ACARM-ng/data_model          '
+	@echo
+	@echo '---------------------------------------------------'
+	@echo
 
 .PHONY: install-libs
 install-libs: ensure-configure
@@ -63,6 +76,11 @@ $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example
 install-doc: ensure-configure
 	@install -v -d '$(INSTALL_DIR)/share/doc'
 	@cp -rL 'doc' '$(INSTALL_DIR)/share/'
+
+.PHONY: install-db-schemas
+install-db-schemas: ensure-configure
+	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng'
+	@cp -rL 'data_model' '$(INSTALL_DIR)/share/ACARM-ng'
 
 .PHONY: install-plugins
 install-plugins: install-libs ensure-configure
