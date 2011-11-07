@@ -12,7 +12,10 @@
 * added heartbeats for external service (dshiled), when using ipblacklist filter.
 * unified string-access between preprocessor and Python API - the same syntax is used now (except for the collections).
 * Python interface for writing filters has been created.
-* fixed bug when connecting to DB server from WIO with non-UTC default timezone.
+
+
+-- v0.3.3 --
+* fixed timezone in WUI, when DB server is not configured in UTC.
 
 
 -- v0.3.2 --
