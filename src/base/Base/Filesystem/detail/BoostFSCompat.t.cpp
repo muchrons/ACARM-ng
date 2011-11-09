@@ -45,4 +45,20 @@ void testObj::test<2>(void)
   ensure_equals("invalid parent path", parentPath("/some/path/myFile"), "/some/path");
 }
 
+// test absolute path
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ensure("path detected as non-absolute", isAbsolute("/dev/null") );
+}
+
+// test non-absolute path
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("path detected as absolute", isAbsolute("relative/path")==false );
+}
+
 } // namespace tut

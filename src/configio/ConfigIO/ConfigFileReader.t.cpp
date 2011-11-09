@@ -213,12 +213,12 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  using Base::Filesystem::Path;
+  using namespace Base::Filesystem;
   // settings
   const char *outPath="full_include.xml";
   const char *include="testdata/cfg_file_expand/basic_include.xml";
   const Path  incFull=boost::filesystem::system_complete(include);
-  ensure("path name is not absolute", incFull.is_absolute() );
+  ensure("path name is not absolute", isAbsolute(incFull) );
 
   // write file with full path to include
   ofstream of;

@@ -22,6 +22,11 @@ boost::filesystem::path parentPath(const boost::filesystem::path &p)
   return p.branch_path();
 }
 
+bool isAbsolute(const boost::filesystem::path &p)
+{
+  return p.has_root_directory();
+}
+
 } // namespace detail
 } // namespace Filesystem
 } // namespace Base

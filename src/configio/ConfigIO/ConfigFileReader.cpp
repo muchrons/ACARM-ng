@@ -59,7 +59,7 @@ bool formsInclusionLoop(const IncludeChain &chain, const Path &newPath)
 
 Path makePath(const Path &rootDir, const Path &name)
 {
-  if( name.is_absolute() )
+  if( isAbsolute(name) )
     return name;
   return rootDir/name;
 } // makePath()

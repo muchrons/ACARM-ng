@@ -35,6 +35,12 @@ bool isRegularFile(const boost::filesystem::path &p);
  */
 boost::filesystem::path parentPath(const boost::filesystem::path &p);
 
+/** \brief checksif a given path is absolute or not.
+ *  \param p path to check
+ *  \return true if path is absolute (i.e. starting in root directory), false otherwise.
+ */
+bool isAbsolute(const boost::filesystem::path &p);
+
 } // namespace detail
 } // namespace Filesystem
 } // namespace Base

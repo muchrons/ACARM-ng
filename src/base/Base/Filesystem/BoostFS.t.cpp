@@ -52,4 +52,12 @@ void testObj::test<3>(void)
   parentPath( Path("/a/b/c") );
 }
 
+// test if ath is absolute
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("absolute path not detected", isAbsolute("/dev/null") );
+}
+
 } // namespace tut

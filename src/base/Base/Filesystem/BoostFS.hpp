@@ -43,6 +43,18 @@ inline boost::filesystem::path parentPath(const boost::filesystem::path &p)
   return detail::parentPath(p);
 }
 
+/** \brief tests if given path is absolute or not.
+ *  \param p path to get root of.
+ *  \return true for absolute path, false otherwise.
+ *
+ *  this call replaces path::is_absolute() method from API v3 and
+ *  path::has_root_directory() from API v2.
+ */
+inline bool isAbsolute(const boost::filesystem::path &p)
+{
+  return detail::isAbsolute(p);
+}
+
 } // namespace Filesystem
 } // namespace Base
 
