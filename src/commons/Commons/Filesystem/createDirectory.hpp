@@ -9,8 +9,8 @@
 
 #include <memory>
 #include <fstream>
-#include <boost/filesystem.hpp>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
 namespace Commons
@@ -25,7 +25,7 @@ namespace Filesystem
  *  creates given directory, performing proper sanity-checks before doing so.
  *  throws on error.
  */
-void createDirectory(const boost::filesystem::path &p);
+void createDirectory(const Base::Filesystem::Path &p);
 
 } // namespace Filesystem
 } // namespace Commons

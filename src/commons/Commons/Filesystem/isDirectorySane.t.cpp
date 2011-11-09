@@ -6,8 +6,6 @@
 
 #include "Commons/Filesystem/isDirectorySane.hpp"
 
-using namespace std;
-using namespace boost::filesystem;
 using namespace Commons::Filesystem;
 
 namespace

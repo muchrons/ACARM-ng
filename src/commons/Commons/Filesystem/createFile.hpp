@@ -8,8 +8,8 @@
 /* public header */
 
 #include <fstream>
-#include <boost/filesystem.hpp>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
@@ -26,7 +26,7 @@ namespace Filesystem
  *  creates given file, performing proper sanity-checks before doing so.
  *  throws on error.
  */
-SharedPtrNotNULL<std::fstream> createFile(const boost::filesystem::path &p);
+SharedPtrNotNULL<std::fstream> createFile(const Base::Filesystem::Path &p);
 
 } // namespace Filesystem
 } // namespace Commons

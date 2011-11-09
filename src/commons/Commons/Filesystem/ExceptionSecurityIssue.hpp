@@ -7,8 +7,7 @@
 
 /* public header */
 
-#include <boost/filesystem.hpp>
-
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/Exception.hpp"
 
 namespace Commons
@@ -25,9 +24,9 @@ public:
    *  \param path    path to file, that has been used.
    *  \param details details on detected problem / susspicious activity.
    */
-  ExceptionSecurityIssue(const Location                &where,
-                         const boost::filesystem::path &path,
-                         const std::string             &details):
+  ExceptionSecurityIssue(const Location               &where,
+                         const Base::Filesystem::Path &path,
+                         const std::string            &details):
     Exception(where, cc("(potential) security issue detected while operarting on '", path,
                         "' (cannonical: '", boost::filesystem::system_complete(path), "'): ", details) )
   {

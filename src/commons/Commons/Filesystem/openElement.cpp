@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cassert>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/openElement.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
 #include "Commons/Filesystem/isFifoSane.hpp"
@@ -17,8 +18,8 @@ namespace Commons
 namespace Filesystem
 {
 
-SharedPtrNotNULL<std::fstream> openElement(const boost::filesystem::path &p,
-                                           const Mode                     mode,
+SharedPtrNotNULL<std::fstream> openElement(const Base::Filesystem::Path &p,
+                                           const Mode                    mode,
                                            bool (*isSane)(const boost::filesystem::path &) )
 {
   assert(isSane!=NULL);

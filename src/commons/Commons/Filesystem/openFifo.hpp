@@ -8,8 +8,8 @@
 /* public header */
 
 #include <fstream>
-#include <boost/filesystem.hpp>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/Mode.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
@@ -28,7 +28,7 @@ namespace Filesystem
  *  opens given fifo, performing proper sanity-checks before doing so.
  *  throws on error.
  */
-SharedPtrNotNULL<std::fstream> openFifo(const boost::filesystem::path &p, const Mode mode=Mode::READWRITE);
+SharedPtrNotNULL<std::fstream> openFifo(const Base::Filesystem::Path &p, const Mode mode=Mode::READWRITE);
 
 } // namespace Filesystem
 } // namespace Commons
