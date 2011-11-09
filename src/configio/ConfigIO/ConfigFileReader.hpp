@@ -18,15 +18,28 @@ namespace ConfigIO
 class ConfigFileReader
 {
 public:
+  /** \brief exception thrown when loop in include files has been detected.
+   */
   struct ExceptionInclusionLoop: public Exception
   {
+    /** \brief construct error message.
+     *  \param where      location of error detection.
+     *  \param reIncluded file that closes the cycle.
+     */
     explicit ExceptionInclusionLoop(const Location &where, const Base::Filesystem::Path &reIncluded);
   }; // struct ExceptionInclusionLoop
 
+  /** \brief exception thrown when invalid file is being included.
+   */
   struct ExceptionInvalidInclude: public Exception
   {
+    /** \brief construct error message.
+     *  \param where    location of error detection.
+     *  \param included include file that is invalid.
+     */
     explicit ExceptionInvalidInclude(const Location &where, const Base::Filesystem::Path &included);
   }; // struct ExceptionInvalidInclude
+
 
   /** \brief reads file given as a parameter from disk.
    *  \param path path to file to be read.
