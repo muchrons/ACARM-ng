@@ -22,6 +22,11 @@ boost::filesystem::path parentPath(const boost::filesystem::path &p)
   return p.parent_path();
 }
 
+bool isAbsolute(const boost::filesystem::path &p)
+{
+  return p.is_absolute();
+}
+
 } // namespace detail
 } // namespace Filesystem
 } // namespace Base
