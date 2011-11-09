@@ -3,9 +3,9 @@
  *
  * implementation of BoostFSCompat.hpp using old boost versions.
  */
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
+#include "Base/Filesystem/detail/BoostFSCompat.hpp"
 
-namespace Commons
+namespace Base
 {
 namespace Filesystem
 {
@@ -24,4 +24,4 @@ boost::filesystem::path parentPath(const boost::filesystem::path &p)
 
 } // namespace detail
 } // namespace Filesystem
-} // namespace Commons
+} // namespace Base

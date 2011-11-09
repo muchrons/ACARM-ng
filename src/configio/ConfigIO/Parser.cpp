@@ -4,9 +4,8 @@
  */
 #include <cassert>
 
-#include "XML/XMLpp/SaxParser.hpp"
 #include "ConfigIO/Parser.hpp"
-#include "ConfigIO/FileReader.hpp"
+#include "ConfigIO/ConfigFileReader.hpp"
 
 using namespace std;
 using namespace XML;
@@ -22,9 +21,8 @@ namespace
  */
 inline Tree getParsedTree(const boost::filesystem::path &path)
 {
-  FileReader       reader(path);
-  XMLpp::SaxParser sax;
-  return sax.parseContent( reader.getString() );
+  ConfigFileReader reader(path);
+  return reader.getTree();
 } // getParsedTree()
 } // unnamed namespace
 

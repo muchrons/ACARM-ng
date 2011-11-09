@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+  <some_node>
+    <key>question</key>
+    <value>42</value>
+  </some_node>
+</acarm_ng>

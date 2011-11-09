@@ -4,17 +4,17 @@
  */
 #include <cassert>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/openElement.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
 
-using namespace boost::filesystem;
 
 namespace Commons
 {
 namespace Filesystem
 {
 
-SharedPtrNotNULL<std::fstream> openFile(const boost::filesystem::path &p, const Mode mode)
+SharedPtrNotNULL<std::fstream> openFile(const Base::Filesystem::Path &p, const Mode mode)
 {
   return openElement(p, mode, isFileSane);
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <abc>
+    <include>loop_inc_B.xml</include>
+  </abc>
+</include>

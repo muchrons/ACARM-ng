@@ -13,7 +13,7 @@ namespace Commons
 namespace Filesystem
 {
 
-boost::filesystem::path createTempDirectory(const boost::filesystem::path &root)
+Base::Filesystem::Path createTempDirectory(const Base::Filesystem::Path &root)
 {
   try
   {

@@ -3,14 +3,14 @@
  *
  * this files provide compatibility elements, that are NOT common between boost::filesystem versions.
  */
-#ifndef INCLUDE_COMMONS_FILESYSTEM_DETAIL_BOOSTFSCOMPAT_HPP_FILE
-#define INCLUDE_COMMONS_FILESYSTEM_DETAIL_BOOSTFSCOMPAT_HPP_FILE
+#ifndef INCLUDE_BASE_FILESYSTEM_DETAIL_BOOSTFSCOMPAT_HPP_FILE
+#define INCLUDE_BASE_FILESYSTEM_DETAIL_BOOSTFSCOMPAT_HPP_FILE
 
 /* public header */
 
 #include <boost/filesystem.hpp>
 
-namespace Commons
+namespace Base
 {
 namespace Filesystem
 {
@@ -37,6 +37,6 @@ boost::filesystem::path parentPath(const boost::filesystem::path &p);
 
 } // namespace detail
 } // namespace Filesystem
-} // namespace Commons
+} // namespace Base
 
 #endif

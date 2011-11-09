@@ -2,9 +2,9 @@
  * createFile.cpp
  *
  */
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/createFile.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -13,14 +13,14 @@ namespace Commons
 namespace Filesystem
 {
 
-SharedPtrNotNULL<std::fstream> createFile(const boost::filesystem::path &p)
+SharedPtrNotNULL<std::fstream> createFile(const Base::Filesystem::Path &p)
 {
   // file cannot exist yet
   if( exists(p) )
     throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "exists", "file already exists");
 
   // directory path must be sane
-  const path parent=detail::parentPath(p);
+  const path parent=Base::Filesystem::parentPath(p);
   if( parent.empty()==false )
   {
     if( isDirectorySane(parent)==false )
