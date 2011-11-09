@@ -7,6 +7,7 @@
 #include <cassert>
 #include <ctype.h>
 
+#include "ConfigConsts/version.hpp"
 #include "AcarmNG/printBanner.hpp"
 
 using namespace std;
@@ -41,7 +42,8 @@ void printBanner(const char *app)
   assert(app!=NULL);
   // TODO: rework this code to take version from the VCS
   // TODO: rework this code to generate year automatically based on __DATE__ constant
-  cout << app << ": ACARM-ng v0.0.0 (built on " << __DATE__ << " " << __TIME__ << ")" << endl;
+  const char *ver=ConfigConsts::versionString;
+  cout << app << ": ACARM-ng "<<ver<<" (built on " << __DATE__ << " " << __TIME__ << ")" << endl;
   cout << app << ": copyright by WCSS (http://www.wcss.wroc.pl) 2009-" << getCurrentYear() << endl;
   cout << app << ": contact us: acarm@kdm.wcss.wroc.pl" << endl;
   cout << app << ":" << endl;
