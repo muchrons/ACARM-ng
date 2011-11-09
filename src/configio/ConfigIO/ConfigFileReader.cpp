@@ -36,7 +36,7 @@ typedef std::vector<Path> IncludeChain;
 
 Path absoluteDir(const Path &in)
 {
-  return boost::filesystem::system_complete(in).parent_path();
+  return parentPath( boost::filesystem::system_complete(in) );
 }
 
 
@@ -57,6 +57,14 @@ bool formsInclusionLoop(const IncludeChain &chain, const Path &newPath)
 } // formsInclusionLoop()
 
 
+Path makePath(const Path &rootDir, const Path &name)
+{
+  if( name.is_absolute() )
+    return name;
+  return rootDir/name;
+} // makePath()
+
+
 // TODO: this implementation has been done in a fast way, using available components.
 //       it could be reimplemented using sax parsing though. this would remove
 //       copying, that takes place all the time here.
@@ -74,7 +82,7 @@ void appendAndExpand(XML::Node &dst, const XML::Node &src, const Path &rootDir, 
     // expand include files "in place"
     if( it->getName()==include )
     {
-      const Path incPath=rootDir/it->getValuesString();
+      const Path incPath=makePath(rootDir, it->getValuesString());
       if( formsInclusionLoop(chain, incPath) )
         throw ConfigFileReader::ExceptionInclusionLoop(SYSTEM_SAVE_LOCATION, incPath);
       appendAndExpand(dst, incPath, include, chain);
