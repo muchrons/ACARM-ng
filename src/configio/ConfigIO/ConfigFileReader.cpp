@@ -2,6 +2,8 @@
  * ConfigFileReader.cpp
  *
  */
+#include <vector>
+
 #include "XML/XMLpp/SaxParser.hpp"
 #include "ConfigIO/ConfigFileReader.hpp"
 #include "ConfigIO/FileReader.hpp"
@@ -27,20 +29,54 @@ ConfigFileReader::ExceptionInvalidInclude::ExceptionInvalidInclude(const Locatio
 namespace
 {
 
-XML::Tree readAndParse(const boost::filesystem::path &path)
+typedef boost::filesystem::path Path;
+typedef std::vector<Path>       IncludeChain;
+
+
+Path absoluteDir(const Path &in)
+{
+  // TODO
+  return boost::filesystem::absolute(in).parent_path();
+}
+
+XML::Tree readAndParse(const Path &path)
 {
   FileReader            reader(path);
   XML::XMLpp::SaxParser sax;
   return sax.parseContent( reader.getString() );
 } // readAndParse()
 
-XML::Tree readAndExpand(const boost::filesystem::path &path)
+
+void appendAndExpand(Node &dst, const XML::Tree &src, const Path &rootDir)
+{
+  // if it is an included node, skip root and proceed with it's children
+  if(src.getRoot().getName()=="include")
+  {
+    const XML::Node::TNodesList &children=src.getRoot().getChildrenList();
+    for(XML::Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
+      appendAndExpand(root, *it);
+    return;
+  }
+
+  // if this is a non-include, just append everything 'as is', except for "acarm_ng" root node
+} // appendAndExpand()
+
+
+XML::Tree readAndExpand(const Path &path)
 {
   try
   {
-    XML::Tree root=readAndParse(path);
-    // TODO
-    return root;
+    const Path dir=absoluteDir(path);
+
+    XML::Tree src=readAndParse(path);
+    XML::Tree out( Node( src.getRoot().getName() ) );  // copy the name of the original root
+    {
+      const XML::Node::TNodesList &children=src.getRoot().getChildrenList();
+      for(XML::Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
+        appendAndExpand(root, *it, dir);
+    }
+
+    return out;
   }
   catch(const ExceptionFileAccessError &)
   {
