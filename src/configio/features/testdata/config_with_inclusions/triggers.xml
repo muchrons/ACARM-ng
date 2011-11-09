@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+
+  <triggers>
+    <trig_with_pp name="t_with_pp_name">
+      <include>trigger_preproc.xml</include>
+    </trig_with_pp>
+  </triggers>
+
+</include>

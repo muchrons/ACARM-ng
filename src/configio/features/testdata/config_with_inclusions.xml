@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <include>config_with_inclusions/general.xml</include>
+
+  <persistency>
+    <type>stubs</type>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="default">
+        <output>loggerfile.log</output>
+      </file>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <preprocessor/>
+
+  <filters>
+  </filters>
+
+  <include>config_with_inclusions/triggers.xml</include>
+
+  <inputs>
+  </inputs>
+
+</acarm_ng>

@@ -170,4 +170,17 @@ void testObj::test<12>(void)
   ensure_equals("invalid number of rules", ppcfg->getSections().size(), 2u);
 }
 
+// test reading and parsing config file with inclusions
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Parser                p("testdata/config_with_inclusions.xml");
+  const TriggerConfig        &cfg  =p.getTriggersConfig().at(0);
+  ensure_equals("invalid type name", cfg.getType(), "trig_with_pp");
+  const Preprocessor::Config *ppcfg=cfg.getPreprocessorConfig();
+  ensure("pointer is NULL", ppcfg!=NULL);
+  ensure_equals("invalid number of rules", ppcfg->getSections().size(), 2u);
+}
+
 } // namespace tut
