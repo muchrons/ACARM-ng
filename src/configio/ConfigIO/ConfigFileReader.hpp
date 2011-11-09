@@ -5,9 +5,8 @@
 #ifndef INCLUDE_CONFIGIO_CONFIGFILEREADER_HPP_FILE
 #define INCLUDE_CONFIGIO_CONFIGFILEREADER_HPP_FILE
 
-#include <boost/filesystem.hpp>
-
 #include "XML/Tree.hpp"
+#include "Base/Filesystem/BoostFS.hpp"
 #include "ConfigIO/ExceptionFileAccessError.hpp"
 
 
@@ -21,12 +20,12 @@ class ConfigFileReader
 public:
   struct ExceptionInclusionLoop: public Exception
   {
-    explicit ExceptionInclusionLoop(const Location &where, const boost::filesystem::path &reIncluded);
+    explicit ExceptionInclusionLoop(const Location &where, const Base::Filesystem::Path &reIncluded);
   }; // struct ExceptionInclusionLoop
 
   struct ExceptionInvalidInclude: public Exception
   {
-    explicit ExceptionInvalidInclude(const Location &where, const boost::filesystem::path &included);
+    explicit ExceptionInvalidInclude(const Location &where, const Base::Filesystem::Path &included);
   }; // struct ExceptionInvalidInclude
 
   /** \brief reads file given as a parameter from disk.

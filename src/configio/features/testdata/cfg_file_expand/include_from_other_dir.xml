@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<some_root>
+<acarm_ng>
   <some_node>
     <include>dir1/one_include.xml</include>
   </some_node>
-</some_root>
+</acarm_ng>

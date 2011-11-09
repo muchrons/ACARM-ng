@@ -9,18 +9,20 @@
 #include "ConfigIO/FileReader.hpp"
 #include "ConfigIO/Parser.hpp"
 
+using namespace Base::Filesystem;
+
 
 namespace ConfigIO
 {
 
-ConfigFileReader::ExceptionInclusionLoop::ExceptionInclusionLoop(const Location                &where,
-                                                                 const boost::filesystem::path &reIncluded):
+ConfigFileReader::ExceptionInclusionLoop::ExceptionInclusionLoop(const Location               &where,
+                                                                 const Base::Filesystem::Path &reIncluded):
   Exception(where, cc("file inclusion loop detected when (re)including file '", reIncluded, "'") )
 {
 }
 
-ConfigFileReader::ExceptionInvalidInclude::ExceptionInvalidInclude(const Location                &where,
-                                                                   const boost::filesystem::path &included):
+ConfigFileReader::ExceptionInvalidInclude::ExceptionInvalidInclude(const Location               &where,
+                                                                   const Base::Filesystem::Path &included):
   Exception(where, cc("inclusion of invalid include file requested: '", included, "'") )
 {
 }
@@ -29,15 +31,14 @@ ConfigFileReader::ExceptionInvalidInclude::ExceptionInvalidInclude(const Locatio
 namespace
 {
 
-typedef boost::filesystem::path Path;
-typedef std::vector<Path>       IncludeChain;
+typedef std::vector<Path> IncludeChain;
 
 
 Path absoluteDir(const Path &in)
 {
-  // TODO
-  return boost::filesystem::absolute(in).parent_path();
+  return boost::filesystem::system_complete(in).parent_path();
 }
+
 
 XML::Tree readAndParse(const Path &path)
 {
@@ -47,18 +48,72 @@ XML::Tree readAndParse(const Path &path)
 } // readAndParse()
 
 
-void appendAndExpand(Node &dst, const XML::Tree &src, const Path &rootDir)
+bool formsInclusionLoop(const IncludeChain &chain, const Path &newPath)
 {
-  // if it is an included node, skip root and proceed with it's children
-  if(src.getRoot().getName()=="include")
-  {
-    const XML::Node::TNodesList &children=src.getRoot().getChildrenList();
-    for(XML::Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
-      appendAndExpand(root, *it);
-    return;
-  }
+  for(IncludeChain::const_iterator it=chain.begin(); it!=chain.end(); ++it)
+    if(*it==newPath)
+      return true;
+  return false;
+} // formsInclusionLoop()
 
-  // if this is a non-include, just append everything 'as is', except for "acarm_ng" root node
+
+// TODO: this implementation has been done in a fast way, using available components.
+//       it could be reimplemented using sax parsing though. this would remove
+//       copying, that takes place all the time here.
+
+
+void appendAndExpand(XML::Node &dst, const Path &path, const char *expectedRoot, IncludeChain chain);
+
+
+void appendAndExpand(XML::Node &dst, const XML::Node &src, const Path &rootDir, const IncludeChain &chain)
+{
+  const char                  *include ="include";
+  const XML::Node::TNodesList &children=src.getChildrenList();
+  for(XML::Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
+  {
+    // expand include files "in place"
+    if( it->getName()==include )
+    {
+      const Path incPath=rootDir/it->getValuesString();
+      if( formsInclusionLoop(chain, incPath) )
+        throw ConfigFileReader::ExceptionInclusionLoop(SYSTEM_SAVE_LOCATION, incPath);
+      appendAndExpand(dst, incPath, include, chain);
+      continue;
+    }
+
+    // add new node to the set
+    XML::Node *childPtr=dst.addChild( XML::Node( it->getName() ) );
+    if(childPtr==NULL)
+      throw Exception(SYSTEM_SAVE_LOCATION, "addition of node failed");
+    XML::Node &child=*childPtr;
+
+    // copy all attributes
+    const XML::AttributesList &attr=it->getAttributesList();
+    for(XML::AttributesList::const_iterator ait=attr.begin(); ait!=attr.end(); ++ait)
+      child.addAttribute(*ait);
+
+    // copy all values
+    const XML::Node::TValuesList &vals=it->getValuesList();
+    for(XML::Node::TValuesList::const_iterator vit=vals.begin(); vit!=vals.end(); ++vit)
+      child.addValue(*vit);
+
+    // append children of this node
+    appendAndExpand(child, *it, rootDir, chain);
+  }
+} // appendAndExpand()
+
+
+void appendAndExpand(XML::Node &dst, const Path &path, const char *expectedRoot, IncludeChain chain)
+{
+  const XML::Tree src=readAndParse(path);
+  // check if got expected name
+  if( src.getRoot().getName()!=expectedRoot )
+    throw ConfigFileReader::ExceptionInvalidInclude(SYSTEM_SAVE_LOCATION, path);
+
+  // if name is valid, process this node
+  chain.push_back(path);
+  const Path rootDir =absoluteDir(path);
+  appendAndExpand(dst, src.getRoot(), rootDir, chain);
 } // appendAndExpand()
 
 
@@ -66,17 +121,17 @@ XML::Tree readAndExpand(const Path &path)
 {
   try
   {
-    const Path dir=absoluteDir(path);
-
-    XML::Tree src=readAndParse(path);
-    XML::Tree out( Node( src.getRoot().getName() ) );  // copy the name of the original root
-    {
-      const XML::Node::TNodesList &children=src.getRoot().getChildrenList();
-      for(XML::Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
-        appendAndExpand(root, *it, dir);
-    }
-
-    return out;
+    XML::Tree tree( XML::Node("acarm_ng") );    // default root name // TODO: hardcoded value
+    appendAndExpand( tree.getRoot(), path, tree.getRoot().getName().c_str(), (IncludeChain()) );
+    return tree;
+  }
+  catch(const ConfigFileReader::ExceptionInvalidInclude&)
+  {
+    throw;
+  }
+  catch(const ConfigFileReader::ExceptionInclusionLoop&)
+  {
+    throw;
   }
   catch(const ExceptionFileAccessError &)
   {

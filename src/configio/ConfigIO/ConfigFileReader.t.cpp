@@ -53,7 +53,7 @@ void testObj::test<2>(void)
 {
   const ConfigFileReader cfr("testdata/cfg_file_expand/basic_file.xml");
   const XML::Node r=cfr.getTree().getRoot();
-  ensure_equals("invalid root's name", r.getName(), "some_root");
+  ensure_equals("invalid root's name", r.getName(), "acarm_ng");
 
   const XML::Node::TNodesList &children1=r.getChildrenList();
   ensure_equals("invalid root's children count", children1.size(), 1);
@@ -107,7 +107,7 @@ void testObj::test<6>(void)
   ensureThrow<Exception>(msg, "_file_that_does_not_exist_but_can_be_created.txt");
 }
 
-// open file including one more file
+// open file including one file
 template<>
 template<>
 void testObj::test<7>(void)
@@ -185,5 +185,7 @@ void testObj::test<13>(void)
   const char *msg="including file with invalid root node name didn't failed";
   ensureThrow<ConfigFileReader::ExceptionInvalidInclude>(msg, "testdata/cfg_file_expand/include_invalid_root.xml");
 }
+
+// TODO: test reading file when included with the full path.
 
 } // namespace tut
