@@ -11,6 +11,19 @@
 namespace ConfigIO
 {
 
+ConfigFileReader::ExceptionInclusionLoop::ExceptionInclusionLoop(const Location                &where,
+                                                                 const boost::filesystem::path &reIncluded):
+  Exception(where, cc("file inclusion loop detected when (re)including file '", reIncluded, "'") )
+{
+}
+
+ConfigFileReader::ExceptionInvalidInclude::ExceptionInvalidInclude(const Location                &where,
+                                                                   const boost::filesystem::path &included):
+  Exception(where, cc("inclusion of invalid include file requested: '", included, "'") )
+{
+}
+
+
 namespace
 {
 

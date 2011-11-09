@@ -107,4 +107,83 @@ void testObj::test<6>(void)
   ensureThrow<Exception>(msg, "_file_that_does_not_exist_but_can_be_created.txt");
 }
 
+// open file including one more file
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const ConfigFileReader cfr("testdata/cfg_file_expand/include_one.xml");
+  const XML::Node  r =cfr.getTree().getRoot();
+  const XML::Node &sn=r.getChild("some_node");
+  ensure_equals("invalid node's value", sn.getChild("key").getValuesString(), "question");
+  ensure_equals("invalid includes node 1 value",     sn.getChild("nodeX").getValuesString(), "");
+  ensure_equals("invalid includes node 1 attribute", sn.getChild("nodeX").getAttributesList().getAttribute("at").getValue(), "here");
+  ensure_equals("invalid includes node 2 value",     sn.getChild("nodeY").getValuesString(), "d00m");
+  ensure_equals("invalid includes node 3.1 value",   sn.getChild("nodeZ").getChild("a").getValuesString(), "");
+  ensure_equals("invalid includes node 3.2 value",   sn.getChild("nodeZ").getChild("b").getValuesString(), "");
+}
+
+// open file including two files
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const ConfigFileReader cfr("testdata/cfg_file_expand/include_multiple.xml");
+  const XML::Node  r =cfr.getTree().getRoot();
+  const XML::Node &sn=r.getChild("some_node");
+  ensure_equals("invalid includes node 1 value", sn.getChild("nodeY").getValuesString(), "d00m");
+  ensure_equals("invalid includes node 2 value", r.getChild("nodeY").getValuesString(), "d00m");
+}
+
+// open file including file that include other file
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const ConfigFileReader cfr("testdata/cfg_file_expand/deep_include.xml");
+  const XML::Node  r =cfr.getTree().getRoot();
+  const XML::Node &sn=r.getChild("some_node");
+  ensure_equals("invalid includes node 1 value", sn.getChild("first").getChild("nodeY").getValuesString(), "d00m");
+}
+
+// tries including file that does not exist
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const char *msg="including files creating loop didn't failed";
+  ensureThrow<ConfigFileReader::ExceptionInclusionLoop>(msg, "testdata/cfg_file_expand/loop_includes.xml");
+}
+
+// open file including file from other directory
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const ConfigFileReader cfr("testdata/cfg_file_expand/include_from_other_dir.xml");
+  const XML::Node  r =cfr.getTree().getRoot();
+  const XML::Node &sn=r.getChild("some_node");
+  ensure_equals("invalid includes node 1 value", sn.getChild("abc").getValuesString(), "hello evil");
+}
+
+// open file including file from other directory
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const ConfigFileReader cfr("testdata/cfg_file_expand/include_dir_jumps.xml");
+  const XML::Node  r =cfr.getTree().getRoot();
+  const XML::Node &sn=r.getChild("some_node");
+  ensure_equals("invalid includes node 1 value", sn.getChild("nodeZ").getChild("abc").getValuesString(), "hello evil");
+}
+
+// try including file that does not have "include" root node
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const char *msg="including file with invalid root node name didn't failed";
+  ensureThrow<ConfigFileReader::ExceptionInvalidInclude>(msg, "testdata/cfg_file_expand/include_invalid_root.xml");
+}
+
 } // namespace tut

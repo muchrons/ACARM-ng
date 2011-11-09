@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<some_root>
+  <some_node>
+    <key>question</key>
+    <include>basic_include.xml</include>
+  </some_node>
+  <include>basic_include.xml</include>
+</some_root>

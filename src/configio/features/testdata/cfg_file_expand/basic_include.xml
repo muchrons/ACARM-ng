@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <nodeX at="here"/>
+  <nodeY>d00m</nodeY>
+  <nodeZ>
+    <a/>
+    <b/>
+  </nodeZ>
+</include>

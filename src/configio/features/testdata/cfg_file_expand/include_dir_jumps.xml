@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<some_root>
+  <some_node>
+    <include>dir2/jump_include.xml</include>
+  </some_node>
+</some_root>

@@ -19,6 +19,16 @@ namespace ConfigIO
 class ConfigFileReader
 {
 public:
+  struct ExceptionInclusionLoop: public Exception
+  {
+    explicit ExceptionInclusionLoop(const Location &where, const boost::filesystem::path &reIncluded);
+  }; // struct ExceptionInclusionLoop
+
+  struct ExceptionInvalidInclude: public Exception
+  {
+    explicit ExceptionInvalidInclude(const Location &where, const boost::filesystem::path &included);
+  }; // struct ExceptionInvalidInclude
+
   /** \brief reads file given as a parameter from disk.
    *  \param path path to file to be read.
    *  \note this call automatically expands includes inside the config file.
