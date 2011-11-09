@@ -39,6 +39,69 @@ example may look like this:
 in the following sections only sub-trees specific for given components will
 be shown in the example, for sake of document's simplicity.
 
+since more sophisticated configurations can take more space and require some
+parts of code to be c&p multiple times, inclusion of config files has been
+introduced. it works by replacing part of the configuration file's subtree
+with "<include>path/to/file.xml</include>" directive. path is computed
+starting with root directory of the current file. included file must be an
+XML file as well, with root node named "include".
+
+for example, for directory structure file this:
+  a.xml
+  dir1/f_all.xml
+  dir1/f1.xml
+  dir1/f2.xml
+  dir2/f3.xml
+
+inclusion from a.xml can look like this:
+
+a.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+  <something>
+    <!-- ... -->
+  </something>
+  <include>dir1/f_all.xml</include>
+</acarm_ng>
+
+dir1/f_all.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <include>f1.xml</include>
+  <include>f2.xml</include>
+  <include>../dir2/f3.xml</include>
+</include>
+
+dir1/f1.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <a>sth</a>
+</include>
+
+dir1/f2.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <xyz name="aaa"/>
+</include>
+
+dir2/f3.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+  <v>6.66</v>
+</include>
+
+it would be equivalent to single file of this form:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+  <something>
+    <!-- ... -->
+  </something>
+  <a>sth</a>
+  <xyz name="aaa"/>
+  <v>6.66</v>
+</acarm_ng>
+
 
 general configuration
 =====================
