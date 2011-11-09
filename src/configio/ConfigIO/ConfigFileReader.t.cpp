@@ -3,6 +3,8 @@
  *
  */
 #include <tut.h>
+#include <fstream>
+#include <unistd.h>
 
 #include "ConfigIO/ConfigFileReader.hpp"
 
@@ -186,6 +188,53 @@ void testObj::test<13>(void)
   ensureThrow<ConfigFileReader::ExceptionInvalidInclude>(msg, "testdata/cfg_file_expand/include_invalid_root.xml");
 }
 
-// TODO: test reading file when included with the full path.
+
+namespace
+{
+struct Unlinker
+{
+  explicit Unlinker(const char *path):
+    path_(path)
+  {
+    ensure("NULL path to unlink", path_!=NULL);
+  }
+  ~Unlinker(void)
+  {
+    unlink(path_);
+  }
+
+private:
+  const char *path_;
+}; // struct Unlinker
+} // unnamed namespace
+
+// try including file with a full path
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  using Base::Filesystem::Path;
+  // settings
+  const char *outPath="full_include.xml";
+  const char *include="testdata/cfg_file_expand/basic_include.xml";
+  const Path  incFull=boost::filesystem::system_complete(include);
+  ensure("path name is not absolute", incFull.is_absolute() );
+
+  // write file with full path to include
+  ofstream of;
+  of.open(outPath);
+  ensure("canno open temporary file", of.is_open() );
+  Unlinker cleanup(outPath);
+  of<<"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"<<endl;
+  of<<"<acarm_ng>"<<endl;
+  of<<"  <include>"<<incFull.c_str()<<"</include>"<<endl;
+  of<<"</acarm_ng>"<<endl;
+  of.close();
+
+  // now try reading this file
+  const ConfigFileReader cfr(outPath);
+  const XML::Node        r=cfr.getTree().getRoot();
+  ensure_equals("invalid node value after inclusion with full path", r.getChild("nodeY").getValuesString(), "d00m");
+}
 
 } // namespace tut
