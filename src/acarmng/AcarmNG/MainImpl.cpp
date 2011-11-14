@@ -30,8 +30,8 @@ MainImpl::ExceptionCannotDaemonize::ExceptionCannotDaemonize(const Location &whe
 }
 
 
-MainImpl::ExceptionCannotDropPrivilages::ExceptionCannotDropPrivilages(const Location &where, const char *type, const int from, const int to):
-  Exception(where, cc("unable to drop privilages (", type, ") from ", from, " to ", to))
+MainImpl::ExceptionCannotDropPrivileges::ExceptionCannotDropPrivileges(const Location &where, const char *type, const int from, const int to):
+  Exception(where, cc("unable to drop privileges (", type, ") from ", from, " to ", to))
 {
 }
 
@@ -90,7 +90,7 @@ int MainImpl::run(void)
 void MainImpl::runImpl(void)
 {
   // do not work as root
-  dropPrivilages();
+  dropPrivileges();
 
   // output stream to be used later on
   std::ostream &os=std::cout;
@@ -118,14 +118,14 @@ void MainImpl::runImpl(void)
 }
 
 
-void MainImpl::dropPrivilages(void)
+void MainImpl::dropPrivileges(void)
 {
   // if needed, first drop group ID
   if( getgid()!=clp_.groupID() )
   {
     LOGMSG_INFO_S(log_)<<"dropping GID from "<<getgid()<<" to "<<clp_.groupID();
     if( setgid( clp_.groupID() )!=0 )
-      throw ExceptionCannotDropPrivilages(SYSTEM_SAVE_LOCATION, "GID", getgid(), clp_.groupID());
+      throw ExceptionCannotDropPrivileges(SYSTEM_SAVE_LOCATION, "GID", getgid(), clp_.groupID());
   }
   else
     LOGMSG_DEBUG_S(log_)<<"GID is already "<<getgid()<<", as reuqired";
@@ -135,13 +135,13 @@ void MainImpl::dropPrivilages(void)
   {
     LOGMSG_INFO_S(log_)<<"dropping UID from "<<getuid()<<" to "<<clp_.userID();
     if( setuid( clp_.userID() )!=0 )
-      throw ExceptionCannotDropPrivilages(SYSTEM_SAVE_LOCATION, "UID", getuid(), clp_.userID());
+      throw ExceptionCannotDropPrivileges(SYSTEM_SAVE_LOCATION, "UID", getuid(), clp_.userID());
   }
   else
     LOGMSG_DEBUG_S(log_)<<"UID is already "<<getuid()<<", as reuqired";
 
   // summary
-  LOGMSG_INFO_S(log_)<<"system now uses privilages of UID="<<getuid()<<" / GID="<<getgid();
+  LOGMSG_INFO_S(log_)<<"system now uses privileges of UID="<<getuid()<<" / GID="<<getgid();
 }
 
 

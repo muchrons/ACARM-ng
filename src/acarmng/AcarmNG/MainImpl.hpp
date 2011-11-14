@@ -35,9 +35,9 @@ public:
     explicit ExceptionCannotDaemonize(const Location &where);
   };
 
-  /** \brief exception thrown when privilages dropping fails.
+  /** \brief exception thrown when privileges dropping fails.
    */
-  struct ExceptionCannotDropPrivilages: public Exception
+  struct ExceptionCannotDropPrivileges: public Exception
   {
     /** \brief create execption message.
      *  \param where location where exception has been risen.
@@ -45,7 +45,7 @@ public:
      *  \param from  ID that is currently set.
      *  \param to    ID to which change was supposed to happen.
      */
-    ExceptionCannotDropPrivilages(const Location &where, const char *type, const int from, const int to);
+    ExceptionCannotDropPrivileges(const Location &where, const char *type, const int from, const int to);
   };
 
   /** \brief create data structures, basing on command line arguments.
@@ -61,7 +61,7 @@ public:
 
 private:
   void runImpl(void);
-  void dropPrivilages(void);
+  void dropPrivileges(void);
   void runAsDaemon(void);
   void runApp(void);
 
