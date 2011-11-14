@@ -750,3 +750,16 @@ robust configuration capabilities for selecting reacting on certain events.
 
 almost identical syntax to preprocessor is also used by Python interfaces. minor
 differences are described in sections dedicated to these configurations.
+
+
+command line arguments
+======================
+
+ACARM-ng accepts command line arguments as well. using this interface,
+application can daemonize durring start (-d), drop privileges (-u <uid>
+and -g <gid>), print raw version (-v), etc...
+
+full list of command line arguments can be obtained by running application
+with -h flag. note that ACARM-ng is compatible with GNU notation of using
+single '-' for short parameter names (ex. -h) and '--' for long ones (ex.
+--help).
