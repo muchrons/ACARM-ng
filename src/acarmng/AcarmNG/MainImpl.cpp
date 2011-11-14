@@ -7,6 +7,7 @@
 #include <cerrno>
 #include <cassert>
 #include <unistd.h>
+#include <sys/types.h>
 
 #include "ConfigConsts/version.hpp"
 #include "Logger/Logger.hpp"
@@ -29,8 +30,14 @@ MainImpl::ExceptionCannotDaemonize::ExceptionCannotDaemonize(const Location &whe
 }
 
 
+MainImpl::ExceptionCannotDropPrivilages::ExceptionCannotDropPrivilages(const Location &where, const char *type, const int from, const int to):
+  Exception(where, cc("unable to drop privilages (", type, ") from ", from, " to ", to))
+{
+}
+
+
 MainImpl::MainImpl(const int argc, char const * const * const argv):
-  log_("mainimpl"),
+  log_("acarmng.mainimpl"),
   clp_(argc, argv),
   appName_(argv[0])
 {
@@ -82,6 +89,9 @@ int MainImpl::run(void)
 
 void MainImpl::runImpl(void)
 {
+  // do not work as root
+  dropPrivilages();
+
   // output stream to be used later on
   std::ostream &os=std::cout;
 
@@ -108,13 +118,30 @@ void MainImpl::runImpl(void)
 }
 
 
-void MainImpl::runApp(void)
+void MainImpl::dropPrivilages(void)
 {
-  LOGMSG_INFO(log_, "starting application");
-  Core::Main m;                         // run application (all done in background threads)
-  LOGMSG_INFO(log_, "system started");
-  m.waitUntilDone();                    // wait until application is done
-  LOGMSG_INFO(log_, "system stopped normally");
+  // if needed, first drop group ID
+  if( getgid()!=clp_.groupID() )
+  {
+    LOGMSG_INFO_S(log_)<<"dropping GID from "<<getgid()<<" to "<<clp_.groupID();
+    if( setgid( clp_.groupID() )!=0 )
+      throw ExceptionCannotDropPrivilages(SYSTEM_SAVE_LOCATION, "GID", getgid(), clp_.groupID());
+  }
+  else
+    LOGMSG_DEBUG_S(log_)<<"GID is already "<<getgid()<<", as reuqired";
+
+  // if needed, drop user ID
+  if( getuid()!=clp_.userID() )
+  {
+    LOGMSG_INFO_S(log_)<<"dropping UID from "<<getuid()<<" to "<<clp_.userID();
+    if( setuid( clp_.userID() )!=0 )
+      throw ExceptionCannotDropPrivilages(SYSTEM_SAVE_LOCATION, "UID", getuid(), clp_.userID());
+  }
+  else
+    LOGMSG_DEBUG_S(log_)<<"UID is already "<<getuid()<<", as reuqired";
+
+  // summary
+  LOGMSG_INFO_S(log_)<<"system now uses privilages of UID="<<getuid()<<" / GID="<<getgid();
 }
 
 
@@ -127,6 +154,16 @@ void MainImpl::runAsDaemon(void)
     throw ExceptionCannotDaemonize(SYSTEM_SAVE_LOCATION);
   }
   LOGMSG_INFO(log_, "daemonized process is up and running");
+}
+
+
+void MainImpl::runApp(void)
+{
+  LOGMSG_INFO(log_, "starting application");
+  Core::Main m;                         // run application (all done in background threads)
+  LOGMSG_INFO(log_, "system started");
+  m.waitUntilDone();                    // wait until application is done
+  LOGMSG_INFO(log_, "system stopped normally");
 }
 
 } // namespace AcarmNG
