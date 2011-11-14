@@ -172,4 +172,154 @@ void testObj::test<13>(void)
   ensure("no '--daemon'", str.find("--daemon")!=std::string::npos);
 }
 
+// test default UID/GID
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const int           argc  =1;
+  const char * const  argv[]={"./a.out"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.userID(),  0);
+  ensure_equals("invalid GID", clp.groupID(), 0);
+}
+
+// test getting UID from UID -- long
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  const int           argc  =3;
+  const char * const  argv[]={"./a.out", "--user", "666"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.userID(), 666);
+}
+
+// test getting UID from UID -- short
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  const int           argc  =3;
+  const char * const  argv[]={"./a.out", "-u", "666"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.userID(), 666);
+}
+
+// test getting UID from name
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  const int           argc  =3;
+  const char * const  argv[]={"./a.out", "--user", "root"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.userID(), 0);
+}
+
+// test getting GID from GID -- long
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "--group", "666"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.groupID(), 666);
+}
+
+// test getting GID from GID -- short
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "-g", "666"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.groupID(), 666);
+}
+
+// test getting GID from name
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "--group", "root"};
+  const CmdLineParser clp(argc, argv);
+  ensure_equals("invalid UID", clp.groupID(), 0);
+}
+
+// test error message on unknown group
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "--group", "thisgroupdoesnotexist"};
+  try
+  {
+    CmdLineParser clp(argc, argv);
+    fail("parsing of unknown group didn't failed");
+  }
+  catch(const CmdLineParser::ExceptionUnknownName&)
+  {
+    // this is expected
+  }
+}
+
+// test error message on negative GID
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "--group", "-666"};
+  try
+  {
+    CmdLineParser clp(argc, argv);
+    fail("parsing of negative GID didn't failed");
+  }
+  catch(const CmdLineParser::ExceptionUnknownName&)
+  {
+    // this is expected
+  }
+}
+
+// test error message on unknown user
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "--user", "thisuserdoesnotexist"};
+  try
+  {
+    CmdLineParser clp(argc, argv);
+    fail("parsing of unknown user didn't failed");
+  }
+  catch(const CmdLineParser::ExceptionUnknownName&)
+  {
+    // this is expected
+  }
+}
+
+// test error message on negative UID
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "--user", "-666"};
+  try
+  {
+    CmdLineParser clp(argc, argv);
+    fail("parsing of negiative UID didn't failed");
+  }
+  catch(const CmdLineParser::ExceptionUnknownName&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
