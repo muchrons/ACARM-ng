@@ -35,7 +35,7 @@ case "$1" in
       echo "according to $PIDFILE deamon is already running" >&2
       exit 1
     fi
-    "$DAEMON" >> "$RUNLOG" 2>&1 &
+    "$DAEMON" -d >> "$RUNLOG" 2>&1
     while ! pidof acarm-ng.bin > /dev/null 2>&1 && test -f /proc/$!/cmdline
     do
       echo -n '.'
