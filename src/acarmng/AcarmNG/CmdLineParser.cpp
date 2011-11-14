@@ -77,15 +77,6 @@ CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
     printHelp_     =true;
     quitAfterPrint_=true;
   }
-  // TODO set proper options
 }
-
-/*
-  bool printHelp_;
-  bool printBanner_;
-  bool printVersion_;
-  bool quitAfterPrint_;
-  bool daemonize_;
- */
 
 } // namespace AcarmNG
