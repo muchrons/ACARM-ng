@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+    <cleanupOlder>13</cleanupOlder>
+    <pluginsDir>/some/dir</pluginsDir>
+  </general>
+
+</include>

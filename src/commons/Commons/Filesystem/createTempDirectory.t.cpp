@@ -7,7 +7,6 @@
 #include "Commons/Filesystem/createTempDirectory.hpp"
 
 using namespace std;
-using namespace boost::filesystem;
 using namespace Commons::Filesystem;
 
 namespace
@@ -16,7 +15,7 @@ namespace
 struct TestClass
 {
   template<typename TEx>
-  void ensureThrow(const path &p) const
+  void ensureThrow(const Base::Filesystem::Path &p) const
   {
     try
     {
@@ -29,9 +28,9 @@ struct TestClass
     }
   }
 
-  void ensureOk(const path &p) const
+  void ensureOk(const Base::Filesystem::Path &p) const
   {
-    const path out=createTempDirectory(p);
+    const Base::Filesystem::Path out=createTempDirectory(p);
     tut::ensure("not created", exists(out) );
     tut::ensure("dir not created", is_directory(out) );
     remove(out);
@@ -85,7 +84,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensureThrow<ExceptionFilesystemIO>( path() );
+  ensureThrow<ExceptionFilesystemIO>( Base::Filesystem::Path() );
 }
 
 // test deafult parameter's value
@@ -93,7 +92,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const path out=createTempDirectory();
+  const Base::Filesystem::Path out=createTempDirectory();
   ensure("not created", exists(out) );
   ensure("dir not created", is_directory(out) );
   remove(out);

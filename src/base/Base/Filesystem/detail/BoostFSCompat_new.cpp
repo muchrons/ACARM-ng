@@ -3,9 +3,9 @@
  *
  * implementation of BoostFSCompat.hpp using new boost versions.
  */
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
+#include "Base/Filesystem/detail/BoostFSCompat.hpp"
 
-namespace Commons
+namespace Base
 {
 namespace Filesystem
 {
@@ -22,6 +22,11 @@ boost::filesystem::path parentPath(const boost::filesystem::path &p)
   return p.parent_path();
 }
 
+bool isAbsolute(const boost::filesystem::path &p)
+{
+  return p.is_absolute();
+}
+
 } // namespace detail
 } // namespace Filesystem
-} // namespace Commons
+} // namespace Base

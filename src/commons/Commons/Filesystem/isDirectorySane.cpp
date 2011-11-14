@@ -4,18 +4,19 @@
  */
 #include <cassert>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
+using namespace Base::Filesystem;
 
 namespace Commons
 {
 namespace Filesystem
 {
 
-bool isDirectorySane(const boost::filesystem::path &p)
+bool isDirectorySane(const Path &p)
 {
   try
   {
@@ -32,7 +33,7 @@ bool isDirectorySane(const boost::filesystem::path &p)
         return false;
       }
       // proceed with parent directory
-      tmp=detail::parentPath(tmp);
+      tmp=Base::Filesystem::parentPath(tmp);
     }
     while( tmp.empty()!=true );
 

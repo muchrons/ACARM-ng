@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace boost::filesystem;
+using namespace Base::Filesystem;
 using namespace Commons::Filesystem;
 
 namespace

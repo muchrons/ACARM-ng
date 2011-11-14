@@ -2,17 +2,17 @@
  * readTextFile.cpp
  *
  */
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/readTextFile.hpp"
 
 using namespace std;
-
 
 namespace Commons
 {
 namespace Filesystem
 {
 
-boost::shared_array<char> readTextFile(const boost::filesystem::path &p)
+boost::shared_array<char> readTextFile(const Base::Filesystem::Path &p)
 {
   SharedPtrNotNULL<std::fstream>  fs=openFile(p, Mode::READ);
   std::istream                   &is=*fs;

@@ -7,11 +7,11 @@
 #include <unistd.h>
 #include <cassert>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFifoSane.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -20,7 +20,7 @@ namespace Commons
 namespace Filesystem
 {
 
-bool isFifoSane(const boost::filesystem::path &p)
+bool isFifoSane(const Base::Filesystem::Path &p)
 {
   try
   {
@@ -29,7 +29,7 @@ bool isFifoSane(const boost::filesystem::path &p)
     // loop through all directories in the path
     if( !isElementSane(p) )
       return false;
-    if( detail::isRegularFile(p) )
+    if( Base::Filesystem::isRegularFile(p) )
     {
       LOGMSG_WARN_S(log)<<"element '"<<p<<"' is regular file - aborting...";
       return false;
@@ -41,7 +41,7 @@ bool isFifoSane(const boost::filesystem::path &p)
     }
 
     // test parent directories, if specified
-    const path parent=detail::parentPath(p);
+    const Base::Filesystem::Path parent=Base::Filesystem::parentPath(p);
     if( parent.empty()==false )
       return isDirectorySane(parent);
 

@@ -6,11 +6,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
+#include "Base/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace std;
 using namespace boost::filesystem;
-using namespace Commons::Filesystem::detail;
+using namespace Base::Filesystem::detail;
 
 namespace
 {
@@ -22,7 +22,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/Filesystem/detail/BoostFSCompat");
+factory tf("Base/Filesystem/detail/BoostFSCompat");
 } // unnamed namespace
 
 
@@ -34,7 +34,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("normal file not marked regular", isRegularFile("commons.t") );
+  ensure("normal file not marked regular", isRegularFile("base.t") );
 }
 
 // test getting parent of a given element
@@ -43,6 +43,22 @@ template<>
 void testObj::test<2>(void)
 {
   ensure_equals("invalid parent path", parentPath("/some/path/myFile"), "/some/path");
+}
+
+// test absolute path
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ensure("path detected as non-absolute", isAbsolute("/dev/null") );
+}
+
+// test non-absolute path
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("path detected as absolute", isAbsolute("relative/path")==false );
 }
 
 } // namespace tut
