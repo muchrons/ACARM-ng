@@ -103,8 +103,6 @@ void MainImpl::runImpl(void)
   if( clp_.daemonize() )
     runAsDaemon();
 
-  // TODO: command line parsing
-return;                                                                                                   
   // after all is said and done - run the applicaiton! :)
   runApp();
 }
