@@ -2,7 +2,6 @@
 all: build
 
 NCPUS:=$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
-
 LOCAL_MAKE_FLAGS:=-C src --no-print-directory -j "$(NCPUS)"
 
 -include configure-output.mk
@@ -50,7 +49,7 @@ install-bin: ensure-configure
 	@echo '#!/bin/sh' > '$(INSTALL_DIR)/bin/acarm-ng'
 	@echo 'cd "$(INSTALL_DIR)/etc/acarm-ng/"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/bin/acarm-ng'
-	@echo 'exec "$(INSTALL_DIR)/bin/acarm-ng.bin"' >> '$(INSTALL_DIR)/bin/acarm-ng'
+	@echo 'exec "$(INSTALL_DIR)/bin/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/bin/acarm-ng'
 	@install -v -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/bin/acarm-ng.bin'
 	@install -v -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/bin/acarm-logsplitter'
