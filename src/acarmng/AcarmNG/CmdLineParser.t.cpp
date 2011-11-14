@@ -4,6 +4,8 @@
  */
 #include <tut.h>
 #include <sstream>
+#include <unistd.h>
+#include <sys/types.h>
 
 #include "AcarmNG/CmdLineParser.hpp"
 
@@ -172,7 +174,7 @@ void testObj::test<13>(void)
   ensure("no '--daemon'", str.find("--daemon")!=std::string::npos);
 }
 
-// test default UID/GID
+// test default UID/GID (i.e. current group/user)
 template<>
 template<>
 void testObj::test<14>(void)
@@ -180,8 +182,8 @@ void testObj::test<14>(void)
   const int           argc  =1;
   const char * const  argv[]={"./a.out"};
   const CmdLineParser clp(argc, argv);
-  ensure_equals("invalid UID", clp.userID(),  0);
-  ensure_equals("invalid GID", clp.groupID(), 0);
+  ensure_equals("invalid UID", clp.userID(),  getuid() );
+  ensure_equals("invalid GID", clp.groupID(), getgid() );
 }
 
 // test getting UID from UID -- long

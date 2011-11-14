@@ -2,10 +2,11 @@
  * CmdLineParser.cpp
  *
  */
-#include <sys/types.h>
 #include <pwd.h>
 #include <grp.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <boost/program_options.hpp>
 
 #include "Logger/Logger.hpp"
@@ -30,8 +31,8 @@ po::options_description makeDesc(void)
     ("banner,b",                         "show program banner and exit")
     ("quiet,q",                          "do not show anything during startup")
     ("daemonize,d",                      "daemonize process directly after start")
-    ("user,u",      po::value<string>(), "change UID to this one, before starting")
-    ("group,g",     po::value<string>(), "change GID to this one, before starting")
+    ("user,u",      po::value<string>(), "change to given UID/user before starting")
+    ("group,g",     po::value<string>(), "change to given GID/group before starting")
     ("help,h",                           "show help message and exit")
   ;
   return desc;
@@ -64,8 +65,8 @@ CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
   printVersion_(false),
   quitAfterPrint_(false),
   daemonize_(false),
-  uid_(0),
-  gid_(0)
+  uid_( getuid() ),
+  gid_( getgid() )
 {
   LOGMSG_DEBUG_S(log_)<<"parsing command line options - got "<<argc<<" arguments (incliuding program name)";
 
