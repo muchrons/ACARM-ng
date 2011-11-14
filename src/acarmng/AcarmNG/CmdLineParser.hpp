@@ -17,45 +17,76 @@
 namespace AcarmNG
 {
 
+/** \brief class performming parsing of the command line arguments.
+ *
+ *  arguments are parsed once and results are saved locally, for later usage.
+ */
 struct CmdLineParser: private boost::noncopyable
 {
+  /** \brief exception thrown when unknown user/group name is passed.
+   */
   struct ExceptionUnknownName: public Exception
   {
+    /** \brief create exception message/type.
+     *  \param where location where exception has been risen.
+     *  \param msg   exact message (what exactly went wrong).
+     *  \param name  name that caused error.
+     */
     ExceptionUnknownName(const Location &where, const char *msg, const std::string &name);
   }; // struct ExceptionUnknownName
 
 
+  /** \brief parse command line.
+   *  \param argc number of arguments.
+   *  \param argv table of arguments.
+   */
   CmdLineParser(int argc, char const * const * argv);
 
+  /** \brief gets information if help should be printed.
+   */
   bool printHelp(void) const
   {
     return printHelp_;
   }
+  /** \brief gets info if banner should be printed.
+   */
   bool printBanner(void) const
   {
     return printBanner_;
   }
+  /** \brief gets info if version information should be printed.
+   */
   bool printVersion(void) const
   {
     return printVersion_;
   }
+  /** \brief informs if program should quit after printing required pieces of information.
+   */
   bool quitAfterPrint(void) const
   {
     return quitAfterPrint_;
   }
+  /** \brief informs if process should demonize before running actuall code.
+   */
   bool daemonize(void) const
   {
     return daemonize_;
   }
+  /** \brief gets UID to change to before running.
+   */
   uid_t userID(void) const
   {
     return uid_;
   }
+  /** \brief gets GID to change to before running.
+   */
   gid_t groupID(void) const
   {
     return gid_;
   }
 
+  /** \brief prints help message to a given stream.
+   */
   static void showHelp(std::ostream &os);
 
 private:
