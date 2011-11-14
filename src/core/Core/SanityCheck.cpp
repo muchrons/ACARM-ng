@@ -45,10 +45,10 @@ void SanityCheck::logSystemInfo(void)
 
 void SanityCheck::ensureNotRoot(void)
 {
-  LOGMSG_DEBUG(log_, "checking if system's not running as root (UID!=0)");
-  if( getuid()==0 )
+  LOGMSG_DEBUG(log_, "checking if system's not running as root (UID!=0 && GID!=0)");
+  if( getuid()==0 || getgid()==0 )
     throw ExceptionRunningAsRoot(SYSTEM_SAVE_LOCATION);
-  LOGMSG_DEBUG_S(log_)<<"system running as UID=="<<getuid();
+  LOGMSG_DEBUG_S(log_)<<"system running as UID="<<getuid()<<" / GID="<<getgid();
 }
 
 } // namespace Core
