@@ -18,6 +18,7 @@ int main(int argc, char **argv)
   desc.add_options()
     ("help,h", "produce help message")
     ("compression,c", po::value<int>(), "set compression level")
+    ("lucky-number,l", po::value<int>()->default_value(42), "sets your lucky number")
   ;
 
   // parse options
@@ -37,6 +38,9 @@ int main(int argc, char **argv)
     cout<<"Compression level was set to "<<vm["compression"].as<int>()<<"."<<endl;
   else
     cout<<"Compression level was not set."<<endl;
+
+  // show favorite number
+  cout<<"Your lucky number is "<<vm["lucky-number"].as<int>()<<endl;
 
   return 0;
 }
