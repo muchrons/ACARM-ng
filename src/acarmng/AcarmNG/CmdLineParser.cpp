@@ -12,6 +12,23 @@ namespace po = boost::program_options;
 namespace AcarmNG
 {
 
+namespace
+{
+po::options_description makeDesc(void)
+{
+  po::options_description desc("Options");
+  desc.add_options()
+    ("version,v",   "show software version and exit")
+    ("banner,b",    "show program banner and exit")
+    ("quiet,q",     "do not show anything during startup")
+    ("daemonize,d", "daemonize process directly after start")
+    ("help,h",      "show help message and exit")
+  ;
+  return desc;
+} // makeDesc()
+} // unnamed namespace
+
+
 CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
   printHelp_(false),
   printBanner_(true),
@@ -22,16 +39,8 @@ CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
   //
   // parse options
   //
-  po::options_description desc("Options");
-  desc.add_options()
-    ("version,v", "show software version and exit")
-    ("banner,b", "show program banner and exit")
-    ("quiet,q", "do not show anything during startup")
-    ("daemonize,d", "daemonize process directly after start")
-    ("help,h", "show help message and exit")
-  ;
-
-  po::variables_map vm;
+  const po::options_description desc=makeDesc();
+  po::variables_map             vm;
   po::store( po::parse_command_line(argc, argv, desc), vm );
   po::notify(vm);
 
@@ -77,6 +86,12 @@ CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
     printHelp_     =true;
     quitAfterPrint_=true;
   }
+}
+
+
+void CmdLineParser::showHelp(std::ostream &os)
+{
+  os << makeDesc() << std::endl;
 }
 
 } // namespace AcarmNG

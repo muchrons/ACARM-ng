@@ -5,6 +5,7 @@
 #ifndef INCLUDE_ACARMNG_CMDLINEPARSER_HPP_FILE
 #define INCLUDE_ACARMNG_CMDLINEPARSER_HPP_FILE
 
+#include <iosfwd>
 #include <boost/noncopyable.hpp>
 
 
@@ -35,6 +36,7 @@ struct CmdLineParser: private boost::noncopyable
   {
     return daemonize_;
   }
+  static void showHelp(std::ostream &os);
 
 private:
   bool printHelp_;

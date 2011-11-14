@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <sstream>
 
 #include "AcarmNG/CmdLineParser.hpp"
 
@@ -156,6 +157,19 @@ void testObj::test<12>(void)
   const int          argc  =1;
   const char * const argv[]={"./a.out"};
   check( CmdLineParser(argc, argv), false, true, false, false, false);
+}
+
+// test showing help screen
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  std::stringstream  ss;
+  CmdLineParser::showHelp(ss);
+  const std::string &str=ss.str();
+  // check some random elements
+  ensure("no '--help'",   str.find("--help")  !=std::string::npos);
+  ensure("no '--daemon'", str.find("--daemon")!=std::string::npos);
 }
 
 } // namespace tut
