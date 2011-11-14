@@ -3,8 +3,12 @@
  *
  */
 #include <iostream>
+#include <cstring>
+#include <cerrno>
 #include <cassert>
+#include <unistd.h>
 
+#include "ConfigConsts/version.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Exception.hpp"
 #include "Core/Main.hpp"
@@ -19,8 +23,14 @@ using namespace std;
 namespace AcarmNG
 {
 
+MainImpl::ExceptionCannotDaemonize::ExceptionCannotDaemonize(const Location &where):
+  Exception(where, cc("unable to daemonize process: ", strerror(errno)) )
+{
+}
+
+
 MainImpl::MainImpl(const int argc, char const * const * const argv):
-  log_("MainImpl"),
+  log_("mainimpl"),
   clp_(argc, argv),
   appName_(argv[0])
 {
@@ -31,9 +41,10 @@ MainImpl::MainImpl(const int argc, char const * const * const argv):
 
 int MainImpl::run(void)
 {
-  AcarmNG::blockAllSignals();       // permanently disable all signals
-  //AcarmNG::printBanner(appName_);    // fancy init :)
+  // block all signals, until final handlers will be set
+  AcarmNG::blockAllSignals();
 
+  // execture main program code, along with some prelude
   try
   {
     // run main code
@@ -71,11 +82,53 @@ int MainImpl::run(void)
 
 void MainImpl::runImpl(void)
 {
+  // output stream to be used later on
+  std::ostream &os=std::cout;
+
+  // see what should be printed
+  if( clp_.printHelp() )
+    clp_.showHelp(os);
+  else
+    if( clp_.printVersion() )
+      os << ConfigConsts::versionString << endl;
+    else
+      if( clp_.printBanner() )
+        printBanner(os, appName_.c_str() );
+
+  // only printing of some content was to be done?
+  if( clp_.quitAfterPrint() )
+    return;
+
+  // check if system should be daemonized
+  if( clp_.daemonize() )
+    runAsDaemon();
+
+  // TODO: command line parsing
+return;                                                                                                   
+  // after all is said and done - run the applicaiton! :)
+  runApp();
+}
+
+
+void MainImpl::runApp(void)
+{
   LOGMSG_INFO(log_, "starting application");
   Core::Main m;                         // run application (all done in background threads)
   LOGMSG_INFO(log_, "system started");
   m.waitUntilDone();                    // wait until application is done
   LOGMSG_INFO(log_, "system stopped normally");
+}
+
+
+void MainImpl::runAsDaemon(void)
+{
+  LOGMSG_INFO(log_, "daemonizing process");
+  if( daemon(1, 0)!=0 )
+  {
+    LOGMSG_FATAL_S(log_)<<"daemonizing failed: "<<strerror(errno)<<"; exiting...";
+    throw ExceptionCannotDaemonize(SYSTEM_SAVE_LOCATION);
+  }
+  LOGMSG_INFO(log_, "daemonized process is up and running");
 }
 
 } // namespace AcarmNG
