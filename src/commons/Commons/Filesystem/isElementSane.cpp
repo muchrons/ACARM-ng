@@ -9,16 +9,13 @@
 
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
-#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
-
-using namespace boost::filesystem;
 
 namespace Commons
 {
 namespace Filesystem
 {
 
-bool isElementSane(const boost::filesystem::path &p)
+bool isElementSane(const Base::Filesystem::Path &p)
 {
   const Logger::Node log("commons.filesystem.iselementsane");
   LOGMSG_DEBUG_S(log)<<"checking '"<<p<<"' (cannonical: '"<<system_complete(p)<<"')";
@@ -54,7 +51,7 @@ bool isElementSane(const boost::filesystem::path &p)
   }
 
   // check if file has NO hard-links (1==self)
-  if( detail::isRegularFile(p) )
+  if( Base::Filesystem::isRegularFile(p) )
   {
     if(st.st_nlink!=1)
     {

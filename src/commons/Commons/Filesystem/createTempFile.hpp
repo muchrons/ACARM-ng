@@ -9,8 +9,8 @@
 
 #include <utility>
 #include <fstream>
-#include <boost/filesystem.hpp>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
@@ -20,7 +20,7 @@ namespace Filesystem
 {
 
 /** \brief structure representing temporary file.  */
-typedef std::pair< SharedPtrNotNULL<std::fstream>, boost::filesystem::path > TempFile;
+typedef std::pair<SharedPtrNotNULL<std::fstream>, Base::Filesystem::Path> TempFile;
 
 /** \brief create new, empty temporary file.
  *  \param root directory to create temp file in.
@@ -30,7 +30,7 @@ typedef std::pair< SharedPtrNotNULL<std::fstream>, boost::filesystem::path > Tem
  *  creates temporary file in given directory, performing proper sanity-checks before doing so.
  *  throws on error.
  */
-TempFile createTempFile(const boost::filesystem::path &root=".");
+TempFile createTempFile(const Base::Filesystem::Path &root=".");
 
 } // namespace Filesystem
 } // namespace Commons

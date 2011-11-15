@@ -7,9 +7,9 @@
 
 /* public header */
 
-#include <boost/filesystem.hpp>
 #include <boost/shared_array.hpp>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/openFile.hpp"
 
 namespace Commons
@@ -22,7 +22,7 @@ namespace Filesystem
  *  \return file's content as an array. returned value is always non-NULL!
  *  \note always use cannonicalized path to open file.
  */
-boost::shared_array<char> readTextFile(const boost::filesystem::path &p);
+boost::shared_array<char> readTextFile(const Base::Filesystem::Path &p);
 
 } // namespace Filesystem
 } // namespace Commons

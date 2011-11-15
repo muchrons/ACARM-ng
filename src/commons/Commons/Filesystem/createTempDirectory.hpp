@@ -7,8 +7,7 @@
 
 /* public header */
 
-#include <boost/filesystem.hpp>
-
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
 namespace Commons
@@ -24,7 +23,7 @@ namespace Filesystem
  *  creates temp directory in given root, performing proper sanity-checks before doing so.
  *  throws on error.
  */
-boost::filesystem::path createTempDirectory(const boost::filesystem::path &root=".");
+Base::Filesystem::Path createTempDirectory(const Base::Filesystem::Path &root=".");
 
 } // namespace Filesystem
 } // namespace Commons

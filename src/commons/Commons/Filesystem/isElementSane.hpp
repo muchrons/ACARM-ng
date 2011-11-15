@@ -7,8 +7,7 @@
 
 /* public header */
 
-#include <boost/filesystem.hpp>
-
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
 namespace Commons
@@ -22,7 +21,7 @@ namespace Filesystem
  *
  *  call checks if element's not symbolic link nor hard link (in case of files).
  */
-bool isElementSane(const boost::filesystem::path &p);
+bool isElementSane(const Base::Filesystem::Path &p);
 
 } // namespace Filesystem
 } // namespace Commons

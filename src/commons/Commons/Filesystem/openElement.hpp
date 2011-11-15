@@ -6,8 +6,8 @@
 #define INCLUDE_COMMONS_FILESYSTEM_OPENELEMENT_HPP_FILE
 
 #include <fstream>
-#include <boost/filesystem.hpp>
 
+#include "Base/Filesystem/BoostFS.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/Mode.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
@@ -31,8 +31,8 @@ namespace Filesystem
  *  opens given element, performing proper sanity-checks (via user-provided
  *  function) before doing so. throws on error.
  */
-SharedPtrNotNULL<std::fstream> openElement(const boost::filesystem::path &p,
-                                           const Mode                     mode,
+SharedPtrNotNULL<std::fstream> openElement(const Base::Filesystem::Path &p,
+                                           const Mode                    mode,
                                            bool (*isSane)(const boost::filesystem::path &) );
 
 } // namespace Filesystem

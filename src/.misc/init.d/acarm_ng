@@ -10,19 +10,22 @@
 #                    placed in /etc/init.d.
 ### END INIT INFO
 
-# Author: Bartosz Szurgot <bartosz.szurgot@pwr.wroc.pl>
+# Author: Bartosz 'BaSz' Szurgot <bartosz.szurgot@pwr.wroc.pl>
 
 # Do NOT "set -e"
 
+# script setup
+USER="acarm-ng"
+GROUP="acarm-ng"
+PREFIX="/home/acarm-ng/acarm-ng-inst"
+
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="ACARM-ng daemon"
-NAME=acarm_ng
-DAEMON=/home/acarm-ng/run
-DAEMON_ARGS=""
-PIDFILE=/var/run/$NAME.pid
-RUNLOG=/var/log/acarm-ng/run.log
-SCRIPTNAME=/etc/init.d/$NAME
+PATH="/sbin:/usr/sbin:/bin:/usr/bin"
+RUNLOG="$PREFIX/var/log/acarm-ng/run.log"
+DAEMON="$PREFIX/bin/acarm-ng"
+DAEMON_ARGS="-d -u $USER -g $GROUP"
+NAME="ACARM-ng"
+APPNAME="acarm-ng.bin"
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
@@ -30,38 +33,33 @@ SCRIPTNAME=/etc/init.d/$NAME
 case "$1" in
   start)
     echo -n "starting $NAME (run log in $RUNLOG): "
-    if [ -f "$PIDFILE" ] && [ -d "/proc/`cat "$PIDFILE"`" ] && grep -qi 'acarm' "/proc/`cat "$PIDFILE"`"/cmdline
+    pidof "$APPNAME" > /dev/null 2>&1 && echo "deamon is already running" >&2 && exit 1
+    mkdir -p "`dirname "$RUNLOG"`" || exit $?
+    "$DAEMON" $DAEMON_ARGS >> "$RUNLOG" 2>&1
+    RET="$?"
+    if [ "$RET" -ne "0" ]
     then
-      echo "according to $PIDFILE deamon is already running" >&2
-      exit 1
+      echo "FAILED"
+    else
+      echo "ok"
     fi
-    "$DAEMON" >> "$RUNLOG" 2>&1 &
-    while ! pidof acarm-ng.bin > /dev/null 2>&1 && test -f /proc/$!/cmdline
-    do
-      echo -n '.'
-      sleep 1
-    done
-    echo
-    pidof acarm-ng.bin > "$PIDFILE"
+    exit "$RET"
   ;;
+
   stop)
-    # not running?
-    [ -f "$PIDFILE" ] || exit 0
-    PID="`cat "$PIDFILE"`"
-    echo -n "stopping $NAME/$PID (may take some time): "
+    echo -n "stopping $NAME (may take some time): "
     # wait until process exits
-    while [ "`ps ax | grep "^ *$PID " | grep -v grep | wc -l`" -ne 0 ]
+    while pidof "$APPNAME" > /dev/null 2>&1
     do
-      kill "$PID"
+      kill "`pidof "$APPNAME" 2>/dev/null`" > /dev/null 2>&1
       echo -n '.'
       sleep 1
     done
     echo
-    # remove pid file
-    rm -f "$PIDFILE"
   ;;
+
   *)
-    echo "Usage: $SCRIPTNAME {start|stop}" >&2
+    echo "Usage: $0 {start|stop}" >&2
     exit 3
   ;;
 esac

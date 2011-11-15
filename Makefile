@@ -2,7 +2,6 @@
 all: build
 
 NCPUS:=$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
-
 LOCAL_MAKE_FLAGS:=-C src --no-print-directory -j "$(NCPUS)"
 
 -include configure-output.mk
@@ -50,7 +49,7 @@ install-bin: ensure-configure
 	@echo '#!/bin/sh' > '$(INSTALL_DIR)/bin/acarm-ng'
 	@echo 'cd "$(INSTALL_DIR)/etc/acarm-ng/"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/bin/acarm-ng'
-	@echo 'exec "$(INSTALL_DIR)/bin/acarm-ng.bin"' >> '$(INSTALL_DIR)/bin/acarm-ng'
+	@echo 'exec "$(INSTALL_DIR)/bin/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/bin/acarm-ng'
 	@install -v -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/bin/acarm-ng.bin'
 	@install -v -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/bin/acarm-logsplitter'
@@ -63,6 +62,9 @@ install-includes: ensure-configure
 .PHONY: install-config
 install-config: $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml ensure-configure
 	@install -v -d '$(INSTALL_DIR)/etc/acarm-ng'
+	@install -v -d '$(INSTALL_DIR)/etc/init.d'
+	@install -v -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/etc/init.d/acarm_ng'
+	@sed -i -e 's:^PREFIX=".*"$$:PREFIX="$(INSTALL_DIR)":' '$(INSTALL_DIR)/etc/init.d/acarm_ng'
 
 
 $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example_configs/minimal.xml
@@ -74,8 +76,8 @@ $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example
 
 .PHONY: install-doc
 install-doc: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/share/doc'
-	@cp -rL 'doc' '$(INSTALL_DIR)/share/'
+	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng'
+	@cp -rL 'doc' '$(INSTALL_DIR)/share/ACARM-ng/'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
