@@ -1,5 +1,5 @@
 /*
- * blockAllSignals.cpp
+ * blockAllSignals.hpp
  *
  */
 #ifndef INCLUDE_ACARMNG_BLOCKALLSIGNALS_HPP_FILE

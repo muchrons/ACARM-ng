@@ -79,7 +79,7 @@ void Loader::loadAll(const boost::filesystem::path &dir)
     LOGMSG_INFO_S(log_)<<"plugin '"<<*it<<"' loaded";
   } // for(files)
 
-  LOGMSG_INFO_S(log_)<<count_<<" plugins loaded";
+  LOGMSG_INFO_S(log_)<<count_<<" plugin(s) loaded";
 }
 
 

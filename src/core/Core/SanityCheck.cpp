@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/utsname.h>
 
+#include "ConfigConsts/version.hpp"
 #include "Base/StrError.hpp"
 #include "Logger/Logger.hpp"
 #include "Core/SanityCheck.hpp"
@@ -35,18 +36,19 @@ void SanityCheck::logSystemInfo(void)
     return;
   }
 
-  LOGMSG_INFO_S(log_)<<"running on OS '"<<buf.sysname <<"' "
-                     <<"version '"      <<buf.version <<"' "
-                     <<"release '"      <<buf.release <<"' "
-                     <<"machine '"      <<buf.nodename<<"'";
+  LOGMSG_INFO_S(log_)<<"system version '" << ConfigConsts::versionString << "' "
+                     <<"running on OS '"  << buf.sysname                 << "' "
+                     <<"version '"        << buf.version                 << "' "
+                     <<"release '"        << buf.release                 << "' "
+                     <<"machine '"        << buf.nodename                << "'";
 }
 
 void SanityCheck::ensureNotRoot(void)
 {
-  LOGMSG_DEBUG(log_, "checking if system's not running by root (UID!=0)");
-  if( getuid()==0 )
+  LOGMSG_DEBUG(log_, "checking if system's not running as root (UID!=0 && GID!=0)");
+  if( getuid()==0 || getgid()==0 )
     throw ExceptionRunningAsRoot(SYSTEM_SAVE_LOCATION);
-  LOGMSG_DEBUG_S(log_)<<"system running as UID=="<<getuid();
+  LOGMSG_DEBUG_S(log_)<<"system running as UID="<<getuid()<<" / GID="<<getgid();
 }
 
 } // namespace Core
