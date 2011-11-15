@@ -227,7 +227,7 @@ void testObj::test<14>(void)
   Unlinker cleanup(outPath);
   of<<"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"<<endl;
   of<<"<acarm_ng>"<<endl;
-  of<<"  <include>"<<incFull.c_str()<<"</include>"<<endl;
+  of<<"  <include>"<<incFull.string()<<"</include>"<<endl;
   of<<"</acarm_ng>"<<endl;
   of.close();
 

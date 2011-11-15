@@ -3,6 +3,7 @@ Persistency::Postgres:
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * optimize postgres data restoration using roots meta alerts table.
+* force UTC timezone uppon data base connection.
 
 configuration:
 --------------

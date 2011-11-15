@@ -90,3 +90,6 @@ TMPLD:=
 unexport TMP
 unexport TMP_OPT
 unexport TMPLD
+
+# may need to overwite some deafult configs for other hosts
+-include build_config/local-config.mk
