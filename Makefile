@@ -62,6 +62,9 @@ install-includes: ensure-configure
 .PHONY: install-config
 install-config: $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml ensure-configure
 	@install -v -d '$(INSTALL_DIR)/etc/acarm-ng'
+	@install -v -d '$(INSTALL_DIR)/etc/init.d'
+	@install -v -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/etc/init.d/acarm_ng'
+	@sed -i -e 's:^PREFIX=".*"$$:PREFIX="$(INSTALL_DIR)":' '$(INSTALL_DIR)/etc/init.d/acarm_ng'
 
 
 $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example_configs/minimal.xml
@@ -73,8 +76,8 @@ $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example
 
 .PHONY: install-doc
 install-doc: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/share/doc'
-	@cp -rL 'doc' '$(INSTALL_DIR)/share/'
+	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng'
+	@cp -rL 'doc' '$(INSTALL_DIR)/share/ACARM-ng/'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
