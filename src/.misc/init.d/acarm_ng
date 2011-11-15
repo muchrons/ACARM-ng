@@ -17,15 +17,15 @@
 # script setup
 USER="acarm-ng"
 GROUP="acarm-ng"
-PREFIX="`readlink -f $(dirname "$(readlink -f "$0")")/../../`"
-RUNLOG="$PREFIX/var/log/acarm-ng/run.log"
-DAEMON="$PREFIX/bin/acarmng.out"
+PREFIX="/home/acarm-ng/acarm-ng-inst"
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH="/sbin:/usr/sbin:/bin:/usr/bin"
-DAEMON_ARGS="-d -u '$USER' -g '$GROUP'"
+RUNLOG="$PREFIX/var/log/acarm-ng/run.log"
+DAEMON="$PREFIX/bin/acarm-ng"
+DAEMON_ARGS="-d -u $USER -g $GROUP"
 NAME="ACARM-ng"
-APPNAME="acarmng.out"
+APPNAME="acarm-ng.bin"
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
@@ -34,9 +34,16 @@ case "$1" in
   start)
     echo -n "starting $NAME (run log in $RUNLOG): "
     pidof "$APPNAME" > /dev/null 2>&1 && echo "deamon is already running" >&2 && exit 1
-    mkdir "`dirname "$RUNLOG"`" || exit $?
+    mkdir -p "`dirname "$RUNLOG"`" || exit $?
     "$DAEMON" $DAEMON_ARGS >> "$RUNLOG" 2>&1
-    exit $?
+    RET="$?"
+    if [ "$RET" -ne "0" ]
+    then
+      echo "FAILED"
+    else
+      echo "ok"
+    fi
+    exit "$RET"
   ;;
 
   stop)
