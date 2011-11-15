@@ -11,6 +11,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
+#include "Commons/CmdLineArgs.hpp"
 #include "AcarmNG/CmdLineParser.hpp"
 
 using namespace std;
@@ -75,7 +76,10 @@ CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
   //
   const po::options_description desc=makeDesc();
   po::variables_map             vm;
-  po::store( po::parse_command_line(argc, argv, desc), vm );
+  // making local copy of the arguments is required here, since older versions of boost::program_options
+  // were not const-correct, causing compile-time errors regarding const to non-const convertions.
+  const Commons::CmdLineArgs    cla(argc, argv);
+  po::store( po::parse_command_line(cla.argc(), cla.argv(), desc), vm );
   po::notify(vm);
 
   //
