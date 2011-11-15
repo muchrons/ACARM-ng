@@ -92,6 +92,26 @@ td.menuTd
   text-align: center;
 }
 
+a.freelink:visited
+{ 
+  color: #ff4;
+}
+
+a.freelink:link
+{ 
+  color: #ff4;
+}
+
+a.freelink:hover
+{ 
+  color: #fff;
+}
+
+a.freelink:active
+{ 
+  color: #fff;
+}
+
 
 a:visited
 {

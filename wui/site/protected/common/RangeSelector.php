@@ -56,6 +56,16 @@ class RangeSelector extends TTemplateControl
       $this->MultiView->ActiveViewIndex=$this->view;
   }
 
+  public function FromDate()
+  {
+    return date("Y-m-d 00:00:00",strtotime($this->From->Date));
+  }
+
+  public function ToDate()
+  {
+    return date("Y-m-d 23:59:59",strtotime($this->To->Date));
+  }
+
   public function getFrom()
   {
     $this->ensureChildControls();
