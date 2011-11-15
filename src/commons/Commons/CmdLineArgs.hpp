@@ -43,10 +43,12 @@ public:
 
   /** \brief gives access to non-const array of arguments.
    *  \note array, as well as all it's elements, are ensured to be not NULL.
+   *  \return returns array of pointers to arguments, compatible with main's argv.
    */
   char **argv(void) const;
   /** \brief arguments count (i.e. size of argv() array).
    *  \note returned value is always >=1.
+   *  \return returns number of arguments, compatible with main's argc.
    */
   int argc(void) const;
 
