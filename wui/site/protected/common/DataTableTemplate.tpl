@@ -25,8 +25,8 @@
     <com:TPager ID="Pager"
                 ControlToPaginate="DataGrid"
                 Mode="Numeric"
-                OnPageIndexChanged="changePage" 
-                ForeColor="White" 
+                OnPageIndexChanged="changePage"
+                ForeColor="White"
                 BackColor="Grey"/>
 
     <com:TDataGrid
