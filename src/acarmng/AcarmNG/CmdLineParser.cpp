@@ -54,7 +54,7 @@ bool isNumber(const string &str)
 
 
 CmdLineParser::ExceptionUnknownName::ExceptionUnknownName(const Location &where, const char *msg, const std::string &name):
-  Exception(where, cc("invalid credentials - ", msg, ": ", name) )
+  Exception(where, cc("invalid credentials - ", msg, ": '", name, "'") )
 {
 }
 
