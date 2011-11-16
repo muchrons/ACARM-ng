@@ -13,7 +13,8 @@
 #include "Logger/Node.hpp"
 #include "AcarmNG/Exception.hpp"
 
-
+// TODO: When invalid option is used, usage should be printed.
+// TODO: When the same option is used twice, usage should be printed.
 namespace AcarmNG
 {
 

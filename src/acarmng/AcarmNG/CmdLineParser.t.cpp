@@ -324,4 +324,6 @@ void testObj::test<24>(void)
   }
 }
 
+// TODO: test case for invalid command line option should be added - if mekes sense
+
 } // namespace tut
