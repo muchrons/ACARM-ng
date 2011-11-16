@@ -6,10 +6,12 @@
 #define INCLUDE_ACARMNG_MAINIMPL_HPP_FILE
 
 #include <string>
+#include <pwd.h>
+#include <grp.h>
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
-#include "AcarmNG/CmdLineParser.hpp"
+#include "Commons/CmdLineArgs.hpp"
 #include "AcarmNG/Exception.hpp"
 
 
@@ -61,13 +63,13 @@ public:
 
 private:
   void runImpl(void);
-  void dropPrivileges(void);
+  void dropPrivileges(uid_t uid, gid_t gid);
   void runAsDaemon(void);
   void runApp(void);
 
-  const Logger::Node  log_;
-  const CmdLineParser clp_;
-  const std::string   appName_;
+  const Logger::Node    log_;
+  Commons::CmdLineArgs  cla_;
+  const char           *appName_;
 }; // struct MainImpl
 
 } // namespace AcarmNG

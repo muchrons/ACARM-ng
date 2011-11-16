@@ -14,9 +14,10 @@
 #include "Commons/Exception.hpp"
 #include "Core/Main.hpp"
 #include "AcarmNG/MainImpl.hpp"
-#include "AcarmNG/blockAllSignals.hpp"
 #include "AcarmNG/printBanner.hpp"
+#include "AcarmNG/CmdLineParser.hpp"
 #include "AcarmNG/randomizeSeed.hpp"
+#include "AcarmNG/blockAllSignals.hpp"
 
 using namespace std;
 
@@ -38,9 +39,10 @@ MainImpl::ExceptionCannotDropPrivileges::ExceptionCannotDropPrivileges(const Loc
 
 MainImpl::MainImpl(const int argc, char const * const * const argv):
   log_("acarmng.mainimpl"),
-  clp_(argc, argv),
-  appName_(argv[0])
+  cla_(argc, argv),
+  appName_( cla_.argv()[0] )
 {
+  assert(appName_!=NULL);
   // ensure random number generator is properly seeded
   randomizeSeed();
 }
@@ -57,6 +59,17 @@ int MainImpl::run(void)
     // run main code
     runImpl();
     return 0;
+  }
+  catch(const CmdLineParser::ExceptionParameterError &ex)
+  {
+    // show help screen in case of parameter error
+    const int ret=32;
+    LOGMSG_FATAL_S(log_) << appName_ << ": exception (" << ex.getTypeName()
+                         << ") caught: " << ex.what()
+                         << "; exiting with code " << ret;
+    cerr << appName_ << ": " << ex.what() << endl;
+    CmdLineParser::showHelp(cerr);
+    return ret;
   }
   // TODO: add more catches, with plugin-specific exceptions types
   catch(const Commons::Exception &ex)
@@ -89,28 +102,29 @@ int MainImpl::run(void)
 
 void MainImpl::runImpl(void)
 {
+  // parse command line
+  const CmdLineParser clp( cla_.argc(), cla_.argv() );
   // do not work as root
-  dropPrivileges();
-
+  dropPrivileges( clp.userID(), clp.groupID() );
   // output stream to be used later on
-  std::ostream &os=std::cout;
+  ostream &os=cout;
 
   // see what should be printed
-  if( clp_.printHelp() )
-    clp_.showHelp(os);
+  if( clp.printHelp() )
+    clp.showHelp(os);
   else
-    if( clp_.printVersion() )
+    if( clp.printVersion() )
       os << ConfigConsts::versionString << endl;
     else
-      if( clp_.printBanner() )
-        printBanner(os, appName_.c_str() );
+      if( clp.printBanner() )
+        printBanner(os, appName_);
 
   // only printing of some content was to be done?
-  if( clp_.quitAfterPrint() )
+  if( clp.quitAfterPrint() )
     return;
 
   // check if system should be daemonized
-  if( clp_.daemonize() )
+  if( clp.daemonize() )
     runAsDaemon();
 
   // after all is said and done - run the applicaiton! :)
@@ -118,24 +132,24 @@ void MainImpl::runImpl(void)
 }
 
 
-void MainImpl::dropPrivileges(void)
+void MainImpl::dropPrivileges(const uid_t uid, const gid_t gid)
 {
   // if needed, first drop group ID
-  if( getgid()!=clp_.groupID() )
+  if( getgid()!=gid )
   {
-    LOGMSG_INFO_S(log_)<<"dropping GID from "<<getgid()<<" to "<<clp_.groupID();
-    if( setgid( clp_.groupID() )!=0 )
-      throw ExceptionCannotDropPrivileges(SYSTEM_SAVE_LOCATION, "GID", getgid(), clp_.groupID());
+    LOGMSG_INFO_S(log_)<<"dropping GID from "<<getgid()<<" to "<<gid;
+    if( setgid(gid)!=0 )
+      throw ExceptionCannotDropPrivileges(SYSTEM_SAVE_LOCATION, "GID", getgid(), gid);
   }
   else
     LOGMSG_DEBUG_S(log_)<<"GID is already "<<getgid()<<", as reuqired";
 
   // if needed, drop user ID
-  if( getuid()!=clp_.userID() )
+  if( getuid()!=uid )
   {
-    LOGMSG_INFO_S(log_)<<"dropping UID from "<<getuid()<<" to "<<clp_.userID();
-    if( setuid( clp_.userID() )!=0 )
-      throw ExceptionCannotDropPrivileges(SYSTEM_SAVE_LOCATION, "UID", getuid(), clp_.userID());
+    LOGMSG_INFO_S(log_)<<"dropping UID from "<<getuid()<<" to "<<uid;
+    if( setuid(uid)!=0 )
+      throw ExceptionCannotDropPrivileges(SYSTEM_SAVE_LOCATION, "UID", getuid(), uid);
   }
   else
     LOGMSG_DEBUG_S(log_)<<"UID is already "<<getuid()<<", as reuqired";

@@ -324,6 +324,40 @@ void testObj::test<24>(void)
   }
 }
 
-// TODO: test case for invalid command line option should be added - if mekes sense
+// test unknown option
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  const int          argc  =2;
+  const char * const argv[]={"./a.out", "--wtf"};
+  try
+  {
+    CmdLineParser clp(argc, argv);
+    fail("c-tor didn't failed on unknown paramter");
+  }
+  catch(const CmdLineParser::ExceptionParameterError&)
+  {
+    // this is expected
+  }
+}
+
+// test putting the same parameter more than once
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  const int          argc  =3;
+  const char * const argv[]={"./a.out", "-d", "-d"};
+  try
+  {
+    CmdLineParser clp(argc, argv);
+    fail("c-tor didn't failed the same parameter specified more than once");
+  }
+  catch(const CmdLineParser::ExceptionParameterError&)
+  {
+    // this is expected
+  }
+}
 
 } // namespace tut
