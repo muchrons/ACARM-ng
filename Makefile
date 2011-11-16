@@ -23,7 +23,7 @@ build-plugins: ensure-configure
 	done
 
 .PHONY: install
-install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui install-db-schemas
+install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui install-db-schemas install-wui
 	@echo
 	@echo '---------------------------------------------------'
 	@echo
@@ -56,8 +56,8 @@ install-bin: ensure-configure
 
 .PHONY: install-includes
 install-includes: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/include'
-	@cp -rL '$(BUILD_DIR)/includes' '$(INSTALL_DIR)/include/acarm-ng'
+	@install -v -d '$(INSTALL_DIR)/include/acarm-ng'
+	@cp -rL $(BUILD_DIR)/includes/* '$(INSTALL_DIR)/include/acarm-ng/'
 
 .PHONY: install-config
 install-config: $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml ensure-configure
@@ -76,13 +76,13 @@ $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example
 
 .PHONY: install-doc
 install-doc: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng'
-	@cp -rL 'doc' '$(INSTALL_DIR)/share/ACARM-ng/'
+	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng/doc'
+	@cp -rL doc/* '$(INSTALL_DIR)/share/ACARM-ng/doc'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng'
-	@cp -rL 'data_model' '$(INSTALL_DIR)/share/ACARM-ng'
+	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng/data_model'
+	@cp -rL data_model/* '$(INSTALL_DIR)/share/ACARM-ng/data_model'
 
 .PHONY: install-plugins
 install-plugins: install-libs ensure-configure
@@ -97,8 +97,8 @@ install-plugins: install-libs ensure-configure
 
 .PHONY: install-wui
 install-wui: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/var/www'
-	@cp -r 'wui/site' '$(INSTALL_DIR)/var/www/acarm-ng'
+	@install -v -d '$(INSTALL_DIR)/var/www/acarm-ng'
+	@cp -r wui/site/* '$(INSTALL_DIR)/var/www/acarm-ng/'
 
 
 .PHONY: enusre-configure

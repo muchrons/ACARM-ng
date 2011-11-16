@@ -1,4 +1,5 @@
 -- dev --
+* fixed non-updating copy of some elements when performing 'make install'.
 * added command line arguments, like automatic daemonizing, dropping privileges, etc...
 * config file inclusion added.
 * data base creation scripts are now automatically installed when 'make install' is run.
