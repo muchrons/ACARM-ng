@@ -82,6 +82,7 @@ int MainImpl::run(void)
     LOGMSG_FATAL_S(log_) << appName_ << ": persistency exception (" << ex.getTypeName()
                          << ") caught: " << ex.what()
                          << "; exiting with code " << ret;
+    std::cerr << appName_ << ": persistency error: " << ex.what() << endl;
     return ret;
   }
   catch(const Trigger::Exception &ex)
@@ -90,6 +91,7 @@ int MainImpl::run(void)
     LOGMSG_FATAL_S(log_) << appName_ << ": trigger exception (" << ex.getTypeName()
                          << ") caught: " << ex.what()
                          << "; exiting with code " << ret;
+    std::cerr << appName_ << ": trigger error: " << ex.what() << endl;
     return ret;
   }
   catch(const Filter::Exception &ex)
@@ -98,6 +100,7 @@ int MainImpl::run(void)
     LOGMSG_FATAL_S(log_) << appName_ << ": filter exception (" << ex.getTypeName()
                          << ") caught: " << ex.what()
                          << "; exiting with code " << ret;
+    std::cerr << appName_ << ": filter error: " << ex.what() << endl;
     return ret;
   }
   catch(const Input::Exception &ex)
@@ -106,6 +109,7 @@ int MainImpl::run(void)
     LOGMSG_FATAL_S(log_) << appName_ << ": input exception (" << ex.getTypeName()
                          << ") caught: " << ex.what()
                          << "; exiting with code " << ret;
+    std::cerr << appName_ << ": input error: " << ex.what() << endl;
     return ret;
   }
   // handle the most generic exception types
@@ -115,6 +119,7 @@ int MainImpl::run(void)
     LOGMSG_FATAL_S(log_) << appName_ << ": exception (" << ex.getTypeName()
                          << ") caught: " << ex.what()
                          << "; exiting with code " << ret;
+    std::cerr << appName_ << ": generic error: " << ex.what() << endl;
     return ret;
   }
   catch(const std::exception &ex)
@@ -122,12 +127,14 @@ int MainImpl::run(void)
     const int ret=8;
     LOGMSG_FATAL_S(log_) << appName_ << ": std::exception caught: "
                          << ex.what() << "; exiting with code " << ret;
+    std::cerr << appName_ << ": error: " << ex.what() << endl;
     return ret;
   }
   catch(...)
   {
     const int ret=4;
     LOGMSG_FATAL_S(log_) << appName_ << ": unknown exception caught; exiting with code " << ret;
+    std::cerr << appName_ << ": unknown error occured" << endl;
     return ret;
   }
 
