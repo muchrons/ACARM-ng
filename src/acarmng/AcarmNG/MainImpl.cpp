@@ -12,6 +12,10 @@
 #include "ConfigConsts/version.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Exception.hpp"
+#include "Persistency/Exception.hpp"
+#include "Trigger/Exception.hpp"
+#include "Filter/Exception.hpp"
+#include "Input/Exception.hpp"
 #include "Core/Main.hpp"
 #include "AcarmNG/MainImpl.hpp"
 #include "AcarmNG/printBanner.hpp"
@@ -60,9 +64,9 @@ int MainImpl::run(void)
     runImpl();
     return 0;
   }
+  // show help screen in case of parameter error
   catch(const CmdLineParser::ExceptionParameterError &ex)
   {
-    // show help screen in case of parameter error
     const int ret=32;
     LOGMSG_FATAL_S(log_) << appName_ << ": exception (" << ex.getTypeName()
                          << ") caught: " << ex.what()
@@ -71,7 +75,40 @@ int MainImpl::run(void)
     CmdLineParser::showHelp(cerr);
     return ret;
   }
-  // TODO: add more catches, with plugin-specific exceptions types
+  // handle plugins-related exceptions
+  catch(const Persistency::Exception &ex)
+  {
+    const int ret=31;
+    LOGMSG_FATAL_S(log_) << appName_ << ": persistency exception (" << ex.getTypeName()
+                         << ") caught: " << ex.what()
+                         << "; exiting with code " << ret;
+    return ret;
+  }
+  catch(const Trigger::Exception &ex)
+  {
+    const int ret=30;
+    LOGMSG_FATAL_S(log_) << appName_ << ": trigger exception (" << ex.getTypeName()
+                         << ") caught: " << ex.what()
+                         << "; exiting with code " << ret;
+    return ret;
+  }
+  catch(const Filter::Exception &ex)
+  {
+    const int ret=29;
+    LOGMSG_FATAL_S(log_) << appName_ << ": filter exception (" << ex.getTypeName()
+                         << ") caught: " << ex.what()
+                         << "; exiting with code " << ret;
+    return ret;
+  }
+  catch(const Input::Exception &ex)
+  {
+    const int ret=28;
+    LOGMSG_FATAL_S(log_) << appName_ << ": input exception (" << ex.getTypeName()
+                         << ") caught: " << ex.what()
+                         << "; exiting with code " << ret;
+    return ret;
+  }
+  // handle the most generic exception types
   catch(const Commons::Exception &ex)
   {
     const int ret=16;
