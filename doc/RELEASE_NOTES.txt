@@ -1,4 +1,5 @@
 -- dev --
+* more descriptive console error messages added.
 * fixed non-updating copy of some elements when performing 'make install'.
 * added command line arguments, like automatic daemonizing, dropping privileges, etc...
 * config file inclusion added.
