@@ -1,6 +1,5 @@
 /*
- * TODO: wrong file name in the line below
- * testset1.t.cpp
+ * version.t.cpp
  *
  * some example test set for test application.
  *
