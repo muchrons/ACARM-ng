@@ -7,6 +7,7 @@
 }
 {
   boost_python_leak_handle_exception_impl_function
+  Memcheck:Leak
   ...
   fun:_ZN5boost6python21handle_exception_implENS_9function0IvEE
   ...
