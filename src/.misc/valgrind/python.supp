@@ -1,94 +1,59 @@
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_Py_Initialize
   Memcheck:Leak
-  fun:malloc
   ...
   fun:Py_Initialize*
   ...
 }
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_PyMarshal_Read
   Memcheck:Leak
-  fun:realloc
   ...
-  fun:Py_Initialize*
+  fun:PyMarshal_Read*
   ...
 }
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_EvalCodeEx
   Memcheck:Leak
-  fun:malloc
-  ...
-  fun:PyMarshal_ReadObjectFromString
-  fun:PyMarshal_ReadLastObjectFromFile
-  ...
-}
-
-{
-  <insert_a_suppression_name_here>
-  Memcheck:Leak
-  fun:malloc
-  ...
-  fun:PyImport_ImportModuleLevel
-  ...
-}
-{
-  <insert_a_suppression_name_here>
-  Memcheck:Leak
-  fun:malloc
   ...
   fun:PyEval_EvalCodeEx
   ...
 }
 
 {
-  <insert_a_suppression_name_here>
+  pythoncLeak_PyImport_ImportModuleLevel
   Memcheck:Leak
-  fun:realloc
   ...
   fun:PyImport_ImportModuleLevel
   ...
 }
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_PyEval_EvalFrame
   Memcheck:Leak
-  fun:malloc
   ...
   fun:PyEval_EvalFrame*
   ...
 }
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_PyErr_NewException
   Memcheck:Leak
-  fun:realloc
-  ...
-  fun:PyEval_EvalFrame*
-  ...
-}
-{
-  <insert_a_suppression_name_here>
-  Memcheck:Leak
-  fun:malloc
   ...
   fun:PyErr_NewException
   ...
 }
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_PyObject_
   Memcheck:Leak
-  fun:malloc
-  fun:dictresize
   ...
   fun:PyObject_CallFunctionObjArgs
   fun:PyObject_IsInstance
   ...
 }
 {
-  <insert_a_suppression_name_here>
+  pythonc_leak_PyImport_*Inittab
   Memcheck:Leak
-  fun:realloc
-  fun:PyImport_ExtendInittab
-  fun:PyImport_AppendInittab
+  ...
+  fun:PyImport_*Inittab
   ...
 }
 
