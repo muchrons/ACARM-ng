@@ -1,10 +1,10 @@
-1. mark new data base version in data_model/*/*/21_fill_config.sql files.
-2. update data model version in data_model/*/*/21_fill_config.sql files.
-3. update doc/RELEASE_NOTES.txt file.
-4. branch new version.
-5. update version in src/configconsts/version.cpp.
-6. remove TODO files - they reflect future features, not relevant for release.
-7. remove misc/bzr_plugins and remove loading them from pre-delivery build.
-8. remove TODO documents from doc/.
-9. change WUI mode in application.xml from "Debug" to "Performance".
-10. tag new version.
+1 update data model version in data_model/*/*/21_fill_config.sql files.
+2 update doc/RELEASE_NOTES.txt file.
+3 branch new version.
+4 on the branch:
+  4.1 update version in src/configconsts/version.cpp.
+  4.2 remove TODO files - they reflect future features, not relevant for release.
+  4.3 remove misc/bzr_plugins and remove loading them from pre-delivery build.
+  4.4 remove TODO documents from doc/.
+  4.5 change WUI mode in application.xml from "Debug" to "Performance".
+  4.6 tag new version.
