@@ -1,3 +1,4 @@
+
 -- v1.0.0 --
 * fixed unknown error issue when persistency::postgres fails to connect.
 * more descriptive console error messages added.
