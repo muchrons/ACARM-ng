@@ -121,15 +121,15 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-    try
-    {
-      build("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "BAD_PASSWORD");
-      tut::fail("build() didn't throw on invalid options");
-    }
-    catch(const std::runtime_error&)
-    {
-      // this is expected
-    }
+  try
+  {
+    build("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "BAD_PASSWORD");
+    tut::fail("build() didn't throw on invalid options");
+  }
+  catch(const std::runtime_error&)
+  {
+    // this is expected
+  }
 }
 
 // test throw on missing port
