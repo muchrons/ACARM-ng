@@ -8,3 +8,5 @@
   4.4 remove TODO documents from doc/.
   4.5 change WUI mode in application.xml from "Debug" to "Performance".
   4.6 tag new version.
+  4.7 update bzr_team.conf to pont to maintenance branch.
+  4.8 update bzr_build.conf NOT to trigger build bot.
