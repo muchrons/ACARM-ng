@@ -1,0 +1,59 @@
+{
+  pythonc_leak_Py_Initialize
+  Memcheck:Leak
+  ...
+  fun:Py_Initialize*
+  ...
+}
+{
+  pythonc_leak_PyMarshal_Read
+  Memcheck:Leak
+  ...
+  fun:PyMarshal_Read*
+  ...
+}
+{
+  pythonc_leak_EvalCodeEx
+  Memcheck:Leak
+  ...
+  fun:PyEval_EvalCodeEx
+  ...
+}
+
+{
+  pythoncLeak_PyImport_ImportModuleLevel
+  Memcheck:Leak
+  ...
+  fun:PyImport_ImportModuleLevel
+  ...
+}
+{
+  pythonc_leak_PyEval_EvalFrame
+  Memcheck:Leak
+  ...
+  fun:PyEval_EvalFrame*
+  ...
+}
+{
+  pythonc_leak_PyErr_NewException
+  Memcheck:Leak
+  ...
+  fun:PyErr_NewException
+  ...
+}
+{
+  pythonc_leak_PyObject_
+  Memcheck:Leak
+  ...
+  fun:PyObject_CallFunctionObjArgs
+  fun:PyObject_IsInstance
+  ...
+}
+{
+  pythonc_leak_PyImport_*Inittab
+  Memcheck:Leak
+  ...
+  fun:PyImport_*Inittab
+  ...
+}
+
