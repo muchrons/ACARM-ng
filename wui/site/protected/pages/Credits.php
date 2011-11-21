@@ -1,6 +1,6 @@
 <?php
 
-class Team extends TPage
+class Credits extends TPage
 {
   public function onLoad()
   {
