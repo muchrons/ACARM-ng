@@ -8,6 +8,7 @@
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Persistency/IO/Postgres/Connection.hpp"
 #include "Persistency/IO/Postgres/ConnectionBuilder.hpp"
+#include "Persistency/IO/Postgres/TryCatchInAPI.hpp"
 
 using namespace std;
 
@@ -38,18 +39,22 @@ ConnectionBuilder::ConnectionBuilder(void):
 
 ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &options) const
 {
-  LOGMSG_INFO(log_, "building Persistency::IO::Postgres");
-  assert(g_rh.isRegistered() && "oops - registration failed");
+  TRYCATCH_BEGIN
+    LOGMSG_INFO(log_, "building Persistency::IO::Postgres");
+    assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const DBConnection::Parameters params( getOption(options, "host"),
-                                         getOption(options, "port"),
-                                         getOption(options, "dbname"),
-                                         getOption(options, "user"),
-                                         getOption(options, "pass")  );
+    const DBConnection::Parameters params( getOption(options, "host"),
+                                           getOption(options, "port"),
+                                           getOption(options, "dbname"),
+                                           getOption(options, "user"),
+                                           getOption(options, "pass")  );
 
-  // create and return new handle.
-  DBHandlePtrNN handle( new DBHandle(params, idCache_) );
-  return ConnectionBuilder::FactoryPtr( new Postgres::Connection(handle) );
+    // create and return new handle.
+    DBHandlePtrNN handle( new DBHandle(params, idCache_) );
+    return ConnectionBuilder::FactoryPtr( new Postgres::Connection(handle) );
+  TRYCATCH_END
+  assert(!"code never reaches here");
+  throw std::logic_error("code never reaches here");
 }
 
 const ConnectionBuilder::FactoryTypeName &ConnectionBuilder::getTypeNameImpl(void) const

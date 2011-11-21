@@ -1,0 +1,11 @@
+{
+    memleak_xmlpp_internal_mutex
+    Memcheck:Leak
+    fun:malloc
+    fun:xmlNewRMutex
+    ...
+    fun:xmlInitParserCtxt
+    fun:xmlNewParserCtxt
+    fun:xmlCreateMemoryParserCtxt
+    ...
+}

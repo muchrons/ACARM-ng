@@ -491,6 +491,7 @@
 
 
 <!-- Queries for Data Mining -->
+  <!--TODO: fix to return recods with ony src/dst as well (note: check if this is the case for this query) -->
   <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
