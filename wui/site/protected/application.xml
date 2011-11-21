@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<application id="site" mode="Debug">
+<application id="site" mode="Performance">
   <paths>
 <!--    <alias id="myalias" path="./lib" /> -->
     <using namespace="Application.common.*" />
