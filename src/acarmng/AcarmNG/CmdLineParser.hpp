@@ -13,7 +13,6 @@
 #include "Logger/Node.hpp"
 #include "AcarmNG/Exception.hpp"
 
-
 namespace AcarmNG
 {
 
@@ -23,6 +22,23 @@ namespace AcarmNG
  */
 struct CmdLineParser: private boost::noncopyable
 {
+  /** \brief exception thrown on paramteter-related error.
+   */
+  struct ExceptionParameterError: public Exception
+  {
+    /** \brief create exception message/type.
+     *  \param where location where exception has been risen.
+     *  \param msg   exact message (what exactly went wrong).
+     *  \param param parameter that caused an error.
+     */
+    ExceptionParameterError(const Location &where, const char *msg, const std::string &param);
+    /** \brief simplified c-tor, to be used for forwarding errors only.
+     *  \param where location where exception has been risen.
+     *  \param msg   exact message (what exactly went wrong).
+     */
+    ExceptionParameterError(const Location &where, const char *msg);
+  }; // struct ExceptionParameterError
+
   /** \brief exception thrown when unknown user/group name is passed.
    */
   struct ExceptionUnknownName: public Exception

@@ -31,7 +31,28 @@
   </table>
   <com:TLabel ID="Warning" ForeColor="Orange" Visible="no"/><br/>
   <com:TTextBox ID="Type" Text="any" Visible="no"/>
-  <com:TImageButton ID="Submit" Text="update" ImageUrl="pics/buttons/buttUpdateD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttUpdateU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttUpdateD.png'"/>
+  <com:TImageButton ID="Submit"
+                    Text="update"
+                    ImageUrl="pics/buttons/buttUpdateD.png"
+                    Attributes.onMouseOver="$(this).src='pics/buttons/buttUpdateU.png'"
+                    Attributes.onMouseOut="$(this).src='pics/buttons/buttUpdateD.png'"
+                    ValidationGroup="ValidIP"/>
+  <com:TRegularExpressionValidator
+     ValidationGroup="ValidIP"
+     EnableClientScript="true"
+     ControlToValidate="srcip"
+     Display="Dynamic"
+     FocusOnError="true"
+     RegularExpression="(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|any"
+     Text="Invalid source IP address." />
+  <com:TRegularExpressionValidator
+     ValidationGroup="ValidIP"
+     EnableClientScript="true"
+     ControlToValidate="dstip"
+     Display="Dynamic"
+     FocusOnError="true"
+     RegularExpression="(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|any"
+     Text="Invalid destination IP address." />
 </com:TPanel>
 <br/>
 

@@ -1,19 +1,18 @@
 /*
- * testset1.t.cpp
- *
- * some example test set for test application.
+ * version.t.cpp
  *
  */
 #include <tut/tut.hpp>
 #include <sstream>
 
 #include "ConfigConsts/version.hpp"
+#include "ConfigConsts/TestBase.t.hpp"
 
 using namespace ConfigConsts;
 
 namespace
 {
-struct TestClass
+struct TestClass: public TestBase
 {
 };
 
@@ -43,7 +42,7 @@ void testObj::test<2>(void)
 {
   std::stringstream ss;
   ss<<"v"<<versionMain<<"."<<versionMajor<<"."<<versionMinor;
-  ensure_equals("invalid version string", ss.str(), versionString);
+  testString(versionString, ss.str());
 }
 
 } // namespace tut

@@ -1,0 +1,9 @@
+{
+  <insert_a_suppression_name_here>
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:_dl_init
+  ...
+}
+

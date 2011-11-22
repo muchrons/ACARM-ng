@@ -1,4 +1,10 @@
 -- dev --
+
+
+-- v1.0.0 --
+* fixed unknown error issue when persistency::postgres fails to connect.
+* more descriptive console error messages added.
+* fixed non-updating copy of some elements when performing 'make install'.
 * added command line arguments, like automatic daemonizing, dropping privileges, etc...
 * config file inclusion added.
 * data base creation scripts are now automatically installed when 'make install' is run.

@@ -86,6 +86,7 @@
 
 
   <!-- List Alerts -->
+  <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="SelectAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
     <![CDATA[
          SELECT count(*) FROM alerts
@@ -104,6 +105,7 @@
   </select>
 
   <!-- Fixed problem with alerts containing 1 or 0 hosts -->
+  <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
     <![CDATA[
          SELECT alerts.id, alerts.name, create_time, severity FROM alerts
@@ -255,22 +257,25 @@
       <![CDATA[
         WITH RECURSIVE temp(id_node,id_child) AS
         (
-          SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
-          (
-            SELECT id_meta_alert FROM ALERTS
-              JOIN (SELECT id_alert,ip FROM hosts WHERE role='src' AND (ip=#src# OR 1=#ignoresrc#)) as h1 on h1.id_alert=alerts.id
-              JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst' AND (ip=#dst# OR 1=#ignoredst#)) as h2 on h2.id_alert=alerts.id
-          JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
-          WHERE create_time<=#date_to# AND create_time>=#date_from#
-            AND ((severity='4' AND #severities# LIKE '%high%')
-              OR (severity='3' AND #severities# LIKE '%medium%')
-              OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%info%')
-              OR (severity='0' AND #severities# LIKE '%debug%'))
-          )
-        UNION ALL
-          SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
-           WHERE m.id_child=t.id_node
+            SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
+             (
+              SELECT id_meta_alert FROM (
+              SELECT id_meta_alert,sip,dip FROM ALERTS
+                 LEFT JOIN (SELECT id_alert,ip as sip, role as sr FROM hosts WHERE role='src' AND (ip='0.0.0.0' OR 1=1)) as h1 on h1.id_alert=alerts.id
+                 LEFT JOIN (SELECT id_alert,ip as dip, role as dr FROM hosts WHERE role='dst' AND (ip='156.17.5.155' OR 1=0)) as h2 on h2.id_alert=alerts.id
+             JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
+             WHERE create_time<=#date_to# AND create_time>=#date_from#
+              AND ( sip is not null OR 1=1)
+              AND ( dip is not null OR 1=0)
+              AND ((severity='4' AND #severities# LIKE '%high%')
+                OR (severity='3' AND #severities# LIKE '%medium%')
+                OR (severity='2' AND #severities# LIKE '%low%')
+                OR (severity='1' AND #severities# LIKE '%info%')
+                OR (severity='0' AND #severities# LIKE '%debug%'))) AS mids
+             )
+          UNION ALL
+            SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
+            WHERE m.id_child=t.id_node
        ) SELECT count(distinct id_node)
          FROM TEMP;
      ]]>
@@ -284,16 +289,19 @@
           (
             SELECT id_node,id_child FROM meta_alerts_tree WHERE id_child in
              (
-              SELECT id_meta_alert FROM ALERTS
-                JOIN (SELECT id_alert,ip FROM hosts WHERE role='src' AND (ip=#src# OR 1=#ignoresrc#)) as h1 on h1.id_alert=alerts.id
-                JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst' AND (ip=#dst# OR 1=#ignoredst#)) as h2 on h2.id_alert=alerts.id
+              SELECT id_meta_alert FROM (
+              SELECT id_meta_alert,sip,dip FROM ALERTS
+                 LEFT JOIN (SELECT id_alert,ip as sip, role as sr FROM hosts WHERE role='src' AND (ip='0.0.0.0' OR 1=1)) as h1 on h1.id_alert=alerts.id
+                 LEFT JOIN (SELECT id_alert,ip as dip, role as dr FROM hosts WHERE role='dst' AND (ip='156.17.5.155' OR 1=0)) as h2 on h2.id_alert=alerts.id
              JOIN alert_to_meta_alert_map as map ON alerts.id=map.id_alert
              WHERE create_time<=#date_to# AND create_time>=#date_from#
+              AND ( sip is not null OR 1=1)
+              AND ( dip is not null OR 1=0)
               AND ((severity='4' AND #severities# LIKE '%high%')
                 OR (severity='3' AND #severities# LIKE '%medium%')
                 OR (severity='2' AND #severities# LIKE '%low%')
                 OR (severity='1' AND #severities# LIKE '%info%')
-                OR (severity='0' AND #severities# LIKE '%debug%'))
+                OR (severity='0' AND #severities# LIKE '%debug%'))) AS mids
              )
           UNION ALL
             SELECT m.id_node,m.id_child FROM meta_alerts_tree m, temp t
@@ -370,6 +378,7 @@
   </select>
 
     <!-- recursive query for meta-alerts with specified IP/severity -->
+    <!--TODO: fix to match the SelectMetaAlertsSummaryByIPRange -->
     <select id="SelectMetaAlertsRootSummaryByIPRangeCount" resultClass="int" parameterClass="CParamRange">
       <![CDATA[
         SELECT count(*) from meta_alerts JOIN meta_alerts_roots ON id=id_root AND id in (
@@ -397,6 +406,7 @@
      ]]>
     </select>
 
+    <!--TODO: fix to match the SelectMetaAlertsSummaryByIPRange -->
     <select id="SelectMetaAlertsRootSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
     <![CDATA[
         SELECT id,name,create_time from meta_alerts
@@ -481,7 +491,8 @@
 
 
 <!-- Queries for Data Mining -->
-
+  <!--TODO: fix to return recods with ony src/dst as well (note: check if this is the case for this query) -->
+  <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT severity as key,count(*) as value FROM alerts
@@ -514,9 +525,9 @@
   <select id="DMAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT key,value FROM 
-      (SELECT date_trunc('day', create_time) AS key FROM
+      (SELECT date_trunc(#extra#, create_time) AS key FROM
         alerts WHERE create_time>=#date_from# AND create_time<=#date_to# GROUP BY key) AS a
-        LEFT JOIN (SELECT date_trunc('day', create_time) AS date2, count(*) AS value FROM
+        LEFT JOIN (SELECT date_trunc(#extra#, create_time) AS date2, count(*) AS value FROM
         alerts WHERE (severity=4 AND #severities# LIKE 'high')
                   OR (severity=3 AND #severities# LIKE 'medium')
                   OR (severity=2 AND #severities# LIKE 'low')
@@ -524,7 +535,7 @@
                   OR (severity=0 AND #severities# LIKE 'debug') GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
     ]]>
   </select>
-
+  <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT name AS key,count(name) AS value FROM Alerts
@@ -545,7 +556,7 @@
 
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-      SELECT date_trunc('day', create_time) AS key ,count(*) AS value
+      SELECT date_trunc(#extra#, create_time) AS key ,count(*) AS value
         FROM meta_alerts
           WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0
         GROUP BY key

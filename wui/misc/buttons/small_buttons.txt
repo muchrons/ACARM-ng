@@ -7,4 +7,5 @@ Alert types;buttDMAlertTypes
 Alert count;buttDMAlertCount
 Meta alert count;buttDMMetaAlertCount
 Heatmap;buttHeatmap
-Info;buttTeam
+Credits;buttCredits
+WUI logs;buttWUILogs

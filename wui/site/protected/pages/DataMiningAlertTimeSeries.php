@@ -16,8 +16,9 @@ class DataMiningAlertTimeSeries extends TPage
     $this->Range->srcip->setEnabled(false);
     $this->Range->dstip->setEnabled(false);
 
-    $from=$this->Range->From->Date;
-    $to=$this->Range->To->Date;
+    $from=$this->Range->FromDate();
+    $to=$this->Range->ToDate();
+
     $severities=implode('.',$this->Range->CB->SelectedValues);
     $src=$this->Range->srcip->Text;
     $dst=$this->Range->dstip->Text;

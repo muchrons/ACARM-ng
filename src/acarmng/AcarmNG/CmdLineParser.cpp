@@ -53,6 +53,16 @@ bool isNumber(const string &str)
 } // unnamed namespace
 
 
+CmdLineParser::ExceptionParameterError::ExceptionParameterError(const Location &where, const char *msg, const std::string &param):
+  Exception(where, cc("paramter error for '", param, "' - ", msg) )
+{
+}
+CmdLineParser::ExceptionParameterError::ExceptionParameterError(const Location &where, const char *msg):
+  Exception(where, cc("parameter error - ", msg) )
+{
+}
+
+
 CmdLineParser::ExceptionUnknownName::ExceptionUnknownName(const Location &where, const char *msg, const std::string &name):
   Exception(where, cc("invalid credentials - ", msg, ": '", name, "'") )
 {
@@ -79,8 +89,20 @@ CmdLineParser::CmdLineParser(const int argc, char const * const * const argv):
   // making local copy of the arguments is required here, since older versions of boost::program_options
   // were not const-correct, causing compile-time errors regarding const to non-const convertions.
   const Commons::CmdLineArgs    cla(argc, argv);
-  po::store( po::parse_command_line(cla.argc(), cla.argv(), desc), vm );
-  po::notify(vm);
+  // parse and handle errors as needed
+  try
+  {
+    po::store( po::parse_command_line(cla.argc(), cla.argv(), desc), vm );
+    po::notify(vm);
+  }
+  catch(const po::unknown_option &ex)
+  {
+    throw ExceptionParameterError(SYSTEM_SAVE_LOCATION, ex.what());
+  }
+  catch(const po::multiple_occurrences &ex)
+  {
+    throw ExceptionParameterError(SYSTEM_SAVE_LOCATION, ex.what());
+  }
 
   //
   // process parsed options

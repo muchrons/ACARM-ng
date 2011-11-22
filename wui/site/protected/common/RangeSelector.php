@@ -15,6 +15,13 @@ class RangeSelector extends TTemplateControl
     $range->date_from=date("Y-m-d 00:00:00",strtotime($this->From->Date));
     $range->date_to=date("Y-m-d 23:59:59",strtotime($this->To->Date));
     $range->severities=implode('.',$this->CB->SelectedValues);
+
+    if($this->srcip->Text=='')
+      $this->srcip->Text='any';
+
+    if($this->dstip->Text=='')
+      $this->dstip->Text='any';
+
     $range->srct=$this->srcip->Text;
     $range->dstt=$this->dstip->Text;
     $range->type=$this->Type->Text;
@@ -54,6 +61,16 @@ class RangeSelector extends TTemplateControl
     parent::onInit($param);
     if($this->view!=null)
       $this->MultiView->ActiveViewIndex=$this->view;
+  }
+
+  public function FromDate()
+  {
+    return date("Y-m-d 00:00:00",strtotime($this->From->Date));
+  }
+
+  public function ToDate()
+  {
+    return date("Y-m-d 23:59:59",strtotime($this->To->Date));
   }
 
   public function getFrom()

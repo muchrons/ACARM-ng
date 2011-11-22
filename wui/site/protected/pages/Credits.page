@@ -1,0 +1,20 @@
+<com:TContent ID="content">
+<h1 style="color:white;">Credits</h1>
+
+<p style="color:white;"><b>ACARM-ng</b> has been developed at <a class="freelink" href="http://www.wcss.pl">Wroclaw Centre for Networking and Supercomputing</a> and is co-funded by the <b>European Regional Development Fund</b> as part of the <b>Innovative Economy program</b>.</p>
+<p style="color:white;">The Managing Authority of the <b>Innovative Economy Operational Program</b> is the <b>Polish Ministry of Regional Development</b>.</p>
+<p style="color:white;">The Intermediate Body in implementation of the priority 2. <b>"Research and Development infrastructure"</b> is the <b>Polish Ministry of Science and Higher Education</b>.</p>
+
+<p style="color:white;"><b>ACARM-ng team:</b></p>
+
+<ul  style="color:white;">
+<li><com:TLabel ID="nr1"/></li>
+<li><com:TLabel ID="nr2"/></li>
+<li><com:TLabel ID="nr3"/></li>
+<li><com:TLabel ID="nr4"/></li>
+</ul>
+
+<p style="color:white;">ACARM-ng home page is at: <a class="freelink" href="http://www.acarm.wcss.wroc.pl">http://www.acarm.wcss.wroc.pl</a></p>
+<p style="color:white;">In case of any questions please feel free to contact us: <a class="freelink" href="mailto:acarm@kdm.wcss.wroc.pl">acarm@kdm.wcss.wroc.pl</a></p>
+<com:TClientScript PradoScripts="effects" />
+</com:TContent>

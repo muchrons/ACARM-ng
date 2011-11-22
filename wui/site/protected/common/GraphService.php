@@ -382,6 +382,15 @@ class GraphService extends TService
 
     $params=$this->params;
 
+    $diffF=strtotime($params->qparam->date_from);
+    $diffT=strtotime($params->qparam->date_to);
+
+    //resolution of the plot depends on the range of data
+    if (($diffT-$diffF)>=(7*24*3600))
+      $params->qparam->extra='day';
+    else
+      $params->qparam->extra='hour';
+
     $data=array();
 
     foreach ($severities as $s)
