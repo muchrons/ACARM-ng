@@ -12,6 +12,7 @@
 #include "Filter/IPBlackList/EntryProcessor.hpp"
 #include "Filter/IPBlackList/DShieldParser.hpp"
 #include "Filter/IPBlackList/Downloader.hpp"
+#include "Filter/IPBlackList/config.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -99,7 +100,7 @@ void Strategy::updateBlackList(time_t now, BackendFacade &bf)
     LOGMSG_INFO_S(log_)<<"update's done - next one on/after "<<deadline_;
 
     // if all's done, send heartbeat to signal dshield is alive
-    bf.heartbeat("dshield.org", params_.refresh_+120);  // TODO: hardcoded value
+    bf.heartbeat("dshield.org", params_.refresh_+timeWindowForDownload);
     bf.commitChanges();
   }
   catch(const Filter::Exception &ex)
@@ -116,7 +117,7 @@ void Strategy::handleNoBlackList(time_t now, Node n)
   LOGMSG_WARN_S(log_)<<"no blacklist is present - skipping scan for node "
                      <<n->getMetaAlert()->getID().get();
   // check if rescheduling download to be sooner is a good idea
-  const time_t waitTime=123;    // TODO: hardcoded value
+  const time_t waitTime=maxDelayBetweenDownloadRetries;
   if(deadline_>now+waitTime)
   {
     deadline_=now+waitTime;
