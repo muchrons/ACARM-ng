@@ -3,10 +3,12 @@
 3 branch new version.
 4 on the branch:
   4.1 update version in src/configconsts/version.cpp.
-  4.2 remove TODO files - they reflect future features, not relevant for release.
+  4.2 remove TODO files - they reflect future features, not relevant for the release.
   4.3 remove misc/bzr_plugins and remove loading them from pre-delivery build.
   4.4 remove TODO documents from doc/.
   4.5 change WUI mode in application.xml from "Debug" to "Performance".
-  4.6 tag new version.
-  4.7 update bzr_team.conf to pont to maintenance branch.
-  4.8 update bzr_build.conf NOT to trigger build bot.
+  4.6 update bzr_team.conf to point to maintenance branch.
+  4.7 tag new version.
+5 when creating compressed source package:
+  5.1 remove misc: bzr*, coding_converntion*, deliver_to_private_branch, team_tools.
+  5.2 remove root elements: bzr_*, rebase, deliver, check_coding_convention.
