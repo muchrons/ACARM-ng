@@ -3,7 +3,6 @@ Persistency::Postgres:
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * optimize postgres data restoration using roots meta alerts table.
-* force UTC timezone uppon data base connection.
 
 configuration:
 --------------
@@ -25,7 +24,6 @@ filters:
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * give possibility to pass config-file options to a python scripts (as is done by the factories).
-* add filter creating action's profiles (what actions do happen and are probable, which are not) and change prioryty according to this.
 
 docs:
 -----
