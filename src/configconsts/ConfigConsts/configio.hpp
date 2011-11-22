@@ -13,6 +13,6 @@ namespace ConfigConsts
 /** \brief compile-time known constant representing configuration's rioot node name. */
 extern const char * const configRootNodeName;
 
-} // namespace ConfigCOnsts
+} // namespace ConfigConsts
 
 #endif

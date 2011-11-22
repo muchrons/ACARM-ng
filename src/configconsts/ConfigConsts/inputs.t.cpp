@@ -42,4 +42,20 @@ void testObj::test<2>(void)
   testString(defaultInputInstanceName, "*unknown*");
 }
 
+// test input timeout avlue
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ensure_equals("invalid timeout for input", inputTimeout, 21);
+}
+
+// test input queue size
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure_equals("invalid size of the input queue", inputQueueSize, 32);
+}
+
 } // namespace tut

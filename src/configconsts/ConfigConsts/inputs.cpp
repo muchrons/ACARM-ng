@@ -11,4 +11,6 @@ const char * const defaultInputTypeName="*input*";
 
 const char * const defaultInputInstanceName="*unknown*";
 
-} // namespace ConfigCOnsts
+const unsigned int inputTimeout=21;
+
+} // namespace ConfigConsts

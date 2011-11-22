@@ -20,6 +20,6 @@ extern const unsigned int versionMajor;
 /** \brief bugfix version number vx.y.Z. */
 extern const unsigned int versionMinor;
 
-} // namespace ConfigCOnsts
+} // namespace ConfigConsts
 
 #endif
