@@ -39,7 +39,7 @@ ConnectionBuilder::ConnectionBuilder(void):
 
 ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &options) const
 {
-//  TRYCATCH_BEGIN
+  TRYCATCH_BEGIN
     LOGMSG_INFO(log_, "building Persistency::IO::Postgres");
     assert(g_rh.isRegistered() && "oops - registration failed");
 
@@ -52,7 +52,7 @@ ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &option
     // create and return new handle.
     DBHandlePtrNN handle( new DBHandle(params, idCache_) );
     return ConnectionBuilder::FactoryPtr( new Postgres::Connection(handle) );
-//  TRYCATCH_END
+  TRYCATCH_END
   assert(!"code never reaches here");
   throw std::logic_error("code never reaches here");
 }
