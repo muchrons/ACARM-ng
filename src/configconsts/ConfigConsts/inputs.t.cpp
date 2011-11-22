@@ -1,11 +1,11 @@
 /*
- * version.t.cpp
+ * inputs.t.cpp
  *
  */
 #include <tut/tut.hpp>
-#include <sstream>
+#include <string>
 
-#include "ConfigConsts/version.hpp"
+#include "ConfigConsts/inputs.hpp"
 #include "ConfigConsts/TestBase.t.hpp"
 
 using namespace ConfigConsts;
@@ -19,30 +19,27 @@ struct TestClass: public TestBase
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
 
-factory tf("ConfigConsts/version");
+factory tf("ConfigConsts/inputs");
 } // unnamed namespace
 
 
 namespace tut
 {
 
-// test presence of version numbers
+// test default input type
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  const int tmp=versionMain+versionMajor+versionMinor;
-  ensure("ok", tmp>=0);
+  testString(defaultInputTypeName, "*input*");
 }
 
-// test version string
+// test default input instance
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  std::stringstream ss;
-  ss<<"v"<<versionMain<<"."<<versionMajor<<"."<<versionMinor;
-  testString(versionString, ss.str());
+  testString(defaultInputInstanceName, "*unknown*");
 }
 
 } // namespace tut

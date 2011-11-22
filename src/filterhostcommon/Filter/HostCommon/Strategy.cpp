@@ -2,9 +2,11 @@
  * Strategy.cpp
  *
  */
-#include "Filter/HostCommon/Strategy.hpp"
 #include <cassert>
+
+#include "ConfigConsts/inputs.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
+#include "Filter/HostCommon/Strategy.hpp"
 #include "Filter/HostCommon/CheckHosts.hpp"
 
 using namespace Persistency;
@@ -23,7 +25,7 @@ Strategy::Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::P
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add( TypeName("*input*") );   // TODO: magic value
+  ecl.add( TypeName(ConfigConsts::defaultInputTypeName) );
   return ecl;
 }
 

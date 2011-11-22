@@ -6,12 +6,13 @@
 #include <string>
 
 #include "ConfigConsts/configio.hpp"
+#include "ConfigConsts/TestBase.t.hpp"
 
 using namespace ConfigConsts;
 
 namespace
 {
-struct TestClass
+struct TestClass: public TestBase
 {
 };
 
@@ -30,8 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("string is NULL", configRootNodeName!=NULL);
-  ensure_equals("string is valid", configRootNodeName, std::string("acarm_ng") );
+  testString(configRootNodeName, "acarm_ng");
 }
 
 } // namespace tut
