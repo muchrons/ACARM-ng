@@ -10,7 +10,6 @@ configuration:
 * re-reading configuration from file (note: not all configuration may change at runtime).
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-* implement common configuration module for compile-time constants used in code.
 
 triggers:
 ---------
