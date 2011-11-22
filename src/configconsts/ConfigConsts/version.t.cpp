@@ -1,8 +1,6 @@
 /*
  * version.t.cpp
  *
- * some example test set for test application.
- *
  */
 #include <tut/tut.hpp>
 #include <sstream>

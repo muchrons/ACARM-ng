@@ -4,6 +4,7 @@
  */
 #include <vector>
 
+#include "ConfigConsts/configio.hpp"
 #include "XML/XMLpp/SaxParser.hpp"
 #include "ConfigIO/ConfigFileReader.hpp"
 #include "ConfigIO/FileReader.hpp"
@@ -129,7 +130,7 @@ XML::Tree readAndExpand(const Path &path)
 {
   try
   {
-    XML::Tree tree( XML::Node("acarm_ng") );    // default root name // TODO: hardcoded value
+    XML::Tree tree( (XML::Node(ConfigConsts::configRootNodeName)) );    // default root name
     appendAndExpand( tree.getRoot(), path, tree.getRoot().getName().c_str(), (IncludeChain()) );
     return tree;
   }
