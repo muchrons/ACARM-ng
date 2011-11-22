@@ -5,11 +5,11 @@
 #ifndef INCLUDE_FILTER_NEWEVENT_HASH_HPP_FILE
 #define INCLUDE_FILTER_NEWEVENT_HASH_HPP_FILE
 
+#include <boost/operators.hpp>
+
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/LimitedString.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
-
-#include <boost/operators.hpp>
 
 namespace Filter
 {
