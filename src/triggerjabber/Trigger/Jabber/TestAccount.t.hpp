@@ -17,6 +17,7 @@
 #include "Trigger/Jabber/Connection.hpp"
 #include "TestHelpers/Data/jabber1.hpp"
 #include "TestHelpers/Data/jabber2.hpp"
+#include "TestHelpers/Data/jabber3.hpp"
 
 using namespace gloox;
 using namespace System;
@@ -36,6 +37,13 @@ Trigger::Jabber::AccountConfig getTestConfig2(void)
   return Trigger::Jabber::AccountConfig(JABBER2_TEST_ACCOUNT_SERVER,
                                         JABBER2_TEST_ACCOUNT_LOGIN,
                                         JABBER2_TEST_ACCOUNT_PASS);
+}
+
+Trigger::Jabber::AccountConfig getTestConfig3(void)
+{
+  return Trigger::Jabber::AccountConfig(JABBER3_TEST_ACCOUNT_SERVER,
+                                        JABBER3_TEST_ACCOUNT_LOGIN,
+                                        JABBER3_TEST_ACCOUNT_PASS);
 }
 
 // helper for backward compatibility
