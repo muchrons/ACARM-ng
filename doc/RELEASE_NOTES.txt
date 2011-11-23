@@ -1,3 +1,7 @@
+-- ?? --
+* added DESTDIR support to the make (for standard linux compliance).
+
+
 -- v1.0.0 --
 * fixed unknown error issue when persistency::postgres fails to connect.
 * more descriptive console error messages added.
