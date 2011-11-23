@@ -192,6 +192,10 @@ Connection::Connection(DBHandlePtrNN handle):
   // turned away from non-standard strings. and since escaping functions does not check this
   // setting, it has to be enforced manually...
   handle->getConnection().get().set_variable("standard_conforming_strings", "on");
+  // in order to keep consistent time settings, when writing from daemon and reading from WUI,
+  // common time zone (i.e. UTC) is enforced. as for the moment of writing these words, there
+  // was no need for setting this explicitly, but it is safer, in case of future changes.
+  handle->getConnection().get().set_variable("timezone", "UTC");
 }
 
 size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
