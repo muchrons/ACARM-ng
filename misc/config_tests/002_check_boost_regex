@@ -1,0 +1,20 @@
+echo -n "checking for boost::regex... "
+cat > "$TMP" <<EOF
+#include <boost/regex.hpp>
+
+int main(void)
+{
+  boost::regex r("abc");
+  return 0;
+}
+EOF
+
+if compile "$TMP" `$SRCS/preprocessor/features/deps/common_dynamic_link`
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi
