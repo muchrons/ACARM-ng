@@ -1,0 +1,19 @@
+echo -n "checking for boost::tokenizer... "
+cat > "$TMP" <<EOF
+#include <boost/tokenizer.hpp>
+
+int main(void)
+{
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi
