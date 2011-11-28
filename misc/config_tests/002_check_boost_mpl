@@ -12,7 +12,7 @@ int main(void)
 }
 EOF
 
-if compile "$TMP" `$SRCS/persistencypostgres/features/deps/common_dynamic_link`
+if compile "$TMP"
 then
   echo "ok"
 else
