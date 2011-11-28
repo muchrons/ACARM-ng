@@ -16,7 +16,7 @@ EOF
     echo "ok"
   else
     echo "N/A"
-    echo "ERROR: install missing library or withdraw usage of persistencypostgres plugin"
+    echo "ERROR: install missing library or withdraw usage of plugins: persistencypostgres"
     rm -f "$TMP"
     exit 2
   fi
