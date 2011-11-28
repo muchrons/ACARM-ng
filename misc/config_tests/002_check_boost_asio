@@ -1,5 +1,7 @@
-echo -n "checking for boost::asio... "
-cat > "$TMP" <<EOF
+if grep -q '^triggersnortsam$' <<< "$PLUGINS"
+then
+  echo -n "checking for boost::asio... "
+  cat > "$TMP" <<EOF
 #include <boost/asio/ip/address.hpp>
 
 using namespace boost::asio;
@@ -11,12 +13,13 @@ int main(void)
 }
 EOF
 
-if compile "$TMP"
-then
-  echo "ok"
-else
-  echo "N/A"
-  echo "ERROR: install missing library"
-  rm -f "$TMP"
-  exit 2
+  if compile "$TMP" `$SRCS/triggersnortsam/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "ERROR: install missing library or withdraw usage of plugins: triggersnortsam"
+    rm -f "$TMP"
+    exit 2
+  fi
 fi
