@@ -51,4 +51,22 @@ void testObj::test<3>(void)
   ensure("comparison didn't failed", ce.check("abcXYZ")==false );
 }
 
+// test numerical comarison - positive case
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const Equals ce("42");
+  ensure("comparison failed", ce.check("0042") );
+}
+
+// test numerical comarison - negative case
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const Equals ce("42");
+  ensure("comparison didn't failed", ce.check("0043")==false );
+}
+
 } // namespace tut
