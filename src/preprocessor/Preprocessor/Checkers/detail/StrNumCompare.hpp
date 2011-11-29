@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PREPROCESSOR_CHECKERS_STRNUMCOMPARE_HPP_FILE
 #define INCLUDE_PREPROCESSOR_CHECKERS_STRNUMCOMPARE_HPP_FILE
 
+#include "Logger/Logger.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
 #include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
 
@@ -28,12 +29,10 @@ public:
    */
   virtual bool check(const std::string &str) const
   {
-    const detail::NumberWrapper p(str);
-    // numerical comparison is possible?
-    if( num_.isNumber() && p.isNumber() )
-      return cmp_( p.get(), num_.get() );
-    // if not, fallback to lexicographical
-    return cmp_(str, str_);
+    const bool  ret=compareImpl(str);
+    const char *msg=(ret?"true":"false");
+    LOGMSG_DEBUG_S(log_)<<"result of comparison: '"<<str<<"' cmp-operator '"<<str_<<"'; is "<<msg;
+    return ret;
   }
 
 protected:
@@ -42,6 +41,7 @@ protected:
    */
   StrNumCompare(const char *modeName, const std::string &str):
     Mode(modeName),
+    log_("preprocessor.checkers.detail.strnumcompare"),
     str_(str),
     num_(str_),
     cmp_()
@@ -49,6 +49,21 @@ protected:
   }
 
 private:
+  bool compareImpl(const std::string &str) const
+  {
+    const detail::NumberWrapper p(str);
+    // numerical comparison is possible?
+    if( num_.isNumber() && p.isNumber() )
+    {
+      LOGMSG_DEBUG(log_, "performing numerical comparison");
+      return cmp_( p.get(), num_.get() );
+    }
+    // if not, fallback to lexicographical
+    LOGMSG_DEBUG(log_, "performing lexicographical comparison");
+    return cmp_(str, str_);
+  }
+
+  const Logger::Node  log_;
   const std::string   str_;
   const NumberWrapper num_;
   const Cmp           cmp_;
