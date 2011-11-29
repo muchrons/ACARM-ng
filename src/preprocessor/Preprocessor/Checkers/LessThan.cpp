@@ -18,7 +18,7 @@ LessThan::LessThan(const std::string &str):
 
 bool LessThan::check(const std::string &str) const
 {
-  const NumberWrapper p(str);
+  const detail::NumberWrapper p(str);
   // numerical comparison is possible?
   if( num_.isNumber() && p.isNumber() )
     return p.get() < num_.get();

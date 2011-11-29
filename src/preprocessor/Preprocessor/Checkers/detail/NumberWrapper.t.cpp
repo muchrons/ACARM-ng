@@ -4,9 +4,9 @@
  */
 #include <tut.h>
 
-#include "Preprocessor/Checkers/NumberWrapper.hpp"
+#include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
 
-using namespace Preprocessor::Checkers;
+using namespace Preprocessor::Checkers::detail;
 
 namespace
 {
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Preprocessor/Checkers/NumberWrapper");
+factory tf("Preprocessor/Checkers/detail/NumberWrapper");
 } // unnamed namespace
 
 

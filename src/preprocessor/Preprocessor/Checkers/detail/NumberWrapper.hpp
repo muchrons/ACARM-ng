@@ -2,8 +2,8 @@
  * NumberWrapper.hpp
  *
  */
-#ifndef INCLUDE_PREPROCESSOR_CHECKERS_NUMBERWRAPPER_HPP_FILE
-#define INCLUDE_PREPROCESSOR_CHECKERS_NUMBERWRAPPER_HPP_FILE
+#ifndef INCLUDE_PREPROCESSOR_CHECKERS_DETAIL_NUMBERWRAPPER_HPP_FILE
+#define INCLUDE_PREPROCESSOR_CHECKERS_DETAIL_NUMBERWRAPPER_HPP_FILE
 
 #include <string>
 #include <cassert>
@@ -11,6 +11,8 @@
 namespace Preprocessor
 {
 namespace Checkers
+{
+namespace detail
 {
 
 /** \brief class being wrapper for numeric types, represented as strings.
@@ -37,6 +39,7 @@ private:
   double value_;
 }; // class NumberWrapper
 
+} // namespace detail
 } // namespace Checkers
 } // namespace Preprocessor
 

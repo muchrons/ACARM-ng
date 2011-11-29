@@ -5,11 +5,13 @@
 #include <ctype.h>
 
 #include "Commons/Convert.hpp"
-#include "Preprocessor/Checkers/NumberWrapper.hpp"
+#include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
 
 namespace Preprocessor
 {
 namespace Checkers
+{
+namespace detail
 {
 
 NumberWrapper::NumberWrapper(const std::string &str):
@@ -61,5 +63,6 @@ bool NumberWrapper::isNumber(const std::string &str) const
   return true;
 }
 
+} // namespace detail
 } // namespace Checkers
 } // namespace Preprocessor

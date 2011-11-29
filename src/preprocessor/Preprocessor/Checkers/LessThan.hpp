@@ -6,7 +6,7 @@
 #define INCLUDE_PREPROCESSOR_CHECKERS_LESSTHAN_HPP_FILE
 
 #include "Preprocessor/Checkers/Mode.hpp"
-#include "Preprocessor/Checkers/NumberWrapper.hpp"
+#include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
 
 namespace Preprocessor
 {
@@ -32,7 +32,7 @@ public:
 
 private:
   const std::string   str_;
-  const NumberWrapper num_;
+  const detail::NumberWrapper num_;
 }; // class LessThan
 
 } // namespace Checkers
