@@ -45,7 +45,7 @@ $0 options are:
   [--help]             show this helpful text
 
 (1) does not require recompilation
-(2) make binary slower and much larger (~30 times)
+(2) makes binary slower and much larger (~30 times)
 (3) can be specified multiple times
 
 note that you may have to set PKG_CONFIG_PATH in order to make pkg-config
@@ -324,6 +324,7 @@ LOCALSTATEDIR:=$LOCALSTATEDIR
 
 # helpers
 BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
+INSTSTRIP:=`[ "$PROFILE" = "release" ] && echo -s`
 EOF
 
 

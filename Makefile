@@ -43,31 +43,31 @@ install: install-plugins install-libs install-bin install-includes install-confi
 
 .PHONY: install-libs
 install-libs: ensure-configure
-	@echo "installing libraries ($(INSTALL_DIR)/$(LIBDIR))"
+	@echo "installing libraries: $(INSTALL_DIR)/$(LIBDIR)"
 	@install -d '$(INSTALL_DIR)/$(LIBDIR)'
-	@install -m 644 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/$(LIBDIR)'
+	@install $(INSTSTRIP) -m 644 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/$(LIBDIR)'
 
 .PHONY: install-bin
 install-bin: ensure-configure
-	@echo "installing binaries ($(INSTALL_DIR)/$(BINDIR))"
+	@echo "installing binaries: $(INSTALL_DIR)/$(BINDIR)"
 	@install -d '$(INSTALL_DIR)/$(BINDIR)'
 	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@echo 'cd "$(SYSCONFDIR)/acarm-ng/"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@echo 'exec "$(BINDIR)/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@install -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin'
-	@install -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
+	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin'
+	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
 
 .PHONY: install-includes
 install-includes: ensure-configure
-	@echo "installing headers ($(INSTALL_DIR)/$(INCLUDEDIR))"
+	@echo "installing headers: $(INSTALL_DIR)/$(INCLUDEDIR)"
 	@install -d '$(INSTALL_DIR)/$(INCLUDEDIR)/acarm-ng'
 	@cp -rL $(BUILD_DIR)/includes/* '$(INSTALL_DIR)/$(INCLUDEDIR)/acarm-ng/'
 
 .PHONY: install-config
 install-config: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml ensure-configure
-	@echo "installing etc ($(INSTALL_DIR)/$(SYSCONFDIR))"
+	@echo "installing conf-dir: $(INSTALL_DIR)/$(SYSCONFDIR)"
 	@install -d '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng'
 	@install -d '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d'
 	@install -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d/acarm_ng'
@@ -77,7 +77,7 @@ install-config: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml ensure
 
 
 $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example_configs/minimal.xml
-	@echo "installing config file ($(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml)"
+	@echo "installing config file: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml"
 	@install -d '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng'
 	@install -d '$(INSTALL_DIR)/$(LOCALSTATEDIR)/log/acarm-ng'
 	@install -m 600 -b 'doc/example_configs/minimal.xml' '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml'
@@ -86,35 +86,35 @@ $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml: configure-output.mk d
 
 .PHONY: install-doc
 install-doc: ensure-configure
-	@echo "installing documentation ($(INSTALL_DIR)/$(DOCDIR))"
+	@echo "installing documentation: $(INSTALL_DIR)/$(DOCDIR)"
 	@install -d '$(INSTALL_DIR)/$(DOCDIR)'
 	@cp -rL doc/* '$(INSTALL_DIR)/$(DOCDIR)'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
-	@echo "installing data base schemas ($(INSTALL_DIR)/$(MODELDIR))"
+	@echo "installing data base schemas: $(INSTALL_DIR)/$(MODELDIR)"
 	@install -d '$(INSTALL_DIR)/$(MODELDIR)'
 	@cp -rL data_model/* '$(INSTALL_DIR)/$(MODELDIR)'
 
 .PHONY: install-plugins
 install-plugins: install-libs ensure-configure
-	@echo "installing plugins ($(INSTALL_DIR)/$(PLUGINSDIR))"
+	@echo "installing plugins: $(INSTALL_DIR)/$(PLUGINSDIR)"
 	@install -d '$(INSTALL_DIR)/$(PLUGINSDIR)'
 	@for f in '$(INSTALL_DIR)/$(LIBDIR)/'libinput?*.so \
 	          '$(INSTALL_DIR)/$(LIBDIR)/'libfilter?*.so \
 	          '$(INSTALL_DIR)/$(LIBDIR)/'libtrigger?*.so \
 	          '$(INSTALL_DIR)/$(LIBDIR)/'libpersistency?*.so ; \
 	do \
-	  install -m 644 "$$f" "$(INSTALL_DIR)/$(PLUGINSDIR)/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
+	  install $(INSTSTRIP) -m 644 "$$f" "$(INSTALL_DIR)/$(PLUGINSDIR)/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
 	  rm "$$f" ; \
 	done
-	@install -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libpersistencystubs.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libpersistencystubs.so"
 	@# moving back two unfortunate names, that must be placed in the libraries directory
-	@install -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libfilterhostcommon.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libfilterhostcommon.so"
+	@install $(INSTSTRIP) -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libpersistencystubs.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libpersistencystubs.so"
+	@install $(INSTSTRIP) -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libfilterhostcommon.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libfilterhostcommon.so"
 
 .PHONY: install-wui
 install-wui: ensure-configure
-	@echo "installing Web User Interface ($(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng)"
+	@echo "installing Web User Interface: $(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng"
 	@install -d '$(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng'
 	@cp -r wui/site/* '$(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng/'
 
