@@ -2,7 +2,6 @@
  * Equals.cpp
  *
  */
-#include "Logger/Logger.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
 
 namespace Preprocessor
