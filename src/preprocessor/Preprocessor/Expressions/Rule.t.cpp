@@ -468,4 +468,40 @@ void testObj::test<40>(void)
   ensure("equals failed", r.compute(leaf_)==false );
 }
 
+// test Mode::LESSTHAN - positive case
+template<>
+template<>
+void testObj::test<41>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::LESSTHAN, "xxx" );
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test Mode::LESSTHAN - negative case
+template<>
+template<>
+void testObj::test<42>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::LESSTHAN, "aaa" );
+  ensure("equals failed", r.compute(leaf_)==false );
+}
+
+// test Mode::GREATERTHAN - positive case
+template<>
+template<>
+void testObj::test<43>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "aa" );
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test Mode::GREATERTHAN - negative case
+template<>
+template<>
+void testObj::test<44>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "xxx" );
+  ensure("equals failed", r.compute(leaf_)==false );
+}
+
 } // namespace tut
