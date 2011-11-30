@@ -30,34 +30,34 @@ install: install-plugins install-libs install-bin install-includes install-confi
 	@echo '           INSTALLATION SUCCESSFUL                 '
 	@echo
 	@echo ' to proceed with configuration read documentation: '
-	@echo ' $(INSTALL_DIR)/share/doc                          '
+	@echo ' $(INSTALL_DIR)/usr/share/doc                      '
 	@echo
 	@echo ' data base preparation scripts are placed under:   '
-	@echo ' $(INSTALL_DIR)/share/ACARM-ng/data_model          '
+	@echo ' $(INSTALL_DIR)/usr/share/ACARM-ng/data_model      '
 	@echo
 	@echo '---------------------------------------------------'
 	@echo
 
 .PHONY: install-libs
 install-libs: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/lib/acarm-ng'
-	install -v -m 755 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/lib/acarm-ng/'
+	@install -v -d '$(INSTALL_DIR)/usr/lib/acarm-ng'
+	install -v -m 755 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/usr/lib/acarm-ng/'
 
 .PHONY: install-bin
 install-bin: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/bin'
-	@echo '#!/bin/sh' > '$(INSTALL_DIR)/bin/acarm-ng'
-	@echo 'cd "$(PREFIX)/etc/acarm-ng/"' >> '$(INSTALL_DIR)/bin/acarm-ng'
-	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/bin/acarm-ng'
-	@echo 'exec "$(PREFIX)/bin/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/bin/acarm-ng'
-	@chmod 755 '$(INSTALL_DIR)/bin/acarm-ng'
-	@install -v -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/bin/acarm-ng.bin'
-	@install -v -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/bin/acarm-logsplitter'
+	@install -v -d '$(INSTALL_DIR)/usr/bin'
+	@echo '#!/bin/sh' > '$(INSTALL_DIR)/usr/bin/acarm-ng'
+	@echo 'cd "$(PREFIX)/etc/acarm-ng/"' >> '$(INSTALL_DIR)/usr/bin/acarm-ng'
+	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/usr/bin/acarm-ng'
+	@echo 'exec "$(PREFIX)/usr/bin/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/usr/bin/acarm-ng'
+	@chmod 755 '$(INSTALL_DIR)/usr/bin/acarm-ng'
+	@install -v -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/usr/bin/acarm-ng.bin'
+	@install -v -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/usr/bin/acarm-logsplitter'
 
 .PHONY: install-includes
 install-includes: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/include/acarm-ng'
-	@cp -rL $(BUILD_DIR)/includes/* '$(INSTALL_DIR)/include/acarm-ng/'
+	@install -v -d '$(INSTALL_DIR)/usr/include/acarm-ng'
+	@cp -rL $(BUILD_DIR)/includes/* '$(INSTALL_DIR)/usr/include/acarm-ng/'
 
 .PHONY: install-config
 install-config: $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml ensure-configure
@@ -76,23 +76,23 @@ $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example
 
 .PHONY: install-doc
 install-doc: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng/doc'
-	@cp -rL doc/* '$(INSTALL_DIR)/share/ACARM-ng/doc'
+	@install -v -d '$(INSTALL_DIR)/usr/share/ACARM-ng/doc'
+	@cp -rL doc/* '$(INSTALL_DIR)/usr/share/ACARM-ng/doc'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
-	@install -v -d '$(INSTALL_DIR)/share/ACARM-ng/data_model'
-	@cp -rL data_model/* '$(INSTALL_DIR)/share/ACARM-ng/data_model'
+	@install -v -d '$(INSTALL_DIR)/usr/share/ACARM-ng/data_model'
+	@cp -rL data_model/* '$(INSTALL_DIR)/usr/share/ACARM-ng/data_model'
 
 .PHONY: install-plugins
 install-plugins: install-libs ensure-configure
-	@install -v -d '$(INSTALL_DIR)/lib/acarm-ng/plugins'
-	@for f in '$(INSTALL_DIR)/lib/acarm-ng/'libinput?*.so \
-	          '$(INSTALL_DIR)/lib/acarm-ng/'libfilter?*.so \
-	          '$(INSTALL_DIR)/lib/acarm-ng/'libtrigger?*.so \
-	          '$(INSTALL_DIR)/lib/acarm-ng/'libpersistency?*.so ; \
+	@install -v -d '$(INSTALL_DIR)/usr/lib/acarm-ng/plugins'
+	@for f in '$(INSTALL_DIR)/usr/lib/acarm-ng/'libinput?*.so \
+	          '$(INSTALL_DIR)/usr/lib/acarm-ng/'libfilter?*.so \
+	          '$(INSTALL_DIR)/usr/lib/acarm-ng/'libtrigger?*.so \
+	          '$(INSTALL_DIR)/usr/lib/acarm-ng/'libpersistency?*.so ; \
 	do \
-	  install -v -m 755 "$$f" "$(INSTALL_DIR)/lib/acarm-ng/plugins/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
+	  install -v -m 755 "$$f" "$(INSTALL_DIR)/usr/lib/acarm-ng/plugins/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
 	done
 
 .PHONY: install-wui
