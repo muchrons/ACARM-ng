@@ -261,6 +261,28 @@ const char *xmlTermRuleRegExpCI=
   "</acarm_ng>"
   "";
 
+const char *xmlTermRuleLessThan=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <preprocessor>"
+  "    <accept>"
+  "      <rule path=\"a.b.c\" lessthan=\"43\"/>"
+  "    </accept>"
+  "  </preprocessor>"
+  "</acarm_ng>"
+  "";
+
+const char *xmlTermRuleGreaterThan=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <preprocessor>"
+  "    <accept>"
+  "      <rule path=\"a.b.c\" greaterthan=\"41\"/>"
+  "    </accept>"
+  "  </preprocessor>"
+  "</acarm_ng>"
+  "";
+
 
 
 struct TestClass
@@ -646,6 +668,42 @@ void testObj::test<21>(void)
   ensure("invalid rule mode", r.getMode()==Rule::Mode::REGEXPCI);
   ensure_equals("invalid path", r.getPath(), "a.b.c");
   ensure_equals("invalid value", r.getValue(), "Gr+Y");
+}
+
+// test term-rule-lessthan
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const Config      c=getConfig(xmlTermRuleLessThan);
+  ensure_equals("invalid number of sections", c.getSections().size(), 1u);
+  const Section    &s=c.getSections().at(0);
+  ensure("invalid section type", s.getType()==Section::Type::ACCEPT);
+  const Expression &e=s.getExpression();
+  ensure("invalid expression type", e.getType()==Expression::Type::TERM);
+  const Rule       &r=e.getRules().at(0);
+  ensure("invalid rule type", r.getType()==Rule::Type::RULE);
+  ensure("invalid rule mode", r.getMode()==Rule::Mode::LESSTHAN);
+  ensure_equals("invalid path", r.getPath(), "a.b.c");
+  ensure_equals("invalid value", r.getValue(), "43");
+}
+
+// test term-rule-greaterthan
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const Config      c=getConfig(xmlTermRuleGreaterThan);
+  ensure_equals("invalid number of sections", c.getSections().size(), 1u);
+  const Section    &s=c.getSections().at(0);
+  ensure("invalid section type", s.getType()==Section::Type::ACCEPT);
+  const Expression &e=s.getExpression();
+  ensure("invalid expression type", e.getType()==Expression::Type::TERM);
+  const Rule       &r=e.getRules().at(0);
+  ensure("invalid rule type", r.getType()==Rule::Type::RULE);
+  ensure("invalid rule mode", r.getMode()==Rule::Mode::GREATERTHAN);
+  ensure_equals("invalid path", r.getPath(), "a.b.c");
+  ensure_equals("invalid value", r.getValue(), "41");
 }
 
 } // namespace tut

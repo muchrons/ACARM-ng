@@ -1,9 +1,9 @@
 /*
- * Equals.hpp
+ * LessThan.hpp
  *
  */
-#ifndef INCLUDE_PREPROCESSOR_CHECKERS_EQUALS_HPP_FILE
-#define INCLUDE_PREPROCESSOR_CHECKERS_EQUALS_HPP_FILE
+#ifndef INCLUDE_PREPROCESSOR_CHECKERS_LESSTHAN_HPP_FILE
+#define INCLUDE_PREPROCESSOR_CHECKERS_LESSTHAN_HPP_FILE
 
 #include "Preprocessor/Checkers/detail/StrNumCompare.hpp"
 
@@ -16,31 +16,31 @@ namespace detail
 {
 /** \brief comparison implementaiton object.
  */
-struct EqualityComparison
+struct LessThanComparison
 {
-  /** \brief compares arguments for equality.
+  /** \brief compares arguments for less-than relation.
    *  \param left  left-hand argument.
    *  \param right right-hand argument.
-   *  \return left==right.
+   *  \return left<right.
    */
   template<typename T>
   bool operator()(const T &left, const T &right) const
   {
-    return left==right;
+    return left<right;
   }
-}; // struct EqualityComparison
+}; // struct LessThanComparison
 } // namespace detail
 
-/** \brief class checking two strings in terms of equality.
+/** \brief class checking two strings in terms of less-than relation.
  */
-class Equals: public detail::StrNumCompare<detail::EqualityComparison>
+class LessThan: public detail::StrNumCompare<detail::LessThanComparison>
 {
 public:
   /** \brief create checker.
    *  \param str string to be compared on demand.
    */
-  explicit Equals(const std::string &str);
-}; // class Equals
+  explicit LessThan(const std::string &str);
+}; // class LessThan
 
 } // namespace Checkers
 } // namespace Preprocessor
