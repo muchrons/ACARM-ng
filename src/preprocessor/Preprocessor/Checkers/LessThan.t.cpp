@@ -69,4 +69,13 @@ void testObj::test<5>(void)
   ensure("comparison didn't failed", ce.check("0043")==false );
 }
 
+// test if equality fails
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const LessThan ce("42");
+  ensure("comparison didn't failed", ce.check("0042")==false );
+}
+
 } // namespace tut
