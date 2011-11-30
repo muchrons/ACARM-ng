@@ -6,7 +6,10 @@
 #
 # default values
 #
-PREFIX="/opt"
+
+# dirs
+PREFIX="/usr/local"
+# features and build stuff
 PLUGINS="`(cd src ; ls -d persistency?* input?* trigger?* filter?*)`"
 PROFILE="release"
 FEATURES="lock_on_write_graph_add"
@@ -162,6 +165,16 @@ do
   esac
   shift
 done
+
+[ -z "$PREFIX"        ] && PREFIX="$PREFIX_DEF"
+[ -z "$BINDIR"        ] && BINDIR="$PREFIX/bin"
+[ -z "$LIBDIR"        ] && LIBDIR="$PREFIX/lib"
+[ -z "$DATADIR"       ] && DATADIR="$PREFIX/share"
+[ -z "$SYSCONFDIR"    ] && SYSCONFDIR="$PREFIX/etc"
+[ -z "$INCLUDEDIR"    ] && INCLUDEDIR="$PREFIX/include"
+[ -z "$DOCDIR"        ] && DOCDIR="$DATADIR/doc/acarm-ng"
+[ -z "$LOCALSTATEDIR" ] && LOCALSTATEDIR="$PREFIX/var"
+
 # ensure .../libs/acarm-ng is also present
 EXTRA_LIB_DIRS="$PREFIX/lib/acarm-ng:$EXTRA_LIB_DIRS"
 # if no explicit test(s) specified, run all
@@ -198,17 +211,30 @@ rm -f "$TMP"
 
 # prepare main makefile elements
 cat > "$CFG_OUT" <<EOF
+# extra flags
 LOCAL_MAKE_FLAGS+="TC=gcc"
 LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE"
 LOCAL_MAKE_FLAGS+="FEATURES=$FEATURES"
 LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS"
 LOCAL_MAKE_FLAGS+="EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
 
+# things to build, with defaults
 EXTRA_LIB_DIRS:=$EXTRA_LIB_DIRS
 PLUGINS_LIST:=`echo "$PLUGINS" | xargs -n 1 echo -n ' ' `
-DESTDIR:=/
-PREFIX:=$PREFIX
-INSTALL_DIR:=\$(DESTDIR)/\$(PREFIX)
+
+# destination directories
+DESTDIR      :=/
+INSTALL_DIR  :=\$(DESTDIR)
+PREFIX       :=$PREFIX
+BINDIR       :=$BINDIR
+LIBDIR       :=$LIBDIR
+DATADIR      :=$DATADIR
+SYSCONFDIR   :=$SYSCONFDIR
+INCLUDEDIR   :=$INCLUDEDIR
+DOCDIR       :=$DOCDIR
+LOCALSTATEDIR:=$LOCALSTATEDIR
+
+# helpers
 BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
 EOF
 
