@@ -6,6 +6,10 @@
 * added more tests for external libraries, required for compilation.
 
 
+-- v1.0.2 --
+* added flags for separating installation directories into different paths.
+
+
 -- v1.0.1 --
 * fixed missing configure flags.
 * added DESTDIR support to the make (for standard linux compliance).
