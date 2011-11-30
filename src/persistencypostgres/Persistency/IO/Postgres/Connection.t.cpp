@@ -279,7 +279,7 @@ void testObj::test<8>(void)
   for(int i=0; i<10 && start!=stop; ++i)
   {
     start=time(NULL);
-    const char *select="SELECT to_char( now(), 'YYYY.MM.DD HH:MI:SS' ) as ts;";
+    const char *select="SELECT to_char( now(), 'YYYY.MM.DD HH24:MI:SS' ) as ts;";
     res  =t_.getAPI<TransactionAPI>().exec(select);
     stop =time(NULL);
   }
