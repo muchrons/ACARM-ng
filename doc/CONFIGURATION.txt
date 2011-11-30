@@ -629,12 +629,17 @@ they are described later on).
 example rules can look like this:
 <true>  <!-- always true -->
 <false> <!-- always false-->
-<rule path="A" equals="B"/>   <!-- true if element A has value B -->
-<rule path="A" contains="B"/> <!-- true if element A contains string B -->
-<rule path="A" regexp="R"/>   <!-- true if element A matches extended POSIX
-                                   regular expression R -->
-<rule path="A" regexpci="R"/> <!-- true if element A matches (case insensitive)
-                                   extended POSIX regular expression R -->
+<rule path="A" equals="B"/>      <!-- true if element A has value B (*)-->
+<rule path="A" lessthan="B"/>    <!-- true if element A has value less than B (*) -->
+<rule path="A" greaterthan="B"/> <!-- true if element A has value greater than B (*) -->
+<rule path="A" contains="B"/>    <!-- true if element A contains string B -->
+<rule path="A" regexp="R"/>      <!-- true if element A matches extended POSIX
+                                      regular expression R -->
+<rule path="A" regexpci="R"/>    <!-- true if element A matches (case insensitive)
+                                      extended POSIX regular expression R -->
+(*) note that if both value of element A *and* constant B are numbers, comparison
+    is performed using numerical values, opposite to default, lexicographical
+    comparison schema.
 'path' consists of string that represents position in alerts' hierarchy. assuming
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
