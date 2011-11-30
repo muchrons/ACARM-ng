@@ -176,7 +176,7 @@ done
 [ -z "$LOCALSTATEDIR" ] && LOCALSTATEDIR="$PREFIX/var"
 
 # ensure .../libs/acarm-ng is also present
-EXTRA_LIB_DIRS="$PREFIX/lib/acarm-ng:$EXTRA_LIB_DIRS"
+EXTRA_LIB_DIRS="$LIBDIR/:$EXTRA_LIB_DIRS"
 # if no explicit test(s) specified, run all
 if [ -z "$TESTS_TO_RUN" ]
 then

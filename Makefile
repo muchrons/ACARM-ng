@@ -98,6 +98,8 @@ install-plugins: install-libs ensure-configure
 	  install -v -m 755 "$$f" "$(INSTALL_DIR)/$(PLUGINSDIR)/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
 	  rm "$$f" ; \
 	done
+	@install -v -m 755 "$(INSTALL_DIR)/$(PLUGINSDIR)/libpersistencystubs.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libpersistencystubs.so"
+	@install -v -m 755 "$(INSTALL_DIR)/$(PLUGINSDIR)/libfilterhostcommon.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libfilterhostcommon.so"
 
 .PHONY: install-wui
 install-wui: ensure-configure
