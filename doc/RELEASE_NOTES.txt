@@ -1,4 +1,5 @@
--- ?? --
+-- v1.0.1 --
+* fixed missing configure flags.
 * added DESTDIR support to the make (for standard linux compliance).
 
 
