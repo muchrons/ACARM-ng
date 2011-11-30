@@ -44,7 +44,7 @@ install: install-plugins install-libs install-bin install-includes install-confi
 .PHONY: install-libs
 install-libs: ensure-configure
 	@install -v -d '$(INSTALL_DIR)/$(LIBDIR)'
-	install -v -m 755 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/$(LIBDIR)'
+	install -v -m 644 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/$(LIBDIR)'
 
 .PHONY: install-bin
 install-bin: ensure-configure
@@ -97,11 +97,11 @@ install-plugins: install-libs ensure-configure
 	          '$(INSTALL_DIR)/$(LIBDIR)/'libtrigger?*.so \
 	          '$(INSTALL_DIR)/$(LIBDIR)/'libpersistency?*.so ; \
 	do \
-	  install -v -m 755 "$$f" "$(INSTALL_DIR)/$(PLUGINSDIR)/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
+	  install -v -m 644 "$$f" "$(INSTALL_DIR)/$(PLUGINSDIR)/`basename "$$f" | sed 's:\.so$$:.acmp:'`" ; \
 	  rm "$$f" ; \
 	done
-	@install -v -m 755 "$(INSTALL_DIR)/$(PLUGINSDIR)/libpersistencystubs.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libpersistencystubs.so"
-	@install -v -m 755 "$(INSTALL_DIR)/$(PLUGINSDIR)/libfilterhostcommon.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libfilterhostcommon.so"
+	@install -v -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libpersistencystubs.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libpersistencystubs.so"
+	@install -v -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libfilterhostcommon.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libfilterhostcommon.so"
 
 .PHONY: install-wui
 install-wui: ensure-configure
