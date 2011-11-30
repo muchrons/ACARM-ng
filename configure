@@ -24,13 +24,24 @@ function print_help()
   cat<<EOF >&2
 $0 options are:
   [--prefix <path>]    prefix for the installation directory (1)
+  [--bindir <path>]    path to copy binaries to (1)
+  [--libdir <path>]    path to install libraries in (1)
+  [--datadir <path>]   place to put shared files to (1)
+  [--confdir <path>]   destination directory for system configuration (1)
+  [--incdir <path>]    destination for include files (1)
+  [--docdir <path>]    path for documentation (1)
+  [--vardir <path>]    directory to store variables in (aka: localstatedir) (1)
+
   [--debug]            build in debug mode (2)
   [--list-plugins]     list all available plugin
   [--disable <plugin>] do not compile given plugin (3)
+
   [--list-tests]       show what tests are available
   [--test <name>]      run only specific test and exit (3)
+
   [-I <includes_dir>]  add extra include directory to compilation (3)
   [-L <libs_dir>]      add extra library directory to linking (3)
+
   [--help]             show this helpful text
 
 (1) does not require recompilation
@@ -111,6 +122,83 @@ do
       fi
       PREFIX="$2"
       echo "setting prefix to '$PREFIX'" >> "$LOG"
+      shift
+    ;;
+
+    "--bindir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: bindir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      BINDIR="$2"
+      echo "setting bindir to '$BINDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--libdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: libdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      LIBDIR="$2"
+      echo "setting libdir to '$LIBDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--datadir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: datadir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      DATADIR="$2"
+      echo "setting datadir to '$DATADIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--confdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: confdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      SYSCONFDIR="$2"
+      echo "setting datadir to '$SYSCONFDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--incdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: incdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      INCLUDEDIR="$2"
+      echo "setting incdir to '$INCLUDEDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--docdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: docdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      DOCDIR="$2"
+      echo "setting docdir to '$DOCDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--vardir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: vardir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      LOCALSTATEDIR="$2"
+      echo "setting vardir to '$LOCALSTATEDIR'" >> "$LOG"
       shift
     ;;
 

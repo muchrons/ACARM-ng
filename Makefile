@@ -67,7 +67,9 @@ install-config: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml ensure
 	@install -v -d '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng'
 	@install -v -d '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d'
 	@install -v -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d/acarm_ng'
-	@sed -i -e 's:^PREFIX=".*"$$:PREFIX="$(PREFIX)":' '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d/acarm_ng'
+	@sed -i -e 's:^RUNLOG=".*"$$:RUNLOG="$(LOCALSTATEDIR)/log/acarm-ng/run.log":' \
+	        -e 's:^DAEMON=".*"$$:DAEMON="$(BINDIR)/acarm-ng":' \
+	        '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d/acarm_ng'
 
 
 $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example_configs/minimal.xml
