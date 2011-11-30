@@ -14,8 +14,15 @@ namespace Checkers
 
 namespace detail
 {
+/** \brief comparison implementaiton object.
+ */
 struct EqualityComparison
 {
+  /** \brief compares arguments for equality.
+   *  \param left  left-hand argument.
+   *  \param right right-hand argument.
+   *  \return left==right.
+   */
   template<typename T>
   bool operator()(const T &left, const T &right) const
   {

@@ -5,6 +5,8 @@
 #ifndef INCLUDE_PREPROCESSOR_CHECKERS_STRNUMCOMPARE_HPP_FILE
 #define INCLUDE_PREPROCESSOR_CHECKERS_STRNUMCOMPARE_HPP_FILE
 
+#include <string>
+
 #include "Logger/Logger.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
 #include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
@@ -37,9 +39,10 @@ public:
 
 protected:
   /** \brief create checker.
-   *  \param str string to be compared on demand.
+   *  \param modeName name of the comparison type.
+   *  \param str      string to be compared on demand.
    */
-  StrNumCompare(const char *modeName, const std::string &str):
+  StrNumCompare(const std::string &modeName, const std::string &str):
     Mode(modeName),
     log_("preprocessor.checkers.detail.strnumcompare"),
     str_(str),

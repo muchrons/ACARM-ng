@@ -20,12 +20,21 @@ namespace detail
 class NumberWrapper
 {
 public:
+  /** \brief create wrapper object for a given string.
+   *  \param str string to be processed.
+   */
   explicit NumberWrapper(const std::string &str);
 
+  /** \brief returns information if string passed as an c-tor's argument is a number.
+   */
   bool isNumber(void) const
   {
     return isNum_;
   }
+  /** \brief gives access to numerical value of a given string, if it is a number.
+   *  \return numerical value of a parsed string.
+   *  \warning this call cannot be called when given string is not a number.
+   */
   double get(void) const
   {
     assert( isNumber() && "getting value of non-number is undefined (logical error)" );

@@ -14,8 +14,15 @@ namespace Checkers
 
 namespace detail
 {
+/** \brief comparison implementaiton object.
+ */
 struct GreaterThanComparison
 {
+  /** \brief compares arguments for greater-than relation.
+   *  \param left  left-hand argument.
+   *  \param right right-hand argument.
+   *  \return left>right.
+   */
   template<typename T>
   bool operator()(const T &left, const T &right) const
   {
