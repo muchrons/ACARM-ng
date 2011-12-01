@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_IO_STUBS_HEARTBEATS_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_STUBS_HEARTBEATS_HPP_FILE
 
-/* public header */
-
 #include "Persistency/IO/Heartbeats.hpp"
 
 namespace Persistency

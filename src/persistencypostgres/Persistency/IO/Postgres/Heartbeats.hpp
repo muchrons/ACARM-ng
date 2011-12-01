@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_HEARTBEATS_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_HEARTBEATS_HPP_FILE
 
-/* public header */
-
 #include "Logger/Node.hpp"
 #include "Persistency/IO/Heartbeats.hpp"
 #include "Persistency/IO/Postgres/DBHandle.hpp"

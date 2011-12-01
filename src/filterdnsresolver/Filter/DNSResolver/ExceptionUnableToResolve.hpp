@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_DNSRESOLVER_EXCEPTIONUNABLETORESOLVE_HPP_FILE
 #define INCLUDE_FILTER_DNSRESOLVER_EXCEPTIONUNABLETORESOLVE_HPP_FILE
 
-/* public header */
-
 #include "Filter/DNSResolver/Exception.hpp"
 
 namespace Filter
