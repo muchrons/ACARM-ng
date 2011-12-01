@@ -17,7 +17,7 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn( getTestConfig1() )
+    conn_( getTestConfig1() )
   {
   }
 
@@ -33,7 +33,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                   getTestConfig2().getLogin() + "@" + getTestConfig2().getServer() );
   }
 
-  Connection conn;
+  Connection conn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -51,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  MessageIO ms(conn);
+  MessageIO ms(conn_);
 }
 
 // test sending message from one account to another.
@@ -59,7 +59,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  MessageIO         ms(conn);
+  MessageIO         ms(conn_);
   const std::string msg("alice has a cat");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
   const std::string recv=getMessageFromAccount2();
@@ -92,7 +92,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  MessageIO         ms(conn);
+  MessageIO         ms(conn_);
   const std::string msg("łączność UTF-8");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
   const std::string recv=getMessageFromAccount2();
@@ -104,7 +104,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  MessageIO ms(conn);
+  MessageIO ms(conn_);
   ms.discardIncommingMessages();
 }
 

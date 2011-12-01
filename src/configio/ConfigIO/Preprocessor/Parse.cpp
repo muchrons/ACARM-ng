@@ -18,6 +18,10 @@ Rule::Mode parseRuleMode(const std::string &mode)
 {
   if(mode=="equals")
     return Rule::Mode::EQUALS;
+  if(mode=="lessthan")
+    return Rule::Mode::LESSTHAN;
+  if(mode=="greaterthan")
+    return Rule::Mode::GREATERTHAN;
   if(mode=="contains")
     return Rule::Mode::CONTAINS;
   if(mode=="regexp")

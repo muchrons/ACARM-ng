@@ -1,0 +1,22 @@
+echo -n "checking for boost::utilities... "
+cat > "$TMP" <<EOF
+#include <boost/noncopyable.hpp>
+
+struct A: private boost::noncopyable {};
+
+int main(void)
+{
+  A a;
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

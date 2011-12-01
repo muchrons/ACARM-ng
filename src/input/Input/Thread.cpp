@@ -6,6 +6,8 @@
 #include <cassert>
 #include <boost/thread.hpp>
 
+#include "ConfigConsts/heartbeats.hpp"
+#include "ConfigConsts/inputs.hpp"
 #include "Commons/Convert.hpp"
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
@@ -35,8 +37,8 @@ void Thread::operator()(void)
   {
     assert( output_!=NULL );
     assert( reader_.get()!=NULL );
-    const unsigned int timeout =25;                             // TODO: hardcoded value
-    const unsigned int deadline=3*timeout;                      // TODO: hardcoded value
+    const unsigned int timeout =ConfigConsts::inputTimeout;
+    const unsigned int deadline=ConfigConsts::maxLostHeartbeats*timeout;
 
     try
     {

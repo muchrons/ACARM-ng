@@ -1,0 +1,20 @@
+echo -n "checking for boost::tuple... "
+cat > "$TMP" <<EOF
+#include <boost/tuple/tuple.hpp>
+
+int main(void)
+{
+  const boost::tuple<int,double> d(1, 4.2);
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

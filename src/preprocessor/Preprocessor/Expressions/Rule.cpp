@@ -7,6 +7,8 @@
 
 #include "Commons/Convert.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
+#include "Preprocessor/Checkers/LessThan.hpp"
+#include "Preprocessor/Checkers/GreaterThan.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
 #include "Preprocessor/Checkers/RegExp.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
@@ -142,32 +144,9 @@ struct ErrorThrowerMod: public ErrorThrower
 
 
 Rule::Rule(const Path &path, Mode mode, const Value &value):
-  path_(path)
+  path_(path),
+  checker_( buildChecker(mode, value).release() )
 {
-  // create proper checker
-  switch( mode.toInt() )
-  {
-    case Mode::EQUALS:
-      checker_.reset( new Checkers::Equals(value) );
-      break;
-
-    case Mode::CONTAINS:
-      checker_.reset( new Checkers::Contains(value) );
-      break;
-
-    case Mode::REGEXP:
-      checker_.reset( new Checkers::RegExp(value, true) );
-      break;
-
-    case Mode::REGEXPCI:
-      checker_.reset( new Checkers::RegExp(value, false) );
-      break;
-
-    default:
-      assert(!"unknown mode requested");
-      throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
-      break;    // never reached
-  } // switch(mode)
   assert( checker_.get()!=NULL );
 }
 
@@ -194,6 +173,27 @@ bool Rule::compute(const Persistency::ConstGraphNodePtrNN &node) const
   CallbackHandle cb(checker_.get());
   ParamsImpl     p(path_, cb);
   return MainDispatcher::process(node, p);
+}
+
+
+std::auto_ptr<Checkers::Mode> Rule::buildChecker(Mode mode, const Value &value) const
+{
+  typedef std::auto_ptr<Checkers::Mode> Ptr;
+  // create proper checker
+  switch( mode.toInt() )
+  {
+    case Mode::EQUALS:      return Ptr( new Checkers::Equals(value) );
+    case Mode::LESSTHAN:    return Ptr( new Checkers::LessThan(value) );
+    case Mode::GREATERTHAN: return Ptr( new Checkers::GreaterThan(value) );
+    case Mode::CONTAINS:    return Ptr( new Checkers::Contains(value) );
+    case Mode::REGEXP:      return Ptr( new Checkers::RegExp(value, true) );
+    case Mode::REGEXPCI:    return Ptr( new Checkers::RegExp(value, false) );
+    default:                break;
+  } // switch(mode)
+
+  assert(!"unknown mode requested");
+  throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
+  return Ptr(NULL); // never reached
 }
 
 } // namespace Expressions

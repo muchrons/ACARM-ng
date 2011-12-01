@@ -6,6 +6,8 @@
 #include <cassert>
 
 #include "Core/Types/Proc/Processor.hpp"
+#include "ConfigConsts/heartbeats.hpp"
+#include "ConfigConsts/inputs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -13,6 +15,7 @@ using namespace Core::Types::Proc;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
 using Core::Types::SignedNode;
+namespace CC=ConfigConsts;
 
 namespace
 {
@@ -45,7 +48,7 @@ struct TestInterface: public Interface
   virtual void heartbeat(const unsigned int deadline)
   {
     ++heartbeats_;
-    tut::ensure_equals("invalid timeout", deadline, 60u);
+    tut::ensure_equals("invalid timeout", deadline, CC::maxLostHeartbeats*CC::inputTimeout);
   }
 
   int  calls_;

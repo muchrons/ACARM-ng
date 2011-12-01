@@ -38,10 +38,12 @@ struct RuleMode
   /** \brief implementaiton enum. only to be used via Rule::Mode. */
   typedef enum
   {
-    EQUALS,     // string is identical with given pattern
-    CONTAINS,   // string contains given pattern
-    REGEXP,     // string matches given regular expression
-    REGEXPCI    // string matches given regular expression (case insensitive)
+    LESSTHAN,       // string is lexagonically before the pattern
+    GREATERTHAN,    // string is lexagonically after the pattern
+    EQUALS,         // string is identical with the given pattern
+    CONTAINS,       // string contains the given pattern
+    REGEXP,         // string matches given regular expression
+    REGEXPCI        // string matches given regular expression (case insensitive)
   }
   Type;
 };
@@ -77,7 +79,7 @@ public:
     return Rule(Type::RULE_FALSE, "", Mode::EQUALS, "");
   }
   /** \brief named c-tor for dynamically computed condition.
-   *  \param path  path ot be checked.
+   *  \param path  path to be checked.
    *  \param mode  operationg mode of the rule.
    *  \param value value to compare with.
    *  \return created object.

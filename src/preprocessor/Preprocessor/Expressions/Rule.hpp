@@ -46,6 +46,8 @@ public:
   virtual bool compute(const Persistency::ConstGraphNodePtrNN &node) const;
 
 private:
+  std::auto_ptr<Checkers::Mode> buildChecker(Mode mode, const Value &value) const;
+
   const Path                        path_;
   boost::scoped_ptr<Checkers::Mode> checker_;
 }; // class Rule

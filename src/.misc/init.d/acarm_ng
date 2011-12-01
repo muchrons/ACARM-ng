@@ -17,12 +17,11 @@
 # script setup
 USER="acarm-ng"
 GROUP="acarm-ng"
-PREFIX="/home/acarm-ng/acarm-ng-inst"
+RUNLOG="$PREFIX/var/log/acarm-ng/run.log"
+DAEMON="$PREFIX/bin/acarm-ng"
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH="/sbin:/usr/sbin:/bin:/usr/bin"
-RUNLOG="$PREFIX/var/log/acarm-ng/run.log"
-DAEMON="$PREFIX/bin/acarm-ng"
 DAEMON_ARGS="-d -u $USER -g $GROUP"
 NAME="ACARM-ng"
 APPNAME="acarm-ng.bin"

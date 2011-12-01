@@ -5,31 +5,41 @@
 #ifndef INCLUDE_PREPROCESSOR_CHECKERS_EQUALS_HPP_FILE
 #define INCLUDE_PREPROCESSOR_CHECKERS_EQUALS_HPP_FILE
 
-#include "Preprocessor/Checkers/Mode.hpp"
+#include "Preprocessor/Checkers/detail/StrNumCompare.hpp"
 
 namespace Preprocessor
 {
 namespace Checkers
 {
 
+namespace detail
+{
+/** \brief comparison implementaiton object.
+ */
+struct EqualityComparison
+{
+  /** \brief compares arguments for equality.
+   *  \param left  left-hand argument.
+   *  \param right right-hand argument.
+   *  \return left==right.
+   */
+  template<typename T>
+  bool operator()(const T &left, const T &right) const
+  {
+    return left==right;
+  }
+}; // struct EqualityComparison
+} // namespace detail
+
 /** \brief class checking two strings in terms of equality.
  */
-class Equals: public Mode
+class Equals: public detail::StrNumCompare<detail::EqualityComparison>
 {
 public:
   /** \brief create checker.
    *  \param str string to be compared on demand.
    */
   explicit Equals(const std::string &str);
-
-  /** \brief check if given string equals string given in c-tor.
-   *  \param str string to check.
-   *  \return true if string equals given one, false otherwise.
-   */
-  virtual bool check(const std::string &str) const;
-
-private:
-  const std::string str_;
 }; // class Equals
 
 } // namespace Checkers

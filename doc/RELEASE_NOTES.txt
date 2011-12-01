@@ -1,4 +1,19 @@
 -- dev --
+* preprocessor new features:
+  - less-than comparison
+  - greater-than comparison
+  - all relations (<,>,==) now support automatic numbers parsing to compare them as numbers, not as strings.
+* added more tests for external libraries, required for compilation.
+
+
+-- v1.0.2 --
+* libraries and applications are now automatically striped when installing release build.
+* added flags for separating installation directories into different paths.
+
+
+-- v1.0.1 --
+* fixed missing configure flags.
+* added DESTDIR support to the make (for standard linux compliance).
 
 
 -- v1.0.0 --
