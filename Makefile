@@ -69,12 +69,6 @@ install-includes: ensure-configure
 install-config: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml ensure-configure
 	@echo "installing conf-dir: $(INSTALL_DIR)/$(SYSCONFDIR)"
 	@install -d '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng'
-	@install -d '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d'
-	@install -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d/acarm_ng'
-	@sed -i -e 's:^RUNLOG=".*"$$:RUNLOG="$(LOCALSTATEDIR)/log/acarm-ng/run.log":' \
-	        -e 's:^DAEMON=".*"$$:DAEMON="$(BINDIR)/acarm-ng":' \
-	        '$(INSTALL_DIR)/$(SYSCONFDIR)/init.d/acarm_ng'
-
 
 $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example_configs/minimal.xml
 	@echo "installing config file: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/acarm_ng_config.xml"
@@ -89,6 +83,12 @@ install-doc: ensure-configure
 	@echo "installing documentation: $(INSTALL_DIR)/$(DOCDIR)"
 	@install -d '$(INSTALL_DIR)/$(DOCDIR)'
 	@cp -rL doc/* '$(INSTALL_DIR)/$(DOCDIR)'
+	@# install example init.d script
+	@install -d '$(INSTALL_DIR)/$(DOCDIR)/init.d'
+	@install -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm_ng'
+	@sed -i -e 's:^RUNLOG=".*"$$:RUNLOG="$(LOCALSTATEDIR)/log/acarm-ng/run.log":' \
+	        -e 's:^DAEMON=".*"$$:DAEMON="$(BINDIR)/acarm-ng":' \
+	        '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm_ng'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
