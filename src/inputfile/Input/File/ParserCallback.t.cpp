@@ -94,7 +94,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ParserCallback pc("testdata/acarm_ng_config.xml");
+  ParserCallback pc("testdata/test_config.xml");        // TODO: hardcoded value
   try
   {
     pc.customAction(conn_, t_);
