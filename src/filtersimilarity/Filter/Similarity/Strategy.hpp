@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_SIMILARITY_STRATEGY_HPP_FILE
 #define INCLUDE_FILTER_SIMILARITY_STRATEGY_HPP_FILE
 
-/* public header */
-
 #include "Persistency/Alert.hpp"
 #include "Filter/Simple/Strategy.hpp"
 #include "Filter/Similarity/ExceptionInvalidParameter.hpp"
