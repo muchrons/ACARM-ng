@@ -85,10 +85,10 @@ install-doc: ensure-configure
 	@cp -rL doc/* '$(INSTALL_DIR)/$(DOCDIR)'
 	@# install example init.d script
 	@install -d '$(INSTALL_DIR)/$(DOCDIR)/init.d'
-	@install -m 755 -b 'src/.misc/init.d/acarm_ng' '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm_ng'
+	@install -m 755 -b 'src/.misc/init.d/acarm-ng' '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm-ng'
 	@sed -i -e 's:^RUNLOG=".*"$$:RUNLOG="$(LOCALSTATEDIR)/log/acarm-ng/run.log":' \
 	        -e 's:^DAEMON=".*"$$:DAEMON="$(BINDIR)/acarm-ng":' \
-	        '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm_ng'
+	        '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm-ng'
 
 .PHONY: install-db-schemas
 install-db-schemas: ensure-configure
