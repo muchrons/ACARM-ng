@@ -6,7 +6,6 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/fusion/include/io.hpp>
 #include <boost/exception/all.hpp>
 
 #include "ConfigIO/Preprocessor/FunctionParser.hpp"
@@ -37,6 +36,7 @@ namespace Preprocessor
 namespace
 {
 
+// helper grammar call to parse real functions.
 template<typename Iterator>
 struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
 {
@@ -72,14 +72,14 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     start_       %= func_;
   }
 
-  qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;
-  qi::rule<Iterator, Data(),            ascii::space_type> param_;
-  qi::rule<Iterator, Data(),            ascii::space_type> value_;
-  qi::rule<Iterator, Data(),            ascii::space_type> arg_;
-  qi::rule<Iterator, Data::Arguments(), ascii::space_type> argVec_;
-  qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;
-  qi::rule<Iterator, Data(),            ascii::space_type> func_;
-  qi::rule<Iterator, Data(),            ascii::space_type> start_;
+  qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
+  qi::rule<Iterator, Data(),            ascii::space_type> param_;          // parameter's value
+  qi::rule<Iterator, Data(),            ascii::space_type> value_;          // parses special 'value()' function
+  qi::rule<Iterator, Data(),            ascii::space_type> arg_;            // single function argument (return from other function or parameter)
+  qi::rule<Iterator, Data::Arguments(), ascii::space_type> argVec_;         // vector of arguments (can be empty)
+  qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;       // name of the function
+  qi::rule<Iterator, Data(),            ascii::space_type> func_;           // function declaration along with brackets
+  qi::rule<Iterator, Data(),            ascii::space_type> start_;          // start rule (alias to func_)
 }; // struct FormatterGrammar
 
 
