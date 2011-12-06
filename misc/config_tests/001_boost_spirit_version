@@ -1,0 +1,20 @@
+echo -n "checking boost spirit version... "
+cat > "$TMP" <<EOF
+#include <boost/spirit/include/version.hpp>
+#if SPIRIT_VERSION < 0x2000
+#error boost spirit version is too old
+#endif
+int main(void)
+{
+  return 0;
+}
+EOF
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "too old"
+  echo "ERROR: minimal required version is 2.0"
+  rm -f "$TMP"
+  exit 2
+fi
