@@ -20,8 +20,8 @@ namespace Preprocessor
 class FunctionParser
 {
 public:
-  /** \brief parses configuration sub-tree.
-   *  \param root root node for subtree to parse.
+  /** \brief parse required string as a formatter function.
+   *  \param formatter string representing function to parse.
    */
   explicit FunctionParser(const std::string &formatter);
   /** \brief gets parsed configuration.
