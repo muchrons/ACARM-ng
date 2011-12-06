@@ -22,9 +22,9 @@ typedef ConfigIO::Preprocessor::detail::FormatterConfigData Data;
 // tell boost::fusion about data structure to be used
 BOOST_FUSION_ADAPT_STRUCT(
       Data,
-      (Data::Type,      type_)
-      (std::string,     str_ )
-      (Data::Arguments, args_)
+      (Data::Type,      type_)  // at_c<0>
+      (std::string,     str_ )  // at_c<1>
+      (Data::Arguments, args_)  // at_c<2>
     )
 
 namespace ConfigIO
@@ -42,31 +42,42 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     FormatterGrammar::base_type(start_)
   {
     using qi::_1;
+    using qi::_2;
     using qi::_val;
-    //using qi::lit;
-    //using qi::lexeme;
+    using qi::lit;
+    using qi::eps;
+    using qi::lexeme;
     using ascii::char_;
-    //using ascii::string;
+    using ascii::lower;
+    using ascii::alnum;
     using namespace qi::labels;
-
     using phoenix::at_c;
-    //using phoenix::push_back;
+    using phoenix::push_back;
 
-    quotedString_ = '"' >> (*(char_-'"'))/*[_val=_1]*/ >> '"';
-    paramStr_     = quotedString_[at_c<1>(_val)=_1 , at_c<0>(_val)=Data::ARGUMENT];
-    start_       %= paramStr_;
+    // grammar specification in boost::spirit's EBNF-like notation
+    quotedString_%= lexeme['"' >> *(char_-'"') >> '"'];
+    param_        = quotedString_[at_c<1>(_val)=_1,
+                                  at_c<0>(_val)=Data::ARGUMENT];
+    value_        = (lit("value") >> '(' >> ')')[at_c<0>(_val)=Data::VALUE];
+    arg_          = func_ | param_;
+    argVec_       = (arg_ % ',') | eps;
+    funcName_    %= lexeme[lower >> *alnum];
+    func_        %= ( '(' >> func_ >> ')' ) |
+                    ( value_ ) |
+                    ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
+                                                           at_c<2>(_val)=_2,
+                                                           at_c<0>(_val)=Data::FUNCTION];
+    start_       %= func_;
   }
 
-  qi::rule<Iterator, std::string(), ascii::space_type> quotedString_;
-  qi::rule<Iterator, Data(),        ascii::space_type> paramStr_;
-  qi::rule<Iterator, Data(),        ascii::space_type> start_;
-
-  /*
-  qi::rule<Iterator, mini_xml_node(), ascii::space_type> node;
-  qi::rule<Iterator, std::string(), ascii::space_type> text;
-  qi::rule<Iterator, std::string(), ascii::space_type> start_tag;
-  qi::rule<Iterator, void(std::string), ascii::space_type> end_tag;
-  */
+  qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;
+  qi::rule<Iterator, Data(),            ascii::space_type> param_;
+  qi::rule<Iterator, Data(),            ascii::space_type> value_;
+  qi::rule<Iterator, Data(),            ascii::space_type> arg_;
+  qi::rule<Iterator, Data::Arguments(), ascii::space_type> argVec_;
+  qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;
+  qi::rule<Iterator, Data(),            ascii::space_type> func_;
+  qi::rule<Iterator, Data(),            ascii::space_type> start_;
 }; // struct FormatterGrammar
 
 

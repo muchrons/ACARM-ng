@@ -23,7 +23,7 @@ void print(const std::string &tab, const FormatterConfig::Wrapper &w)
 
   if( w.isArgument() )
   {
-    cout<<tab<<"\""<<w.argument()<<"\""<<endl;
+    cout<<tab<<",,"<<w.argument()<<"''"<<endl;
     return;
   }
 
@@ -57,9 +57,8 @@ int main(const int argc, char const * const * const argv)
     return 1;
   }
 
+  cout<<",,"<<argv[1]<<"'' -->"<<endl;
   const FunctionParser fp(argv[1]);
-
-  cout<<argv[1]<<" -->"<<endl;
   print( fp.getConfig().get() );
 
   return 0;
