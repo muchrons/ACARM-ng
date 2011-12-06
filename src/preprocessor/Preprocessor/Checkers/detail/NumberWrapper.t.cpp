@@ -130,5 +130,5 @@ void testObj::test<11>(void)
   ensure("number not parsed", nc.isNumber() );
   ensure_equals("invalid value", nc.get(), 1);
 }
-
+//TODO: add test for numbers like: '--42', '-42+1', '+42', '+42.5'
 } // namespace tut
