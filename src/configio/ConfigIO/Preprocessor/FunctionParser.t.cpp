@@ -133,7 +133,7 @@ void testObj::test<7>(void)
 
   const FormatterConfig::Wrapper p1=w.param(0);
   ensure("invalid type 0", p1.isFunction() );
-  ensure_equals("invalid function name 0", w.name(), "other");
+  ensure_equals("invalid function name 0", p1.name(), "other");
   ensure_equals("invalid arguments count 0", p1.argCount(), 1);
 
   const FormatterConfig::Wrapper p2=p1.param(0);
@@ -167,7 +167,7 @@ void testObj::test<8>(void)
   const FormatterConfig::Wrapper p4=w.param(2);
   ensure("invalid type 3", p4.isFunction() );
   ensure_equals("invalid function name 3", p4.name(), "misc");
-  ensure_equals("invalid arguments count 3", p3.argCount(), 1);
+  ensure_equals("invalid arguments count 3", p4.argCount(), 1);
 
   const FormatterConfig::Wrapper p5=p4.param(0);
   ensure("invalid type 4", p5.isValue() );
@@ -194,7 +194,7 @@ void testObj::test<10>(void)
 
   const FormatterConfig::Wrapper p1=w.param(0);
   ensure("invalid type 0", p1.isFunction() );
-  ensure_equals("invalid function name 0", w.name(), "other");
+  ensure_equals("invalid function name 0", p1.name(), "other");
   ensure_equals("invalid arguments count 0", p1.argCount(), 1);
 
   const FormatterConfig::Wrapper p2=p1.param(0);
@@ -282,6 +282,58 @@ template<>
 void testObj::test<18>(void)
 {
   testThrow("xy(\"abc)", "didn't throw on missing enclosing quote");
+}
+
+// test error on invalid brackets
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  testThrow("xy((\"abc\"))", "didn't throw on invalid brackets");
+}
+
+// test error on space in function name
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  testThrow("x y(\"abc\")", "didn't throw on space in function name");
+}
+
+// test value() with spaces
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const FunctionParser           fp(" value ( ) ");
+  const FormatterConfig::Wrapper w=fp.getConfig().get();
+  ensure("invalid type", w.isValue() );
+}
+
+// test error on space in value() function name
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  testThrow("val ue()", "didn't throw on space in value function name");
+}
+
+// test error when value() has arguments
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  testThrow("value(\"arg\")", "didn't throw on argument to value()");
+}
+
+// test valueabc() - should be normal function
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const FunctionParser           fp("valueabc()");
+  const FormatterConfig::Wrapper w=fp.getConfig().get();
+  ensure("invalid type", w.isFunction() );
 }
 
 } // namespace tut

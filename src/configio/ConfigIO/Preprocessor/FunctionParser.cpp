@@ -2,10 +2,12 @@
  * FunctionParser.cpp
  *
  */
+#include <iostream>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/io.hpp>
+#include <boost/exception/all.hpp>
 
 #include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
@@ -58,7 +60,7 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     quotedString_%= lexeme['"' >> *(char_-'"') >> '"'];
     param_        = quotedString_[at_c<1>(_val)=_1,
                                   at_c<0>(_val)=Data::ARGUMENT];
-    value_        = (lit("value") >> '(' >> ')')[at_c<0>(_val)=Data::VALUE];
+    value_        = (lit("value") >> '(' > ')')[at_c<0>(_val)=Data::VALUE];
     arg_          = func_ | param_;
     argVec_       = (arg_ % ',') | eps;
     funcName_    %= lexeme[lower >> *alnum];
@@ -92,22 +94,31 @@ inline FormatterConfig defaultConfig(void)
 
 inline FormatterConfig parseString(const std::string &str)
 {
-  // check for special case
-  if(str=="")
-    return defaultConfig();
+  try
+  {
+    // check for special case
+    if(str=="")
+      return defaultConfig();
 
-  // do the real parsing
-  FormatterGrammar<string::const_iterator> parser;
-  Data                                     data;
-  string::const_iterator it =str.begin();
-  string::const_iterator end=str.end();
-  if( !phrase_parse(it, end, parser, ascii::space, data) )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "phrase_parse() returned an error");
-  if(it!=end)
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "not whole string has been parsed");
+    // do the real parsing
+    FormatterGrammar<string::const_iterator> parser;
+    Data                                     data;
+    string::const_iterator it =str.begin();
+    string::const_iterator end=str.end();
+    if( !phrase_parse(it, end, parser, ascii::space, data) )
+      throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "phrase_parse() returned an error");
+    if(it!=end)
+      throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "not whole string has been parsed");
 
-  // return parsed data
-  return FormatterConfig(data);
+    // return parsed data
+    return FormatterConfig(data);
+  }
+  catch(const boost::exception &ex)
+  {
+    const string err=string("got function parser error: ") + boost::diagnostic_information(ex);
+    // translate an exception to the common exception class type
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, err);
+  }
 } // parseString()
 
 } // unnamed namespace
