@@ -51,7 +51,7 @@ void testObj::test<3>(void)
   ensure("comparison didn't failed", ce.check("doom")==false );
 }
 
-// test numerical comarison - positive case
+// test numerical comparison - positive case
 template<>
 template<>
 void testObj::test<4>(void)
@@ -60,7 +60,7 @@ void testObj::test<4>(void)
   ensure("comparison failed", ce.check("0041") );
 }
 
-// test numerical comarison - negative case
+// test numerical comparison - negative case
 template<>
 template<>
 void testObj::test<5>(void)
@@ -77,5 +77,5 @@ void testObj::test<6>(void)
   const LessThan ce("42");
   ensure("comparison didn't failed", ce.check("0042")==false );
 }
-
+// TODO: add floating point numbers comparison tests if it makes sense
 } // namespace tut
