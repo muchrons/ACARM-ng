@@ -51,7 +51,7 @@ void testObj::test<3>(void)
   ensure("comparison didn't failed", ce.check("a")==false );
 }
 
-// test numerical comarison - positive case
+// test numerical comparison - positive case
 template<>
 template<>
 void testObj::test<4>(void)
@@ -60,7 +60,7 @@ void testObj::test<4>(void)
   ensure("comparison failed", ce.check("0043") );
 }
 
-// test numerical comarison - negative case
+// test numerical comparison - negative case
 template<>
 template<>
 void testObj::test<5>(void)
@@ -76,6 +76,24 @@ void testObj::test<6>(void)
 {
   const GreaterThan ce("42");
   ensure("comparison didn't failed", ce.check("0042")==false );
+}
+
+// test floating point comparison - negative case
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const GreaterThan ce("4.5");
+  ensure("comparison didn't failed", ce.check("004.30")==false );
+}
+
+// test floating point comparison - positive case
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const GreaterThan ce("4.5");
+  ensure("comparison didn't failed", ce.check("004.51")==true );
 }
 
 } // namespace tut
