@@ -14,7 +14,7 @@ using namespace ConfigIO;
 
 namespace
 {
-const char *defaultFile="acarm_ng_config.xml";
+const char *defaultFile="test_config.xml";  // TODO: hardcoded value
 
 struct TestClass
 {

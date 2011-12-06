@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_SIMILARITY_EXCEPTIONINVALIDPARAMTER_HPP_FILE
 #define INCLUDE_FILTER_SIMILARITY_EXCEPTIONINVALIDPARAMTER_HPP_FILE
 
-/* public header */
-
 #include "Filter/Similarity/Exception.hpp"
 
 namespace Filter

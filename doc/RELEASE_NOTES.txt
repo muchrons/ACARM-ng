@@ -7,6 +7,7 @@
 
 
 -- v1.0.2 --
+* configuration file is now named 'main_config.xml'.
 * libraries and applications are now automatically striped when installing release build.
 * added flags for separating installation directories into different paths.
 

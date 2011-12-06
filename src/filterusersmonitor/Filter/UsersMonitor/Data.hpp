@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_USERSMONITOR_DATA_HPP_FILE
 #define INCLUDE_FILTER_USERSMONITOR_DATA_HPP_FILE
 
-/* public header */
-
 #include <string>
 #include <vector>
 
