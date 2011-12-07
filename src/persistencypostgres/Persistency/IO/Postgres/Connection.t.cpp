@@ -276,19 +276,19 @@ void testObj::test<8>(void)
   pqxx::result res;
   time_t       start=1;
   time_t       stop =2;
+  string       fromQuery;
   for(int i=0; i<10 && start!=stop; ++i)
   {
     start=time(NULL);
     const char *select="SELECT to_char( now(), 'YYYY.MM.DD HH24:MI:SS' ) as ts;";
     res  =t_.getAPI<TransactionAPI>().exec(select);
+    // quesry result to string
+    ensure_equals("invalid elements count returned", res.size(), 1u);
+    res[0]["ts"].to(fromQuery);
     stop =time(NULL);
   }
   ensure("canot obtaint result within one second", start==stop);
-  ensure_equals("invalid elements count returned", res.size(), 1u);
 
-  // quesry result to string
-  string fromQuery;
-  res[0]["ts"].to(fromQuery);
   // UTC time to string
   struct tm lt;
   gmtime_r(&start, &lt);
