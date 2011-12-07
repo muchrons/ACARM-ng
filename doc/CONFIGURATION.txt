@@ -740,11 +740,11 @@ timestamp processor. changes epoch timestamps to strings. parameters are:
 3. sub(a, b)
 returns result of "a-b". both arguments must be a decimal numbers.
 
-4. add(a, b)
-returns result of "a+b". both arguments must be a decimal numbers.
+4. add(a1, a2, ..., aN)
+returns sum of all arguments. all arguments must be decimal numbers.
 
-5. mul(a, b)
-returns result of "a*b". both arguments must be a decimal numbers.
+5. mul(a1, a2, ..., aN)
+returns multiplicity of all arguments. all arguments must be decimal numbers.
 
 6. div(a, b)
 returns result of "a/b". both arguments must be a decimal numbers.
@@ -760,6 +760,17 @@ if "a" is floating point it is rounded to the nearest integer.
 9. sig(a)
 returns "-1" for negative numbers, "+1" for positive numbers and "0" for "0".
 "a" must be a decimal number.
+
+10. min(a1, a2, ..., aN)
+returns minimum of all values. if all arguments are numbers, numerical
+comparison is performed, otherwise lexicographical comparison is run.
+
+11. max(a1, a2, ..., aN)
+returns maximum of all values. if all arguments are numbers, numerical
+comparison is performed, otherwise lexicographical comparison is run.
+
+12. abs(a)
+returns absolute value of a number "a". "a" must be a numerical value.
 
 example preprocessors' configs along with description goes here:
 
