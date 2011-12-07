@@ -78,5 +78,22 @@ void testObj::test<6>(void)
   ensure("comparison didn't failed", ce.check("0042")==false );
 }
 
-// TODO: add floating point numbers comparison tests if it makes sense
+// test floating point comparison - negative case
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const GreaterThan ce("4.5");
+  ensure("comparison didn't failed", ce.check("004.30")==false );
+}
+
+// test floating point comparison - positive case
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const GreaterThan ce("4.5");
+  ensure("comparison didn't failed", ce.check("004.51")==true );
+}
+
 } // namespace tut

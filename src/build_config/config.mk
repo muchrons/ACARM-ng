@@ -1,4 +1,9 @@
 #
+# can be used to locally enable some specific settings/workarounds
+#
+-include build_config/local-config-pre.mk
+
+#
 # project specific configuration file
 # to be placed in main project directory
 #
@@ -91,5 +96,35 @@ unexport TMP
 unexport TMP_OPT
 unexport TMPLD
 
+#
+# workarround for a missing defines in older intel compilers
+#
+ifeq ($(TC),intel)
+ifneq ($(ENABLE_SIZEOF_MACROS_WORKAROUND),)
+TMP:=
+TMP+=-D__SIZEOF_INT__=sizeof\(int\)
+TMP+=-D__SIZEOF_LONG__=sizeof\(long\)
+#TMP+=-D__SIZEOF_LONG_LONG__=sizeof\(long\ long\)
+TMP+=-D__SIZEOF_SHORT__=sizeof\(short\)
+TMP+=-D__SIZEOF_POINTER__=sizeof\(void\*\)
+TMP+=-D__SIZEOF_FLOAT__=sizeof\(float\)
+TMP+=-D__SIZEOF_DOUBLE__=sizeof\(double\)
+#TMP+=-D__SIZEOF_LONG_DOUBLE__=sizeof\(long\ double\)
+TMP+=-D__SIZEOF_SIZE_T__=sizeof\(size_t\)
+
+USER_OPT_FLAGS+=$(TMP)
+USER_DBG_FLAGS+=$(TMP)
+USER_PRF_FLAGS+=$(TMP)
+
+export USER_OPT_FLAGS
+export USER_DBG_FLAGS
+export USER_PRF_FLAGS
+
+TMP:=
+endif # if need __SIZEOF_* workaround
+endif # if intel
+
+#
 # may need to overwite some deafult configs for other hosts
--include build_config/local-config.mk
+#
+-include build_config/local-config-post.mk

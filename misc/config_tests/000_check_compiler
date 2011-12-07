@@ -1,4 +1,4 @@
-echo -n "checking for working g++... "
+echo -n "checking for working compiler ($TC_CPP)... "
 echo -e "#include <iostream>\nint main(void){return 0;}" > "$TMP"
 if compile "$TMP"
 then

@@ -130,5 +130,33 @@ void testObj::test<11>(void)
   ensure("number not parsed", nc.isNumber() );
   ensure_equals("invalid value", nc.get(), 1);
 }
-//TODO: add test for numbers like: '--42', '-42+1', '+42', '+42.5'
+
+// test multiple '-'
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const NumberWrapper nc("--42");
+  ensure("non-number parsed", nc.isNumber()==false );
+}
+
+// test random arithmetic expression
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const NumberWrapper nc("-42+1");
+  ensure("non-number parsed", nc.isNumber()==false );
+}
+
+// test leading '+' sign, for floating point
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const NumberWrapper nc("+4.5");
+  ensure("number not parsed", nc.isNumber() );
+  ensure_equals("invalid value", nc.get(), 4.5);
+}
+
 } // namespace tut

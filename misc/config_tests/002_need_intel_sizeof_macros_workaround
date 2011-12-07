@@ -1,0 +1,19 @@
+if [ "$TOOLCHAIN" = "intel" ]
+then
+  echo -n "checking __SIZEOF_* macros... "
+  cat > "$TMP" <<EOF
+int main(void)
+{
+  return __SIZEOF_INT__ + __SIZEOF_LONG__;
+}
+EOF
+
+  if compile "$TMP"
+  then
+    echo "ok"
+  else
+    echo "workaround is needed"
+    ENABLE_SIZEOF_MACROS_WORKAROUND="yes"
+  fi
+
+fi
