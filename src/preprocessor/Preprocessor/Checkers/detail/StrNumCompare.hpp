@@ -8,8 +8,8 @@
 #include <string>
 
 #include "Logger/Logger.hpp"
+#include "Commons/NumberWrapper.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
-#include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
 
 namespace Preprocessor
 {
@@ -54,7 +54,7 @@ protected:
 private:
   bool compareImpl(const std::string &str) const
   {
-    const detail::NumberWrapper p(str);
+    const Commons::NumberWrapper p(str);
     // numerical comparison is possible?
     if( num_.isNumber() && p.isNumber() )
     {
@@ -66,10 +66,10 @@ private:
     return cmp_(str, str_);
   }
 
-  const Logger::Node  log_;
-  const std::string   str_;
-  const NumberWrapper num_;
-  const Cmp           cmp_;
+  const Logger::Node           log_;
+  const std::string            str_;
+  const Commons::NumberWrapper num_;
+  const Cmp                    cmp_;
 }; // class StrNumCompare
 
 } // namespace detail
