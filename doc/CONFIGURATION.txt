@@ -637,6 +637,9 @@ example rules can look like this:
                                       regular expression R -->
 <rule path="A" regexpci="R"/>    <!-- true if element A matches (case insensitive)
                                       extended POSIX regular expression R -->
+<rule path="A" formatter="tsProc( value(), \"%Y.%M.%D %h:%m:%s\")" equals="B"/>
+                                 <!-- true if element A is a timestamp, and converted to
+                                      "year.month.day hour:min:sec" has value B (*)-->
 (*) note that if both value of element A *and* constant B are numbers, comparison
     is performed using numerical values, opposite to default, lexicographical
     comparison schema.
@@ -713,7 +716,52 @@ place of collection index means 'all elements must be match given rule'.
 putting '$' in place of collection index means 'any element must match given
 rule'.
 
-example configs along with description goes here:
+formatters are optional, and can be used to post-process elements read from a
+given path. typical example here is obtaining human-readable date/time
+information from timestamp value. available formatters are:
+
+1. value()
+special function, returning raw value, as read from a given path.
+
+2. tsProc(in, format)
+timestamp processor. changes epoch timestamps to strings. parameters are:
+  - in     - input to a function (timestamp to use).
+  - format - output format. tokens "%x" are special signs, that tells to
+             insert special modifier. all other tokens are copied verbatim
+             to the output string. possible modifiers are:
+     - %Y - 4-digit year.
+     - %M - 2-digit month (1-12).
+     - %D - 2-digit day of month (1-31).
+     - %h - 2-digit hour (0-23).
+     - %m - 2-digit minute (0-59).
+     - %s - 2-digit second (0-59).
+     - %% - '%' sign.
+
+3. sub(a, b)
+returns result of "a-b". both arguments must be a decimal numbers.
+
+4. add(a, b)
+returns result of "a+b". both arguments must be a decimal numbers.
+
+5. mul(a, b)
+returns result of "a*b". both arguments must be a decimal numbers.
+
+6. div(a, b)
+returns result of "a/b". both arguments must be a decimal numbers.
+
+7. hex(a)
+returns "a", written as hexadecimal (ex. "0x4AFF"). "a" must be a decimal
+number. if "a" is floating point it is rounded to the nearest integer.
+
+8. bin(a)
+returns "a", written as binary (ex. "1011"). "a" must be a decimal number.
+if "a" is floating point it is rounded to the nearest integer.
+
+9. sig(a)
+returns "-1" for negative numbers, "+1" for positive numbers and "0" for "0".
+"a" must be a decimal number.
+
+example preprocessors' configs along with description goes here:
 
 <preprocessor>
   <accept>
