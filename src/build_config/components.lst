@@ -46,8 +46,6 @@ algo
 preprocessor
 pythonapi
 
-curlpp
-
 acarmng
 pdump
 logsplitter

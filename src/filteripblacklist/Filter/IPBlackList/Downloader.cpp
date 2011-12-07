@@ -3,10 +3,10 @@
  *
  */
 #include <sstream>
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Easy.hpp>
+#include <curlpp/Options.hpp>
 
-#include "curlpp/cURLpp.hpp"
-#include "curlpp/Easy.hpp"
-#include "curlpp/Options.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
 #include "Filter/IPBlackList/Downloader.hpp"

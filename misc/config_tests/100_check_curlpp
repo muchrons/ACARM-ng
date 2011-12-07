@@ -1,0 +1,14 @@
+if grep -q '^filteripblacklist$' <<< "$PLUGINS"
+then
+  echo -n "checking for curl++... "
+  echo -e "#include <curlpp/cURLpp.hpp>\nint main(void){ curlpp::initialize(); return 0;}" > "$TMP"
+  if compile "$TMP" `$SRCS/filteripblacklist/features/deps/common_dynamic_compile` `$SRCS/filteripblacklist/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "ERROR: install missing library or withdraw usage of plugins: filteripblacklist"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi

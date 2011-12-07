@@ -2,7 +2,8 @@
  * CUrlInit.cpp
  *
  */
-#include "curlpp/cURLpp.hpp"
+#include <curlpp/cURLpp.hpp>
+
 #include "Logger/Logger.hpp"
 #include "Filter/IPBlackList/CUrlInit.hpp"
 
