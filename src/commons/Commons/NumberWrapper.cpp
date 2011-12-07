@@ -5,20 +5,16 @@
 #include <ctype.h>
 
 #include "Commons/Convert.hpp"
-#include "Preprocessor/Checkers/detail/NumberWrapper.hpp"
+#include "Commons/NumberWrapper.hpp"
 
-namespace Preprocessor
-{
-namespace Checkers
-{
-namespace detail
+namespace Commons
 {
 
 NumberWrapper::NumberWrapper(const std::string &str):
   isNum_( isNumber(str) )
 {
   if( isNumber() )
-    value_=Commons::Convert::to<double>(str);
+    value_=Convert::to<double>(str);
 }
 
 bool NumberWrapper::isNumber(const std::string &str) const
@@ -63,6 +59,4 @@ bool NumberWrapper::isNumber(const std::string &str) const
   return true;
 }
 
-} // namespace detail
-} // namespace Checkers
-} // namespace Preprocessor
+} // namespace Commons

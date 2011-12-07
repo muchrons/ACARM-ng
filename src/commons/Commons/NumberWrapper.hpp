@@ -2,17 +2,15 @@
  * NumberWrapper.hpp
  *
  */
-#ifndef INCLUDE_PREPROCESSOR_CHECKERS_DETAIL_NUMBERWRAPPER_HPP_FILE
-#define INCLUDE_PREPROCESSOR_CHECKERS_DETAIL_NUMBERWRAPPER_HPP_FILE
+#ifndef INCLUDE_COMMONS_NUMBERWRAPPER_HPP_FILE
+#define INCLUDE_COMMONS_NUMBERWRAPPER_HPP_FILE
+
+/* public header */
 
 #include <string>
 #include <cassert>
 
-namespace Preprocessor
-{
-namespace Checkers
-{
-namespace detail
+namespace Commons
 {
 
 /** \brief class being wrapper for numeric types, represented as strings.
@@ -48,8 +46,6 @@ private:
   double value_;
 }; // class NumberWrapper
 
-} // namespace detail
-} // namespace Checkers
-} // namespace Preprocessor
+} // namespace Commons
 
 #endif
