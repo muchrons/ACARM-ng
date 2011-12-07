@@ -30,16 +30,17 @@ typedef Commons::SharedPtrNotNULL<Base> BasePtrNN;
 class Base: private boost::noncopyable
 {
 public:
+  /** \brief arguments vector, to pass to the implementaion. */
   typedef std::vector<std::string> Arguments;
+  /** \brief vector of formatters taken as an arguments. */
   typedef std::vector<BasePtrNN>   Formatters;
 
   /** \brief virtual d-tor to ensure proper destruction.
    */
   virtual ~Base(void);
 
-  /** \brief check if given string matches predefined condition.
-   *  \param str string to check.
-   *  \return true if string matches condition, false otherwise.
+  /** \brief executes required formatter, to do its work.
+   *  \return result of execution of the formatters.
    */
   std::string exec(void) const;
 
