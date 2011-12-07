@@ -2,7 +2,7 @@ if grep -q '^filteripblacklist$' <<< "$PLUGINS"
 then
   echo -n "checking for curl... "
   echo -e "#include <curl/curl.h>\nint main(void){ curl_global_init(0); return 0;}" > "$TMP"
-  if compile "$TMP" `$SRCS/curlpp/features/deps/common_dynamic_link`
+  if compile "$TMP" `pkg-config libcurl --cflags --libs`
   then
     echo "ok"
   else
