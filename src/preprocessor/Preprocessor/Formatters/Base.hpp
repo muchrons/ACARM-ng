@@ -9,7 +9,7 @@
 #include <vector>
 #include <boost/noncopyable.hpp>
 
-#include "Logger/Node.hpp"
+#include "Logger/Logger.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 
 
