@@ -336,4 +336,40 @@ void testObj::test<24>(void)
   ensure("invalid type", w.isFunction() );
 }
 
+// test camel-cased function names
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  const FunctionParser           fp("myFunction()");
+  const FormatterConfig::Wrapper w=fp.getConfig().get();
+  ensure("invalid type", w.isFunction() );
+}
+
+// test numbers in function names
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  const FunctionParser           fp("myFunction666()");
+  const FormatterConfig::Wrapper w=fp.getConfig().get();
+  ensure("invalid type", w.isFunction() );
+}
+
+// test error when funciton begins with upper case letter
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  testThrow("Invalid()", "didn't throw on upper-case as a first function name letter");
+}
+
+// test error when funciton begins with number
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  testThrow("6oops()", "didn't throw on number as a first function name char");
+}
+
 } // namespace tut
