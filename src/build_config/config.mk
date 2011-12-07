@@ -1,4 +1,6 @@
+#
 # can be used to locally enable some specific settings/workarounds
+#
 -include build_config/local-config-pre.mk
 
 #
@@ -122,5 +124,7 @@ TMP:=
 endif # if need __SIZEOF_* workaround
 endif # if intel
 
+#
 # may need to overwite some deafult configs for other hosts
+#
 -include build_config/local-config-post.mk
