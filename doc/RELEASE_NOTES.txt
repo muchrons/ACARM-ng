@@ -1,5 +1,6 @@
 -- dev --
-* preprocessor new features:
+* added support for toolchain selection in configure script.
+* new preprocessor's features:
   - less-than comparison
   - greater-than comparison
   - all relations (<,>,==) now support automatic numbers parsing to compare them as numbers, not as strings.
