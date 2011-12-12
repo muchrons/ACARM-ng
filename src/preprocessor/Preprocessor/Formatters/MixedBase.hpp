@@ -6,7 +6,6 @@
 #define INCLUDE_PREPROCESSOR_FORMATTERS_MIXEDBASE_HPP_FILE
 
 #include "Preprocessor/Formatters/Base.hpp"
-#include "Preprocessor/Formatters/ExceptionNotANumber.hpp"
 
 
 namespace Preprocessor
