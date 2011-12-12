@@ -17,6 +17,8 @@ template<typename T>
 struct TestBase
 {
   TestBase(void):
+    a_(new Value),
+    b_(new Value),
     v_(new Value)
   {
   }
@@ -35,6 +37,8 @@ struct TestBase
   }
 
   std::vector<ValuePtrNN> values_;
+  ValuePtrNN              a_;
+  ValuePtrNN              b_;
   ValuePtrNN              v_;
 };
 

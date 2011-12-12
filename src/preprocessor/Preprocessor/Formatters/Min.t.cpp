@@ -6,6 +6,7 @@
 
 #include "Preprocessor/Formatters/Min.hpp"
 #include "Preprocessor/Formatters/Value.hpp"
+#include "Preprocessor/Formatters/TestBase.t.hpp"
 
 using namespace std;
 using namespace Preprocessor::Formatters;
@@ -13,22 +14,8 @@ using namespace Preprocessor::Formatters;
 namespace
 {
 
-struct TestClass
+struct TestClass: public TestBase<Min>
 {
-  BasePtrNN make(const size_t args)
-  {
-    values_.clear();
-    Base::Formatters f;
-    for(size_t i=0; i<args; ++i)
-    {
-      ValuePtrNN v(new Value);
-      values_.push_back(v);
-      f.push_back(v);
-    }
-    return BasePtrNN(new Min(f));
-  }
-
-  std::vector<ValuePtrNN> values_;
 };
 
 typedef tut::test_group<TestClass> factory;

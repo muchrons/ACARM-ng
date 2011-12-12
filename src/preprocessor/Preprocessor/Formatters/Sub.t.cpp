@@ -6,6 +6,7 @@
 
 #include "Preprocessor/Formatters/Sub.hpp"
 #include "Preprocessor/Formatters/Value.hpp"
+#include "Preprocessor/Formatters/TestBase.t.hpp"
 
 using namespace std;
 using namespace Preprocessor::Formatters;
@@ -13,18 +14,14 @@ using namespace Preprocessor::Formatters;
 namespace
 {
 
-struct TestClass
+struct TestClass: public TestBase<Sub>
 {
   TestClass(void):
-    a_(new Value),
-    b_(new Value),
     t_(a_, b_)
   {
   }
 
-  ValuePtrNN a_;
-  ValuePtrNN b_;
-  Sub        t_;
+  Sub t_;
 };
 
 typedef tut::test_group<TestClass> factory;

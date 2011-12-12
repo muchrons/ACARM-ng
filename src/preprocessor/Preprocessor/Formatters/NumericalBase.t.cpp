@@ -6,6 +6,7 @@
 
 #include "Preprocessor/Formatters/NumericalBase.hpp"
 #include "Preprocessor/Formatters/Value.hpp"
+#include "Preprocessor/Formatters/TestBase.t.hpp"
 
 using namespace std;
 using namespace Preprocessor::Formatters;
@@ -28,16 +29,15 @@ struct TestImpl: public NumericalBase
   }
 }; // struct TestImpl
 
-struct TestClass
+
+struct TestClass: public TestBase<TestImpl>
 {
   TestClass(void):
-    v_(new Value),
     ti_(v_)
   {
   }
 
-  ValuePtrNN v_;
-  TestImpl   ti_;
+  TestImpl ti_;
 };
 
 typedef tut::test_group<TestClass> factory;

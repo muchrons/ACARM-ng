@@ -6,6 +6,7 @@
 
 #include "Preprocessor/Formatters/Round.hpp"
 #include "Preprocessor/Formatters/Value.hpp"
+#include "Preprocessor/Formatters/TestBase.t.hpp"
 
 using namespace std;
 using namespace Preprocessor::Formatters;
@@ -13,16 +14,14 @@ using namespace Preprocessor::Formatters;
 namespace
 {
 
-struct TestClass
+struct TestClass: public TestBase<Round>
 {
   TestClass(void):
-    v_(new Value),
     t_(v_)
   {
   }
 
-  ValuePtrNN v_;
-  Round        t_;
+  Round t_;
 };
 
 typedef tut::test_group<TestClass> factory;
