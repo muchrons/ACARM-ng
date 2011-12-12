@@ -31,7 +31,21 @@ protected:
 
 private:
   virtual std::string execImpl(const Arguments &args) const;
+
+  /** \brief callback called when non-numeric value is spotted within arguments list.
+   *  \param v non-numeric value.
+   */
+  virtual void onNonNumeric(const std::string &v) const = 0;
+  /** \brief callback called when all arguments are numerical.
+   *  \param args numerical arguments list.
+   *  \return computed value to be returned for further processing.
+   */
   virtual double execConverted(const NumericalArguments &args) const = 0;
+  /** \brief callback called when not all arguments are numerical.
+   *  \param args arguments list.
+   *  \return computed value to be returned for further processing.
+   */
+  virtual std::string execConverted(const Arguments &args) const = 0;
 }; // class NumericalBase
 
 } // namespace Formatters
