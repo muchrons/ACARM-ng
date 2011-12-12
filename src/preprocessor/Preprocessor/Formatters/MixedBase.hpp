@@ -1,9 +1,9 @@
 /*
- * NumericalBase.hpp
+ * MixedBase.hpp
  *
  */
-#ifndef INCLUDE_PREPROCESSOR_FORMATTERS_NUMERICALBASE_HPP_FILE
-#define INCLUDE_PREPROCESSOR_FORMATTERS_NUMERICALBASE_HPP_FILE
+#ifndef INCLUDE_PREPROCESSOR_FORMATTERS_MIXEDBASE_HPP_FILE
+#define INCLUDE_PREPROCESSOR_FORMATTERS_MIXEDBASE_HPP_FILE
 
 #include "Preprocessor/Formatters/Base.hpp"
 #include "Preprocessor/Formatters/ExceptionNotANumber.hpp"
@@ -14,9 +14,9 @@ namespace Preprocessor
 namespace Formatters
 {
 
-/** \brief base class for all formatters.
+/** \brief base class for all formatters that handle numerical values or both.
  */
-class NumericalBase: public Base
+class MixedBase: public Base
 {
 public:
   /** \brief arguments vector, to pass to the implementaion. */
@@ -27,7 +27,7 @@ protected:
    *  \param name name of this action (used for logging).
    *  \param fmts formatters to take source data from.
    */
-  NumericalBase(const std::string &name, const Formatters &fmts);
+  MixedBase(const std::string &name, const Formatters &fmts);
 
 private:
   virtual std::string execImpl(const Arguments &args) const;
@@ -46,7 +46,7 @@ private:
    *  \return computed value to be returned for further processing.
    */
   virtual std::string execConverted(const Arguments &args) const = 0;
-}; // class NumericalBase
+}; // class MixedBase
 
 } // namespace Formatters
 } // namespace Preprocessor

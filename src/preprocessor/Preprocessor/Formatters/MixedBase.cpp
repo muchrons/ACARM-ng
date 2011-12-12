@@ -1,12 +1,12 @@
 /*
- * NumericalBase.cpp
+ * MixedBase.cpp
  *
  */
 #include <cassert>
 
 #include "Commons/Convert.hpp"
 #include "Commons/NumberWrapper.hpp"
-#include "Preprocessor/Formatters/NumericalBase.hpp"
+#include "Preprocessor/Formatters/MixedBase.hpp"
 
 using namespace std;
 
@@ -16,12 +16,12 @@ namespace Preprocessor
 namespace Formatters
 {
 
-NumericalBase::NumericalBase(const std::string &name, const Formatters &fmts):
+MixedBase::MixedBase(const std::string &name, const Formatters &fmts):
   Base(name, fmts)
 {
 }
 
-std::string NumericalBase::execImpl(const Arguments &args) const
+std::string MixedBase::execImpl(const Arguments &args) const
 {
   // try converting all arguments
   NumericalArguments nums;

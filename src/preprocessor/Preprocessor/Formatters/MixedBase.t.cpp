@@ -1,10 +1,10 @@
 /*
- * NumericalBase.t.cpp
+ * MixedBase.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Preprocessor/Formatters/NumericalBase.hpp"
+#include "Preprocessor/Formatters/MixedBase.hpp"
 #include "Preprocessor/Formatters/Value.hpp"
 
 using namespace std;
@@ -13,10 +13,10 @@ using namespace Preprocessor::Formatters;
 namespace
 {
 
-struct TestImpl: public NumericalBase
+struct TestImpl: public MixedBase
 {
   explicit TestImpl(ValuePtrNN v):
-    NumericalBase( "testimpl", Formatters(1, v) ),
+    MixedBase( "testimpl", Formatters(1, v) ),
     nonNumbers_(0)
   {
   }
@@ -53,7 +53,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Preprocessor/Formatters/NumericalBase");
+factory tf("Preprocessor/Formatters/MixedBase");
 } // unnamed namespace
 
 
