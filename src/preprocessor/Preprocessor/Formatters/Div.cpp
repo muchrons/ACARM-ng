@@ -31,6 +31,7 @@ inline Div::Formatters makeFmts(BasePtrNN a, BasePtrNN b)
 }
 } // unnamed namespace
 
+
 Div::Div(BasePtrNN a, BasePtrNN b):
   NumericalBase("div", makeFmts(a,b) )
 {
