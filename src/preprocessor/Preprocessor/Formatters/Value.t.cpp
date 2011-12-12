@@ -44,4 +44,22 @@ void testObj::test<2>(void)
   ensure_equals("invalid value saved", v_.exec(), "evil");
 }
 
+// test passing integern number
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  v_.set(666);
+  ensure_equals("invalid value saved", v_.exec(), "666");
+}
+
+// test passing floating point number
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  v_.set(-1.25);
+  ensure_equals("invalid value saved", v_.exec(), "-1.25");
+}
+
 } // namespace tut

@@ -5,6 +5,8 @@
 #ifndef INCLUDE_PREPROCESSOR_FORMATTERS_VALUE_HPP_FILE
 #define INCLUDE_PREPROCESSOR_FORMATTERS_VALUE_HPP_FILE
 
+#include <string>
+
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Preprocessor/Formatters/Base.hpp"
 
@@ -24,7 +26,7 @@ public:
    */
   Value(void);
 
-  /** \brief sets value to be returned to a given one.
+  /** \brief sets value to be returned on exec.
    *  \param str value to be set.
    */
   void set(const std::string &str)
@@ -32,6 +34,11 @@ public:
     LOGMSG_DEBUG_S(log_)<<"setting value to '"<<str<<"'";
     str_=str;
   }
+
+  /** \brief sets value to be returned on exec.
+   *  \param v value to be set.
+   */
+  void set(const double d);
 
 private:
   virtual std::string execImpl(const Arguments &args) const;
