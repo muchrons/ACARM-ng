@@ -62,4 +62,13 @@ void testObj::test<3>(void)
   ensure_equals("invalid value", t_.exec(), "42");
 }
 
+// test abs(negative/fp)
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  v_->set("-42.75");
+  ensure_equals("invalid value", t_.exec(), "42.75");
+}
+
 } // namespace tut
