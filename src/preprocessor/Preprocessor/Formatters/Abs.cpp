@@ -5,7 +5,6 @@
 #include <cmath>
 #include <cassert>
 
-#include "Commons/NumberWrapper.hpp"
 #include "Preprocessor/Formatters/Abs.hpp"
 
 
@@ -15,16 +14,14 @@ namespace Formatters
 {
 
 Abs::Abs(BasePtrNN arg):
-  Base("absolute", Formatters(1, arg) )
+  NumericalBase("abs", Formatters(1, arg) )
 {
 }
 
-std::string Abs::execImpl(const Arguments &args) const
+double Abs::execConverted(const NumericalArguments &args) const
 {
   assert( args.size()==1 );
-  Commons::NumberWrapper n(args[0]);
-  //if(
-  return "aaaaaaaa";    // TODO
+  return fabs(args[0]);
 }
 
 } // namespace Formatters
