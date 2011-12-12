@@ -1,4 +1,6 @@
 <?php
+// Getting the default timezone
+date_default_timezone_set('UTC');
 
 $basePath=dirname(__FILE__);
 $frameworkPath=$basePath.'/prado/prado.php';
