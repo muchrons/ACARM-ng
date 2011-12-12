@@ -749,36 +749,28 @@ returns multiplicity of all arguments. all arguments must be decimal numbers.
 6. div(a, b)
 returns result of "a/b". both arguments must be a decimal numbers.
 
-7. hex(a)
-returns "a", written as hexadecimal (ex. "0x4AFF"). "a" must be a decimal
-number. if "a" is floating point it is rounded to the nearest integer.
-
-8. bin(a)
-returns "a", written as binary (ex. "1011"). "a" must be a decimal number.
-if "a" is floating point it is rounded to the nearest integer.
-
-9. sig(a)
+7. sig(a)
 returns "-1" for negative numbers, "+1" for positive numbers and "0" for "0".
 "a" must be a decimal number.
 
-10. min(a1, a2, ..., aN)
+8. min(a1, a2, ..., aN)
 returns minimum of all values. if all arguments are numbers, numerical
 comparison is performed, otherwise lexicographical comparison is run.
 
-11. max(a1, a2, ..., aN)
+9. max(a1, a2, ..., aN)
 returns maximum of all values. if all arguments are numbers, numerical
 comparison is performed, otherwise lexicographical comparison is run.
 
-12. abs(a)
+10. abs(a)
 returns absolute value of a number "a". "a" must be a numerical value.
 
-13. ceil(a)
+11. ceil(a)
 returns round-up of a given number "a". "a" must be a numerical value.
 
-14. floor(a)
+12. floor(a)
 returns round-down of a given number "a". "a" must be a numerical value.
 
-14. round(a)
+13. round(a)
 returns round of a given number "a", to the nearest integer. "a" must be a numerical value.
 
 example preprocessors' configs along with description goes here:
