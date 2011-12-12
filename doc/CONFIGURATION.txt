@@ -772,6 +772,15 @@ comparison is performed, otherwise lexicographical comparison is run.
 12. abs(a)
 returns absolute value of a number "a". "a" must be a numerical value.
 
+13. ceil(a)
+returns round-up of a given number "a". "a" must be a numerical value.
+
+14. floor(a)
+returns round-down of a given number "a". "a" must be a numerical value.
+
+14. round(a)
+returns round of a given number "a", to the nearest integer. "a" must be a numerical value.
+
 example preprocessors' configs along with description goes here:
 
 <preprocessor>
