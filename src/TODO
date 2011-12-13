@@ -37,3 +37,4 @@ misc:
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
 * consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
+* add 'restart' to init.d example.
