@@ -730,11 +730,11 @@ timestamp processor. changes epoch timestamps to strings. parameters are:
              insert special modifier. all other tokens are copied verbatim
              to the output string. possible modifiers are:
      - %Y - 4-digit year.
-     - %M - 2-digit month (1-12).
-     - %D - 2-digit day of month (1-31).
-     - %h - 2-digit hour (0-23).
-     - %m - 2-digit minute (0-59).
-     - %s - 2-digit second (0-59).
+     - %m - 2-digit month (1-12).
+     - %d - 2-digit day of month (1-31).
+     - %H - 2-digit hour (0-23).
+     - %M - 2-digit minute (0-59).
+     - %S - 2-digit second (0-59).
      - %% - '%' sign.
 
 3. sub(a, b)
