@@ -38,3 +38,4 @@ misc:
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
 * consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
 * add 'restart' to init.d example.
+* add configurable formatters to the logger.
