@@ -69,6 +69,16 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
                                                            at_c<2>(_val)=_2,
                                                            at_c<0>(_val)=Data::FUNCTION];
     start_       %= func_;
+
+    // this will make debug printouts fit in few lines!
+    BOOST_SPIRIT_DEBUG_NODE(quotedString_);
+    BOOST_SPIRIT_DEBUG_NODE(param_);
+    BOOST_SPIRIT_DEBUG_NODE(value_);
+    BOOST_SPIRIT_DEBUG_NODE(arg_);
+    BOOST_SPIRIT_DEBUG_NODE(argVec_);
+    BOOST_SPIRIT_DEBUG_NODE(funcName_);
+    BOOST_SPIRIT_DEBUG_NODE(func_);
+    BOOST_SPIRIT_DEBUG_NODE(start_);
   }
 
   qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
