@@ -79,6 +79,8 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     BOOST_SPIRIT_DEBUG_NODE(funcName_);
     BOOST_SPIRIT_DEBUG_NODE(func_);
     BOOST_SPIRIT_DEBUG_NODE(start_);
+
+    // TODO: add error handling
   }
 
   qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
@@ -116,6 +118,7 @@ inline FormatterConfig parseString(const std::string &str)
     string::const_iterator end=str.end();
     if( !phrase_parse(it, end, parser, ascii::space, data) )
       throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "phrase_parse() returned an error");
+    // TODO: add (part) of what left to the error message.
     if(it!=end)
       throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "not whole string has been parsed");
 
