@@ -108,15 +108,17 @@ struct FormatterGrammar: qi::grammar<Iterator, stringstream()/*, ascii::space_ty
     start_       %= func_;
     */
     // special fields
-    dtField_ = (char_('Y') [_val=1900+bts_.tm_year]) |
-               (char_('m') [_val=1+bts_.tm_mon])
+    //dtField_ = (char_('Y') [_val=1900+bts_.tm_year]) |
+    //           (char_('m') [_val=1+bts_.tm_mon])
                ;
     // main part
-    start_   = (lit("%%") [_val<<"%"])           |
-               lexeme['%' > dtField_] [_val<<_1] |
-               (char_ [_val<<_1])                |
-               eps
-               ;
+    exprImpl_ = (lit("%%") [_r1<<"%"])           |
+              //lexeme['%' > dtField_] [_val<<_1] |
+              (char_ [_r1<<_1])
+              ;
+
+    expr_  = ( exprImpl_(_r1) >> expr_(_r1) ) | eps;
+    start_ = expr_(_val);
 
     // TODO: work on this error handling...
     on_error<fail>
@@ -145,8 +147,10 @@ private:
   qi::rule<Iterator, Data(),            ascii::space_type> func_;           // function declaration along with brackets
   qi::rule<Iterator, Data(),            ascii::space_type> start_;          // start rule (alias to func_)
   */
-  qi::rule<Iterator, unsigned int()/*, ascii::space_type*/> dtField_;   // date/time single field's value
-  qi::rule<Iterator, stringstream()/*, ascii::space_type*/> start_;     // start rule
+  qi::rule<Iterator, void(stringstream&)/*, ascii::space_type*/> dtField_;  // date/time single field's value
+  qi::rule<Iterator, void(stringstream&)/*, ascii::space_type*/> exprImpl_; // actuall expression's implementation
+  qi::rule<Iterator, void(stringstream&)/*, ascii::space_type*/> expr_;     // expression itself
+  qi::rule<Iterator, stringstream()/*, ascii::space_type*/>      start_;    // start rule
 }; // struct FormatterGrammar
 } // unnamed namespace
 
