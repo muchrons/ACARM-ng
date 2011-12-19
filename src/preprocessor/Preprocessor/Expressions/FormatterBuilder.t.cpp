@@ -183,4 +183,22 @@ void testObj::test<15>(void)
   ensure_equals("invalid returned value", b->exec(), "42");
 }
 
+// test building invalid function
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  try
+  {
+    fb_.build( makeFormatterConfig("invalid_function.xml") );
+    fail("no exception uppon invalid function");
+  }
+  catch(const FormatterBuilder::ExceptionUnknownFunction&)
+  {
+    // this is expected
+  }
+}
+
+// TODO: add tests for invalid number of parameters for each of the functions
+
 } // namespace tut

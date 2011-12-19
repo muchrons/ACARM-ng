@@ -35,6 +35,12 @@ FormatterBuilder::ExceptionInvalidNumberOfArguments::ExceptionInvalidNumberOfArg
 }
 
 
+FormatterBuilder::ExceptionUnknownFunction::ExceptionUnknownFunction(const Location &where, const std::string &func):
+  Exception(where, cc("invalid function '", func, "'") )
+{
+}
+
+
 FormatterBuilder::FormatterBuilder(Formatters::ValuePtrNN value):
   value_(value)
 {
@@ -102,8 +108,80 @@ Formatters::BasePtrNN FormatterBuilder::buildFunction(const ConfigIO::Preprocess
     return BasePtrNN( new Ceil(args[0]) );
   }
 
-  // TODO
-  return value_;
+  // div()
+  if( cfg.name()=="div" )
+  {
+    if( args.size()!=2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 2 arguments");
+    return BasePtrNN( new Div(args[0], args[1]) );
+  }
+
+  // floor()
+  if( cfg.name()=="floor" )
+  {
+    if( args.size()!=1 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 1 argument");
+    return BasePtrNN( new Floor(args[0]) );
+  }
+
+  // max()
+  if( cfg.name()=="max" )
+  {
+    if( args.size()<2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects at least 2 arguments");
+    return BasePtrNN( new Max(args) );
+  }
+
+  // min()
+  if( cfg.name()=="min" )
+  {
+    if( args.size()<2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects at least 2 arguments");
+    return BasePtrNN( new Min(args) );
+  }
+
+  // mul()
+  if( cfg.name()=="mul" )
+  {
+    if( args.size()<2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects at least 2 arguments");
+    return BasePtrNN( new Mul(args) );
+  }
+
+  // round()
+  if( cfg.name()=="round" )
+  {
+    if( args.size()!=1 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 1 argument");
+    return BasePtrNN( new Round(args[0]) );
+  }
+
+  // sig()
+  if( cfg.name()=="sig" )
+  {
+    if( args.size()!=1 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 1 argument");
+    return BasePtrNN( new Sig(args[0]) );
+  }
+
+  // sub()
+  if( cfg.name()=="sub" )
+  {
+    if( args.size()!=2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 2 arguments");
+    return BasePtrNN( new Sub(args[0], args[1]) );
+  }
+
+  // tsProc()
+  if( cfg.name()=="tsProc" )
+  {
+    if( args.size()!=2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 2 arguments");
+    return BasePtrNN( new TimestampProc(args[0], cfg.param(1).argument()) );
+  }
+
+  // oops...
+  throw ExceptionUnknownFunction(SYSTEM_SAVE_LOCATION, cfg.name());
 }
 
 } // namespace Expressions

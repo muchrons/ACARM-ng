@@ -26,6 +26,11 @@ public:
     ExceptionInvalidNumberOfArguments(const Location &where, const std::string &func, const char *details);
   }; // struct ExceptionInvalidNumberOfArguments
 
+  struct ExceptionUnknownFunction: public Exception
+  {
+    ExceptionUnknownFunction(const Location &where, const std::string &func);
+  }; // struct ExceptionInvalidNumberOfArguments
+
 
   explicit FormatterBuilder(Formatters::ValuePtrNN value);
 

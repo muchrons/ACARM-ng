@@ -25,7 +25,7 @@
 
   <preprocessor>
     <accept>
-      <rule path="a.b.c" formatter="tsProc(`666`, `%M:%S`)" equals="11:06"/>
+      <rule path="a.b.c" formatter="idonotexist(`40`,`2`)" equals="oops"/>
     </accept>
   </preprocessor>
 
