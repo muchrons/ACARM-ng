@@ -13,6 +13,7 @@
 #include "Preprocessor/Checkers/Contains.hpp"
 #include "Preprocessor/Checkers/RegExp.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
+#include "Preprocessor/Expressions/FormatterBuilder.hpp"
 
 using namespace std;
 using namespace DataFacades::StrAccess;
@@ -180,6 +181,13 @@ std::auto_ptr<Checkers::Mode> buildChecker(Rule::Mode mode, const Rule::Value &v
   return Ptr(NULL); // never reached
 } // buildChecker()
 
+
+Formatters::BasePtrNN buildFormatter(Formatters::ValuePtrNN value, const ConfigIO::Preprocessor::FormatterConfig &fmt)
+{
+  FormatterBuilder fb(value);
+  return fb.build(fmt);
+} // buildFormatter()
+
 } // unnamed namespace
 
 
@@ -188,7 +196,7 @@ Rule::Rule(const Path &path, Mode mode, const Value &value, const ConfigIO::Prep
   path_(path),
   checker_( buildChecker(mode, value).release() ),
   formatterValue_(new Formatters::Value),
-  baseFormatter_(formatterValue_)   // TODO...
+  baseFormatter_( buildFormatter(formatterValue_, fmt) )
 {
   assert( checker_.get()!=NULL );
 }
