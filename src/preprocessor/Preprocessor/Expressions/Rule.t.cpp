@@ -107,7 +107,7 @@ struct TestClass
   ConfigIO::Preprocessor::FormatterConfig fmt_;
 };
 
-typedef tut::test_group<TestClass> factory;
+typedef tut::test_group<TestClass, 80> factory;
 typedef factory::object testObj;
 
 factory tf("Preprocessor/Expressions/Rule");
@@ -514,6 +514,146 @@ void testObj::test<44>(void)
 {
   const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "xxx", fmt_ );
   ensure("equals failed", r.compute(leaf_)==false );
+}
+
+// test default formatter's creation
+template<>
+template<>
+void testObj::test<45>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("no_formatter.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "alert name" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test abs() formatter
+template<>
+template<>
+void testObj::test<46>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("abs.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "666" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test ceil() formatter
+template<>
+template<>
+void testObj::test<47>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("ceil.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "4" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test more complex formatter
+template<>
+template<>
+void testObj::test<48>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("complex.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "7" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test div() formatter
+template<>
+template<>
+void testObj::test<49>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("div.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "8" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test floor() formatter
+template<>
+template<>
+void testObj::test<50>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("floor.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "2" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test max() formatter
+template<>
+template<>
+void testObj::test<51>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("max.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "11" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test min() formatter
+template<>
+template<>
+void testObj::test<52>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("min.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "-1" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test mul() formatter
+template<>
+template<>
+void testObj::test<53>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("mul.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "12" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test round() formatter
+template<>
+template<>
+void testObj::test<54>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("round.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "7" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test sig() formatter
+template<>
+template<>
+void testObj::test<55>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("sig.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "-1" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test sub() formatter
+template<>
+template<>
+void testObj::test<56>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("sub.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "42" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test tsProc() formatter
+template<>
+template<>
+void testObj::test<57>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("tsProc.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "11:06" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test value() formatter
+template<>
+template<>
+void testObj::test<58>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("value.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "alert name" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
 }
 
 } // namespace tut
