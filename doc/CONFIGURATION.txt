@@ -637,12 +637,14 @@ example rules can look like this:
                                       regular expression R -->
 <rule path="A" regexpci="R"/>    <!-- true if element A matches (case insensitive)
                                       extended POSIX regular expression R -->
-<rule path="A" formatter="tsProc( value(), \"%Y.%M.%D %h:%m:%s\")" equals="B"/>
+<rule path="A" formatter="tsProc( value(), `%Y.%M.%D %h:%m:%s`)" equals="B"/>
                                  <!-- true if element A is a timestamp, and converted to
-                                      "year.month.day hour:min:sec" has value B (*)-->
-(*) note that if both value of element A *and* constant B are numbers, comparison
-    is performed using numerical values, opposite to default, lexicographical
-    comparison schema.
+                                      "year.month.day hour:min:sec" has value B (*) (**) -->
+(*)  note that if both value of element A *and* constant B are numbers, comparison
+     is performed using numerical values, opposite to default, lexicographical
+     comparison schema.
+(**) note that strings are quoted with '`' (backtick) instead of common '"', since
+     it must be escaped in XMLs (&quote;) making formatter less readable.
 'path' consists of string that represents position in alerts' hierarchy. assuming
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
@@ -726,9 +728,10 @@ special function, returning raw value, as read from a given path.
 2. tsProc(in, format)
 timestamp processor. changes epoch timestamps to strings. parameters are:
   - in     - input to a function (timestamp to use).
-  - format - output format. tokens "%x" are special signs, that tells to
-             insert special modifier. all other tokens are copied verbatim
-             to the output string. possible modifiers are:
+  - format - output format. string is enclosed between '`' (backtick) tokens.
+             tokens `%x` are special signs, that tells to insert special
+             modifier. all other tokens are copied verbatim to the output
+             string. possible modifiers are:
      - %Y - 4-digit year.
      - %m - 2-digit month (1-12).
      - %d - 2-digit day of month (1-31).
