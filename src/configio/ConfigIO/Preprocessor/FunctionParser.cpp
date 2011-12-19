@@ -35,12 +35,27 @@ namespace Preprocessor
 namespace
 {
 
+struct ErrorReporter
+{
+  template <typename, typename, typename>
+  struct result { typedef void type; };
+
+  template <typename Iterator>
+  void operator()(qi::info const &what, Iterator errPos, Iterator last) const
+  {
+    stringstream ss;
+    ss<<"parse error near '"<<string(errPos, last)<<"': "<<what;
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, ss.str());
+  }
+}; // struct ErrorReporter
+
 // helper grammar call to parse real functions.
 template<typename Iterator>
 struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
 {
   FormatterGrammar(void):
-    FormatterGrammar::base_type(start_)
+    FormatterGrammar::base_type(start_),
+    errorHandle_( (ErrorReporter()) )
   {
     using qi::_1;
     using qi::_2;
@@ -70,6 +85,10 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
                                                            at_c<0>(_val)=Data::FUNCTION];
     start_       %= func_;
 
+    // error handling
+    start_.name("main rule");
+    qi::on_error<qi::fail>( start_, errorHandle_(qi::_4, qi::_3, qi::_2) );
+
     // this will make debug printouts fit in few lines!
     BOOST_SPIRIT_DEBUG_NODE(quotedString_);
     BOOST_SPIRIT_DEBUG_NODE(param_);
@@ -79,8 +98,6 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     BOOST_SPIRIT_DEBUG_NODE(funcName_);
     BOOST_SPIRIT_DEBUG_NODE(func_);
     BOOST_SPIRIT_DEBUG_NODE(start_);
-
-    // TODO: add error handling
   }
 
   qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
@@ -91,6 +108,7 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
   qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;       // name of the function
   qi::rule<Iterator, Data(),            ascii::space_type> func_;           // function declaration along with brackets
   qi::rule<Iterator, Data(),            ascii::space_type> start_;          // start rule (alias to func_)
+  phoenix::function<ErrorReporter>      errorHandle_;                       // generic error handle
 }; // struct FormatterGrammar
 
 
