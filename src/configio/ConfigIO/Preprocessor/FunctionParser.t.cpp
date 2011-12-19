@@ -78,7 +78,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const FunctionParser           fp("fun(\"blah\")");
+  const FunctionParser           fp("fun(`blah`)");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -94,7 +94,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const FunctionParser           fp("fun(\"foo\",value())");
+  const FunctionParser           fp("fun(`foo`,value())");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -125,7 +125,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const FunctionParser           fp("fun(other(\"ppp\"))");
+  const FunctionParser           fp("fun(other(`ppp`))");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -146,7 +146,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const FunctionParser           fp("fun(other(\"ppp\"),value(),misc(value()))");
+  const FunctionParser           fp("fun(other(`ppp`),value(),misc(value()))");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -178,7 +178,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  testThrow("\"str\"", "didn't throw on string as a root element");
+  testThrow("`str`", "didn't throw on string as a root element");
 }
 
 // test spaces
@@ -186,7 +186,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  const FunctionParser           fp("  fun  (  other (  \"ppp\" ) )  ");
+  const FunctionParser           fp("  fun  (  other (  `ppp` ) )  ");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -207,7 +207,7 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  const FunctionParser           fp("fun(\" bl - ah  \")");
+  const FunctionParser           fp("fun(` bl - ah  `)");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -233,7 +233,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  const FunctionParser           fp("fun(\"foo,bar\")");
+  const FunctionParser           fp("fun(`foo,bar`)");
   const FormatterConfig::Wrapper w=fp.getConfig().get();
   ensure("invalid type", w.isFunction() );
   ensure_equals("invalid function name", w.name(), "fun");
@@ -273,7 +273,7 @@ template<>
 template<>
 void testObj::test<17>(void)
 {
-  testThrow("xy(\"abc\"", "didn't throw on missing bracket");
+  testThrow("xy(`abc`", "didn't throw on missing bracket");
 }
 
 // test error on non-closed quote
@@ -281,7 +281,7 @@ template<>
 template<>
 void testObj::test<18>(void)
 {
-  testThrow("xy(\"abc)", "didn't throw on missing enclosing quote");
+  testThrow("xy(`abc)", "didn't throw on missing enclosing quote");
 }
 
 // test error on invalid brackets
@@ -289,7 +289,7 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  testThrow("xy((\"abc\"))", "didn't throw on invalid brackets");
+  testThrow("xy((`abc`))", "didn't throw on invalid brackets");
 }
 
 // test error on space in function name
@@ -297,7 +297,7 @@ template<>
 template<>
 void testObj::test<20>(void)
 {
-  testThrow("x y(\"abc\")", "didn't throw on space in function name");
+  testThrow("x y(`abc`)", "didn't throw on space in function name");
 }
 
 // test value() with spaces
@@ -323,7 +323,7 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  testThrow("value(\"arg\")", "didn't throw on argument to value()");
+  testThrow("value(`arg`)", "didn't throw on argument to value()");
 }
 
 // test valueabc() - should be normal function

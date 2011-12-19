@@ -71,7 +71,7 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     using phoenix::push_back;
 
     // grammar specification in boost::spirit's EBNF-like notation
-    quotedString_%= lexeme['"' >> *(char_-'"') >> '"'];
+    quotedString_%= lexeme['`' >> *(char_-'`') >> '`'];
     param_        = quotedString_[at_c<1>(_val)=_1,
                                   at_c<0>(_val)=Data::ARGUMENT];
     value_        = (lit("value") >> '(' > ')')[at_c<0>(_val)=Data::VALUE];
