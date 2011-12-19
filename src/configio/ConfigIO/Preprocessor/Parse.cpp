@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "ConfigIO/Preprocessor/Parse.hpp"
+#include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
 namespace ConfigIO
 {

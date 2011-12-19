@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "ConfigIO/Preprocessor/Rule.hpp"
+#include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
 using namespace std;
 using namespace ConfigIO::Preprocessor;

@@ -11,7 +11,6 @@
 
 #include "System/Enum.hpp"
 #include "ConfigIO/Preprocessor/FormatterConfig.hpp"
-#include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
 namespace ConfigIO
 {
@@ -69,29 +68,18 @@ public:
   /** \brief named c-tor for 'true' condition.
    *  \return created object.
    */
-  static Rule makeTrue(void)
-  {
-    const FunctionParser fp("");
-    return Rule(Type::RULE_TRUE, "", Mode::EQUALS, "", fp.getConfig() );
-  }
+  static Rule makeTrue(void);
   /** \brief named c-tor for 'false' condition.
    *  \return created object.
    */
-  static Rule makeFalse(void)
-  {
-    const FunctionParser fp("");
-    return Rule(Type::RULE_FALSE, "", Mode::EQUALS, "", fp.getConfig() );
-  }
+  static Rule makeFalse(void);
   /** \brief named c-tor for dynamically computed condition.
    *  \param path  path to be checked.
    *  \param mode  operationg mode of the rule.
    *  \param value value to compare with.
    *  \return created object.
    */
-  static Rule makeRule(const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter)
-  {
-    return Rule(Type::RULE, path, mode, value, formatter);
-  }
+  static Rule makeRule(const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter);
 
   /** \brief gets rule type.
    *  \return rule type.
@@ -131,14 +119,7 @@ public:
 
 private:
   // use named c-tors to create these objects.
-  Rule(Type type, const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter):
-    type_(type),
-    path_(path),
-    mode_(mode),
-    value_(value),
-    formatter_(formatter)
-  {
-  }
+  Rule(Type type, const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter);
 
   Type            type_;
   Path            path_;
