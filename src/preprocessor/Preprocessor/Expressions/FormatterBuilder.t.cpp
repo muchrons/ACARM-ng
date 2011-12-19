@@ -174,4 +174,13 @@ void testObj::test<14>(void)
   ensure_equals("invalid returned value", b->exec(), "evil empire");
 }
 
+// test add() formatter
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  BasePtrNN b=fb_.build( makeFormatterConfig("add.xml") );
+  ensure_equals("invalid returned value", b->exec(), "42");
+}
+
 } // namespace tut

@@ -6,6 +6,7 @@
 #define INCLUDE_PREPROCESSOR_EXPRESSIONS_FORMATTERBUILDER_HPP_FILE
 
 #include "ConfigIO/Preprocessor/FormatterConfig.hpp"
+#include "Preprocessor/Exception.hpp"
 #include "Preprocessor/Formatters/Base.hpp"
 #include "Preprocessor/Formatters/Value.hpp"
 
@@ -20,13 +21,19 @@ namespace Expressions
 class FormatterBuilder
 {
 public:
+  struct ExceptionInvalidNumberOfArguments: public Exception
+  {
+    ExceptionInvalidNumberOfArguments(const Location &where, const std::string &func, const char *details);
+  }; // struct ExceptionInvalidNumberOfArguments
+
+
   explicit FormatterBuilder(Formatters::ValuePtrNN value);
 
   Formatters::BasePtrNN build(const ConfigIO::Preprocessor::FormatterConfig &cfg) const;
 
 private:
-  typedef ConfigIO::Preprocessor::FormatterConfig::Wrapper Wrp;
-  Wrp build(Wrp cfg) const;
+  Formatters::BasePtrNN buildImpl(ConfigIO::Preprocessor::FormatterConfig::Wrapper cfg) const;
+  Formatters::BasePtrNN buildFunction(ConfigIO::Preprocessor::FormatterConfig::Wrapper cfg) const;
 
   Formatters::ValuePtrNN value_;
 }; // class FormatterBuilder
