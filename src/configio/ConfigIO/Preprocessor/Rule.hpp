@@ -10,6 +10,8 @@
 #include <string>
 
 #include "System/Enum.hpp"
+#include "ConfigIO/Preprocessor/FormatterConfig.hpp"
+#include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
 namespace ConfigIO
 {
@@ -69,14 +71,16 @@ public:
    */
   static Rule makeTrue(void)
   {
-    return Rule(Type::RULE_TRUE, "", Mode::EQUALS, "");
+    const FunctionParser fp("");
+    return Rule(Type::RULE_TRUE, "", Mode::EQUALS, "", fp.getConfig() );
   }
   /** \brief named c-tor for 'false' condition.
    *  \return created object.
    */
   static Rule makeFalse(void)
   {
-    return Rule(Type::RULE_FALSE, "", Mode::EQUALS, "");
+    const FunctionParser fp("");
+    return Rule(Type::RULE_FALSE, "", Mode::EQUALS, "", fp.getConfig() );
   }
   /** \brief named c-tor for dynamically computed condition.
    *  \param path  path to be checked.
@@ -84,9 +88,9 @@ public:
    *  \param value value to compare with.
    *  \return created object.
    */
-  static Rule makeRule(const Path &path, Mode mode, const Value &value)
+  static Rule makeRule(const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter)
   {
-    return Rule(Type::RULE, path, mode, value);
+    return Rule(Type::RULE, path, mode, value, formatter);
   }
 
   /** \brief gets rule type.
@@ -117,21 +121,30 @@ public:
   {
     return value_;
   }
+  /** \brief gets configuration for the formatter.
+   *  \return formatter's config.
+   */
+  const FormatterConfig &getFormatter(void) const
+  {
+    return formatter_;
+  }
 
 private:
   // use named c-tors to create these objects.
-  Rule(Type type, const Path &path, Mode mode, const Value &value):
+  Rule(Type type, const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter):
     type_(type),
     path_(path),
     mode_(mode),
-    value_(value)
+    value_(value),
+    formatter_(formatter)
   {
   }
 
-  Type  type_;
-  Path  path_;
-  Mode  mode_;
-  Value value_;
+  Type            type_;
+  Path            path_;
+  Mode            mode_;
+  Value           value_;
+  FormatterConfig formatter_;
 }; // class Rule
 
 } // namespace Preprocessor

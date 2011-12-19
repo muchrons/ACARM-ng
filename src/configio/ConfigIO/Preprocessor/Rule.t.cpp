@@ -59,8 +59,20 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Rule r=Rule::makeRule("path", Rule::Mode::CONTAINS, "value");
+  const FunctionParser fp("");
+  const Rule r=Rule::makeRule("path", Rule::Mode::CONTAINS, "value", fp.getConfig() );
   check(r, Rule::Type::RULE, "path", Rule::Mode::CONTAINS, "value");
+}
+
+// test formatter config
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const FunctionParser fp("");
+  const Rule r=Rule::makeRule("path", Rule::Mode::CONTAINS, "value", fp.getConfig() );
+  const FormatterConfig &fmt=r.getFormatter();
+  ensure("invalid type", fmt.get().isValue() );
 }
 
 } // namespace tut

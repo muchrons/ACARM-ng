@@ -45,11 +45,12 @@ Rule parseComplexRule(const XML::Node &rule)
   std::string                pathStr;
   std::string                modeStr;
   std::string                valueStr;
+  std::string                formatterStr="";   // default formatter
   for(XML::AttributesList::const_iterator it=attrs.begin(); it!=attrs.end(); ++it)
   {
     // ensure only two attributes are present
     ++index;
-    if(index>2)
+    if(index>3)
       throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "invalid attributes count for term 'rule'");
 
     // check by name
@@ -60,19 +61,29 @@ Rule parseComplexRule(const XML::Node &rule)
     }
     else
     {
-      modeStr =it->getName();
-      valueStr=it->getValue();
-      hasMode =true;
+      if( it->getName()=="formatter" )
+      {
+        formatterStr=it->getValue();
+      }
+      else  // this means mode
+      {
+        modeStr =it->getName();
+        valueStr=it->getValue();
+        hasMode =true;
+      }
     }
-  }
+  } // for(attributes)
 
   // is everything on place?
   if(!hasMode)
     throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "mode is missing for rule");
   if(!hasPath)
     throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "path is missing for rule");
+  // NOTE: formatter is optional
 
-  return Rule::makeRule(pathStr, parseRuleMode(modeStr), valueStr);
+  const FunctionParser funcParse(formatterStr);
+
+  return Rule::makeRule(pathStr, parseRuleMode(modeStr), valueStr, funcParse.getConfig() );
 } // parseComplexRule()
 
 
