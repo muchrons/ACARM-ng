@@ -134,6 +134,12 @@ struct FormatterGrammar: qi::grammar<Iterator, stringstream()>
     // prepare error handling
     on_error<fail>( dtField_, errorHandleDTF_ (qi::_4, qi::_3, qi::_2) );
     on_error<fail>( start_,   errorHandleExpr_(qi::_4, qi::_3, qi::_2) );
+
+    // debug messages cleaners, for development
+    BOOST_SPIRIT_DEBUG_NODE(dtField_);
+    BOOST_SPIRIT_DEBUG_NODE(exprImpl_);
+    BOOST_SPIRIT_DEBUG_NODE(expr_);
+    BOOST_SPIRIT_DEBUG_NODE(start_);
   }
 
 private:
