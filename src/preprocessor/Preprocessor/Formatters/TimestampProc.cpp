@@ -63,18 +63,41 @@ std::string TimestampProc::execImpl(const Arguments &args) const
 namespace
 {
 
+struct ErrorReporter
+{
+  template <typename, typename, typename>
+  struct result { typedef void type; };
+
+  explicit ErrorReporter(const char *details):
+    details_(details)
+  {
+  }
+
+  template <typename Iterator>
+  void operator()(qi::info const &what, Iterator errPos, Iterator last) const
+  {
+    stringstream ss;
+    ss<<"parse error near '"<<string(errPos, last)<<"' - "<<details_<<": "<<what;
+    throw TimestampProc::ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, ss.str());
+  }
+
+private:
+  const char *details_;
+}; // struct ErrorReporter
+
+
 template<typename Iterator>
-struct FormatterGrammar: qi::grammar<Iterator, stringstream()/*, ascii::space_type*/>
+struct FormatterGrammar: qi::grammar<Iterator, stringstream()>
 {
   explicit FormatterGrammar(const time_t ts):
-    FormatterGrammar::base_type(start_)
+    FormatterGrammar::base_type(start_),
+    errorHandleExpr_( (ErrorReporter("format does not match grammar")) ),
+    errorHandleDTF_( (ErrorReporter("invalid modifier provided")) )
   {
     // convert timestamp to broken-down field representation
     if( gmtime_r(&ts, &bts_)!=&bts_ )
       throw TimestampProc::ExceptionConvertionError(SYSTEM_SAVE_LOCATION, ts);
 
-    using qi::_1;
-    //using qi::_2;
     using qi::_val;
     using qi::lit;
     using qi::eps;
@@ -84,73 +107,43 @@ struct FormatterGrammar: qi::grammar<Iterator, stringstream()/*, ascii::space_ty
     using phoenix::val;
     using phoenix::construct;
     using ascii::char_;
-    //using ascii::lower;
-    //using ascii::alnum;
     using namespace qi::labels;
-    //using phoenix::at_c;
-    //using phoenix::push_back;
-    //using boost::fusion::at_c;
 
-    /*
-    // grammar specification in boost::spirit's EBNF-like notation
-    quotedString_%= lexeme['"' >> *(char_-'"') >> '"'];
-    param_        = quotedString_[at_c<1>(_val)=_1,
-                  at_c<0>(_val)=Data::ARGUMENT];
-    value_        = (lit("value") >> '(' > ')')[at_c<0>(_val)=Data::VALUE];
-    arg_          = func_ | param_;
-    argVec_       = (arg_ % ',') | eps;
-    funcName_    %= lexeme[lower >> *alnum];
-    func_        %= ( '(' >> func_ >> ')' ) |
-      ( value_ ) |
-      ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
-      at_c<2>(_val)=_2,
-      at_c<0>(_val)=Data::FUNCTION];
-    start_       %= func_;
-    */
     // special fields
-    //dtField_ = (char_('Y') [_val=1900+bts_.tm_year]) |
-    //           (char_('m') [_val=1+bts_.tm_mon])
+    dtField_ = (char_('%') [_r1<<'%'])                                                  |   // '%' sign
+               (char_('Y') [_r1<<setfill('0'), _r1<<setw(4), _r1<<(1900+bts_.tm_year)]) |   // 4-digit year
+               (char_('m') [_r1<<setfill('0'), _r1<<setw(2), _r1<<(1+bts_.tm_mon)])     |   // 2-digit month
+               (char_('d') [_r1<<setfill('0'), _r1<<setw(2), _r1<<(bts_.tm_mday)])      |   // 2-digit day
+               (char_('H') [_r1<<setfill('0'), _r1<<setw(2), _r1<<(bts_.tm_hour)])      |   // 2-digit hour
+               (char_('M') [_r1<<setfill('0'), _r1<<setw(2), _r1<<(bts_.tm_min)])       |   // 2-digit minute
+               (char_('S') [_r1<<setfill('0'), _r1<<setw(2), _r1<<(bts_.tm_sec)])           // 2-digit second
                ;
+    dtField_.name("date-time field");
     // main part
-    exprImpl_ = (lit("%%") [_r1<<"%"])           |
-              //lexeme['%' > dtField_] [_val<<_1] |
-              (char_ [_r1<<_1])
-              ;
-
+    exprImpl_ = lexeme['%' > dtField_(_r1)] |
+                (char_ [_r1<<_1])
+                ;
+    exprImpl_.name("expression detail");
+    // accept any sequence of strings/format firelds
     expr_  = ( exprImpl_(_r1) >> expr_(_r1) ) | eps;
+    expr_.name("expressions sequence");
+    // just use single stringstream for gathering the result
     start_ = expr_(_val);
+    start_.name("start rule");
 
-    // TODO: work on this error handling...
-    on_error<fail>
-      (
-       start_,
-       std::cout
-       << val("Error! Expecting ")
-       << _4                               // what failed?
-       << val(" here: \"")
-       << construct<std::string>(_3, _2)   // iterators to error-pos, end
-       << val("\"")
-       << std::endl
-      );
-
+    // prepare error handling
+    on_error<fail>( dtField_, errorHandleDTF_ (qi::_4, qi::_3, qi::_2) );
+    on_error<fail>( start_,   errorHandleExpr_(qi::_4, qi::_3, qi::_2) );
   }
 
 private:
-  struct tm                                             bts_;       // field-broken timestamp
-  /*
-  qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
-  qi::rule<Iterator, Data(),            ascii::space_type> param_;          // parameter's value
-  qi::rule<Iterator, Data(),            ascii::space_type> value_;          // parses special 'value()' function
-  qi::rule<Iterator, Data(),            ascii::space_type> arg_;            // single function argument (return from other function or parameter)
-  qi::rule<Iterator, Data::Arguments(), ascii::space_type> argVec_;         // vector of arguments (can be empty)
-  qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;       // name of the function
-  qi::rule<Iterator, Data(),            ascii::space_type> func_;           // function declaration along with brackets
-  qi::rule<Iterator, Data(),            ascii::space_type> start_;          // start rule (alias to func_)
-  */
-  qi::rule<Iterator, void(stringstream&)/*, ascii::space_type*/> dtField_;  // date/time single field's value
-  qi::rule<Iterator, void(stringstream&)/*, ascii::space_type*/> exprImpl_; // actuall expression's implementation
-  qi::rule<Iterator, void(stringstream&)/*, ascii::space_type*/> expr_;     // expression itself
-  qi::rule<Iterator, stringstream()/*, ascii::space_type*/>      start_;    // start rule
+  struct tm                               bts_;             // field-broken timestamp
+  qi::rule<Iterator, void(stringstream&)> dtField_;         // date/time single field's value
+  qi::rule<Iterator, void(stringstream&)> exprImpl_;        // actuall expression's implementation
+  qi::rule<Iterator, void(stringstream&)> expr_;            // expression itself
+  qi::rule<Iterator, stringstream()>      start_;           // start rule
+  phoenix::function<ErrorReporter>        errorHandleExpr_; // reaction on error - main
+  phoenix::function<ErrorReporter>        errorHandleDTF_;  // reaction on error - format field
 }; // struct FormatterGrammar
 } // unnamed namespace
 

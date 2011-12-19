@@ -17,8 +17,8 @@ struct TestClass: public TestBase<TimestampProc>
 {
   TestClass(void)
   {
-    a_->set(29951133);  // date -d "@29951133" "+%Y.%m.%d %H:%M:%S" # 1970.12.13 16:45:33
-    b_->set(108184);    // date -d   "@108184" "+%Y.%m.%d %H:%M:%S" # 1970.01.02 07:03:04
+    a_->set(29951133);  // date -u -d "@29951133" "+%Y.%m.%d %H:%M:%S" # 1970.12.13 15:45:33
+    b_->set(108184);    // date -u -d   "@108184" "+%Y.%m.%d %H:%M:%S" # 1970.01.02 06:03:04
   }
 
   void testTs(ValuePtrNN v, const string &format, const string &expected) const
@@ -139,7 +139,7 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  testTs(a_, "%H", "16");
+  testTs(a_, "%H", "15");
 }
 
 // test 1-digit hour
@@ -147,7 +147,7 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  testTs(b_, "%H", "07");
+  testTs(b_, "%H", "06");
 }
 
 // test 2-digit minute
@@ -187,7 +187,7 @@ template<>
 template<>
 void testObj::test<17>(void)
 {
-  testTs(b_, "%Y.%m.%d %H:%M:%S", "1970.01.02 07:03:04");
+  testTs(b_, "%Y.%m.%d %H:%M:%S", "1970.01.02 06:03:04");
 }
 
 // test if "%%%" is an error
