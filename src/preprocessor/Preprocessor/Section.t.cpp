@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Preprocessor/Section.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
@@ -86,8 +87,12 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Rule                  r=Rule::makeRule("metaalert.alert.name", Rule::Mode::EQUALS, "some alert");
-  const Expression            e=Expression::makeTerm(r);
+  // TODO: this is ugly as hell - it uses detail implementation of the base component. fix it...
+  detail::FormatterConfigData v;
+  v.type_=detail::FormatterConfigData::VALUE;
+  const FormatterConfig       fc(v);
+  const Rule                  r =Rule::makeRule("metaalert.alert.name", Rule::Mode::EQUALS, "some alert", fc);
+  const Expression            e =Expression::makeTerm(r);
   const Section               s(Section::Type::ACCEPT, e);
   const Preprocessor::Section ps(s);
   ensure("Rule creation failed", ps.process(alert_)==Preprocessor::Section::Decision::ACCEPT );

@@ -2,6 +2,7 @@
  * Rule.cpp
  *
  */
+#include <memory>
 #include <cassert>
 #include <boost/mpl/insert.hpp>
 
@@ -139,11 +140,32 @@ struct ErrorThrowerMod: public ErrorThrower
   }
 }; // struct ErrorThrowerMod
 
+
+std::auto_ptr<Checkers::Mode> buildChecker(Rule::Mode mode, const Rule::Value &value)
+{
+  typedef std::auto_ptr<Checkers::Mode> Ptr;
+  // create proper checker
+  switch( mode.toInt() )
+  {
+    case Rule::Mode::EQUALS:      return Ptr( new Checkers::Equals(value) );
+    case Rule::Mode::LESSTHAN:    return Ptr( new Checkers::LessThan(value) );
+    case Rule::Mode::GREATERTHAN: return Ptr( new Checkers::GreaterThan(value) );
+    case Rule::Mode::CONTAINS:    return Ptr( new Checkers::Contains(value) );
+    case Rule::Mode::REGEXP:      return Ptr( new Checkers::RegExp(value, true) );
+    case Rule::Mode::REGEXPCI:    return Ptr( new Checkers::RegExp(value, false) );
+    default:                      break;
+  } // switch(mode)
+
+  assert(!"unknown mode requested");
+  throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
+  return Ptr(NULL); // never reached
+} // buildChecker()
+
 } // unnamed namespace
 
 
 
-Rule::Rule(const Path &path, Mode mode, const Value &value):
+Rule::Rule(const Path &path, Mode mode, const Value &value, const ConfigIO::Preprocessor::FormatterConfig &fmt):
   path_(path),
   checker_( buildChecker(mode, value).release() )
 {
@@ -173,27 +195,6 @@ bool Rule::compute(const Persistency::ConstGraphNodePtrNN &node) const
   CallbackHandle cb(checker_.get());
   ParamsImpl     p(path_, cb);
   return MainDispatcher::process(node, p);
-}
-
-
-std::auto_ptr<Checkers::Mode> Rule::buildChecker(Mode mode, const Value &value) const
-{
-  typedef std::auto_ptr<Checkers::Mode> Ptr;
-  // create proper checker
-  switch( mode.toInt() )
-  {
-    case Mode::EQUALS:      return Ptr( new Checkers::Equals(value) );
-    case Mode::LESSTHAN:    return Ptr( new Checkers::LessThan(value) );
-    case Mode::GREATERTHAN: return Ptr( new Checkers::GreaterThan(value) );
-    case Mode::CONTAINS:    return Ptr( new Checkers::Contains(value) );
-    case Mode::REGEXP:      return Ptr( new Checkers::RegExp(value, true) );
-    case Mode::REGEXPCI:    return Ptr( new Checkers::RegExp(value, false) );
-    default:                break;
-  } // switch(mode)
-
-  assert(!"unknown mode requested");
-  throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
-  return Ptr(NULL); // never reached
 }
 
 } // namespace Expressions

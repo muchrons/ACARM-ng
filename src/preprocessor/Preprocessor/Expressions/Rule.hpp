@@ -36,8 +36,9 @@ public:
    *  \param path  path to alert's element
    *  \param mode  mode of checking.
    *  \param value value to operate on.
+   *  \param fmt   formatter config to apply.
    */
-  Rule(const Path &path, Mode mode, const Value &value);
+  Rule(const Path &path, Mode mode, const Value &value, const ConfigIO::Preprocessor::FormatterConfig &fmt);
 
   /** \brief computes answer for given alert.
    *  \param node (meta-)alert to be chekced/computed.
@@ -46,8 +47,6 @@ public:
   virtual bool compute(const Persistency::ConstGraphNodePtrNN &node) const;
 
 private:
-  std::auto_ptr<Checkers::Mode> buildChecker(Mode mode, const Value &value) const;
-
   const Path                        path_;
   boost::scoped_ptr<Checkers::Mode> checker_;
 }; // class Rule
