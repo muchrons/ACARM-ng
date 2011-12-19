@@ -22,9 +22,12 @@ class FormatterBuilder
 public:
   explicit FormatterBuilder(Formatters::ValuePtrNN value);
 
-  Formatters::BasePtrNN build(const ConfigIO::Preprocessor::FormatterConfig &cfg);
+  Formatters::BasePtrNN build(const ConfigIO::Preprocessor::FormatterConfig &cfg) const;
 
 private:
+  typedef ConfigIO::Preprocessor::FormatterConfig::Wrapper Wrp;
+  Wrp build(Wrp cfg) const;
+
   Formatters::ValuePtrNN value_;
 }; // class FormatterBuilder
 

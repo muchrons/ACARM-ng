@@ -184,7 +184,7 @@ std::auto_ptr<Checkers::Mode> buildChecker(Rule::Mode mode, const Rule::Value &v
 
 Formatters::BasePtrNN buildFormatter(Formatters::ValuePtrNN value, const ConfigIO::Preprocessor::FormatterConfig &fmt)
 {
-  FormatterBuilder fb(value);
+  const FormatterBuilder fb(value);
   return fb.build(fmt);
 } // buildFormatter()
 

@@ -16,7 +16,7 @@ FormatterBuilder::FormatterBuilder(Formatters::ValuePtrNN value):
 }
 
 
-Formatters::BasePtrNN FormatterBuilder::build(const ConfigIO::Preprocessor::FormatterConfig &cfg)
+Formatters::BasePtrNN FormatterBuilder::build(const ConfigIO::Preprocessor::FormatterConfig &cfg) const
 {
   // TODO
   return value_;

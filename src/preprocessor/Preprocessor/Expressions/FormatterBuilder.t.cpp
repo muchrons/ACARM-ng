@@ -32,8 +32,8 @@ struct TestClass
   }
 
 
-  ValuePtrNN       value_;
-  FormatterBuilder fb_;
+  ValuePtrNN             value_;
+  const FormatterBuilder fb_;
 };
 
 typedef tut::test_group<TestClass> factory;
