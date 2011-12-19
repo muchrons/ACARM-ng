@@ -87,10 +87,11 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  // TODO: this is ugly as hell - it uses detail implementation of the base component. fix it...
-  detail::FormatterConfigData v;
-  v.type_=detail::FormatterConfigData::VALUE;
-  const FormatterConfig       fc(v);
+  // create sample formatter
+  ConfigIO::Singleton::get()->rereadConfig("testdata/formatters_cfg/no_formatter.xml");
+  const ConfigIO::Preprocessor::Section &sTmp=ConfigIO::Singleton::get()->preprocessorConfig().getSections().at(0);
+  const FormatterConfig                 &fc=sTmp.getExpression().getRules().at(0).getFormatter();
+  // test itself
   const Rule                  r =Rule::makeRule("metaalert.alert.name", Rule::Mode::EQUALS, "some alert", fc);
   const Expression            e =Expression::makeTerm(r);
   const Section               s(Section::Type::ACCEPT, e);

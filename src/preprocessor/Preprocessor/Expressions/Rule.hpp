@@ -11,6 +11,8 @@
 #include "ConfigIO/Preprocessor/Rule.hpp"
 #include "DataFacades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
+#include "Preprocessor/Formatters/Base.hpp"
+#include "Preprocessor/Formatters/Value.hpp"
 #include "Preprocessor/Expressions/Base.hpp"
 #include "Preprocessor/ExceptionInvalidPath.hpp"
 
@@ -49,6 +51,8 @@ public:
 private:
   const Path                        path_;
   boost::scoped_ptr<Checkers::Mode> checker_;
+  Formatters::ValuePtrNN            formatterValue_;
+  Formatters::BasePtrNN             baseFormatter_;
 }; // class Rule
 
 } // namespace Expressions

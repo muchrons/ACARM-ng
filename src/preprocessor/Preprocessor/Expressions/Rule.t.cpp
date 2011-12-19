@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
 #include "Preprocessor/Expressions/TestsCommon.t.hpp"
 
@@ -30,7 +31,7 @@ struct TestClass
                      makeHosts("3.2.2.3", "ogre.org",
                                "3.2.2.3", "ogre.org") )),
     leaf_( makeNewLeaf(alert_) ),
-    fmt_( makeFormatterConfig() )
+    fmt_( makeFormatterConfig("no_formatter.xml") )
   {
     assert( leaf_->isLeaf() );
   }
@@ -93,12 +94,12 @@ struct TestClass
                                                                 makeNewReferenceURL().shared_ptr() ) );
   }
 
-  ConfigIO::Preprocessor::FormatterConfig makeFormatterConfig(void) const
+  ConfigIO::Preprocessor::FormatterConfig makeFormatterConfig(const std::string &filename) const
   {
-    // TODO: this is ugly as hell - it uses detail implementation of the base component. fix it...
-    ConfigIO::Preprocessor::detail::FormatterConfigData v;
-    v.type_=ConfigIO::Preprocessor::detail::FormatterConfigData::VALUE;
-    return ConfigIO::Preprocessor::FormatterConfig(v);
+    const std::string path="testdata/formatters_cfg/" + filename;
+    ConfigIO::Singleton::get()->rereadConfig( path.c_str() );
+    const ConfigIO::Preprocessor::Section &s=ConfigIO::Singleton::get()->preprocessorConfig().getSections().at(0);
+    return s.getExpression().getRules().at(0).getFormatter();
   }
 
   Persistency::AlertPtrNN                 alert_;

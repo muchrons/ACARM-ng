@@ -32,9 +32,13 @@ struct CallbackHandle
 {
   /** \brief construyct instance with a given checker.
    *  \param checker checker to be run for each callback.
+   *  \param value   value to be assigned to the formatter.
+   *  \param fmt     formatter to be used for data processing.
    */
-  explicit CallbackHandle(Checkers::Mode *checker):
-    checker_(checker)
+  CallbackHandle(Checkers::Mode *checker, Formatters::ValuePtrNN value, Formatters::BasePtrNN fmt):
+    checker_(checker),
+    value_(value),
+    fmt_(fmt)
   {
     assert(checker_!=NULL);
   }
@@ -49,20 +53,30 @@ struct CallbackHandle
    */
   bool value(const std::string &v)
   {
-    assert(checker_!=NULL);
-    return checker_->check(v);
+    return checkAgainst(v);
   }
 
   /** \brief callback called on NULL pointer in the path.
    */
   bool nullOnPath(const std::string &/*where*/)
   {
-    assert(checker_!=NULL);
-    return checker_->check("<NULL>");
+    return checkAgainst("<NULL>");
   }
 
 private:
-  Checkers::Mode *checker_;
+  bool checkAgainst(const std::string &str)
+  {
+    // format parameter
+    value_->set(str);
+    const std::string &out=fmt_->exec();
+    // pass it to the final checker
+    assert(checker_!=NULL);
+    return checker_->check(out);
+  }
+
+  Checkers::Mode         *checker_;
+  Formatters::ValuePtrNN  value_;
+  Formatters::BasePtrNN   fmt_;
 }; // struct CallbackHandle
 
 
@@ -141,6 +155,11 @@ struct ErrorThrowerMod: public ErrorThrower
 }; // struct ErrorThrowerMod
 
 
+/** \brief helper funciton building proper mode checker.
+ *  \param mode  mode of checking to construct.
+ *  \param value value to be comapred with.
+ *  \return newly constructed mode checker.
+ */
 std::auto_ptr<Checkers::Mode> buildChecker(Rule::Mode mode, const Rule::Value &value)
 {
   typedef std::auto_ptr<Checkers::Mode> Ptr;
@@ -167,7 +186,9 @@ std::auto_ptr<Checkers::Mode> buildChecker(Rule::Mode mode, const Rule::Value &v
 
 Rule::Rule(const Path &path, Mode mode, const Value &value, const ConfigIO::Preprocessor::FormatterConfig &fmt):
   path_(path),
-  checker_( buildChecker(mode, value).release() )
+  checker_( buildChecker(mode, value).release() ),
+  formatterValue_(new Formatters::Value),
+  baseFormatter_(formatterValue_)   // TODO...
 {
   assert( checker_.get()!=NULL );
 }
@@ -192,7 +213,7 @@ bool Rule::compute(const Persistency::ConstGraphNodePtrNN &node) const
   typedef ExceptionTypeHandleMap PreprocHandleMap;
 
   typedef Params<PreprocHandleMap, CallbackHandle> ParamsImpl;
-  CallbackHandle cb(checker_.get());
+  CallbackHandle cb(checker_.get(), formatterValue_, baseFormatter_);
   ParamsImpl     p(path_, cb);
   return MainDispatcher::process(node, p);
 }
