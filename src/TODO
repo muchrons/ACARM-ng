@@ -39,3 +39,4 @@ misc:
 * consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
 * add 'restart' to init.d example.
 * add configurable formatters to the logger.
+* implement possibility to give raw numbers (w/o quotes) to the formatter, in the config.
