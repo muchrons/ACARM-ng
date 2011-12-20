@@ -78,11 +78,17 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     arg_          = func_ | param_;
     argVec_       = (arg_ % ',') | eps;
     funcName_    %= lexeme[lower >> *alnum];
-    func_        %= ( '(' >> func_ >> ')' ) |
-                    ( value_ ) |
-                    ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
+
+    // NOTE: this declaration can be presented as a port of func_ rule, but it appears
+    //       that due to some strange error messages it does not compile on boost::spirit
+    //       1.42. possible reason of this is that %= can be called only for the strings.
+    funcCall_     = ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
                                                            at_c<2>(_val)=_2,
                                                            at_c<0>(_val)=Data::FUNCTION];
+    func_        %= ( '(' >> func_ >> ')' ) |
+                    ( value_ ) |
+                    ( funcCall_ );
+
     start_       %= func_;
 
     // error handling
@@ -106,6 +112,7 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
   qi::rule<Iterator, Data(),            ascii::space_type> arg_;            // single function argument (return from other function or parameter)
   qi::rule<Iterator, Data::Arguments(), ascii::space_type> argVec_;         // vector of arguments (can be empty)
   qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;       // name of the function
+  qi::rule<Iterator, Data(),            ascii::space_type> funcCall_;       // real funciton call
   qi::rule<Iterator, Data(),            ascii::space_type> func_;           // function declaration along with brackets
   qi::rule<Iterator, Data(),            ascii::space_type> start_;          // start rule (alias to func_)
   phoenix::function<ErrorReporter>      errorHandle_;                       // generic error handle
