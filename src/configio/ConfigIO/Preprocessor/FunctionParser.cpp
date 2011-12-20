@@ -78,7 +78,7 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     arg_          = func_ | param_;
     argVec_       = (arg_ % ',') | eps;
     funcName_    %= lexeme[lower >> *alnum];
-    func_        %= ( '(' >> func_ >> ')' ) |
+    func_         = ( '(' >> func_ >> ')' ) |
                     ( value_ ) |
                     ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
                                                            at_c<2>(_val)=_2,
