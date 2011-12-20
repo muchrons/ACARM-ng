@@ -40,6 +40,13 @@ FormatterBuilder::ExceptionUnknownFunction::ExceptionUnknownFunction(const Locat
 {
 }
 
+FormatterBuilder::ExceptionInvalidArgument::ExceptionInvalidArgument(const Location    &where,
+                                                                     const std::string &func,
+                                                                     const char        *details):
+  Exception(where, cc("invalid argument for function '", func, "': ", details) )
+{
+}
+
 
 FormatterBuilder::FormatterBuilder(Formatters::ValuePtrNN value):
   value_(value)
@@ -177,6 +184,8 @@ Formatters::BasePtrNN FormatterBuilder::buildFunction(const ConfigIO::Preprocess
   {
     if( args.size()!=2 )
       throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 2 arguments");
+    if( !cfg.param(1).isArgument() )
+      throw ExceptionInvalidArgument(SYSTEM_SAVE_LOCATION, cfg.name(), "second argument must be a string value");
     return BasePtrNN( new TimestampProc(args[0], cfg.param(1).argument()) );
   }
 

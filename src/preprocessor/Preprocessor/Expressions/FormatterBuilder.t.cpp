@@ -31,6 +31,25 @@ struct TestClass
     return s.getExpression().getRules().at(0).getFormatter();
   }
 
+  template<typename TEx>
+  void testException(const char *xmlFile, const char *failMessage) const
+  {
+    try
+    {
+      fb_.build( makeFormatterConfig(xmlFile) );
+      tut::fail(failMessage);
+    }
+    catch(const TEx&)
+    {
+      // this is expected
+    }
+  }
+
+  void testArgsExcept(const char *xmlFile, const char *failMessage) const
+  {
+    testException<FormatterBuilder::ExceptionInvalidNumberOfArguments>(xmlFile, failMessage);
+  }
+
 
   ValuePtrNN             value_;
   const FormatterBuilder fb_;
@@ -188,17 +207,175 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-  try
-  {
-    fb_.build( makeFormatterConfig("invalid_function.xml") );
-    fail("no exception uppon invalid function");
-  }
-  catch(const FormatterBuilder::ExceptionUnknownFunction&)
-  {
-    // this is expected
-  }
+  testException<FormatterBuilder::ExceptionUnknownFunction>("invalid_function.xml", "no exception uppon invalid function");
 }
 
-// TODO: add tests for invalid number of parameters for each of the functions
+// test abs() with too many arguments
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  testArgsExcept("abs_too_many.xml", "no exception on too many arguments");
+}
+
+// test abs() with too little arguments
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  testArgsExcept("abs_too_little.xml", "no exception on too little arguments");
+}
+
+// test add() with too little arguments
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  testArgsExcept("add_too_little.xml", "no exception on too little arguments");
+}
+
+// test ceil() with too many arguments
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  testArgsExcept("ceil_too_many.xml", "no exception on too many arguments");
+}
+
+// test ceil() with too little arguments
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  testArgsExcept("ceil_too_little.xml", "no exception on too little arguments");
+}
+
+// test div() with too little arguments
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  testArgsExcept("div_too_little.xml", "no exception on too little arguments");
+}
+
+// test div() with too many arguments
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  testArgsExcept("div_too_many.xml", "no exception on too many arguments");
+}
+
+// test floor() with too little arguments
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  testArgsExcept("floor_too_little.xml", "no exception on too little arguments");
+}
+
+// test floor() with too many arguments
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  testArgsExcept("floor_too_many.xml", "no exception on too many arguments");
+}
+
+// test max() with too little arguments
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  testArgsExcept("max_too_little.xml", "no exception on too little arguments");
+}
+
+// test min() with too little arguments
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  testArgsExcept("min_too_little.xml", "no exception on too little arguments");
+}
+
+// test mul() with too little arguments
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  testArgsExcept("mul_too_little.xml", "no exception on too little arguments");
+}
+
+// test round() with too little arguments
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  testArgsExcept("round_too_little.xml", "no exception on too little arguments");
+}
+
+// test round() with too many arguments
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  testArgsExcept("round_too_many.xml", "no exception on too many arguments");
+}
+
+// test sig() with too little arguments
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  testArgsExcept("sig_too_little.xml", "no exception on too little arguments");
+}
+
+// test sig() with too many arguments
+template<>
+template<>
+void testObj::test<32>(void)
+{
+  testArgsExcept("sig_too_many.xml", "no exception on too many arguments");
+}
+
+// test sub() with too little arguemnts
+template<>
+template<>
+void testObj::test<33>(void)
+{
+  testArgsExcept("sub_too_little.xml", "no exception on too little arguments");
+}
+
+// test sub() with too many arguments
+template<>
+template<>
+void testObj::test<34>(void)
+{
+  testArgsExcept("sub_too_many.xml", "no exception on too many arguments");
+}
+
+// test tsProc() with too many arguments
+template<>
+template<>
+void testObj::test<35>(void)
+{
+  testArgsExcept("tsProc_too_many.xml", "no exception on too many arguments");
+}
+
+// test tsProc() with too little arguments
+template<>
+template<>
+void testObj::test<36>(void)
+{
+  testArgsExcept("tsProc_too_little.xml", "no exception on too little arguments");
+}
+
+// test tsProc() with non-string format argument
+template<>
+template<>
+void testObj::test<37>(void)
+{
+  testException<FormatterBuilder::ExceptionInvalidArgument>("tsProc_func_format.xml", "no exception on invalid format");
+}
 
 } // namespace tut

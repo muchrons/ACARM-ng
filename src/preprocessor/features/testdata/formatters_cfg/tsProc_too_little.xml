@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+    <cleanupOlder>13</cleanupOlder>
+    <pluginsDir>/some/dir</pluginsDir>
+  </general>
+
+  <persistency>
+    <type>stubs</type>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="default">
+        <output>loggerfile.log</output>
+      </file>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <preprocessor>
+    <accept>
+      <rule path="a.b.c" formatter="tsProc(`666`)" equals="11:06"/>
+    </accept>
+  </preprocessor>
+
+  <filters/>
+
+  <triggers/>
+
+  <inputs/>
+
+</acarm_ng>

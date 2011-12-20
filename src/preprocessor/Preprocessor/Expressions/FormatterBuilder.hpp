@@ -29,7 +29,12 @@ public:
   struct ExceptionUnknownFunction: public Exception
   {
     ExceptionUnknownFunction(const Location &where, const std::string &func);
-  }; // struct ExceptionInvalidNumberOfArguments
+  }; // struct ExceptionUnknownFunction
+
+  struct ExceptionInvalidArgument: public Exception
+  {
+    ExceptionInvalidArgument(const Location &where, const std::string &func, const char *details);
+  }; // struct ExceptionInvalidArgument
 
 
   explicit FormatterBuilder(Formatters::ValuePtrNN value);
