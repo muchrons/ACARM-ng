@@ -74,9 +74,10 @@ public:
    */
   static Rule makeFalse(void);
   /** \brief named c-tor for dynamically computed condition.
-   *  \param path  path to be checked.
-   *  \param mode  operationg mode of the rule.
-   *  \param value value to compare with.
+   *  \param path      path to be checked.
+   *  \param mode      operationg mode of the rule.
+   *  \param value     value to compare with.
+   *  \param formatter configuration of the formatter, to create rule with.
    *  \return created object.
    */
   static Rule makeRule(const Path &path, Mode mode, const Value &value, const FormatterConfig &formatter);

@@ -18,8 +18,13 @@ namespace Formatters
 class Div: public NumericalBase
 {
 public:
+  /** \brief exception thrown when division by zero is requested.
+   */
   struct ExceptionDivisionByZero: public Exception
   {
+    /** \brief create error message instance.
+     *  \param where location where error was detected.
+     */
     explicit ExceptionDivisionByZero(const Location &where);
   }; // struct ExceptionDivisionByZero
 

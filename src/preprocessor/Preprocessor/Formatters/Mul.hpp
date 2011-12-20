@@ -20,6 +20,7 @@ class Mul: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param args arguments to be multiplied. minumum 2 arguments are required.
    */
   explicit Mul(Formatters args);
 

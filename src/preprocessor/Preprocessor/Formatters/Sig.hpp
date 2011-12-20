@@ -19,6 +19,7 @@ class Sig: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param arg argument to be passed through a signum function.
    */
   explicit Sig(BasePtrNN arg);
 

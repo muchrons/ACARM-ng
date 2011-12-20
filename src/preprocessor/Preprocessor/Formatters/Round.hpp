@@ -19,6 +19,7 @@ class Round: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param arg argument to be rounded.
    */
   explicit Round(BasePtrNN arg);
 

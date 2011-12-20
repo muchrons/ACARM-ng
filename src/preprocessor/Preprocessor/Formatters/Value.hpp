@@ -36,7 +36,7 @@ public:
   }
 
   /** \brief sets value to be returned on exec.
-   *  \param v value to be set.
+   *  \param d value to be set.
    */
   void set(const double d);
 

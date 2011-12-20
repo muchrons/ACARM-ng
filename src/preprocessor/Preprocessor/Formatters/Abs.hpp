@@ -19,6 +19,7 @@ class Abs: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param arg argument to compute absolute value from.
    */
   explicit Abs(BasePtrNN arg);
 

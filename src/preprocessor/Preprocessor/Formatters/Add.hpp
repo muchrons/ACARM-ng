@@ -20,6 +20,7 @@ class Add: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param args elements to be added. must be at least 2.
    */
   explicit Add(Formatters args);
 

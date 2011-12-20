@@ -19,6 +19,7 @@ class Floor: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param arg argument to be floored.
    */
   explicit Floor(BasePtrNN arg);
 

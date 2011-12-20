@@ -22,13 +22,25 @@ namespace Formatters
 class TimestampProc: public Base
 {
 public:
+  /** \brief exception throw on invalid format detection.
+   */
   struct ExceptionInvalidFormat: public Exception
   {
+    /** \brief create error message instance.
+     *  \param where location of error detection.
+     *  \param what  error details.
+     */
     ExceptionInvalidFormat(const Location &where, const std::string &what);
   }; // struct ExceptionInvalidFormat
 
+  /** \brief exception thrown on invalid convertion from timestamp.
+   */
   struct ExceptionConvertionError: public Exception
   {
+    /** \brief creates error message instance.
+     *  \param where location of error decetion.
+     *  \param ts    timestamp who's convertion failed.
+     */
     ExceptionConvertionError(const Location &where, time_t ts);
   }; // struct ExceptionConvertionError
 

@@ -19,6 +19,7 @@ class Ceil: public NumericalBase
 {
 public:
   /** \brief create object instance of a given action.
+   *  \param arg argument to be ceiled.
    */
   explicit Ceil(BasePtrNN arg);
 

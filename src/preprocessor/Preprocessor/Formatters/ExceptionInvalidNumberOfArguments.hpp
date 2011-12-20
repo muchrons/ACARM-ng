@@ -20,9 +20,9 @@ class ExceptionInvalidNumberOfArguments: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where  place where exception has been thrown.
-   *  \param call   call that got invalid number of arguments.
-   *  \param detail exception details.
+   *  \param where place where exception has been thrown.
+   *  \param call  call that got invalid number of arguments.
+   *  \param what  exception details.
    */
   ExceptionInvalidNumberOfArguments(const Location    &where,
                                     const std::string &call,
