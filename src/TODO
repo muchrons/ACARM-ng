@@ -37,3 +37,4 @@ misc:
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
 * consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
 * add configurable formatters to the logger.
+* prepare test application for passing IDMEFs through preprocessor saying if if will owkr or not. add extenstions to easily form meta alerts from alerts, as well.
