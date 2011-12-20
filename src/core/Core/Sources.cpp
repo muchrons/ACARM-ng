@@ -43,18 +43,19 @@ Persistency::GraphNodePtrNN Sources::read(void)
     LOGMSG_DEBUG(log_, "new transaction opened");
     const GraphNode::ID  id=DataFacades::IDAssigner::get()->assignMetaAlertID(conn_, t);
     const GraphNodePtrNN leaf( new GraphNode(alert, id, conn_, t) );
-    LOGMSG_DEBUG(log_, "creating object done - commiting transaction");
-    t.commit();
+    LOGMSG_DEBUG(log_, "creating object done (delaying commit of transactionuntil preprocessor's done)");
     LOGMSG_INFO_S(log_)<<"alert and meta-alert successfuly written to persistency (ID="<<id.get()<<")";
 
     // check if the pre-processor accepts given alert
     LOGMSG_DEBUG(log_, "checking if alert is accepted by the preprocessor");
     if( preproc_.checkAccept(leaf) )
     {
-      LOGMSG_DEBUG(log_, "alert accepted by the preprocessor");
+      LOGMSG_DEBUG_S(log_)<<"alert "<<id.get()<<" accepted by the preprocessor - commiting";
+      t.commit();
       return leaf;
     }
-    LOGMSG_INFO_S(log_)<<"alert "<<id.get()<<" rejected by the preprocessor";
+    LOGMSG_INFO(log_, "alert rejected by the preprocessor - rolling back transaction");
+    t.rollback();
   } // while(true)
 }
 
