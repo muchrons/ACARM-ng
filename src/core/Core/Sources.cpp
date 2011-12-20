@@ -54,7 +54,8 @@ Persistency::GraphNodePtrNN Sources::read(void)
       t.commit();
       return leaf;
     }
-    LOGMSG_INFO(log_, "alert rejected by the preprocessor - rolling back transaction");
+    LOGMSG_INFO_S(log_)<<"alert '"<<alert->getName().get()<<"' rejected by the preprocessor";
+    LOGMSG_DEBUG(log_, "rolling back transaction that saves rejected meta-alert");
     t.rollback();
   } // while(true)
 }
