@@ -28,7 +28,7 @@ protected:
 private:
   virtual void onNonNumeric(const std::string &v) const;
   virtual std::string execConverted(const Arguments &args) const;
-}; // class MixedBase
+}; // class NumericalBase
 
 } // namespace Formatters
 } // namespace Preprocessor

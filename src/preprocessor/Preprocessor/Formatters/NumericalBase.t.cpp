@@ -75,5 +75,5 @@ void testObj::test<3>(void)
     // this is expected
   }
 }
-
+//TODO: test for negative, positive/negative fp numbers should be added
 } // namespace tut

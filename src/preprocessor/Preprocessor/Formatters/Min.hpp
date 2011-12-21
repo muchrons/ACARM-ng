@@ -28,7 +28,7 @@ private:
   virtual void onNonNumeric(const std::string &v) const;
   virtual double execConverted(const NumericalArguments &args) const;
   virtual std::string execConverted(const Arguments &args) const;
-}; // class MixedBase
+}; // class Min
 
 } // namespace Formatters
 } // namespace Preprocessor

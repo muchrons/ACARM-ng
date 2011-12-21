@@ -95,5 +95,5 @@ void testObj::test<5>(void)
   values_.at(3)->set(5);
   ensure_equals("invalid result", p->exec(), "120");
 }
-
+//TODO: tests for fp numbers should be added
 } // namespace tut

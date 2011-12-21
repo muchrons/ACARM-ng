@@ -60,5 +60,6 @@ void testObj::test<3>(void)
   v_->set("-42");
   ensure_equals("invalid value", t_.exec(), "-1");
 }
-
+//TODO: test case for positive floating point nuber should be added
+//TODO: test case for no-number element should be added if makes sense
 } // namespace tut
