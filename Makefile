@@ -64,7 +64,13 @@ install-bin: ensure-configure
 	@# ACARM-ng
 	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
+	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin'
+	@# data base content dumping application
+	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "pdump.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/pdump/pdump.out' '$(INSTALL_DIR)/$(BINDIR)/pdump.bin'
 	@# log splitter application
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
 
