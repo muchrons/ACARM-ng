@@ -4,7 +4,10 @@ all: build
 NCPUS:=$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
 LOCAL_MAKE_FLAGS:=-C src --no-print-directory -j "$(NCPUS)"
 
+# macro for removing extra slashes from given directory path
 F_PATH_STRIP=$(shell echo "$1" | sed 's://\+:/:g')
+# environment setup in script
+SHELL_ENV_SCRIPT=cd "$(SYSCONFDIR)/acarm-ng/" ; export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"
 
 -include configure-output.mk
 
@@ -71,29 +74,32 @@ install-libs: ensure-configure
 install-bin: ensure-configure
 	@echo "installing binaries: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(BINDIR))"
 	@install -d '$(INSTALL_DIR)/$(BINDIR)'
-	@# generic script for running applications
-	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
-	@echo 'cd "$(SYSCONFDIR)/acarm-ng/"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
-	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
-	@echo 'APP="$$1"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
-	@echo 'shift' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
-	@echo 'exec "$(BINDIR)/$$APP" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
-	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@#
 	@# ACARM-ng
-	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
+	@echo '#!/bin/sh'                                           > '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
+	@echo '$(SHELL_ENV_SCRIPT)'                                >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
+	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin'
+	@#
 	@# data base content dumping application
-	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/pdump'
-	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "pdump.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@echo '#!/bin/sh'                                                           > '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@echo '[ "$$#" -ge 1 ] && OUTD="`readlink -m "$$1"`" && shift'             >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@echo '$(SHELL_ENV_SCRIPT)'                                                >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@echo '[ -z "$$OUTD" ] && exec "$(INSTALL_DIR)/$(BINDIR)/pdump.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
+	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/pdump.bin" "$$OUTD" "$$@"'           >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
 	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/pdump'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/pdump/pdump.out' '$(INSTALL_DIR)/$(BINDIR)/pdump.bin'
+	@#
 	@# preprocessor checking application
-	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
-	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "ppcheck.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@echo '#!/bin/sh'                                                           > '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@echo '[ "$$#" -ge 1 ] && INF="`readlink -m "$$1"`" && shift'               >> '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@echo '$(SHELL_ENV_SCRIPT)'                                                 >> '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@echo '[ -z "$$INF" ] && exec "$(INSTALL_DIR)/$(BINDIR)/ppcheck.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/ppcheck.bin" "$$INF" "$$@"'           >> '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
 	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/ppcheck/ppcheck.out' '$(INSTALL_DIR)/$(BINDIR)/ppcheck.bin'
+	@#
 	@# log splitter application
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
 
