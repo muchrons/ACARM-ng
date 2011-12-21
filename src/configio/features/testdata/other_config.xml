@@ -9,7 +9,7 @@
   </general>
 
   <persistency>
-    <type>stub</type>
+    <type>stubs</type>
   </persistency>
 
   <logger>

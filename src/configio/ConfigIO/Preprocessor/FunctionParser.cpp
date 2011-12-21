@@ -35,12 +35,27 @@ namespace Preprocessor
 namespace
 {
 
+struct ErrorReporter
+{
+  template <typename, typename, typename>
+  struct result { typedef void type; };
+
+  template <typename Iterator>
+  void operator()(qi::info const &what, Iterator errPos, Iterator last) const
+  {
+    stringstream ss;
+    ss<<"parse error near '"<<string(errPos, last)<<"': "<<what;
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, ss.str());
+  }
+}; // struct ErrorReporter
+
 // helper grammar call to parse real functions.
 template<typename Iterator>
 struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
 {
   FormatterGrammar(void):
-    FormatterGrammar::base_type(start_)
+    FormatterGrammar::base_type(start_),
+    errorHandle_( (ErrorReporter()) )
   {
     using qi::_1;
     using qi::_2;
@@ -56,19 +71,39 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     using phoenix::push_back;
 
     // grammar specification in boost::spirit's EBNF-like notation
-    quotedString_%= lexeme['"' >> *(char_-'"') >> '"'];
+    quotedString_%= lexeme['`' >> *(char_-'`') >> '`'];
     param_        = quotedString_[at_c<1>(_val)=_1,
                                   at_c<0>(_val)=Data::ARGUMENT];
     value_        = (lit("value") >> '(' > ')')[at_c<0>(_val)=Data::VALUE];
     arg_          = func_ | param_;
     argVec_       = (arg_ % ',') | eps;
     funcName_    %= lexeme[lower >> *alnum];
-    func_        %= ( '(' >> func_ >> ')' ) |
-                    ( value_ ) |
-                    ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
+
+    // NOTE: this declaration can be presented as a port of func_ rule, but it appears
+    //       that due to some strange error messages it does not compile on boost::spirit
+    //       1.42. possible reason of this is that %= can be called only for the strings.
+    funcCall_     = ( funcName_ >> '(' >> argVec_ >> ')' )[at_c<1>(_val)=_1,
                                                            at_c<2>(_val)=_2,
                                                            at_c<0>(_val)=Data::FUNCTION];
+    func_        %= ( '(' >> func_ >> ')' ) |
+                    ( value_ ) |
+                    ( funcCall_ );
+
     start_       %= func_;
+
+    // error handling
+    start_.name("main rule");
+    qi::on_error<qi::fail>( start_, errorHandle_(qi::_4, qi::_3, qi::_2) );
+
+    // this will make debug printouts fit in few lines!
+    BOOST_SPIRIT_DEBUG_NODE(quotedString_);
+    BOOST_SPIRIT_DEBUG_NODE(param_);
+    BOOST_SPIRIT_DEBUG_NODE(value_);
+    BOOST_SPIRIT_DEBUG_NODE(arg_);
+    BOOST_SPIRIT_DEBUG_NODE(argVec_);
+    BOOST_SPIRIT_DEBUG_NODE(funcName_);
+    BOOST_SPIRIT_DEBUG_NODE(func_);
+    BOOST_SPIRIT_DEBUG_NODE(start_);
   }
 
   qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
@@ -77,8 +112,10 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
   qi::rule<Iterator, Data(),            ascii::space_type> arg_;            // single function argument (return from other function or parameter)
   qi::rule<Iterator, Data::Arguments(), ascii::space_type> argVec_;         // vector of arguments (can be empty)
   qi::rule<Iterator, std::string(),     ascii::space_type> funcName_;       // name of the function
+  qi::rule<Iterator, Data(),            ascii::space_type> funcCall_;       // real funciton call
   qi::rule<Iterator, Data(),            ascii::space_type> func_;           // function declaration along with brackets
   qi::rule<Iterator, Data(),            ascii::space_type> start_;          // start rule (alias to func_)
+  phoenix::function<ErrorReporter>      errorHandle_;                       // generic error handle
 }; // struct FormatterGrammar
 
 
@@ -106,6 +143,7 @@ inline FormatterConfig parseString(const std::string &str)
     string::const_iterator end=str.end();
     if( !phrase_parse(it, end, parser, ascii::space, data) )
       throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "phrase_parse() returned an error");
+    // TODO: add (part) of what left to the error message.
     if(it!=end)
       throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "not whole string has been parsed");
 

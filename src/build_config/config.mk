@@ -58,6 +58,7 @@ TMP+=-wd279  # controlling expression is constant
 TMP+=-wd377  # class "XYZ" has no suitable copy constructor
 TMP+=-wd383  # value copied to temporary, reference to temporary used
 TMP+=-wd444  # destructor for base class "XYZ" is not virtual
+TMP+=-wd654  # overloaded virtual function "ABC" is only partially overridden in class "XYZ"
 TMP+=-wd814  # template nesting depth does not match the previous declaration of class template "XYZ"
 TMP+=-wd819  # template nesting depth does not match the previous declaration of class template "XYZ"
 TMP+=-wd981  # operands are evaluated in unspecified order

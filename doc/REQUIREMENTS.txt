@@ -8,6 +8,8 @@ marked with [o].
 [br-] libxml++ >= 2.6
 [br-] openssl >= 1.0.0
 [-ro] apache2-server          (used by: Web User Interface)
+[-ro] php >= 5.0              (used by: Web User Interface)
+[-ro] php-gd >= 5.0           (used by: Web User Interface)
 [-ro] postgresql-server       (used by: persistencypostgres)
 [bro] libpqxx                 (used by: persistencypostgres)
 [bro] libcurl                 (used by: filteripblacklist)

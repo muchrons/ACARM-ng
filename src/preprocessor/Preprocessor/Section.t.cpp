@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Preprocessor/Section.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
@@ -86,8 +87,13 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Rule                  r=Rule::makeRule("metaalert.alert.name", Rule::Mode::EQUALS, "some alert");
-  const Expression            e=Expression::makeTerm(r);
+  // create sample formatter
+  ConfigIO::Singleton::get()->rereadConfig("testdata/formatters_cfg/no_formatter.xml");
+  const ConfigIO::Preprocessor::Section &sTmp=ConfigIO::Singleton::get()->preprocessorConfig().getSections().at(0);
+  const FormatterConfig                 &fc=sTmp.getExpression().getRules().at(0).getFormatter();
+  // test itself
+  const Rule                  r =Rule::makeRule("metaalert.alert.name", Rule::Mode::EQUALS, "some alert", fc);
+  const Expression            e =Expression::makeTerm(r);
   const Section               s(Section::Type::ACCEPT, e);
   const Preprocessor::Section ps(s);
   ensure("Rule creation failed", ps.process(alert_)==Preprocessor::Section::Decision::ACCEPT );

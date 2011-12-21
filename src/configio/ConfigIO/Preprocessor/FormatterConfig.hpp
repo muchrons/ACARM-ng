@@ -5,6 +5,8 @@
 #ifndef INCLUDE_CONFIGIO_PREPROCESSOR_FORMATTERCONFIG_HPP_FILE
 #define INCLUDE_CONFIGIO_PREPROCESSOR_FORMATTERCONFIG_HPP_FILE
 
+/* public header */
+
 #include <string>
 #include <vector>
 #include <cassert>

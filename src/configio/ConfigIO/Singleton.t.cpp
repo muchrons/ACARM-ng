@@ -100,7 +100,7 @@ void testObj::test<6>(void)
 
   ensure_equals("invalid initial read",
                 Singleton::get()->persistencyConfig().getType(),
-                "stub");
+                "stubs");
 }
 
 // test if configuration stays un-touched in case of error
