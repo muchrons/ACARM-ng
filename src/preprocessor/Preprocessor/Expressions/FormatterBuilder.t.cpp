@@ -378,4 +378,29 @@ void testObj::test<37>(void)
   testException<FormatterBuilder::ExceptionInvalidArgument>("tsProc_func_format.xml", "no exception on invalid format");
 }
 
+// test mod() formatter
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  BasePtrNN b=fb_.build( makeFormatterConfig("mod.xml") );
+  ensure_equals("invalid returned value", b->exec(), "3");
+}
+
+// test mod() with too little arguments
+template<>
+template<>
+void testObj::test<39>(void)
+{
+  testArgsExcept("mod_too_little.xml", "no exception on too little arguments");
+}
+
+// test mod() with too many arguments
+template<>
+template<>
+void testObj::test<40>(void)
+{
+  testArgsExcept("mod_too_many.xml", "no exception on too many arguments");
+}
+
 } // namespace tut

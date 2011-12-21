@@ -11,6 +11,7 @@
 #include "Preprocessor/Formatters/Floor.hpp"
 #include "Preprocessor/Formatters/Max.hpp"
 #include "Preprocessor/Formatters/Min.hpp"
+#include "Preprocessor/Formatters/Mod.hpp"
 #include "Preprocessor/Formatters/Mul.hpp"
 #include "Preprocessor/Formatters/Round.hpp"
 #include "Preprocessor/Formatters/Sig.hpp"
@@ -145,6 +146,14 @@ Formatters::BasePtrNN FormatterBuilder::buildFunction(const ConfigIO::Preprocess
     if( args.size()<2 )
       throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects at least 2 arguments");
     return BasePtrNN( new Min(args) );
+  }
+
+  // mod()
+  if( cfg.name()=="mod" )
+  {
+    if( args.size()!=2 )
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects at least 2 arguments");
+    return BasePtrNN( new Mod(args[0], args[1]) );
   }
 
   // mul()
