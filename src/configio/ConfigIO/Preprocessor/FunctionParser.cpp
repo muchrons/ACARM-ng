@@ -71,13 +71,15 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     using phoenix::push_back;
 
     // grammar specification in boost::spirit's EBNF-like notation
-    quotedString_%= lexeme['`' >> *(char_-'`') >> '`'];
-    param_        = quotedString_[at_c<1>(_val)=_1,
-                                  at_c<0>(_val)=Data::ARGUMENT];
-    value_        = (lit("value") >> '(' > ')')[at_c<0>(_val)=Data::VALUE];
-    arg_          = func_ | param_;
-    argVec_       = (arg_ % ',') | eps;
-    funcName_    %= lexeme[lower >> *alnum];
+    numberString_ %= +char_("0-9");
+    quotedString_ %= lexeme['`' >> *(char_-'`') >> '`'];
+    paramStr_     %= quotedString_ | numberString_;
+    param_         = paramStr_[at_c<1>(_val)=_1,
+                               at_c<0>(_val)=Data::ARGUMENT];
+    value_         = (lit("value") >> '(' > ')')[at_c<0>(_val)=Data::VALUE];
+    arg_           = func_ | param_;
+    argVec_        = (arg_ % ',') | eps;
+    funcName_     %= lexeme[lower >> *alnum];
 
     // NOTE: this declaration can be presented as a port of func_ rule, but it appears
     //       that due to some strange error messages it does not compile on boost::spirit
@@ -106,7 +108,9 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     BOOST_SPIRIT_DEBUG_NODE(start_);
   }
 
+  qi::rule<Iterator, std::string(),     ascii::space_type> numberString_;   // parses: 123, etc...
   qi::rule<Iterator, std::string(),     ascii::space_type> quotedString_;   // parses: "abc", etc...
+  qi::rule<Iterator, std::string(),     ascii::space_type> paramStr_;       // parses paramter types
   qi::rule<Iterator, Data(),            ascii::space_type> param_;          // parameter's value
   qi::rule<Iterator, Data(),            ascii::space_type> value_;          // parses special 'value()' function
   qi::rule<Iterator, Data(),            ascii::space_type> arg_;            // single function argument (return from other function or parameter)

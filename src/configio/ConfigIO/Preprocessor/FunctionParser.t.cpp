@@ -372,4 +372,36 @@ void testObj::test<28>(void)
   testThrow("6oops()", "didn't throw on number as a first function name char");
 }
 
+// test function with constant number parameter (with the quotes)
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  const FunctionParser           fp("fun(`42`)");
+  const FormatterConfig::Wrapper w=fp.getConfig().get();
+  ensure("invalid type", w.isFunction() );
+  ensure_equals("invalid function name", w.name(), "fun");
+  ensure_equals("invalid arguments count", w.argCount(), 1);
+
+  const FormatterConfig::Wrapper p1=w.param(0);
+  ensure("invalid type", p1.isArgument() );
+  ensure_equals("invalid argument value", p1.argument(), "42");
+}
+
+// test function with constant number parameter (without the quotes)
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  const FunctionParser           fp("fun(42)");
+  const FormatterConfig::Wrapper w=fp.getConfig().get();
+  ensure("invalid type", w.isFunction() );
+  ensure_equals("invalid function name", w.name(), "fun");
+  ensure_equals("invalid arguments count", w.argCount(), 1);
+
+  const FormatterConfig::Wrapper p1=w.param(0);
+  ensure("invalid type", p1.isArgument() );
+  ensure_equals("invalid argument value", p1.argument(), "42");
+}
+
 } // namespace tut
