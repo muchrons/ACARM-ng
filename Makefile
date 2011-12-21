@@ -12,12 +12,30 @@ PLUGINSDIR:=$(DATADIR)/acarm-ng/plugins
 MODELDIR:=$(DATADIR)/acarm-ng/data_model
 
 .PHONY: build
-build: build-core build-plugins
+build: build-apps build-plugins
 
-.PHONY: build-core
-build-core: ensure-configure
+.PHONY: build-apps
+build-apps: build-acarm-ng build-logsplitter build-pdump build-ppcheck
+
+.PHONY: build-acarm-ng
+build-acarm-ng: ensure-configure
 	@echo "BUILDING ACARM-ng"
-	@$(MAKE) $(LOCAL_MAKE_FLAGS) acarmng logsplitter
+	@$(MAKE) $(LOCAL_MAKE_FLAGS) acarmng
+
+.PHONY: build-logsplitter
+build-logsplitter: ensure-configure
+	@echo "BUILDING logsplitter"
+	@$(MAKE) $(LOCAL_MAKE_FLAGS) logsplitter
+
+.PHONY: build-pdump
+build-pdump: ensure-configure
+	@echo "BUILDING pdump"
+	@$(MAKE) $(LOCAL_MAKE_FLAGS) pdump
+
+.PHONY: build-ppcheck
+build-ppcheck: ensure-configure
+	@echo "BUILDING ppcheck"
+	@$(MAKE) $(LOCAL_MAKE_FLAGS) ppcheck
 
 .PHONY: build-plugins
 build-plugins: ensure-configure
