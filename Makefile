@@ -53,12 +53,19 @@ install-libs: ensure-configure
 install-bin: ensure-configure
 	@echo "installing binaries: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(BINDIR))"
 	@install -d '$(INSTALL_DIR)/$(BINDIR)'
+	@# generic script for running applications
+	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@echo 'cd "$(SYSCONFDIR)/acarm-ng/"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@echo 'APP="$$1"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@echo 'shift' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@echo 'exec "$(BINDIR)/$$APP" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner'
+	@# ACARM-ng
 	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@echo 'cd "$(SYSCONFDIR)/acarm-ng/"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@echo 'exec "$(BINDIR)/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
+	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin'
+	@# log splitter application
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
 
 .PHONY: install-includes
