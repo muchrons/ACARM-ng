@@ -11,6 +11,7 @@
 
 #include "ConfigIO/Preprocessor/Config.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Preprocessor/Exception.hpp"
 
 namespace Preprocessor
 {
