@@ -71,6 +71,11 @@ install-bin: ensure-configure
 	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "pdump.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/pdump'
 	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/pdump'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/pdump/pdump.out' '$(INSTALL_DIR)/$(BINDIR)/pdump.bin'
+	@# preprocessor checking application
+	@echo '#!/bin/sh' > '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-app-runner" "ppcheck.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/ppcheck'
+	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/ppcheck/ppcheck.out' '$(INSTALL_DIR)/$(BINDIR)/ppcheck.bin'
 	@# log splitter application
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
 
