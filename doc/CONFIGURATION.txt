@@ -637,9 +637,14 @@ example rules can look like this:
                                       regular expression R -->
 <rule path="A" regexpci="R"/>    <!-- true if element A matches (case insensitive)
                                       extended POSIX regular expression R -->
-(*) note that if both value of element A *and* constant B are numbers, comparison
-    is performed using numerical values, opposite to default, lexicographical
-    comparison schema.
+<rule path="A" formatter="tsProc( value(), `%Y.%M.%D %h:%m:%s`)" equals="B"/>
+                                 <!-- true if element A is a timestamp, and converted to
+                                      "year.month.day hour:min:sec" has value B (*) (**) -->
+(*)  note that if both value of element A *and* constant B are numbers, comparison
+     is performed using numerical values, opposite to default, lexicographical
+     comparison schema.
+(**) note that strings are quoted with '`' (backtick) instead of common '"', since
+     it must be escaped in XMLs (&quote;) making formatter less readable.
 'path' consists of string that represents position in alerts' hierarchy. assuming
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
@@ -713,7 +718,65 @@ place of collection index means 'all elements must be match given rule'.
 putting '$' in place of collection index means 'any element must match given
 rule'.
 
-example configs along with description goes here:
+formatters are optional, and can be used to post-process elements read from a
+given path. typical example here is obtaining human-readable date/time
+information from timestamp value. available formatters are:
+
+1. value()
+special function, returning raw value, as read from a given path.
+
+2. tsProc(in, format)
+timestamp processor. changes epoch timestamps to strings. parameters are:
+  - in     - input to a function (timestamp to use).
+  - format - output format. string is enclosed between '`' (backtick) tokens.
+             tokens `%x` are special signs, that tells to insert special
+             modifier. all other tokens are copied verbatim to the output
+             string. possible modifiers are:
+     - %Y - 4-digit year.
+     - %m - 2-digit month (1-12).
+     - %d - 2-digit day of month (1-31).
+     - %H - 2-digit hour (0-23).
+     - %M - 2-digit minute (0-59).
+     - %S - 2-digit second (0-59).
+     - %% - '%' sign.
+
+3. sub(a, b)
+returns result of "a-b". both arguments must be a decimal numbers.
+
+4. add(a1, a2, ..., aN)
+returns sum of all arguments. all arguments must be decimal numbers.
+
+5. mul(a1, a2, ..., aN)
+returns multiplicity of all arguments. all arguments must be decimal numbers.
+
+6. div(a, b)
+returns result of "a/b". both arguments must be a decimal numbers.
+
+7. sig(a)
+returns "-1" for negative numbers, "+1" for positive numbers and "0" for "0".
+"a" must be a decimal number.
+
+8. min(a1, a2, ..., aN)
+returns minimum of all values. if all arguments are numbers, numerical
+comparison is performed, otherwise lexicographical comparison is run.
+
+9. max(a1, a2, ..., aN)
+returns maximum of all values. if all arguments are numbers, numerical
+comparison is performed, otherwise lexicographical comparison is run.
+
+10. abs(a)
+returns absolute value of a number "a". "a" must be a numerical value.
+
+11. ceil(a)
+returns round-up of a given number "a". "a" must be a numerical value.
+
+12. floor(a)
+returns round-down of a given number "a". "a" must be a numerical value.
+
+13. round(a)
+returns round of a given number "a", to the nearest integer. "a" must be a numerical value.
+
+example preprocessors' configs along with description goes here:
 
 <preprocessor>
   <accept>

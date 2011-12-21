@@ -2,7 +2,6 @@ Persistency::Postgres:
 ----------------------
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
-* optimize postgres data restoration using roots meta alerts table.
 
 configuration:
 --------------
@@ -37,3 +36,6 @@ misc:
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
 * consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
+* add configurable formatters to the logger.
+* prepare test application for passing IDMEFs through preprocessor saying if if will owkr or not. add extenstions to easily form meta alerts from alerts, as well.
+* add preprocessor comparison checker, that checks if given element is inside the predefined set of value (ex. comma-separated list).

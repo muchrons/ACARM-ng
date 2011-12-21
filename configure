@@ -13,6 +13,9 @@ PREFIX="/usr/local"
 PLUGINS="`(cd src ; ls -d persistency?* input?* trigger?* filter?*)`"
 PROFILE="release"
 FEATURES="lock_on_write_graph_add"
+TOOLCHAIN="gcc"
+TC_CPP="g++"
+TC_FLAGS=""
 
 #
 # helper functions
@@ -32,6 +35,7 @@ $0 options are:
   [--docdir <path>]        path for documentation (1)
   [--localstatedir <path>] directory to store variables in (1)
 
+  [--toolchain <tc>]       toolchain to build project with (gcc or intel; default is gcc)
   [--debug]                build in debug mode (2)
   [--list-plugins]         list all available plugin
   [--disable <plugin>]     do not compile given plugin (3)
@@ -68,7 +72,7 @@ function compile_impl()
   shift
   date >> "$LOG"
   cat "$1" >> "$LOG"
-  local CMD="g++ -x c++ -o $OUT $@ $EXTRA_COMPILE_FLAGS $EXTRA_LINK_FLAGS"
+  local CMD="$TC_CPP $TC_FLAGS -x c++ -o $OUT $@ $EXTRA_COMPILE_FLAGS $EXTRA_LINK_FLAGS"
   echo "$CMD" >> "$LOG"
   $CMD >> "$LOG" 2>&1
   return "$?"
@@ -208,6 +212,25 @@ do
       shift
     ;;
 
+    "--toolchain")
+      TOOLCHAIN="$2"
+      case "$TOOLCHAIN" in
+        "intel")
+          TC_CPP="icc"
+          TC_FLAGS="-I/usr/include/$($TC_CPP -dumpmachine)"
+        ;;
+        "gcc")
+          TC_CPP="g++"
+        ;;
+        *)
+          echo "$0: unsupported toolchain $TOOLCHAIN" >&2
+          exit 2
+        ;;
+      esac
+      echo "enabling $TOOLCHAIN toolchain" >> "$LOG"
+      shift
+    ;;
+
     "--debug")
       PROFILE="debug"
       echo "enabling debug mode" >> "$LOG"
@@ -294,17 +317,26 @@ rm -f "$TMP"
 "$ONLY_TESTS_RUN" && exit 0
 
 #
+# postprocess some extra settings, if needed
+#
+NEED_SIZEOF_MACROS_WORKAROUND="export ENABLE_SIZEOF_MACROS_WORKAROUND:=1"
+[ -z "$ENABLE_SIZEOF_MACROS_WORKAROUND" ] && NEED_SIZEOF_MACROS_WORKAROUND="#$NEED_SIZEOF_MACROS_WORKAROUND"
+
+#
 # prepare proper make entries
 #
 
 # prepare main makefile elements
 cat > "$CFG_OUT" <<EOF
 # extra flags
-LOCAL_MAKE_FLAGS+="TC=gcc"
+LOCAL_MAKE_FLAGS+="TC=$TOOLCHAIN"
 LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE"
 LOCAL_MAKE_FLAGS+="FEATURES=$FEATURES"
 LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS"
 LOCAL_MAKE_FLAGS+="EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
+
+# additional settings
+$NEED_SIZEOF_MACROS_WORKAROUND
 
 # things to build, with defaults
 EXTRA_LIB_DIRS:=$EXTRA_LIB_DIRS
@@ -323,7 +355,7 @@ DOCDIR       :=$DOCDIR
 LOCALSTATEDIR:=$LOCALSTATEDIR
 
 # helpers
-BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
+BUILD_DIR:=src/gen/${PROFILE}_${TOOLCHAIN}_normal_default
 INSTSTRIP:=`[ "$PROFILE" = "release" ] && echo -s`
 EOF
 
@@ -334,6 +366,7 @@ EOF
 echo
 echo "SUMMARY:"
 echo "  prefix:     $PREFIX"
+echo "  toolchain:  $TOOLCHAIN"
 echo "  profile:    $PROFILE"
 echo "  plugins:"
 echo "$PLUGINS" | sort | sed 's:^ *:              :'

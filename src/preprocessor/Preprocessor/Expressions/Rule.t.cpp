@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
 #include "Preprocessor/Expressions/TestsCommon.t.hpp"
 
@@ -29,7 +30,8 @@ struct TestClass
                                "2.2.2.2", "kszy.net"),
                      makeHosts("3.2.2.3", "ogre.org",
                                "3.2.2.3", "ogre.org") )),
-    leaf_( makeNewLeaf(alert_) )
+    leaf_( makeNewLeaf(alert_) ),
+    fmt_( makeFormatterConfig("no_formatter.xml") )
   {
     assert( leaf_->isLeaf() );
   }
@@ -92,8 +94,17 @@ struct TestClass
                                                                 makeNewReferenceURL().shared_ptr() ) );
   }
 
-  Persistency::AlertPtrNN          alert_;
-  Persistency::ConstGraphNodePtrNN leaf_;
+  ConfigIO::Preprocessor::FormatterConfig makeFormatterConfig(const std::string &filename) const
+  {
+    const std::string path="testdata/formatters_cfg/" + filename;
+    ConfigIO::Singleton::get()->rereadConfig( path.c_str() );
+    const ConfigIO::Preprocessor::Section &s=ConfigIO::Singleton::get()->preprocessorConfig().getSections().at(0);
+    return s.getExpression().getRules().at(0).getFormatter();
+  }
+
+  Persistency::AlertPtrNN                 alert_;
+  Persistency::ConstGraphNodePtrNN        leaf_;
+  ConfigIO::Preprocessor::FormatterConfig fmt_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -111,7 +122,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "alert name" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "alert name" , fmt_);
   ensure("equals failed", r.compute(leaf_)==true );
 }
 
@@ -120,7 +131,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "some alert that differs" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "some alert that differs", fmt_ );
   ensure("equals didn't failed", r.compute(leaf_)==false );
 }
 
@@ -129,7 +140,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::CONTAINS, "alert" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::CONTAINS, "alert", fmt_ );
   ensure("contains failed", r.compute(leaf_)==true );
 }
 
@@ -138,7 +149,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::CONTAINS, "ALERT" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::CONTAINS, "ALERT", fmt_ );
   ensure("contains didn't failed", r.compute(leaf_)==false );
 }
 
@@ -147,7 +158,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.detected"), Rule::Mode::EQUALS, "123" );
+  const Rule r( Rule::Path("metaalert.alert.detected"), Rule::Mode::EQUALS, "123", fmt_ );
   ensure("invalid detection time", r.compute(leaf_)==true );
 }
 
@@ -156,7 +167,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.created"), Rule::Mode::EQUALS, "12345" );
+  const Rule r( Rule::Path("metaalert.alert.created"), Rule::Mode::EQUALS, "12345", fmt_ );
   ensure("invalid creation time", r.compute(leaf_)==true );
 }
 
@@ -165,7 +176,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.certainty"), Rule::Mode::CONTAINS, "0.4" );
+  const Rule r( Rule::Path("metaalert.alert.certainty"), Rule::Mode::CONTAINS, "0.4", fmt_ );
   ensure("invalid certainty", r.compute(leaf_)==true );
 }
 
@@ -174,7 +185,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.severity"), Rule::Mode::EQUALS, "info" );
+  const Rule r( Rule::Path("metaalert.alert.severity"), Rule::Mode::EQUALS, "info", fmt_ );
   ensure("invalid severity", r.compute(leaf_)==true );
 }
 
@@ -183,7 +194,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.description"), Rule::Mode::EQUALS, "some test alert" );
+  const Rule r( Rule::Path("metaalert.alert.description"), Rule::Mode::EQUALS, "some test alert", fmt_ );
   ensure("invalid description", r.compute(leaf_)==true );
 }
 
@@ -192,7 +203,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.analyzers.*.name"), Rule::Mode::EQUALS, "analyzer" );
+  const Rule r( Rule::Path("metaalert.alert.analyzers.*.name"), Rule::Mode::EQUALS, "analyzer", fmt_ );
   ensure("invalid analyzer's name", r.compute(leaf_)==true );
 }
 
@@ -201,7 +212,7 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.analyzers.*.version"), Rule::Mode::EQUALS, "v1.2.3" );
+  const Rule r( Rule::Path("metaalert.alert.analyzers.*.version"), Rule::Mode::EQUALS, "v1.2.3", fmt_ );
   ensure("invalid analyzer's version", r.compute(leaf_)==true );
 }
 
@@ -210,7 +221,7 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.analyzers.*.os"), Rule::Mode::EQUALS, "Linux!" );
+  const Rule r( Rule::Path("metaalert.alert.analyzers.*.os"), Rule::Mode::EQUALS, "Linux!", fmt_ );
   ensure("invalid analyzer's OS", r.compute(leaf_)==true );
 }
 
@@ -219,7 +230,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.analyzers.*.ip"), Rule::Mode::EQUALS, "6.6.6.0" );
+  const Rule r( Rule::Path("metaalert.alert.analyzers.*.ip"), Rule::Mode::EQUALS, "6.6.6.0", fmt_ );
   ensure("invalid analyzer's IP", r.compute(leaf_)==true );
 }
 
@@ -228,7 +239,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
+  const Rule r( Rule::Path("metaalert.alert.sources.$.ip"), Rule::Mode::EQUALS, "2.2.2.2", fmt_ );
   ensure("invalid host's IP", r.compute(leaf_)==true );
 }
 
@@ -237,7 +248,7 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.detected"), Rule::Mode::EQUALS, "<NULL>" );
+  const Rule r( Rule::Path("metaalert.alert.detected"), Rule::Mode::EQUALS, "<NULL>", fmt_ );
   ensure("invalid NULL value", r.compute( makeAlert() )==true );
 }
 
@@ -246,7 +257,7 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.netmask"), Rule::Mode::EQUALS, "255.255.0.0" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.netmask"), Rule::Mode::EQUALS, "255.255.0.0", fmt_ );
   ensure("invalid host's mask", r.compute(leaf_)==true );
 }
 
@@ -255,7 +266,7 @@ template<>
 template<>
 void testObj::test<17>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.os"), Rule::Mode::EQUALS, "penguin" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.os"), Rule::Mode::EQUALS, "penguin", fmt_ );
   ensure("invalid mask's OS", r.compute(leaf_)==true );
 }
 
@@ -264,7 +275,7 @@ template<>
 template<>
 void testObj::test<18>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.referenceurl.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.referenceurl.name"), Rule::Mode::EQUALS, "some name", fmt_ );
   ensure("invalid url's name", r.compute(leaf_)==true );
 }
 
@@ -273,7 +284,7 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.referenceurl.url"), Rule::Mode::EQUALS, "http://gnu.org" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.referenceurl.url"), Rule::Mode::EQUALS, "http://gnu.org", fmt_ );
   ensure("invalid url's adderss", r.compute(leaf_)==true );
 }
 
@@ -282,7 +293,7 @@ template<>
 template<>
 void testObj::test<20>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.$.name"), Rule::Mode::EQUALS, "kszy.net" );
+  const Rule r( Rule::Path("metaalert.alert.sources.$.name"), Rule::Mode::EQUALS, "kszy.net", fmt_ );
   ensure("invalid hosts's dns name", r.compute(leaf_)==true );
 }
 
@@ -291,7 +302,7 @@ template<>
 template<>
 void testObj::test<21>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.name"), Rule::Mode::EQUALS, "service name" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.name"), Rule::Mode::EQUALS, "service name", fmt_ );
   ensure("invalid service's name", r.compute(leaf_)==true );
 }
 
@@ -300,7 +311,7 @@ template<>
 template<>
 void testObj::test<22>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.port"), Rule::Mode::EQUALS, "42" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.port"), Rule::Mode::EQUALS, "42", fmt_ );
   ensure("invalid service's port", r.compute(leaf_)==true );
 }
 
@@ -309,7 +320,7 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.protocol"), Rule::Mode::EQUALS, "magic_proto" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.protocol"), Rule::Mode::EQUALS, "magic_proto", fmt_ );
   ensure("invalid service's protocol", r.compute(leaf_)==true );
 }
 
@@ -318,7 +329,7 @@ template<>
 template<>
 void testObj::test<24>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.referenceurl.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.services.*.referenceurl.name"), Rule::Mode::EQUALS, "some name", fmt_ );
   ensure("invalid service's url name", r.compute(leaf_)==true );
 }
 
@@ -327,7 +338,7 @@ template<>
 template<>
 void testObj::test<25>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.referenceurl.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.referenceurl.name"), Rule::Mode::EQUALS, "some name", fmt_ );
   ensure("invalid process' url name", r.compute(leaf_)==true );
 }
 
@@ -336,7 +347,7 @@ template<>
 template<>
 void testObj::test<26>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.path"), Rule::Mode::EQUALS, "/path/to/bin" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.path"), Rule::Mode::EQUALS, "/path/to/bin", fmt_ );
   ensure("invalid process' path", r.compute(leaf_)==true );
 }
 
@@ -345,7 +356,7 @@ template<>
 template<>
 void testObj::test<27>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.name"), Rule::Mode::EQUALS, "name" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.name"), Rule::Mode::EQUALS, "name", fmt_ );
   ensure("invalid process' name", r.compute(leaf_)==true );
 }
 
@@ -356,7 +367,8 @@ void testObj::test<28>(void)
 {
   const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.md5"),
                 Rule::Mode::EQUALS,
-                "01234567890123456789012345678901" );
+                "01234567890123456789012345678901",
+                fmt_ );
   ensure("invalid process' md5", r.compute(leaf_)==true );
 }
 
@@ -365,7 +377,7 @@ template<>
 template<>
 void testObj::test<29>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.pid"), Rule::Mode::EQUALS, "666" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.pid"), Rule::Mode::EQUALS, "666", fmt_ );
   ensure("invalid process' pid", r.compute(leaf_)==true );
 }
 
@@ -374,7 +386,7 @@ template<>
 template<>
 void testObj::test<30>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.uid"), Rule::Mode::EQUALS, "42" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.uid"), Rule::Mode::EQUALS, "42", fmt_ );
   ensure("invalid process' uid", r.compute(leaf_)==true );
 }
 
@@ -383,7 +395,7 @@ template<>
 template<>
 void testObj::test<31>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.username"), Rule::Mode::EQUALS, "looser" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.username"), Rule::Mode::EQUALS, "looser", fmt_ );
   ensure("invalid process' username", r.compute(leaf_)==true );
 }
 
@@ -392,7 +404,7 @@ template<>
 template<>
 void testObj::test<32>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.parameters"), Rule::Mode::EQUALS, "-a -b -c" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.processes.*.parameters"), Rule::Mode::EQUALS, "-a -b -c", fmt_ );
   ensure("invalid process' arguments", r.compute(leaf_)==true );
 }
 
@@ -401,7 +413,7 @@ template<>
 template<>
 void testObj::test<33>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.*.ip"), Rule::Mode::EQUALS, "1.1.1.1" );
+  const Rule r( Rule::Path("metaalert.alert.sources.*.ip"), Rule::Mode::EQUALS, "1.1.1.1", fmt_ );
   ensure("for-each didn't failed on different entries", r.compute(leaf_)==false );
 }
 
@@ -410,7 +422,7 @@ template<>
 template<>
 void testObj::test<34>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.targets.*.ip"), Rule::Mode::EQUALS, "3.2.2.3" );
+  const Rule r( Rule::Path("metaalert.alert.targets.*.ip"), Rule::Mode::EQUALS, "3.2.2.3", fmt_ );
   ensure("for-each failed for the same entries", r.compute(leaf_)==true );
 }
 
@@ -419,7 +431,7 @@ template<>
 template<>
 void testObj::test<35>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.$.ip"), Rule::Mode::EQUALS, "9.1.1.1" );
+  const Rule r( Rule::Path("metaalert.alert.sources.$.ip"), Rule::Mode::EQUALS, "9.1.1.1", fmt_ );
   ensure("for-any didn't failed on non-exisitng entry", r.compute(leaf_)==false );
 }
 
@@ -428,7 +440,7 @@ template<>
 template<>
 void testObj::test<36>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.sources.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
+  const Rule r( Rule::Path("metaalert.alert.sources.$.ip"), Rule::Mode::EQUALS, "2.2.2.2", fmt_ );
   ensure("for-any failed on existing entry", r.compute(leaf_)==true );
 }
 
@@ -437,7 +449,7 @@ template<>
 template<>
 void testObj::test<37>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXP, "^a.*e$" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXP, "^a.*e$", fmt_ );
   ensure("equals failed", r.compute(leaf_)==true );
 }
 
@@ -446,7 +458,7 @@ template<>
 template<>
 void testObj::test<38>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXP, "^A.*E$" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXP, "^A.*E$", fmt_ );
   ensure("equals failed", r.compute(leaf_)==false );
 }
 
@@ -455,7 +467,7 @@ template<>
 template<>
 void testObj::test<39>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXPCI, "^A.*E$" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXPCI, "^A.*E$", fmt_ );
   ensure("equals failed", r.compute(leaf_)==true );
 }
 
@@ -464,7 +476,7 @@ template<>
 template<>
 void testObj::test<40>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXPCI, "^x.*E$" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXPCI, "^x.*E$", fmt_ );
   ensure("equals failed", r.compute(leaf_)==false );
 }
 
@@ -473,7 +485,7 @@ template<>
 template<>
 void testObj::test<41>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::LESSTHAN, "xxx" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::LESSTHAN, "xxx", fmt_ );
   ensure("equals failed", r.compute(leaf_)==true );
 }
 
@@ -482,7 +494,7 @@ template<>
 template<>
 void testObj::test<42>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::LESSTHAN, "aaa" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::LESSTHAN, "aaa", fmt_ );
   ensure("equals failed", r.compute(leaf_)==false );
 }
 
@@ -491,7 +503,7 @@ template<>
 template<>
 void testObj::test<43>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "aa" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "aa", fmt_ );
   ensure("equals failed", r.compute(leaf_)==true );
 }
 
@@ -500,8 +512,38 @@ template<>
 template<>
 void testObj::test<44>(void)
 {
-  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "xxx" );
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::GREATERTHAN, "xxx", fmt_ );
   ensure("equals failed", r.compute(leaf_)==false );
+}
+
+// test default formatter's creation
+template<>
+template<>
+void testObj::test<45>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("no_formatter.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "alert name" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test value() formatter
+template<>
+template<>
+void testObj::test<46>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("value.xml");
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::EQUALS, "alert name" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test some non-default formatter
+template<>
+template<>
+void testObj::test<47>(void)
+{
+  const ConfigIO::Preprocessor::FormatterConfig fmt=makeFormatterConfig("rule_test.xml");
+  const Rule r( Rule::Path("metaalert.alert.analyzers.*.id"), Rule::Mode::EQUALS, "48" , fmt);
+  ensure("equals failed", r.compute(leaf_)==true );
 }
 
 } // namespace tut

@@ -1,8 +1,14 @@
 -- dev --
-* preprocessor new features:
+* implemented ppcheck application for testing preprocessor's configuration offline.
+* persistent storage's content to IDMEF dumper (pdump) is now installed, by default.
+* alerts dropped by the preprocessor are no longer saved in data base.
+* added workaround for missing GNU C macros when using Intel's compiler.
+* added support for toolchain selection in configure script (intel and gcc).
+* new preprocessor's features:
   - less-than comparison
   - greater-than comparison
   - all relations (<,>,==) now support automatic numbers parsing to compare them as numbers, not as strings.
+  - rule output formatters allowing to pre-process data from given field(s), before running comparison.
 * added more tests for external libraries, required for compilation.
 
 

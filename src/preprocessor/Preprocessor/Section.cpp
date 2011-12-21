@@ -107,7 +107,8 @@ Expressions::BasePtrNN Section::create(const ConfigIO::Preprocessor::Rule &cfg) 
       typedef DataFacades::StrAccess::Path Path;
       return Expressions::BasePtrNN( new Expressions::Rule( Path(cfg.getPath()),
                                                             cfg.getMode(),
-                                                            cfg.getValue() ) );
+                                                            cfg.getValue(),
+                                                            cfg.getFormatter() ) );
 
     default:
       assert(!"unknown rule type - update the code");

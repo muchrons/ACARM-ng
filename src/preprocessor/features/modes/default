@@ -1,4 +1,5 @@
 Preprocessor/*.[ch]pp
 Preprocessor/Checkers/*.[ch]pp
 Preprocessor/Checkers/detail/*.[ch]pp
+Preprocessor/Formatters/*.[ch]pp
 Preprocessor/Expressions/*.[ch]pp

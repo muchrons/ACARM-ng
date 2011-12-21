@@ -16,4 +16,4 @@ acceptance_tests_plan.pdf
 configure-output.mk
 misc/bzr_plugins/bzr_buildbot.pyc
 wui/misc/buttons/out
-src/build_config/local-config.mk
+src/build_config/local-config*.mk
