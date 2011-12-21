@@ -47,5 +47,6 @@ preprocessor
 pythonapi
 
 acarmng
+ppcheck
 pdump
 logsplitter

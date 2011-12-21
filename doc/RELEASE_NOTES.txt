@@ -1,4 +1,5 @@
 -- dev --
+* implemented ppcheck application for testing preprocessor's configuration offline.
 * persistent storage's content to IDMEF dumper (pdump) is now installed, by default.
 * alerts dropped by the preprocessor are no longer saved in data base.
 * added workaround for missing GNU C macros when using Intel's compiler.
