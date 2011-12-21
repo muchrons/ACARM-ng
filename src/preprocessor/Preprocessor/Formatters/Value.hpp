@@ -17,7 +17,7 @@ namespace Formatters
 {
 
 /** \brief class representing "value()" function, that always returns an
- *         argument passwd to the whole expression.
+ *         argument passed to the whole expression.
  */
 class Value: public Base
 {

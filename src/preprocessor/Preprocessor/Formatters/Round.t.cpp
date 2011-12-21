@@ -78,5 +78,5 @@ void testObj::test<5>(void)
   v_->set("-4.2");
   ensure_equals("invalid value", t_.exec(), "-4");
 }
-
+//TODO: test for integers and values which don't need round operation i.e 2.0 or -1.0
 } // namespace tut

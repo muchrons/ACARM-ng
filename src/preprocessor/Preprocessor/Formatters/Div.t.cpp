@@ -101,5 +101,5 @@ void testObj::test<6>(void)
     // this is expected
   }
 }
-
+//TODO: test for divide two fp numbers should be added
 } // namespace tut

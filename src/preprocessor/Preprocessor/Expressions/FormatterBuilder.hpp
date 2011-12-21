@@ -60,7 +60,7 @@ public:
   }; // struct ExceptionInvalidArgument
 
 
-  /** \brief creates instalce of formatters builder.
+  /** \brief creates instance of formatters builder.
    *  \param value object to get value from.
    */
   explicit FormatterBuilder(Formatters::ValuePtrNN value);
