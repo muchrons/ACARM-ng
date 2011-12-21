@@ -2,7 +2,6 @@
  * Sub.cpp
  *
  */
-#include <cmath>
 #include <cassert>
 
 #include "Preprocessor/Formatters/Sub.hpp"
