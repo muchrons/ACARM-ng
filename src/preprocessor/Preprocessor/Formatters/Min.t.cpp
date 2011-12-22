@@ -93,5 +93,5 @@ void testObj::test<5>(void)
   values_.at(2)->set("3");
   ensure_equals("invalid response", b->exec(), "1");
 }
-
+//TODO: tests for mixed positive-negative numbers should be added, fp numbers should be also tested
 } // namespace tut

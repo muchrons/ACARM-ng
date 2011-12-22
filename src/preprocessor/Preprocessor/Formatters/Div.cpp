@@ -2,7 +2,6 @@
  * Div.cpp
  *
  */
-#include <cmath>
 #include <cassert>
 
 #include "Preprocessor/Formatters/Div.hpp"
@@ -12,12 +11,6 @@ namespace Preprocessor
 {
 namespace Formatters
 {
-
-Div::ExceptionDivisionByZero::ExceptionDivisionByZero(const Location &where):
-  Exception(where, "division by zero requested")
-{
-}
-
 
 namespace
 {

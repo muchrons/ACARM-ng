@@ -2,12 +2,12 @@
  * ExceptionNotANumber.hpp
  *
  */
-#ifndef INCLUDE_PREPROCESSOR_EXCEPTIONNOTANUMBER_HPP_FILE
-#define INCLUDE_PREPROCESSOR_EXCEPTIONNOTANUMBER_HPP_FILE
+#ifndef INCLUDE_PREPROCESSOR_FORMATTERS_EXCEPTIONNOTANUMBER_HPP_FILE
+#define INCLUDE_PREPROCESSOR_FORMATTERS_EXCEPTIONNOTANUMBER_HPP_FILE
 
 /* public header */
 
-#include "Preprocessor/Exception.hpp"
+#include "Preprocessor/Formatters/Exception.hpp"
 
 namespace Preprocessor
 {

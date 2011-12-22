@@ -8,7 +8,20 @@
   - less-than comparison
   - greater-than comparison
   - all relations (<,>,==) now support automatic numbers parsing to compare them as numbers, not as strings.
-  - rule output formatters allowing to pre-process data from given field(s), before running comparison.
+  - rule's output formatters allowing to preprocess data from given field(s), before running comparison:
+    - tsProc - timestamp to data/time converter
+    - sub - subsrtaction
+    - add - addition
+    - mul - multiply
+    - div - division
+    - sig - signum function
+    - min - minumum selection
+    - max - maximum selection
+    - abs - absolute value
+    - ceil - round up value
+    - floor - round down value
+    - round - round to nearest integer
+    - mod - compute modulo arithmetic
 * added more tests for external libraries, required for compilation.
 
 

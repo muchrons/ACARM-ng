@@ -44,7 +44,7 @@ void testObj::test<2>(void)
   ensure_equals("invalid value saved", v_.exec(), "evil");
 }
 
-// test passing integern number
+// test passing integer number
 template<>
 template<>
 void testObj::test<3>(void)

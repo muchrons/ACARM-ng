@@ -93,5 +93,5 @@ void testObj::test<6>(void)
   b_->set("0");
   ensure_equals("invalid value", t_.exec(), "666");
 }
-
+//TODO: tests for fp numbers should be added
 } // namespace tut

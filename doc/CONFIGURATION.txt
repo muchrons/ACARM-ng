@@ -776,6 +776,9 @@ returns round-down of a given number "a". "a" must be a numerical value.
 13. round(a)
 returns round of a given number "a", to the nearest integer. "a" must be a numerical value.
 
+14. mod(a, b)
+returns "a" modulo "b". both arguments must be positive, integer numbers.
+
 example preprocessors' configs along with description goes here:
 
 <preprocessor>

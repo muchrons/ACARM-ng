@@ -6,6 +6,7 @@
 #define INCLUDE_PREPROCESSOR_FORMATTERS_DIV_HPP_FILE
 
 #include "Preprocessor/Formatters/NumericalBase.hpp"
+#include "Preprocessor/Formatters/ExceptionDivisionByZero.hpp"
 
 
 namespace Preprocessor
@@ -18,16 +19,6 @@ namespace Formatters
 class Div: public NumericalBase
 {
 public:
-  /** \brief exception thrown when division by zero is requested.
-   */
-  struct ExceptionDivisionByZero: public Exception
-  {
-    /** \brief create error message instance.
-     *  \param where location where error was detected.
-     */
-    explicit ExceptionDivisionByZero(const Location &where);
-  }; // struct ExceptionDivisionByZero
-
   /** \brief create object instance of a given action.
    *  \param a element to be divided.
    *  \param b element to devide by.
