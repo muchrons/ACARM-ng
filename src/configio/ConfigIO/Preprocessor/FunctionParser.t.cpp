@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <boost/lexical_cast.hpp>
 
 #include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
@@ -14,7 +15,7 @@ namespace
 
 struct TestClass
 {
-  void testThrow(const char *str, const char *message) const
+  void testThrow(const string &str, const char *message) const
   {
     try
     {
@@ -25,6 +26,42 @@ struct TestClass
     {
       // this is expected
     }
+  }
+
+  void testNumber(const string &num) const
+  {
+    const string trm=trim(num);
+    const double tmp=boost::lexical_cast<double>(trm);
+    const string exp=boost::lexical_cast<string>(tmp);
+    testNumber(num, exp);
+  }
+
+  void testNumber(const string &num, const string &exp) const
+  {
+    const FunctionParser           fp("fun(" + num + ")");
+    const FormatterConfig::Wrapper w=fp.getConfig().get();
+    tut::ensure("invalid type", w.isFunction() );
+    tut::ensure_equals("invalid function name", w.name(), "fun");
+    tut::ensure_equals("invalid arguments count", w.argCount(), 1);
+
+    const FormatterConfig::Wrapper p1=w.param(0);
+    tut::ensure("invalid type", p1.isArgument() );
+    tut::ensure_equals("invalid argument value", p1.argument(), exp);
+  }
+
+  void testNumberThrow(const string &num) const
+  {
+    testThrow("fun("+num+")", "non-number has been accepted");
+  }
+
+  string trim(const string &str) const
+  {
+    const string::size_type pos1=str.find_first_not_of(' ');
+    const string::size_type pos2=str.find_last_not_of(' ');
+    const string::size_type from=(pos1!=string::npos) ? pos1   : 0;
+    const string::size_type to  =(pos2!=string::npos) ? pos2+1 : str.length();
+    const string            out(str.begin()+from, str.begin()+to);
+    return out;
   }
 };
 
@@ -393,15 +430,135 @@ template<>
 template<>
 void testObj::test<30>(void)
 {
-  const FunctionParser           fp("fun(42)");
-  const FormatterConfig::Wrapper w=fp.getConfig().get();
-  ensure("invalid type", w.isFunction() );
-  ensure_equals("invalid function name", w.name(), "fun");
-  ensure_equals("invalid arguments count", w.argCount(), 1);
+  testNumber("42");
+}
 
-  const FormatterConfig::Wrapper p1=w.param(0);
-  ensure("invalid type", p1.isArgument() );
-  ensure_equals("invalid argument value", p1.argument(), "42");
+// test function with constant fp-number parameter (without the quotes)
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  testNumber("4.5");
+}
+
+// test negative number w/o quotes
+template<>
+template<>
+void testObj::test<32>(void)
+{
+  testNumber("-42");
+}
+
+// test negative fp-number w/o quotes
+template<>
+template<>
+void testObj::test<33>(void)
+{
+  testNumber("-4.5");
+}
+
+// test signed, positive number w/o quotes
+template<>
+template<>
+void testObj::test<34>(void)
+{
+  testNumber("+42");
+}
+
+// test signed, positive fp-number w/o quotes
+template<>
+template<>
+void testObj::test<35>(void)
+{
+  testNumber("+4.5");
+}
+
+// test fp w/o quotes, w/o leading zero
+template<>
+template<>
+void testObj::test<36>(void)
+{
+  testNumber(".5");
+}
+
+// test fp w/o quotes, w/o trailing zero
+template<>
+template<>
+void testObj::test<37>(void)
+{
+  testNumber("2.");
+}
+
+// test signed fp w/o quotes, w/o leading zero
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  testNumber("+.5");
+}
+
+// test signed fp w/o quotes, w/o trailing zero
+template<>
+template<>
+void testObj::test<39>(void)
+{
+  testNumber("+2.");
+}
+
+// test negative fp w/o quotes, w/o leading zero
+template<>
+template<>
+void testObj::test<40>(void)
+{
+  testNumber("-.5");
+}
+
+// test negative fp w/o quotes, w/o trailing zero
+template<>
+template<>
+void testObj::test<41>(void)
+{
+  testNumber("-2.");
+}
+
+// test random number w/o quotes, with spaces around
+template<>
+template<>
+void testObj::test<42>(void)
+{
+  testNumber(" -4.25 ");
+}
+
+// test number with space inbetween
+template<>
+template<>
+void testObj::test<43>(void)
+{
+  testNumberThrow("-4 .2");
+}
+
+// test number with sign in wrong place
+template<>
+template<>
+void testObj::test<44>(void)
+{
+  testNumberThrow("4-2");
+}
+
+// test number with multiple dots
+template<>
+template<>
+void testObj::test<45>(void)
+{
+  testNumberThrow("4.2.1");
+}
+
+// test multiple signs
+template<>
+template<>
+void testObj::test<46>(void)
+{
+  testNumberThrow("--4.25");
 }
 
 } // namespace tut

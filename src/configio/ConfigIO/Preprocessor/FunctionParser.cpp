@@ -6,6 +6,7 @@
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/exception/all.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
@@ -49,6 +50,12 @@ struct ErrorReporter
   }
 }; // struct ErrorReporter
 
+
+void doubleToString(string &out, const double in)
+{
+  out=boost::lexical_cast<string>(in);
+}
+
 // helper grammar call to parse real functions.
 template<typename Iterator>
 struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
@@ -71,7 +78,7 @@ struct FormatterGrammar: qi::grammar<Iterator, Data(), ascii::space_type>
     using phoenix::push_back;
 
     // grammar specification in boost::spirit's EBNF-like notation
-    numberString_ %= +char_("0-9");
+    numberString_ %= qi::double_[phoenix::bind(&doubleToString, _val, _1)]; // TODO: avoid double convertions...
     quotedString_ %= lexeme['`' >> *(char_-'`') >> '`'];
     paramStr_     %= quotedString_ | numberString_;
     param_         = paramStr_[at_c<1>(_val)=_1,
