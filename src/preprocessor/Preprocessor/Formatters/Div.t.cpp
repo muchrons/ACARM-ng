@@ -96,7 +96,7 @@ void testObj::test<6>(void)
     t_.exec();  // should throw
     fail("dicision by zero didn't throw");
   }
-  catch(const Div::ExceptionDivisionByZero&)
+  catch(const ExceptionDivisionByZero&)
   {
     // this is expected
   }
