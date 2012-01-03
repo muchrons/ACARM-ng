@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include "ConfigConsts/triggers.hpp"
 #include "Base/TruncatingQueue.hpp"
 #include "Base/Threads/UniqueFifoQueue.hpp"
 #include "Trigger/Strategy.hpp"
@@ -44,8 +45,8 @@ private:
 
   virtual void triggerImpl(BackendFacade &bf, const ConstNode &n) = 0;
 
-  typedef Base::Threads::UniqueFifoQueue<ConstNode>   UniqueFifoType;
-  typedef Base::TruncatingQueue<UniqueFifoType, 1024> NodesWaitingRoom; // TODO: value should be moved to compile-time config
+  typedef Base::Threads::UniqueFifoQueue<ConstNode>                                  UniqueFifoType;
+  typedef Base::TruncatingQueue<UniqueFifoType, ConfigConsts::waitingTruncQueueSize> NodesWaitingRoom;
 
   NodesWaitingRoom      fifo_;
   const ThresholdConfig cfg_;

@@ -1,0 +1,22 @@
+echo -n "checking for boost::smart_ptr... "
+cat > "$TMP" <<EOF
+#include <boost/scoped_array.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/shared_array.hpp>
+#include <boost/shared_ptr.hpp>
+
+int main(void)
+{
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

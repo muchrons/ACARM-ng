@@ -108,7 +108,7 @@ namespace
 {
 struct TestThread
 {
-  TestThread(WaitingLockData *wld, int *data, ReadWriteMutex *mutexRW):
+  TestThread(WaitingLockData *wld, volatile int *data, ReadWriteMutex *mutexRW):
     wld_(wld),
     data_(data),
     mutexRW_(mutexRW)
@@ -128,7 +128,7 @@ struct TestThread
   }
 
   WaitingLockData *wld_;
-  int             *data_;
+  volatile int    *data_;
   ReadWriteMutex  *mutexRW_;
 }; // struct TestThread
 } // unnamed namespace
@@ -139,7 +139,7 @@ template<>
 void testObj::test<5>(void)
 {
   WaitingLockData     wld;
-  int                 state=0;
+  volatile int        state=0;
   auto_ptr<WriteLock> wlock( new WriteLock(mutexRW_) );
   assert( wlock.get()!=NULL );
   TestThread          tt(&wld, &state, &mutexRW_);
@@ -159,7 +159,7 @@ template<>
 void testObj::test<6>(void)
 {
   WaitingLockData     wld;
-  int                 state=0;
+  volatile int        state=0;
   auto_ptr<WriteLock> wlock( new WriteLock(mutexRW_) );
   assert( wlock.get()!=NULL );
   TestThread          tt(&wld, &state, &mutexRW_);

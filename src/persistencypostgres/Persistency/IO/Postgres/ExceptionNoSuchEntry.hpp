@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_EXCEPTIONNOSUCHENTRY_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_EXCEPTIONNOSUCHENTRY_HPP_FILE
 
-/* public header */
-
 #include "Persistency/IO/Postgres/Exception.hpp"
 
 namespace Persistency

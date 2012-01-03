@@ -140,7 +140,7 @@ $ groupadd acarm-ng
 $ useradd -g acarm-ng -m acarm-ng
 
 now it's a good time to configure ACARM-ng daemon. file
-/etc/acarm-ng/acarm_ng_config.xml contains all of the configuration. since
+/etc/acarm-ng/main_config.xml contains all of the configuration. since
 it consists of many sections and features, it has been described in a separate
 document, namely CONFIGURATION.txt.
 

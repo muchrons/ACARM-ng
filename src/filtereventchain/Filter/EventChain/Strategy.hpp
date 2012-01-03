@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_EVENTCHAIN_STRATEGY_HPP_FILE
 #define INCLUDE_FILTER_EVENTCHAIN_STRATEGY_HPP_FILE
 
-/* public header */
-
 #include "Algo/GatherIPs.hpp"
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"

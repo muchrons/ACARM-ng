@@ -11,6 +11,7 @@
 #include "Core/Types/Proc/InterfaceImpl.hpp"
 #include "Filter/NewEvent/FactoryBuilder.hpp"
 #include "Filter/NewEvent/Strategy.hpp"
+#include "Filter/NewEvent/config.hpp"
 
 using namespace std;
 using namespace ConfigIO;
@@ -40,7 +41,6 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 {
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
-  const unsigned int pruneTimeout = 10;  // TODO: hardcoded parameter
 
   const FilterConfig fc(type_.str(), options);
   // filter newevent name
@@ -50,7 +50,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
   const double       priDelta=Commons::Convert::to<double>( fc["priorityDelta"] );
   LOGMSG_INFO_S(log_)<<"setting priority delta to "<<priDelta;
-  const Strategy::Parameters params(timeout, pruneTimeout, priDelta);
+  const Strategy::Parameters params(timeout, defaultDelayBetweenPrunings, priDelta);
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
   InterfaceWrapper::InterfaceAutoPtr ptr( new Impl(type_, InstanceName(name), params) );

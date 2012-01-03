@@ -22,7 +22,7 @@ struct TestClass: private Persistency::TestBase
 {
   TestClass(void)
   {
-    const char *defaultFile="acarm_ng_config.xml";
+    const char *defaultFile="test_config.xml";
     unlink(defaultFile);
     stringstream ss;
     ss<<"cp 'testdata/sample_config.xml' '"<<defaultFile<<"'";

@@ -1,4 +1,43 @@
 -- dev --
+* implemented ppcheck application for testing preprocessor's configuration offline.
+* persistent storage's content to IDMEF dumper (pdump) is now installed, by default.
+* alerts dropped by the preprocessor are no longer saved in data base.
+* added workaround for missing GNU C macros when using Intel's compiler.
+* added support for toolchain selection in configure script (intel and gcc).
+* new preprocessor's features:
+  - less-than comparison
+  - greater-than comparison
+  - all relations (<,>,==) now support automatic numbers parsing to compare them as numbers, not as strings.
+  - rule's output formatters allowing to preprocess data from given field(s), before running comparison:
+    - tsProc - timestamp to data/time converter
+    - sub - subsrtaction
+    - add - addition
+    - mul - multiply
+    - div - division
+    - sig - signum function
+    - min - minumum selection
+    - max - maximum selection
+    - abs - absolute value
+    - ceil - round up value
+    - floor - round down value
+    - round - round to nearest integer
+    - mod - compute modulo arithmetic
+* added more tests for external libraries, required for compilation.
+
+
+-- v1.0.2 --
+* configuration file is now named 'main_config.xml'.
+* libraries and applications are now automatically striped when installing release build.
+* added flags for separating installation directories into different paths.
+
+
+-- v1.0.1 --
+* fixed missing configure flags.
+* added DESTDIR support to the make (for standard linux compliance).
+
+
+-- v1.0.0 --
+* fixed unknown error issue when persistency::postgres fails to connect.
 * more descriptive console error messages added.
 * fixed non-updating copy of some elements when performing 'make install'.
 * added command line arguments, like automatic daemonizing, dropping privileges, etc...

@@ -1,0 +1,28 @@
+echo -n "checking for STL... "
+cat > "$TMP" <<EOF
+#include <memory>
+#include <queue>
+#include <deque>
+#include <list>
+#include <map>
+#include <set>
+#include <stack>
+#include <vector>
+#include <utility>
+#include <iterator>
+
+int main(void)
+{
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

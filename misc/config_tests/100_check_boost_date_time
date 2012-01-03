@@ -1,0 +1,24 @@
+if grep -q '^persistencypostgres$' <<< "$PLUGINS"
+then
+  echo -n "checking for boost::date_time... "
+  cat > "$TMP" <<EOF
+#include <boost/date_time.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+using namespace boost::date_time;
+
+int main(void)
+{
+  return 0;
+}
+EOF
+  if compile "$TMP" `$SRCS/persistencypostgres/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "ERROR: install missing library or withdraw usage of plugins: persistencypostgres"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi

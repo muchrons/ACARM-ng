@@ -9,6 +9,7 @@
 
 #include "Base/Threads/LimitedQueue.hpp"
 #include "Persistency/Alert.hpp"
+#include "ConfigConsts/inputs.hpp"
 
 namespace Core
 {
@@ -17,7 +18,7 @@ namespace Types
 
 /** \brief input fifo queue type holding incomming alerts.
  */
-typedef Base::Threads::LimitedQueue<Persistency::AlertPtrNN, 32> AlertsFifo;    // TODO: alerts' queue size should be get from compile-time config.
+typedef Base::Threads::LimitedQueue<Persistency::AlertPtrNN, ConfigConsts::inputQueueSize> AlertsFifo;
 
 } // namespace Types
 } // namespace Core

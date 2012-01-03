@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cassert>
 
+#include "ConfigConsts/inputs.hpp"
 #include "Filter/OneToOne/Strategy.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Algo/GatherHosts.hpp"
@@ -26,7 +27,7 @@ Strategy::Strategy(const Core::Types::Proc::InstanceName &name, unsigned int tim
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add( TypeName("*input*") );   // TODO: magic value
+  ecl.add( TypeName(ConfigConsts::defaultInputTypeName) );
   return ecl;
 }
 

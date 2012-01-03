@@ -6,6 +6,7 @@
 #include <fstream>
 #include <unistd.h>
 
+#include "ConfigConsts/configio.hpp"
 #include "ConfigIO/ConfigFileReader.hpp"
 
 using namespace std;
@@ -55,7 +56,7 @@ void testObj::test<2>(void)
 {
   const ConfigFileReader cfr("testdata/cfg_file_expand/basic_file.xml");
   const XML::Node r=cfr.getTree().getRoot();
-  ensure_equals("invalid root's name", r.getName(), "acarm_ng");
+  ensure_equals("invalid root's name", r.getName(), ConfigConsts::configRootNodeName);
 
   const XML::Node::TNodesList &children1=r.getChildrenList();
   ensure_equals("invalid root's children count", children1.size(), 1);
@@ -226,9 +227,9 @@ void testObj::test<14>(void)
   ensure("canno open temporary file", of.is_open() );
   Unlinker cleanup(outPath);
   of<<"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"<<endl;
-  of<<"<acarm_ng>"<<endl;
+  of<<"<"<<ConfigConsts::configRootNodeName<<">"<<endl;
   of<<"  <include>"<<incFull.string()<<"</include>"<<endl;
-  of<<"</acarm_ng>"<<endl;
+  of<<"</"<<ConfigConsts::configRootNodeName<<">"<<endl;
   of.close();
 
   // now try reading this file

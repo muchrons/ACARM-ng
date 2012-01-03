@@ -4,10 +4,12 @@ not required by the core system). compilation (build) requirements are marked
 with [b] prefix, runtime requirements are marked with [r], optional elements are
 marked with [o].
 
-[br-] boost libraries >= 1.35
+[br-] boost libraries >= 1.37
 [br-] libxml++ >= 2.6
 [br-] openssl >= 1.0.0
 [-ro] apache2-server          (used by: Web User Interface)
+[-ro] php >= 5.0              (used by: Web User Interface)
+[-ro] php-gd >= 5.0           (used by: Web User Interface)
 [-ro] postgresql-server       (used by: persistencypostgres)
 [bro] libpqxx                 (used by: persistencypostgres)
 [bro] libcurl                 (used by: filteripblacklist)
@@ -16,3 +18,8 @@ marked with [o].
 [bro] libgloox >= 1.0         (used by: triggerjabber)
 [bro] libvmime >= 0.9.1       (used by: triggermail)
 [bro] libpython ==2.6         (used by: pythonapi, triggerpython)
+
+because of some system calls, used within in the system, minimal required
+kernel version is 2.6.32. note however that, though it is not officially
+supported, minor code changes can make it compile with previous kernel
+versions as well.

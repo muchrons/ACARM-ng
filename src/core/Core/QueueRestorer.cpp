@@ -4,11 +4,13 @@
  */
 #include <cassert>
 
+#include "ConfigConsts/inputs.hpp"
 #include "Logger/Logger.hpp"
 #include "Core/QueueRestorer.hpp"
 
 using namespace Persistency::IO;
 using namespace Core::Types::Proc;
+namespace CC=ConfigConsts;
 
 namespace Core
 {
@@ -32,8 +34,7 @@ QueueRestorer::QueueRestorer(Persistency::IO::ConnectionPtrNN conn, Core::Types:
     // add all elements to queue
     LOGMSG_DEBUG_S(log)<<tmp.size()<<" meta-alerts read from persistency; appending to queue";
     for(Restorer::NodesVector::const_iterator it=tmp.begin(); it!=tmp.end(); ++it)
-      // TODO: this is hardcoded value of unknown origin of the alert - it should be rethought...
-      queue.push( Types::SignedNode(*it, TypeName("*unknown*"), InstanceName("*unknown*")) );
+      queue.push( Types::SignedNode(*it, TypeName(CC::defaultInputTypeName), InstanceName(CC::defaultInputInstanceName) ) );
 
     LOGMSG_INFO_S(log)<<"restoring "<<tmp.size()<<" elements successful";
   }

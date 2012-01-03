@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-DDEFAULT_CONFIGIO_CONFIG_FILE='\"testdata/acarm_ng_config.xml\"'"
+exec echo "-DDEFAULT_CONFIGIO_CONFIG_FILE='\"testdata/test_config.xml\"'"

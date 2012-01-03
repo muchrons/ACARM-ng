@@ -2,6 +2,8 @@
  * Processor.cpp
  *
  */
+#include "ConfigConsts/inputs.hpp"
+#include "ConfigConsts/heartbeats.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
 #include "Core/Types/Proc/Processor.hpp"
@@ -102,7 +104,7 @@ private:
   // waits for the element, sending heartbeats in a mean time
   Persistency::GraphNodePtrNN getNextElement(void)
   {
-    const unsigned int timeout=20;      // TODO: hardcoded value
+    const unsigned int timeout=ConfigConsts::inputTimeout;
     do
     {
       sendHeartbeat(timeout);
@@ -126,7 +128,7 @@ private:
         return;
       // ok - it's time to send heartbeat
       LOGMSG_DEBUG(log_, "time to send heartbeat");
-      const unsigned int deadline=3*timeout;        // TODO: hardcoded value
+      const unsigned int deadline=ConfigConsts::maxLostHeartbeats*timeout;
       interface_->heartbeat(deadline);
       // mark this moment
       lastHeartbeat_=now;

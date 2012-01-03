@@ -37,6 +37,7 @@ struct TestClass
     return ofb_.build(opts);
   }
 
+  template<typename TException>
   void ensureThrow(const char *host,
                    const char *port,
                    const char *dbname,
@@ -48,7 +49,7 @@ struct TestClass
       build(host, port, dbname, user, pass);
       tut::fail("build() didn't throw on missing paramter");
     }
-    catch(const ConnectionBuilder::ExceptionNoSuchOption&)
+    catch(const TException&)
     {
       // this is expected
     }
@@ -89,7 +90,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensureThrow(NULL, "p", "b", "c", "d");
+  ensureThrow<ConnectionBuilder::ExceptionNoSuchOption>(NULL, "p", "b", "c", "d");
 }
 
 // test throw on missing data base name
@@ -97,7 +98,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensureThrow("a", "p", NULL, "c", "d");
+  ensureThrow<ConnectionBuilder::ExceptionNoSuchOption>("a", "p", NULL, "c", "d");
 }
 
 // test throw on missing user name
@@ -105,7 +106,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensureThrow("a", "p", "b", NULL, "d");
+  ensureThrow<ConnectionBuilder::ExceptionNoSuchOption>("a", "p", "b", NULL, "d");
 }
 
 // test throw on missing password
@@ -113,23 +114,15 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ensureThrow("a", "p", "b", "c", NULL);
+  ensureThrow<ConnectionBuilder::ExceptionNoSuchOption>("a", "p", "b", "c", NULL);
 }
 
-// test throw on invalid options
+// test throw on invalid options (note: exception must be persistency-specific)
 template<>
 template<>
 void testObj::test<7>(void)
 {
-    try
-    {
-      build("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "BAD_PASSWORD");
-      tut::fail("build() didn't throw on invalid options");
-    }
-    catch(const std::runtime_error&)
-    {
-      // this is expected
-    }
+  ensureThrow<Exception>("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "BAD_PASSWORD");
 }
 
 // test throw on missing port
@@ -137,7 +130,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  ensureThrow("a", NULL, "b", "c", "d");
+  ensureThrow<ConnectionBuilder::ExceptionNoSuchOption>("a", NULL, "b", "c", "d");
 }
 
 } // namespace tut

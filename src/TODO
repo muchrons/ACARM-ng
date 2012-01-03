@@ -2,15 +2,12 @@ Persistency::Postgres:
 ----------------------
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
-* optimize postgres data restoration using roots meta alerts table.
-* force UTC timezone uppon data base connection.
 
 configuration:
 --------------
 * re-reading configuration from file (note: not all configuration may change at runtime).
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-* implement common configuration module for compile-time constants used in code.
 
 triggers:
 ---------
@@ -18,7 +15,6 @@ triggers:
 * encrypted connections in Trigger::GG (NOTE: it appears that there are 2 standards now: GG-specific, and GNU).
 * encrypted connections in Trigger::Mail.
 * editable triggers' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
-* add trigger sending reports on problematic machines to admins found via WHOIS.
 * give possibility to pass config-file options to a python scripts (as is done by the factories).
 
 filters:
@@ -27,7 +23,6 @@ filters:
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * give possibility to pass config-file options to a python scripts (as is done by the factories).
-* add filter creating action's profiles (what actions do happen and are probable, which are not) and change prioryty according to this.
 
 docs:
 -----
@@ -41,3 +36,4 @@ misc:
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
 * consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
+* add configurable formatters to the logger.

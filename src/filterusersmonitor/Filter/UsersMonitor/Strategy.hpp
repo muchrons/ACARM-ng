@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_USERSMONITOR_STRATEGY_HPP_FILE
 #define INCLUDE_FILTER_USERSMONITOR_STRATEGY_HPP_FILE
 
-/* public header */
-
 #include <string>
 
 #include "Persistency/Host.hpp"

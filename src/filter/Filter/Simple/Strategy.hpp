@@ -9,6 +9,7 @@
 
 #include <cassert>
 
+#include "ConfigConsts/filters.hpp"
 #include "Filter/Strategy.hpp"
 
 
@@ -258,11 +259,10 @@ private:
     if(now<ct)
       return getTimeout();
 
-    const unsigned int diff      =now-ct;
-    const unsigned int minTimeout=60;       // TODO: hardcoded value
+    const unsigned int diff=now-ct;
     // return some reasonable timeout, if normal would be too short.
     if( diff>=getTimeout() )
-      return std::min( getTimeout(), minTimeout );
+      return std::min( getTimeout(), ConfigConsts::maxFilterQueueTimeoutForTooOld );
 
     // compute time in queue
     return getTimeout()-diff;

@@ -84,7 +84,6 @@ AutoSession Connection::connect(void) const
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
   // login
   login( sess.get() );
-  // TODO: what it some data arrives just after the connection is estabilished? won't it cause race condition?
   if( sess->recv() )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to available

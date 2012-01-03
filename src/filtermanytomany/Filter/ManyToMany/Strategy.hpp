@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_MANYTOMANY_STRATEGY_HPP_FILE
 #define INCLUDE_FILTER_MANYTOMANY_STRATEGY_HPP_FILE
 
-/* public header */
-
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"
 #include "Filter/ManyToMany/ExceptionInvalidParameter.hpp"

@@ -1,0 +1,27 @@
+echo -n "checking for boost::type_traits... "
+cat > "$TMP" <<EOF
+#include <boost/type_traits/is_pointer.hpp>
+
+template<bool>
+struct A;
+
+template<>
+struct A<true>{};
+
+int main(void)
+{
+  typedef boost::is_pointer<int*> Answer;
+  A<Answer::value> a;
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

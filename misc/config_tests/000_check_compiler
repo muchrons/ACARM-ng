@@ -1,0 +1,11 @@
+echo -n "checking for working compiler ($TC_CPP)... "
+echo -e "#include <iostream>\nint main(void){return 0;}" > "$TMP"
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: no working compiler found"
+  rm -f "$TMP"
+  exit 2
+fi

@@ -2,14 +2,18 @@
  * Rule.cpp
  *
  */
+#include <memory>
 #include <cassert>
 #include <boost/mpl/insert.hpp>
 
 #include "Commons/Convert.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
+#include "Preprocessor/Checkers/LessThan.hpp"
+#include "Preprocessor/Checkers/GreaterThan.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
 #include "Preprocessor/Checkers/RegExp.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
+#include "Preprocessor/Expressions/FormatterBuilder.hpp"
 
 using namespace std;
 using namespace DataFacades::StrAccess;
@@ -29,9 +33,13 @@ struct CallbackHandle
 {
   /** \brief construyct instance with a given checker.
    *  \param checker checker to be run for each callback.
+   *  \param value   value to be assigned to the formatter.
+   *  \param fmt     formatter to be used for data processing.
    */
-  explicit CallbackHandle(Checkers::Mode *checker):
-    checker_(checker)
+  CallbackHandle(Checkers::Mode *checker, Formatters::ValuePtrNN value, Formatters::BasePtrNN fmt):
+    checker_(checker),
+    value_(value),
+    fmt_(fmt)
   {
     assert(checker_!=NULL);
   }
@@ -46,20 +54,30 @@ struct CallbackHandle
    */
   bool value(const std::string &v)
   {
-    assert(checker_!=NULL);
-    return checker_->check(v);
+    return checkAgainst(v);
   }
 
   /** \brief callback called on NULL pointer in the path.
    */
   bool nullOnPath(const std::string &/*where*/)
   {
-    assert(checker_!=NULL);
-    return checker_->check("<NULL>");
+    return checkAgainst("<NULL>");
   }
 
 private:
-  Checkers::Mode *checker_;
+  bool checkAgainst(const std::string &str)
+  {
+    // format parameter
+    value_->set(str);
+    const std::string &out=fmt_->exec();
+    // pass it to the final checker
+    assert(checker_!=NULL);
+    return checker_->check(out);
+  }
+
+  Checkers::Mode         *checker_;
+  Formatters::ValuePtrNN  value_;
+  Formatters::BasePtrNN   fmt_;
 }; // struct CallbackHandle
 
 
@@ -137,37 +155,49 @@ struct ErrorThrowerMod: public ErrorThrower
   }
 }; // struct ErrorThrowerMod
 
+
+/** \brief helper funciton building proper mode checker.
+ *  \param mode  mode of checking to construct.
+ *  \param value value to be comapred with.
+ *  \return newly constructed mode checker.
+ */
+std::auto_ptr<Checkers::Mode> buildChecker(Rule::Mode mode, const Rule::Value &value)
+{
+  typedef std::auto_ptr<Checkers::Mode> Ptr;
+  // create proper checker
+  switch( mode.toInt() )
+  {
+    case Rule::Mode::EQUALS:      return Ptr( new Checkers::Equals(value) );
+    case Rule::Mode::LESSTHAN:    return Ptr( new Checkers::LessThan(value) );
+    case Rule::Mode::GREATERTHAN: return Ptr( new Checkers::GreaterThan(value) );
+    case Rule::Mode::CONTAINS:    return Ptr( new Checkers::Contains(value) );
+    case Rule::Mode::REGEXP:      return Ptr( new Checkers::RegExp(value, true) );
+    case Rule::Mode::REGEXPCI:    return Ptr( new Checkers::RegExp(value, false) );
+    default:                      break;
+  } // switch(mode)
+
+  assert(!"unknown mode requested");
+  throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
+  return Ptr(NULL); // never reached
+} // buildChecker()
+
+
+Formatters::BasePtrNN buildFormatter(Formatters::ValuePtrNN value, const ConfigIO::Preprocessor::FormatterConfig &fmt)
+{
+  const FormatterBuilder fb(value);
+  return fb.build(fmt);
+} // buildFormatter()
+
 } // unnamed namespace
 
 
 
-Rule::Rule(const Path &path, Mode mode, const Value &value):
-  path_(path)
+Rule::Rule(const Path &path, Mode mode, const Value &value, const ConfigIO::Preprocessor::FormatterConfig &fmt):
+  path_(path),
+  checker_( buildChecker(mode, value).release() ),
+  formatterValue_(new Formatters::Value),
+  baseFormatter_( buildFormatter(formatterValue_, fmt) )
 {
-  // create proper checker
-  switch( mode.toInt() )
-  {
-    case Mode::EQUALS:
-      checker_.reset( new Checkers::Equals(value) );
-      break;
-
-    case Mode::CONTAINS:
-      checker_.reset( new Checkers::Contains(value) );
-      break;
-
-    case Mode::REGEXP:
-      checker_.reset( new Checkers::RegExp(value, true) );
-      break;
-
-    case Mode::REGEXPCI:
-      checker_.reset( new Checkers::RegExp(value, false) );
-      break;
-
-    default:
-      assert(!"unknown mode requested");
-      throw std::logic_error("requested unknown mode of comparison - code is NOT updated");
-      break;    // never reached
-  } // switch(mode)
   assert( checker_.get()!=NULL );
 }
 
@@ -191,7 +221,7 @@ bool Rule::compute(const Persistency::ConstGraphNodePtrNN &node) const
   typedef ExceptionTypeHandleMap PreprocHandleMap;
 
   typedef Params<PreprocHandleMap, CallbackHandle> ParamsImpl;
-  CallbackHandle cb(checker_.get());
+  CallbackHandle cb(checker_.get(), formatterValue_, baseFormatter_);
   ParamsImpl     p(path_, cb);
   return MainDispatcher::process(node, p);
 }

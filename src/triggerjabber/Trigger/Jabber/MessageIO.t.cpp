@@ -17,7 +17,7 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn1_( getTestConfig1() )
+    conn_( getTestConfig1() )
   {
   }
 
@@ -27,7 +27,13 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                   getTestConfig1().getLogin() + "@" + getTestConfig1().getServer() );
   }
 
-  Connection conn1_;
+  std::string getMessageFromAccount3(void) const
+  {
+    return getMessageFromAccount( getTestConfig3(),
+                                  getTestConfig2().getLogin() + "@" + getTestConfig2().getServer() );
+  }
+
+  Connection conn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -45,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  MessageIO ms(conn1_);
+  MessageIO ms(conn_);
 }
 
 // test sending message from one account to another.
@@ -53,19 +59,40 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  MessageIO         ms(conn1_);
+  MessageIO         ms(conn_);
   const std::string msg("alice has a cat");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
   const std::string recv=getMessageFromAccount2();
   ensure_equals("invalid message received", recv, msg);
 }
 
-// test sending UTF8 message
+// test if messages are buffered on jabber server
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  MessageIO         ms(conn1_);
+  const std::string msg("alice has a cat");
+  // connect
+  {
+    Connection        lconn( getTestConfig2() );
+    MessageIO         ms(lconn);
+    // send message
+    ms.send( getTestConfig3().getLogin()+"@"+getTestConfig3().getServer() , msg );
+    // disconnect
+  }
+  // wait one second
+  sleep(1);
+  // receive message
+  const std::string recv=getMessageFromAccount3();
+  ensure_equals("invalid message received", recv, msg);
+}
+
+// test sending UTF8 message
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  MessageIO         ms(conn_);
   const std::string msg("łączność UTF-8");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
   const std::string recv=getMessageFromAccount2();
@@ -75,9 +102,9 @@ void testObj::test<3>(void)
 // test discarding messages (smoke test)
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<5>(void)
 {
-  MessageIO ms(conn1_);
+  MessageIO ms(conn_);
   ms.discardIncommingMessages();
 }
 

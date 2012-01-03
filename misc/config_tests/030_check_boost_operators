@@ -1,0 +1,19 @@
+echo -n "checking for boost::operators... "
+cat > "$TMP" <<EOF
+#include <boost/operators.hpp>
+
+int main(void)
+{
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

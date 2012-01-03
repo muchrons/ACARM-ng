@@ -1,0 +1,23 @@
+echo -n "checking for boost::mpl... "
+cat > "$TMP" <<EOF
+#include <boost/mpl/if.hpp>
+
+struct A {};
+struct B;
+
+int main(void)
+{
+  boost::mpl::if_c<true, A,B>::type x;
+  return 0;
+}
+EOF
+
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "ERROR: install missing library"
+  rm -f "$TMP"
+  exit 2
+fi

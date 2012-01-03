@@ -1,0 +1,23 @@
+if grep -q '^persistencypostgres$' <<< "$PLUGINS"
+then
+  echo -n "checking for libpqxx... "
+  cat > "$TMP" <<EOF
+#include <pqxx/pqxx>
+
+using namespace pqxx;
+
+int main(void)
+{
+  return 0;
+}
+EOF
+  if compile "$TMP" `$SRCS/persistencypostgres/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "ERROR: install missing library or withdraw usage of plugins: persistencypostgres"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi

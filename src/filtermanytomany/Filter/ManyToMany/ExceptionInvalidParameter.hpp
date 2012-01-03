@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_MANYTOMANY_EXCEPTIONINVALIDPARAMTER_HPP_FILE
 #define INCLUDE_FILTER_MANYTOMANY_EXCEPTIONINVALIDPARAMTER_HPP_FILE
 
-/* public header */
-
 #include "Filter/ManyToMany/Exception.hpp"
 
 namespace Filter

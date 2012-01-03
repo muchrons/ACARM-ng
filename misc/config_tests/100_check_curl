@@ -1,0 +1,14 @@
+if grep -q '^filteripblacklist$' <<< "$PLUGINS"
+then
+  echo -n "checking for curl... "
+  echo -e "#include <curl/curl.h>\nint main(void){ curl_global_init(0); return 0;}" > "$TMP"
+  if compile "$TMP" `pkg-config libcurl --cflags --libs`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "ERROR: install missing library or withdraw usage of plugins: filteripblacklist"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi

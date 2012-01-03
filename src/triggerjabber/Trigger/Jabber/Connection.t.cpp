@@ -16,18 +16,18 @@ namespace
 
 struct TestClass
 {
-    void ensureThrow(const AccountConfig &ac)
+  void ensureThrow(const AccountConfig &ac)
+  {
+    try
     {
-      try
-      {
-        Connection conn(ac);
-        tut::fail("connectiong to invalid account didn't failed");
-      }
-      catch(const ExceptionConnectionError &)
-      {
-        // this is expected
-      }
+      Connection conn(ac);
+      tut::fail("connectiong to invalid account didn't failed");
     }
+    catch(const ExceptionConnectionError &)
+    {
+      // this is expected
+    }
+  }
 };
 
 typedef tut::test_group<TestClass> factory;

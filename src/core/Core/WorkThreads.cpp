@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "ConfigConsts/inputs.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Core/Processors.hpp"
@@ -11,6 +12,7 @@
 #include "Core/WorkThreads.hpp"
 
 using namespace Core::Types::Proc;
+namespace CC=ConfigConsts;
 
 namespace Core
 {
@@ -38,9 +40,7 @@ struct SourcesThread
         assert(queue_!=NULL);
         assert(srcs_.get()!=NULL);
         // forward all read data to main queue.
-        // TODO: this is hardcoded string representing generic input - it  should
-        //       be refactored in order to remove hardcoded value.
-        queue_->push( Types::SignedNode(srcs_->read(), TypeName("*input*"), InstanceName("*unknown*")) );
+        queue_->push( Types::SignedNode(srcs_->read(), TypeName(CC::defaultInputTypeName), InstanceName(CC::defaultInputInstanceName) ) );
       }
       catch(const boost::thread_interrupted &)
       {

@@ -6,10 +6,16 @@
 #
 # default values
 #
-PREFIX="/opt"
+
+# dirs
+PREFIX="/usr/local"
+# features and build stuff
 PLUGINS="`(cd src ; ls -d persistency?* input?* trigger?* filter?*)`"
 PROFILE="release"
 FEATURES="lock_on_write_graph_add"
+TOOLCHAIN="gcc"
+TC_CPP="g++"
+TC_FLAGS=""
 
 #
 # helper functions
@@ -20,18 +26,30 @@ function print_help()
 {
   cat<<EOF >&2
 $0 options are:
-  [--prefix <path>]    prefix for the installation directory (1)
-  [--debug]            build in debug mode (2)
-  [--list-plugins]     list all available plugin
-  [--disable <plugin>] do not compile given plugin (3)
-  [--list-tests]       show what tests are available
-  [--test <name>]      run only specific test and exit (3)
-  [-I <includes_dir>]  add extra include directory to compilation (3)
-  [-L <libs_dir>]      add extra library directory to linking (3)
-  [--help]             show this helpful text
+  [--prefix <path>]        prefix for the installation directory (1)
+  [--bindir <path>]        path to copy binaries to (1)
+  [--libdir <path>]        path to install libraries in (1)
+  [--datadir <path>]       place to put shared files to (1)
+  [--sysconfdir <path>]    destination directory for system configuration (1)
+  [--includedir <path>]    destination for include files (1)
+  [--docdir <path>]        path for documentation (1)
+  [--localstatedir <path>] directory to store variables in (1)
+
+  [--toolchain <tc>]       toolchain to build project with (gcc or intel; default is gcc)
+  [--debug]                build in debug mode (2)
+  [--list-plugins]         list all available plugin
+  [--disable <plugin>]     do not compile given plugin (3)
+
+  [--list-tests]           show what tests are available
+  [--test <name>]          run only specific test and exit (3)
+
+  [-I <includes_dir>]      add extra include directory to compilation (3)
+  [-L <libs_dir>]          add extra library directory to linking (3)
+
+  [--help]                 show this helpful text
 
 (1) does not require recompilation
-(2) make binary slower and much larger (~30 times)
+(2) makes binary slower and much larger (~30 times)
 (3) can be specified multiple times
 
 note that you may have to set PKG_CONFIG_PATH in order to make pkg-config
@@ -54,7 +72,7 @@ function compile_impl()
   shift
   date >> "$LOG"
   cat "$1" >> "$LOG"
-  local CMD="g++ -x c++ -o "$OUT" $@ $EXTRA_COMPILE_FLAGS"
+  local CMD="$TC_CPP $TC_FLAGS -x c++ -o $OUT $@ $EXTRA_COMPILE_FLAGS $EXTRA_LINK_FLAGS"
   echo "$CMD" >> "$LOG"
   $CMD >> "$LOG" 2>&1
   return "$?"
@@ -111,9 +129,105 @@ do
       shift
     ;;
 
+    "--bindir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: bindir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      BINDIR="$2"
+      echo "setting bindir to '$BINDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--libdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: libdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      LIBDIR="$2"
+      echo "setting libdir to '$LIBDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--datadir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: datadir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      DATADIR="$2"
+      echo "setting datadir to '$DATADIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--sysconfdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: sysconfdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      SYSCONFDIR="$2"
+      echo "setting sysconfdir to '$SYSCONFDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--includedir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: includedir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      INCLUDEDIR="$2"
+      echo "setting includedir to '$INCLUDEDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--docdir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: docdir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      DOCDIR="$2"
+      echo "setting docdir to '$DOCDIR'" >> "$LOG"
+      shift
+    ;;
+
+    "--localstatedir")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: localstatedir must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      LOCALSTATEDIR="$2"
+      echo "setting localstatedir to '$LOCALSTATEDIR'" >> "$LOG"
+      shift
+    ;;
+
     "--disable")
       PLUGINS="`echo "$PLUGINS" | xargs -n 1 -r echo | grep -v "^$2$"`"
       echo "disabling plugin '$2'" >> "$LOG"
+      shift
+    ;;
+
+    "--toolchain")
+      TOOLCHAIN="$2"
+      case "$TOOLCHAIN" in
+        "intel")
+          TC_CPP="icc"
+          TC_FLAGS="-I/usr/include/$($TC_CPP -dumpmachine)"
+        ;;
+        "gcc")
+          TC_CPP="g++"
+        ;;
+        *)
+          echo "$0: unsupported toolchain $TOOLCHAIN" >&2
+          exit 2
+        ;;
+      esac
+      echo "enabling $TOOLCHAIN toolchain" >> "$LOG"
       shift
     ;;
 
@@ -162,8 +276,18 @@ do
   esac
   shift
 done
+
+[ -z "$PREFIX"        ] && PREFIX="$PREFIX_DEF"
+[ -z "$BINDIR"        ] && BINDIR="$PREFIX/bin"
+[ -z "$LIBDIR"        ] && LIBDIR="$PREFIX/lib"
+[ -z "$DATADIR"       ] && DATADIR="$PREFIX/share"
+[ -z "$SYSCONFDIR"    ] && SYSCONFDIR="$PREFIX/etc"
+[ -z "$INCLUDEDIR"    ] && INCLUDEDIR="$PREFIX/include"
+[ -z "$DOCDIR"        ] && DOCDIR="$DATADIR/doc/acarm-ng"
+[ -z "$LOCALSTATEDIR" ] && LOCALSTATEDIR="$PREFIX/var"
+
 # ensure .../libs/acarm-ng is also present
-EXTRA_LIB_DIRS="$PREFIX/lib/acarm-ng:$EXTRA_LIB_DIRS"
+EXTRA_LIB_DIRS="$LIBDIR/:$EXTRA_LIB_DIRS"
 # if no explicit test(s) specified, run all
 if [ -z "$TESTS_TO_RUN" ]
 then
@@ -193,21 +317,46 @@ rm -f "$TMP"
 "$ONLY_TESTS_RUN" && exit 0
 
 #
+# postprocess some extra settings, if needed
+#
+NEED_SIZEOF_MACROS_WORKAROUND="export ENABLE_SIZEOF_MACROS_WORKAROUND:=1"
+[ -z "$ENABLE_SIZEOF_MACROS_WORKAROUND" ] && NEED_SIZEOF_MACROS_WORKAROUND="#$NEED_SIZEOF_MACROS_WORKAROUND"
+
+#
 # prepare proper make entries
 #
 
 # prepare main makefile elements
 cat > "$CFG_OUT" <<EOF
-LOCAL_MAKE_FLAGS+="TC=gcc"
+# extra flags
+LOCAL_MAKE_FLAGS+="TC=$TOOLCHAIN"
 LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE"
 LOCAL_MAKE_FLAGS+="FEATURES=$FEATURES"
 LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS"
 LOCAL_MAKE_FLAGS+="EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
 
+# additional settings
+$NEED_SIZEOF_MACROS_WORKAROUND
+
+# things to build, with defaults
 EXTRA_LIB_DIRS:=$EXTRA_LIB_DIRS
 PLUGINS_LIST:=`echo "$PLUGINS" | xargs -n 1 echo -n ' ' `
-INSTALL_DIR:=$PREFIX
-BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
+
+# destination directories
+DESTDIR      :=/
+INSTALL_DIR  :=\$(DESTDIR)
+PREFIX       :=$PREFIX
+BINDIR       :=$BINDIR
+LIBDIR       :=$LIBDIR
+DATADIR      :=$DATADIR
+SYSCONFDIR   :=$SYSCONFDIR
+INCLUDEDIR   :=$INCLUDEDIR
+DOCDIR       :=$DOCDIR
+LOCALSTATEDIR:=$LOCALSTATEDIR
+
+# helpers
+BUILD_DIR:=src/gen/${PROFILE}_${TOOLCHAIN}_normal_default
+INSTSTRIP:=`[ "$PROFILE" = "release" ] && echo -s`
 EOF
 
 
@@ -217,6 +366,7 @@ EOF
 echo
 echo "SUMMARY:"
 echo "  prefix:     $PREFIX"
+echo "  toolchain:  $TOOLCHAIN"
 echo "  profile:    $PROFILE"
 echo "  plugins:"
 echo "$PLUGINS" | sort | sed 's:^ *:              :'

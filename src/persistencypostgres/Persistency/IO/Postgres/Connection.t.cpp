@@ -4,6 +4,8 @@
  */
 #include <tut.h>
 #include <sstream>
+#include <iomanip>
+#include <ctime>
 
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -264,4 +266,41 @@ void testObj::test<7>(void)
   ensure_equals("invalid alerts' size",      count("alerts"), 1u);
   ensure_equals("invalid meta alerts' size", count("meta_alerts"), 1u);
 }
+
+// test if connection sets timezone to UTC
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  // get timestring from data base within one second
+  pqxx::result res;
+  time_t       start=1;
+  time_t       stop =2;
+  string       fromQuery;
+  for(int i=0; i<10 && start!=stop; ++i)
+  {
+    start=time(NULL);
+    const char *select="SELECT to_char( now(), 'YYYY.MM.DD HH24:MI:SS' ) as ts;";
+    res  =t_.getAPI<TransactionAPI>().exec(select);
+    // quesry result to string
+    ensure_equals("invalid elements count returned", res.size(), 1u);
+    res[0]["ts"].to(fromQuery);
+    stop =time(NULL);
+  }
+  ensure("canot obtaint result within one second", start==stop);
+
+  // UTC time to string
+  struct tm lt;
+  gmtime_r(&start, &lt);
+  stringstream ss;
+  ss << 1900+lt.tm_year << "."                          // year
+     << setfill('0') << setw(2) << 1+lt.tm_mon << "."   // month
+     << setfill('0') << setw(2) <<   lt.tm_mday << " "  // day
+     << setfill('0') << setw(2) <<   lt.tm_hour << ":"  // hour
+     << setfill('0') << setw(2) <<   lt.tm_min << ":"   // minute
+     << setfill('0') << setw(2) <<   lt.tm_sec;         // second
+  // now check the output string
+  ensure_equals("invalid date/time returned by query - timezone is NOT UTC", fromQuery, ss.str() );
+}
+
 } // namespace tut

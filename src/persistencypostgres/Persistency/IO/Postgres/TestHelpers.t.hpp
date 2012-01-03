@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_TESTHELPERS_T_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TESTHELPERS_T_HPP_FILE
 
-/* public header */
-
 #include "Persistency/Alert.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Certainty.hpp"

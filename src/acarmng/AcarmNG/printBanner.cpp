@@ -73,8 +73,6 @@ void printAuthors(std::ostream &os, const char *app)
 void printBanner(std::ostream &os, const char *app)
 {
   assert(app!=NULL);
-  // TODO: rework this code to take version from the VCS
-  // TODO: rework this code to generate year automatically based on __DATE__ constant
   const char *ver=ConfigConsts::versionString;
   os << app << ": ACARM-ng "<<ver<<" (built on " << __DATE__ << " " << __TIME__ << ")" << endl;
   os << app << ": copyright by WCSS (http://www.wcss.wroc.pl) 2009-" << getCurrentYear() << endl;

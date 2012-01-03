@@ -14,7 +14,7 @@ using namespace ConfigIO;
 
 namespace
 {
-const char *defaultFile="acarm_ng_config.xml";
+const char *defaultFile="test_config.xml";  // TODO: hardcoded value
 
 struct TestClass
 {
@@ -100,7 +100,7 @@ void testObj::test<6>(void)
 
   ensure_equals("invalid initial read",
                 Singleton::get()->persistencyConfig().getType(),
-                "stub");
+                "stubs");
 }
 
 // test if configuration stays un-touched in case of error
