@@ -2,8 +2,8 @@
  * Config.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_WHOIS_CONFIG_HPP
-#define INCLUDE_TRIGGER_WHOIS_CONFIG_HPP
+#ifndef INCLUDE_TRIGGER_WHOIS_CONFIG_HPP_FILE
+#define INCLUDE_TRIGGER_WHOIS_CONFIG_HPP_FILE
 
 #include <boost/filesystem.hpp>
 

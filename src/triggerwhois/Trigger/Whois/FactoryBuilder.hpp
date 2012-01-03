@@ -2,21 +2,21 @@
  * FactoryBuilder.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_FILE_FACTORYBUILDER_HPP_FILE
-#define INCLUDE_TRIGGER_FILE_FACTORYBUILDER_HPP_FILE
+#ifndef INCLUDE_TRIGGER_WHOIS_FACTORYBUILDER_HPP_FILE
+#define INCLUDE_TRIGGER_WHOIS_FACTORYBUILDER_HPP_FILE
 
 #include <string>
 
 #include "Logger/Logger.hpp"
 #include "Trigger/Factory.hpp"
-#include "Trigger/File/ExceptionInvalidDirectory.hpp"
+#include "Trigger/Whois/ExceptionInvalidFile.hpp"
 
 namespace Trigger
 {
-namespace File
+namespace Whois
 {
 
-/** \brief builds file report trigger.
+/** \brief builds whois report trigger.
  */
 class FactoryBuilder: public Factory::TFactoryBuilderBase
 {
@@ -33,7 +33,7 @@ private:
   const Logger::Node                log_;
 }; // class FactoryBuilder
 
-} // namespace File
+} // namespace Whois
 } // namespace Trigger
 
 #endif
