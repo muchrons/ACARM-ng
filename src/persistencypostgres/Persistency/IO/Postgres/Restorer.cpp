@@ -175,7 +175,7 @@ GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                 
   const Persistency::MetaAlert::ID sysID   = er.getSystemIDOfMetaAlert(id);
   // add Alert to cache
   addIfNew(alertPtr, alertID);
-  GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, sysID, connStubIO, tStubIO ) );
+  const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, sysID, connStubIO, tStubIO ) );
   // add Meta Alert to cache
   addIfNew(graphNodeLeaf->getMetaAlert(), id);
   out.push_back(graphNodeLeaf);
