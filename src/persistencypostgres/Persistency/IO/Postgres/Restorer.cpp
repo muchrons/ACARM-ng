@@ -176,6 +176,8 @@ GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                 
   // add Alert to cache
   addIfNew(alertPtr, alertID);
   const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, sysID, connStubIO, tStubIO ) );
+  // add Meta Alert to cache
+  addIfNew(graphNodeLeaf->getMetaAlert(), id);
   out.push_back(graphNodeLeaf);
   return graphNodeLeaf;
 }
