@@ -139,7 +139,7 @@
   <!--Meta Alert -->
 
   <select id="SelectMetaAlertID" resultClass="CMetaAlertEntry" parameterClass="int">
-    SELECT ma.id AS id, ma.name AS name, to_char(ma.create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
+    SELECT ma.id AS id, ma.name AS name, to_char(ma.create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time, to_char(ma.last_update_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
       FROM meta_alerts AS ma 
       LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
       WHERE id=#value#
