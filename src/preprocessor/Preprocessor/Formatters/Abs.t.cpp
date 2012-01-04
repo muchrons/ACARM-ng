@@ -61,7 +61,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid value", t_.exec(), "42");
 }
 
-// test abs(negative/fp)
+// test abs(negative-fp)
 template<>
 template<>
 void testObj::test<4>(void)
@@ -69,6 +69,31 @@ void testObj::test<4>(void)
   v_->set("-42.75");
   ensure_equals("invalid value", t_.exec(), "42.75");
 }
-//TODO: test case for positive floating point nuber should be added
-//TODO: test case for no-number element should be added if makes sense
+
+// test abs(positive-fp)
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  v_->set("42.75");
+  ensure_equals("invalid value", t_.exec(), "42.75");
+}
+
+// test abs(nan)
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  v_->set("oops");
+  try
+  {
+    t_.exec();  // should throw
+    fail("no exception on non-number for abs()");
+  }
+  catch(const ExceptionNotANumber&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

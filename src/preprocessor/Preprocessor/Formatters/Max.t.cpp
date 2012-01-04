@@ -94,5 +94,27 @@ void testObj::test<5>(void)
   ensure_equals("invalid response", b->exec(), "20");
 }
 
-//TODO: tests for mixed positive-negative numbers should be added, fp numbers should be also tested
+// test fp-numbers
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  BasePtrNN b=make(3);
+  values_.at(0)->set("1.5");
+  values_.at(1)->set("2.0");
+  values_.at(2)->set("3.5");
+  ensure_equals("invalid response", b->exec(), "3.5");
+}
+
+// test mixed positive/negative values
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  BasePtrNN b=make(2);
+  values_.at(0)->set("-1.5");
+  values_.at(1)->set("2.25");
+  ensure_equals("invalid response", b->exec(), "2.25");
+}
+
 } // namespace tut

@@ -93,5 +93,15 @@ void testObj::test<6>(void)
   b_->set("0");
   ensure_equals("invalid value", t_.exec(), "666");
 }
-//TODO: tests for fp numbers should be added
+
+// test fp subsrtaction
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  a_->set("2.5");
+  b_->set("0.25");
+  ensure_equals("invalid value", t_.exec(), "2.25");
+}
+
 } // namespace tut

@@ -101,5 +101,15 @@ void testObj::test<6>(void)
     // this is expected
   }
 }
-//TODO: test for divide two fp numbers should be added
+
+// test dividing fps
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  a_->set("8.5");
+  b_->set("0.5");
+  ensure_equals("invalid value", t_.exec(), "17");
+}
+
 } // namespace tut
