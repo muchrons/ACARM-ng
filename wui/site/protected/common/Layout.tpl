@@ -58,7 +58,7 @@
           <tr>
             <td bgcolor="#696982" width="97%" align="right">
               <font face="lucida, verdana, sans-serif" size="2">
-                <b>copyright:</b> &copy; 2009-2011 <a href="http://www.wcss.wroc.pl">WCSS</a>.&nbsp;&nbsp;&nbsp;
+                <b>copyright:</b> &copy; 2009-2011 <a class="blacklink" href="http://www.wcss.wroc.pl">WCSS</a>.&nbsp;&nbsp;&nbsp;
               </font>
             </td>
             <td bgcolor="#545468">&nbsp;&nbsp;</td>
