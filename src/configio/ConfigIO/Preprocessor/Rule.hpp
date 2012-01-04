@@ -44,7 +44,8 @@ struct RuleMode
     EQUALS,         // string is identical with the given pattern
     CONTAINS,       // string contains the given pattern
     REGEXP,         // string matches given regular expression
-    REGEXPCI        // string matches given regular expression (case insensitive)
+    REGEXPCI,       // string matches given regular expression (case insensitive)
+    INSET           // string matches 
   }
   Type;
 };
