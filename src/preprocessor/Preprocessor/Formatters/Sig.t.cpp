@@ -60,6 +60,40 @@ void testObj::test<3>(void)
   v_->set("-42");
   ensure_equals("invalid value", t_.exec(), "-1");
 }
-//TODO: test case for positive floating point nuber should be added
-//TODO: test case for no-number element should be added if makes sense
+
+// test sig(positive-fp)
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  v_->set("4.25");
+  ensure_equals("invalid value", t_.exec(), "1");
+}
+
+// test sig(negative-fp)
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  v_->set("-4.25");
+  ensure_equals("invalid value", t_.exec(), "-1");
+}
+
+// test non-number
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  v_->set("narf");
+  try
+  {
+    t_.exec();  // should throw
+    fail("no exception on not-a-number error");
+  }
+  catch(const ExceptionNotANumber &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

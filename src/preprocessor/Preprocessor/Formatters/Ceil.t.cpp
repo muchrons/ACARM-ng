@@ -78,5 +78,23 @@ void testObj::test<5>(void)
   v_->set("-4.2");
   ensure_equals("invalid value", t_.exec(), "-4");
 }
-//TODO: test for integers and values which don't need round operation i.e 2.0 or -1.0
+
+// test ceil(positive-integer)
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  v_->set("4.0");
+  ensure_equals("invalid value", t_.exec(), "4");
+}
+
+// test ceil(negative-integer)
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  v_->set("-4.0");
+  ensure_equals("invalid value", t_.exec(), "-4");
+}
+
 } // namespace tut
