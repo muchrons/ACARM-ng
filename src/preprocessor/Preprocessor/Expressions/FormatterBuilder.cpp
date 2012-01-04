@@ -152,7 +152,7 @@ Formatters::BasePtrNN FormatterBuilder::buildFunction(const ConfigIO::Preprocess
   if( cfg.name()=="mod" )
   {
     if( args.size()!=2 )
-      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects at least 2 arguments");
+      throw ExceptionInvalidNumberOfArguments(SYSTEM_SAVE_LOCATION, cfg.name(), "function expects exactly 2 arguments");
     return BasePtrNN( new Mod(args[0], args[1]) );
   }
 
