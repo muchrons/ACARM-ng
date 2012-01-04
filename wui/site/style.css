@@ -112,6 +112,26 @@ a.freelink:active
   color: #fff;
 }
 
+a.blacklink:visited
+{ 
+  color: #000;
+}
+
+a.blacklink:link
+{ 
+  color: #000;
+}
+
+a.blacklink:hover
+{ 
+  color: #000;
+}
+
+a.blacklink:active
+{ 
+  color: #000;
+}
+
 
 a:visited
 {
