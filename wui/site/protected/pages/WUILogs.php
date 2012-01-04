@@ -5,7 +5,7 @@ class ComputeRecords
 {
   public function computeStructure($data_row)
   {
-    $data_row->logtime=date('Y-m-d H:i:s',$data_row->logtime);
+    $data_row->logtime=date('Y-m-d H:i:s T',$data_row->logtime);
     switch($data_row->level)
       {
         case TLogger::ALERT:
