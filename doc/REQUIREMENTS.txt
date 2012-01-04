@@ -4,7 +4,7 @@ not required by the core system). compilation (build) requirements are marked
 with [b] prefix, runtime requirements are marked with [r], optional elements are
 marked with [o].
 
-[br-] boost libraries >= 1.37
+[br-] boost libraries >= 1.41
 [br-] libxml++ >= 2.6
 [br-] openssl >= 1.0.0
 [-ro] apache2-server          (used by: Web User Interface)
