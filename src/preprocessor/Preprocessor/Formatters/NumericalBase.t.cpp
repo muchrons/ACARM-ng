@@ -23,8 +23,7 @@ struct TestImpl: public NumericalBase
 
   virtual double execConverted(const NumericalArguments &args) const
   {
-    if( args.size()==0 )
-      return 42;
+    tut::ensure("not enought arguments", args.size()>0 );
     return args.at(0);
   }
 }; // struct TestImpl
@@ -62,7 +61,7 @@ void testObj::test<1>(void)
 // test exception propagation when non-number is spotted
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<2>(void)
 {
   v_->set("abc");
   try
@@ -75,5 +74,32 @@ void testObj::test<3>(void)
     // this is expected
   }
 }
-//TODO: test for negative, positive/negative fp numbers should be added
+
+// test negative integer
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  v_->set("-123");
+  ensure_equals("invalid value returned", ti_.exec(), "-123");
+}
+
+// test positive fp-value
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  v_->set("1.25");
+  ensure_equals("invalid value returned", ti_.exec(), "1.25");
+}
+
+// test negative fp-value
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  v_->set("-1.25");
+  ensure_equals("invalid value returned", ti_.exec(), "-1.25");
+}
+
 } // namespace tut

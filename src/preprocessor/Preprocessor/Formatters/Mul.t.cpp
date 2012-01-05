@@ -95,5 +95,16 @@ void testObj::test<5>(void)
   values_.at(3)->set(5);
   ensure_equals("invalid result", p->exec(), "120");
 }
-//TODO: tests for fp numbers should be added
+
+// test multiplily of fp-numbers
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  BasePtrNN p=make(2);
+  values_.at(0)->set(2.5);
+  values_.at(1)->set(4);
+  ensure_equals("invalid result", p->exec(), "10");
+}
+
 } // namespace tut

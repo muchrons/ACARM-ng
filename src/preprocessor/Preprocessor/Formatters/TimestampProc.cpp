@@ -12,6 +12,7 @@
 #include <boost/exception/all.hpp>
 
 #include "Preprocessor/Formatters/TimestampProc.hpp"
+#include "ConfigConsts/preprocessor.hpp"
 #include "Commons/NumberWrapper.hpp"
 #include "Commons/Convert.hpp"
 
@@ -63,6 +64,15 @@ std::string TimestampProc::execImpl(const Arguments &args) const
 namespace
 {
 
+// limits string to some reasonable length
+std::string limitErrStr(const string::const_iterator it, const string::const_iterator end)
+{
+  const string::const_iterator::difference_type maxLen=ConfigConsts::maxParseErrorContextLength;
+  if(end-it>maxLen)
+    return string(it, it+maxLen)+"...";
+  return string(it, end);
+}
+
 struct ErrorReporter
 {
   template <typename, typename, typename>
@@ -77,7 +87,7 @@ struct ErrorReporter
   void operator()(qi::info const &what, Iterator errPos, Iterator last) const
   {
     stringstream ss;
-    ss<<"parse error near '"<<string(errPos, last)<<"' - "<<details_<<": "<<what;
+    ss<<"parse error near '"<<limitErrStr(errPos, last)<<"' - "<<details_<<": "<<what;
     throw TimestampProc::ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, ss.str());
   }
 
@@ -162,11 +172,12 @@ std::string TimestampProc::formatTimestamp(const time_t ts) const
     stringstream                             ss;
     string::const_iterator it =format_.begin();
     string::const_iterator end=format_.end();
+    // execute parsing itself
     if( !phrase_parse(it, end, parser, ascii::space, ss) )
       throw ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, "phrase_parse() returned an error");
-    // TODO: limit left string to the some reasonable length
+    // check if whole string has been parsed
     if(it!=end)
-      throw ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, "not whole string has been parsed: '" + string(it, end) + "'");
+      throw ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, "not whole string has been parsed: '" + limitErrStr(it, end) + "'");
 
     // return parsed data
     return ss.str();

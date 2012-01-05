@@ -82,5 +82,16 @@ void testObj::test<4>(void)
   values_.at(1)->set(-3);
   ensure_equals("invalid result", p->exec(), "-1");
 }
-//TODO: tests for fp numbers should be added
+
+// test addition of fp-elements
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  BasePtrNN p=make(2);
+  values_.at(0)->set(2.5);
+  values_.at(1)->set(3.5);
+  ensure_equals("invalid result", p->exec(), "6");
+}
+
 } // namespace tut
