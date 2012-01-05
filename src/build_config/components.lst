@@ -41,6 +41,7 @@ configio
 configconsts
 commons
 logger
+mail
 system
 base
 algo
