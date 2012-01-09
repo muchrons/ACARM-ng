@@ -46,7 +46,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const TriggerConfig fc(type_.str(), options);
-  // output direcotry
+  // file with template message
   const path &templatefile=fc["template"];
   if( Commons::Filesystem::isFileSane(templatefile)==false )
   {
