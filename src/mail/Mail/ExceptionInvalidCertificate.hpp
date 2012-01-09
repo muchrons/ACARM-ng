@@ -5,6 +5,8 @@
 #ifndef INCLUDE_MAIL_EXCEPTIONINVALIDCERTIFICATE_HPP_FILE
 #define INCLUDE_MAIL_EXCEPTIONINVALIDCERTIFICATE_HPP_FILE
 
+/* public header */
+
 #include "Mail/ExceptionConnectionError.hpp"
 
 namespace Mail

@@ -5,6 +5,8 @@
 #ifndef INCLUDE_MAIL_MAILSENDER_HPP_FILE
 #define INCLUDE_MAIL_MAILSENDER_HPP_FILE
 
+/* public header */
+
 #include "Logger/Node.hpp"
 #include "Mail/Config.hpp"
 #include "Mail/VmimeHandleInit.hpp"
@@ -34,9 +36,9 @@ public:
   void send(const std::string &subject, const std::string &content);
 
 private:
-  Logger::Node    log_;
-  VmimeHandleInit vhi_;
-  const Config    cfg_;
+  Logger::Node       log_;
+  VmimeHandleInit    vhi_;
+  const Config cfg_;
 }; // class MailSmtp
 
 } // namespace Mail

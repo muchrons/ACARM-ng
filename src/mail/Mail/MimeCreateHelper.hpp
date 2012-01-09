@@ -28,10 +28,10 @@ public:
    *  \param subject message's subject.
    *  \param content message's content (aka: body part).
    */
-  MimeCreateHelper(const std::string        &from,
+  MimeCreateHelper(const std::string              &from,
                    const Config::Recipients &to,
-                   const std::string        &subject,
-                   const std::string        &content);
+                   const std::string              &subject,
+                   const std::string              &content);
 
   /** \brief construct message and return it as a string.
    *  \return mime-formatted message.
@@ -39,11 +39,11 @@ public:
   MessagePtr createMimeMessage(void);
 
 private:
-  VmimeHandleInit          vhi_;
-  const std::string        from_;
+  VmimeHandleInit                vhi_;
+  const std::string              from_;
   const Config::Recipients to_;
-  const std::string        subject_;
-  const std::string        content_;
+  const std::string              subject_;
+  const std::string              content_;
 }; // class MimeCreateHelper
 
 } // namespace Mail

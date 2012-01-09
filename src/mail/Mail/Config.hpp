@@ -5,6 +5,8 @@
 #ifndef INCLUDE_MAIL_CONFIG_HPP_FILE
 #define INCLUDE_MAIL_CONFIG_HPP_FILE
 
+/* public header */
+
 #include <string>
 #include <inttypes.h>
 #include <boost/filesystem.hpp>
@@ -116,8 +118,8 @@ public:
    *  \param srv  server to connect to.
    */
   Config(const std::string             &from,
-         const Recipients              &to,
-         const Server                  &srv):
+               const Recipients              &to,
+               const Server                  &srv):
     from_(from),
     to_(to),
     srv_(srv),

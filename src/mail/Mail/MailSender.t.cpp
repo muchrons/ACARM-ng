@@ -63,15 +63,15 @@ template<>
 void testObj::test<3>(void)
 {
   const Config::Server srv( c1_.getServerConfig().server_,
-                            c1_.getServerConfig().port_,
-                            c1_.getServerConfig().proto_,
-                            c1_.getServerConfig().sec_,
+                                  c1_.getServerConfig().port_,
+                                  c1_.getServerConfig().proto_,
+                                  c1_.getServerConfig().sec_,
                             "testdata/invalid_cert.pem" );
   ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
   const Config cfg( c1_.getSenderAddress(),
-                    c1_.getRecipientsAddresses(),
-                    srv,
-                    *c1_.getAuthorizationConfig() );
+                          c1_.getRecipientsAddresses(),
+                          srv,
+                          *c1_.getAuthorizationConfig() );
 
   // send report
   MailSender ms(cfg);

@@ -5,6 +5,8 @@
 #ifndef INCLUDE_MAIL_CERTVERIFIER_HPP_FILE
 #define INCLUDE_MAIL_CERTVERIFIER_HPP_FILE
 
+/* public header */
+
 #include "Logger/Node.hpp"
 #include "Mail/Vmime.hpp"
 #include "Mail/Config.hpp"

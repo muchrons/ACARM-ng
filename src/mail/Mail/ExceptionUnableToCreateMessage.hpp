@@ -5,6 +5,8 @@
 #ifndef INCLUDE_MAIL_EXCEPTIONUNABLETOCREATEMESSAGE_HPP_FILE
 #define INCLUDE_MAIL_EXCEPTIONUNABLETOCREATEMESSAGE_HPP_FILE
 
+/* public header */
+
 #include "Mail/Exception.hpp"
 
 namespace Mail

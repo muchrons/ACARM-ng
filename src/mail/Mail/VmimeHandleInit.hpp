@@ -5,6 +5,8 @@
 #ifndef INCLUDE_MAIL_VMIMEHANDLEINIT_HPP_FILE
 #define INCLUDE_MAIL_VMIMEHANDLEINIT_HPP_FILE
 
+/* public header */
+
 #include "System/GlobalInit.hpp"
 #include "Mail/Vmime.hpp"
 
