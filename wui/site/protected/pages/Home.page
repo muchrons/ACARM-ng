@@ -63,7 +63,7 @@
   </com:TTemplateColumn>
 
   <com:TTemplateColumn>
-    <prop:HeaderTemplate>Module</prop:HeaderTemplate>
+    <prop:HeaderTemplate>State</prop:HeaderTemplate>
     <prop:ItemTemplate>
       <com:TLabel Text="<%# $this->Parent->Data->alive?'alive':'dead' %>" ForeColor="<%# $this->Parent->Data->alive ? 'Green' : 'Red' %>" />
     </prop:ItemTemplate>
