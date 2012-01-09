@@ -112,7 +112,6 @@ public:
   }; // struct Authorization
 
   /** \brief create configration description, without authorization.
-   *  \param th   threshold configuration - informs when run trigger.
    *  \param from sender's e-mail address.
    *  \param to   recipient address.
    *  \param srv  server to connect to.
@@ -128,7 +127,6 @@ public:
   {
   }
   /** \brief create configration description, with authorization request.
-   *  \param th   threshold configuration - informs when run trigger.
    *  \param from sender's e-mail address.
    *  \param to   recipient address.
    *  \param srv  server to connect to.
@@ -145,7 +143,9 @@ public:
     auth_(auth)
   {
   }
-
+  /** \brief get authorization configuration part.
+   *  \return parameters required for authorization.
+   */
   const Authorization *getAuthorizationConfig(void) const
   {
     if(useAuth_)

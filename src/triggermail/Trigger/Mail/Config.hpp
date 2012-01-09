@@ -43,6 +43,9 @@ public:
     return th_;
   }
 
+  /** \brief get mail configuration.
+   *  \return mail config.
+   */
   const ::Mail::Config &getMailConfig(void) const
   {
     return mc_;

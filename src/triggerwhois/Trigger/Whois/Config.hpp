@@ -14,6 +14,8 @@ namespace Trigger
 namespace Whois
 {
 
+/** \brief whole module's configuration representation.
+ */
 class Config
 {
 public:
