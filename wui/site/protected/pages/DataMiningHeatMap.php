@@ -6,8 +6,8 @@ class DataMiningHeatMap extends TPage
   {
     parent::onLoad($param);
     $g=new GdChecker(); //checks if GD is installed and available
-    $this->IPs->date_from=$this->Range->getFrom()->Text;
-    $this->IPs->date_to=$this->Range->getTo()->Text;
+    $this->IPs->date_from=$this->Range->getFrom()->Text." 0:00:00";
+    $this->IPs->date_to=$this->Range->getTo()->Text." 23:59:59";
   }
 
   private function constructUrlForCallbacks($type,$srcip,$dstip,$from,$to)
