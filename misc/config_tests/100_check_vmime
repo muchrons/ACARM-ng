@@ -1,14 +1,14 @@
-if grep -q '^triggermail$' <<< "$PLUGINS"
+if grep -q -e '^triggermail$' -e '^triggerwhois$' <<< "$PLUGINS"
 then
   # test for library's existance
   echo -n "checking for libvmime... "
   echo -e "#include <vmime/vmime.hpp>\nint main(void){ vmime::utility::url u(""); return 0; }" > "$TMP"
-  if compile "$TMP" `$SRCS/triggermail/features/deps/common_dynamic_compile` `$SRCS/triggermail/features/deps/common_dynamic_link`
+  if compile "$TMP" `$SRCS/mail/features/deps/common_dynamic_compile` `$SRCS/mail/features/deps/common_dynamic_link`
   then
     echo "ok"
   else
     echo "N/A"
-    echo "ERROR: install missing library or withdraw usage of plugins: triggermail"
+    echo "ERROR: install missing library or withdraw usage of plugins: triggermail, triggerwhois"
     rm -f "$TMP"
     exit 2
   fi
