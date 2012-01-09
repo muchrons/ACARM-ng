@@ -18,32 +18,30 @@
 #include "TestHelpers/Data/mail1.hpp"
 #include "TestHelpers/Data/mail2.hpp"
 
-// TODO: fix indentation of parameters
-
 namespace
 {
 
 Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
 {
   const Mail::Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
-                                                  MAIL1_TEST_ACCOUNT_PASS);
+                                         MAIL1_TEST_ACCOUNT_PASS);
   const Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
-                                                 MAIL1_TEST_ACCOUNT_PORT,
-                                                 Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
-                                                 Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
-                                                 "testdata/smtp_gmails_root_ca.pem");
+                                        MAIL1_TEST_ACCOUNT_PORT,
+                                        Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
+                                        Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
+                                        "testdata/smtp_gmails_root_ca.pem");
   return Mail::Config(MAIL1_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
 }
 
 Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
 {
   const Mail::Config::Authorization auth(MAIL2_TEST_ACCOUNT_LOGIN,
-                                                  MAIL2_TEST_ACCOUNT_PASS);
+                                         MAIL2_TEST_ACCOUNT_PASS);
   const Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_SERVER,
-                                                 MAIL2_TEST_ACCOUNT_PORT,
-                                                 Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
-                                                 Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
-                                                 "testdata/smtp_gmails_root_ca.pem");
+                                        MAIL2_TEST_ACCOUNT_PORT,
+                                        Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
+                                        Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
+                                        "testdata/smtp_gmails_root_ca.pem");
   return Mail::Config(MAIL2_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
 }
 
@@ -54,7 +52,7 @@ int removeMessagesFromAccountImpl(const Mail::Config &cfg)
   //
   // conect
   //
-  Mail::VmimeHandleInit  init;
+  Mail::VmimeHandleInit           init;
   vmime::utility::url             url("pop3s://" MAIL2_TEST_ACCOUNT_POP_SERVER);
   vmime::ref<vmime::net::session> session  =vmime::create<vmime::net::session>();
   session->getProperties()["store.pop3s.connection.tls"         ]="false";
@@ -71,11 +69,11 @@ int removeMessagesFromAccountImpl(const Mail::Config &cfg)
   vmime::ref<vmime::net::store> store=session->getStore(url);
   typedef Mail::CertVerifier CertVerif;
   const Mail::Config::Server srvConfig(MAIL2_TEST_ACCOUNT_POP_SERVER,
-                                                MAIL2_TEST_ACCOUNT_POP_PORT,
-                                                Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
-                                                Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
-                                                "testdata/pop_gmails_root_ca.pem");
-  vmime::ref<CertVerif>         cv=vmime::ref<CertVerif>::fromPtr( new CertVerif(srvConfig) );
+                                       MAIL2_TEST_ACCOUNT_POP_PORT,
+                                       Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
+                                       Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
+                                       "testdata/pop_gmails_root_ca.pem");
+  vmime::ref<CertVerif>      cv=vmime::ref<CertVerif>::fromPtr( new CertVerif(srvConfig) );
   store->setCertificateVerifier(cv);
   store->connect();
 
