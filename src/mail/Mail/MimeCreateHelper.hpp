@@ -2,8 +2,8 @@
  * MimeCreateHelpers.hpp
  *
  */
-
-// TODO: header guard is missing
+#ifndef INCLUDE_MAIL_MIMECREATEHELPERS_HPP_FILE
+#define INCLUDE_MAIL_MIMECREATEHELPERS_HPP_FILE
 
 #include <string>
 #include <boost/noncopyable.hpp>
@@ -50,3 +50,5 @@ private:
 }; // class MimeCreateHelper
 
 } // namespace Mail
+
+#endif
