@@ -46,13 +46,13 @@ template<>
 void testObj::test<2>(void)
 {
   // wipe-out account's content
-  removeMessagesFromAccount( getTestConfig2() );
+  removeMessagesFromAccount( getTestConfig2().getMailConfig() );
   // send report
   Strategy               s( InstanceName("mymailtrigger"), getTestConfig1() );
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
   // check results
-  const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
+  const int count=removeMessagesFromAccount( getTestConfig2().getMailConfig(), 1 );
   ensure_equals("invalid number of messages removed", count, 1);
 }
 

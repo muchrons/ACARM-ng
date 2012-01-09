@@ -6,7 +6,7 @@
 
 #include "Trigger/Compose/Full.hpp"
 #include "Trigger/Mail/Strategy.hpp"
-#include "Trigger/Mail/MailSender.hpp"
+#include "Mail/MailSender.hpp"
 
 using namespace std;
 using namespace Core::Types::Proc;
@@ -34,7 +34,7 @@ void Strategy::triggerImpl(BackendFacade &/*bf*/, const ConstNode &n)
   Compose::Full::append(ss, n);
 
   // send message
-  MailSender ms(cfg_);
+  ::Mail::MailSender ms(cfg_.getMailConfig());
   ms.send( subject, ss.str() );
 }
 

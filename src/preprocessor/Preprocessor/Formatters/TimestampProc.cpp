@@ -67,7 +67,7 @@ namespace
 // limits string to some reasonable length
 std::string limitErrStr(const string::const_iterator it, const string::const_iterator end)
 {
-  const unsigned int maxLen=ConfigConsts::maxParseErrorContextLength;
+  const string::const_iterator::difference_type maxLen=ConfigConsts::maxParseErrorContextLength;
   if(end-it>maxLen)
     return string(it, it+maxLen)+"...";
   return string(it, end);
