@@ -16,7 +16,7 @@ then
   # check library version
   echo -n "checking libvmime version... "
   echo -e "#include <vmime/vmime.hpp>\n#include <iostream>\nint main(void){ std::cout<<VMIME_VERSION<<std::endl; return 0;}" > "$TMP"
-  VER="$(compile_and_run "$TMP" `$SRCS/triggermail/features/deps/common_dynamic_compile` `$SRCS/triggermail/features/deps/common_dynamic_link`)"
+  VER="$(compile_and_run "$TMP" `$SRCS/mail/features/deps/common_dynamic_compile` `$SRCS/mail/features/deps/common_dynamic_link`)"
   VER_N="`parse_version3 <<< "$VER"`"
   if [ "$VER_N" -ge "901" ]
   then
