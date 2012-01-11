@@ -53,6 +53,8 @@ class Config
 public:
   /** \brief list of message recipients. */
   typedef Base::NonEmptyVector<std::string> Recipients;
+  /** \brief list of message copy recipients. */
+  typedef std::vector<std::string>          copyRecipients;
   /** \brief path in the filesystem. */
   typedef boost::filesystem::path           Path;
 
@@ -117,13 +119,15 @@ public:
    *  \param srv  server to connect to.
    */
   Config(const std::string             &from,
-               const Recipients              &to,
-               const Server                  &srv):
+         const Recipients              &to,
+         const Server                  &srv,
+         const copyRecipients          cc=copyRecipients()):
     from_(from),
     to_(to),
     srv_(srv),
     useAuth_(false),
-    auth_("", "")
+    auth_("", ""),
+    cc_(cc)
   {
   }
   /** \brief create configration description, with authorization request.
@@ -135,12 +139,14 @@ public:
   Config(const std::string             &from,
          const Recipients              &to,
          const Server                  &srv,
-         const Authorization           &auth):
+         const Authorization           &auth,
+         const copyRecipients          cc=copyRecipients()):
     from_(from),
     to_(to),
     srv_(srv),
     useAuth_(true),
-    auth_(auth)
+    auth_(auth),
+    cc_(cc)
   {
   }
   /** \brief get authorization configuration part.
@@ -180,6 +186,7 @@ private:
   Server                  srv_;
   bool                    useAuth_;
   Authorization           auth_;
+  copyRecipients          cc_;
 }; // class Config
 
 } // namespace Mail

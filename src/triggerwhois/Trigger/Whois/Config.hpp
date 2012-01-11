@@ -7,6 +7,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include "Mail/Config.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
 namespace Trigger
@@ -22,10 +23,14 @@ public:
   /** \brief create configration description.
    *  \param templateFile path to file containing message template.
    *  \param th           threshold configuration - informs when run trigger.
+   *  \param mc           mail configuration.
    */
-  Config(const boost::filesystem::path &templateFile, const Simple::ThresholdConfig &th):
+  Config(const boost::filesystem::path &templateFile,
+         const Simple::ThresholdConfig &th,
+         const ::Mail::Config          &mc):
     templateFile_(templateFile),
-    th_(th)
+    th_(th),
+    mc_(mc)
   {
   }
 
@@ -44,10 +49,19 @@ public:
   {
     return th_;
   }
+  /** \brief get mail configuration.
+   *  \return mail config.
+   */
+  const ::Mail::Config &getMailConfig(void) const
+  {
+    return mc_;
+  }
+
 
 private:
   boost::filesystem::path templateFile_;
   Simple::ThresholdConfig th_;
+  ::Mail::Config          mc_;
 }; // class Config
 
 } // namespace Whois

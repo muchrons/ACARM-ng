@@ -453,8 +453,7 @@ below are listed implemented triggers along with their implementation.
 <whois name="">
   <template>/path/to/message/template</template> <!-- path to file which contains e-mail message template -->
   <from>robot@e.mail.org</from>                  <!-- e-mail to send from -->
-  <to>admin@x.com me@x.com</to>                  <!-- e-mail(s) to send reports to -->
-  <cc>admin@y.com otheradmin@y.com</cc>          <!-- e-mail(s) to send reports copy to -->
+  <cc>admin@y.com otheradmin@y.com</cc>          <!-- e-mail(s) to send reports copy to (optional) -->
   <rootca>/my/root/ca.pem</rootca>               <!-- certificate of root Certificate Authorith (PEM or DER format) of issuer for server's certificate -->
   <port>465</port>                               <!-- port server's listening on -->
   <protocol>smtp</protocol>                      <!-- protocol type (smtp) -->
