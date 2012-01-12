@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "Mail/Config.hpp"
 #include "Trigger/Mail/Config.hpp"
 
 using namespace Trigger::Mail;
@@ -15,16 +16,19 @@ struct TestClass
 {
   TestClass(void):
     th_("1", "2"),
-    srv_("server", 1234, Config::Server::Protocol::SMTP, Config::Server::Security::SSL, "/cert/path"),
+    srv_("server",
+          1234,
+          ::Mail::Config::Server::Protocol::SMTP,
+          ::Mail::Config::Server::Security::SSL, "/cert/path"),
     auth_("john", "doe"),
     to_("to")
   {
   }
 
   const Trigger::Simple::ThresholdConfig th_;
-  const Config::Server                   srv_;
-  const Config::Authorization            auth_;
-  const Config::Recipients               to_;
+  const ::Mail::Config::Server             srv_;
+  const ::Mail::Config::Authorization      auth_;
+  const ::Mail::Config::Recipients         to_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -42,8 +46,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Config c(th_, "from", to_, srv_);
-  ensure("authorization required", c.getAuthorizationConfig()==NULL );
+  const Config c(th_, ::Mail::Config("from", to_, srv_));
+  ensure("authorization required", c.getMailConfig().getAuthorizationConfig()==NULL );
 }
 
 // test creating config with authorization
@@ -51,8 +55,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Config c(th_, "from", to_, srv_, auth_);
-  ensure("authorization not required", c.getAuthorizationConfig()!=NULL );
+  const Config c(th_, ::Mail::Config("from", to_, srv_, auth_));
+  ensure("authorization not required", c.getMailConfig().getAuthorizationConfig()!=NULL );
 }
 
 // test required parameters c-tor
@@ -62,8 +66,8 @@ void testObj::test<3>(void)
 {
   ensure_equals("invalid server address", srv_.server_, "server");
   ensure_equals("invalid port number", srv_.port_, 1234u);
-  ensure("invalid TLS setting", srv_.sec_==Config::Server::Security::SSL);
-  ensure("invalid TLS setting", srv_.proto_==Config::Server::Protocol::SMTP);
+  ensure("invalid TLS setting", srv_.sec_==Mail::Config::Server::Security::SSL);
+  ensure("invalid TLS setting", srv_.proto_==Mail::Config::Server::Protocol::SMTP);
   ensure_equals("invalid cert path", srv_.rootCAcertPath_, "/cert/path");
 }
 
@@ -81,10 +85,10 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Config c(th_, "from", to_, srv_, auth_);
-  ensure_equals("invalid from address", c.getSenderAddress(), "from");
-  ensure_equals("invalid number of recipients", c.getRecipientsAddresses().size(), 1u);
-  ensure_equals("invalid recipient", c.getRecipientsAddresses()[0], "to");
+  const Config c(th_, ::Mail::Config("from", to_, srv_, auth_));
+  ensure_equals("invalid from address", c.getMailConfig().getSenderAddress(), "from");
+  ensure_equals("invalid number of recipients", c.getMailConfig().getRecipientsAddresses().size(), 1u);
+  ensure_equals("invalid recipient", c.getMailConfig().getRecipientsAddresses()[0], "to");
 }
 
 } // namespace tut

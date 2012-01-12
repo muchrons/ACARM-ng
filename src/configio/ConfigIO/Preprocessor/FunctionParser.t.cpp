@@ -53,7 +53,7 @@ struct TestClass
   {
     testThrow("fun("+num+")", "non-number has been accepted");
   }
-
+  // TODO: consider use (if possible) 'trim' function from boost::algorithm
   string trim(const string &str) const
   {
     const string::size_type pos1=str.find_first_not_of(' ');

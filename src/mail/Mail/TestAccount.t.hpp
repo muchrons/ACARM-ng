@@ -17,26 +17,25 @@
 #include "Mail/VmimeHandleInit.hpp"
 #include "TestHelpers/Data/mail1.hpp"
 #include "TestHelpers/Data/mail2.hpp"
-#include "Trigger/Mail/Config.hpp"
+
+// TODO: fix indentation of parameters
 
 namespace
 {
 
-Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
+Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
 {
-  const ::Mail::Config::Authorization    auth(MAIL1_TEST_ACCOUNT_LOGIN,
-                                              MAIL1_TEST_ACCOUNT_PASS);
-  const ::Mail::Config::Server           srv(MAIL1_TEST_ACCOUNT_SERVER,
-                                             MAIL1_TEST_ACCOUNT_PORT,
-                                             Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
-                                             Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
-                                             "testdata/smtp_gmails_root_ca.pem");
-  const Mail::Config                     mc(MAIL1_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
-  const Trigger::Simple::ThresholdConfig th("0", "0");
-  return Trigger::Mail::Config(th, mc);
+  const Mail::Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
+                                                  MAIL1_TEST_ACCOUNT_PASS);
+  const Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
+                                                 MAIL1_TEST_ACCOUNT_PORT,
+                                                 Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
+                                                 Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
+                                                 "testdata/smtp_gmails_root_ca.pem");
+  return Mail::Config(MAIL1_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
 }
 
-Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
+Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
 {
   const Mail::Config::Authorization auth(MAIL2_TEST_ACCOUNT_LOGIN,
                                                   MAIL2_TEST_ACCOUNT_PASS);
@@ -45,14 +44,12 @@ Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
                                                  Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
                                                  Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
                                                  "testdata/smtp_gmails_root_ca.pem");
-  const Mail::Config                mc(MAIL2_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
-  const Trigger::Simple::ThresholdConfig th("0", "0");
-  return Trigger::Mail::Config(th, mc);
+  return Mail::Config(MAIL2_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
 }
 
 
 // internal (helper) implementation
-int removeMessagesFromAccountImpl(const ::Mail::Config &cfg)
+int removeMessagesFromAccountImpl(const Mail::Config &cfg)
 {
   //
   // conect
@@ -100,7 +97,7 @@ int removeMessagesFromAccountImpl(const ::Mail::Config &cfg)
 
 
 // returns number of removed messages.
-int removeMessagesFromAccount(const ::Mail::Config &cfg, int minCount=0)
+int removeMessagesFromAccount(const Mail::Config &cfg, int minCount=0)
 {
   const time_t deadline=time(NULL)+45;                  // give it 45[s] timeout
   int          count   =0;                              // no elements removed yet
