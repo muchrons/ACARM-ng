@@ -277,6 +277,7 @@ void testObj::test<8>(void)
   time_t       start=1;
   time_t       stop =2;
   string       fromQuery;
+  struct tm    lt;
   for(int i=0; i<10 && start!=stop; ++i)
   {
     start=time(NULL);
@@ -285,13 +286,14 @@ void testObj::test<8>(void)
     // quesry result to string
     ensure_equals("invalid elements count returned", res.size(), 1u);
     res[0]["ts"].to(fromQuery);
+    // now get time for computations
+    gmtime_r(&start, &lt);
+    // save stop condition.
     stop =time(NULL);
   }
   ensure("canot obtaint result within one second", start==stop);
 
   // UTC time to string
-  struct tm lt;
-  gmtime_r(&start, &lt);
   stringstream ss;
   ss << 1900+lt.tm_year << "."                          // year
      << setfill('0') << setw(2) << 1+lt.tm_mon << "."   // month
