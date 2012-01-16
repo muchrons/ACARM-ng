@@ -3,6 +3,7 @@
  *
  */
 #include <cassert>
+#include <boost/algorithm/string.hpp>
 
 #include "Logger/Logger.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
@@ -53,10 +54,12 @@ Persistency::Alert::Name IDMEFParserAlert::parseName(idmef_alert_t *alert) const
   if(idmef_name == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
-  const char * workaround=prelude_string_get_string(idmef_name);
+  std::string workaround=std::string(prelude_string_get_string(idmef_name));
 
-  if(workaround==NULL)
+  if(workaround.empty())
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
+
+  boost::trim(workaround); //remove leading and trailing spaces from alert's name
 
   return workaround;
 }
