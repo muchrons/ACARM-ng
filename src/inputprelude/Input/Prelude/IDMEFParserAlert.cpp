@@ -14,6 +14,7 @@
 
 using namespace Persistency;
 
+
 namespace Input
 {
 namespace Prelude
@@ -54,12 +55,13 @@ Persistency::Alert::Name IDMEFParserAlert::parseName(idmef_alert_t *alert) const
   if(idmef_name == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
-  std::string workaround=std::string(prelude_string_get_string(idmef_name));
+  std::string workaround( prelude_string_get_string(idmef_name) );
 
   if(workaround.empty())
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
-  boost::trim(workaround); //remove leading and trailing spaces from alert's name
+  // TODO: this should be done before testing if given string is empty
+  boost::trim(workaround); // remove leading and trailing spaces from alert's name
 
   return workaround;
 }
@@ -81,6 +83,7 @@ std::string IDMEFParserAlert::parseDescription(idmef_alert_t *alert) const
   if(idmef_desc==NULL)
     return "";
 
+  // TODO: description should be trimmed as well
   return prelude_string_get_string(idmef_desc);
 }
 

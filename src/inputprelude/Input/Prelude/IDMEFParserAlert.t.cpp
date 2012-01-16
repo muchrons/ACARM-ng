@@ -196,4 +196,7 @@ void testObj::test<9>(void)
   ensure_equals("invalid name without ID", (*ip.getAnalyzers().begin())->getName().get(), string("Unknown") );
 }
 
+// TODO: add test for trimming name
+// TODO: add test for trimming description
+
 } // namespace tut
