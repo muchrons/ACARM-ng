@@ -231,6 +231,7 @@ class MyTreeList extends TWebControl
         break;
       }
 
+    // TODO: move common code before/after if/else
     if($i)
       {
         $class = ($this->getDeploy())?"node":"nodeDeployed";
