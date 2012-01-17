@@ -24,8 +24,13 @@ EntryProcessor::EntryProcessor(BackendFacade              &bf,
 
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
-  assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
   const std::string name(leaf->getMetaAlert()->getName().get());
+  // check if given entry is leaf
+  if(!leaf->isLeaf())
+  {
+    LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name '"<<name<<"' is not leaf - skipping";
+    return;
+  }
   // create helper object
   const Hash hash(name);
   // check if entry with name hash is present in the prosessed set,
