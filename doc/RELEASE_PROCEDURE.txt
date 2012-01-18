@@ -3,7 +3,7 @@
 * create label noting where the branch point was (dev_branched_for_v?.?.x).
 * branch new version.
 * on the branch:
-  * update version in src/configconsts/version.cpp.
+  * update version in src/configconsts/ConfigConsts/version.cpp.
   * remove TODO files - they reflect future features, not relevant for the release.
   * remove misc/bzr_plugins and remove loading them from pre-delivery build.
   * remove TODO documents from doc/.
