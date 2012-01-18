@@ -8,6 +8,7 @@
 #include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/ThreadIDMap.hpp"
 #include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 
 using namespace Logger;
 
@@ -79,7 +80,8 @@ struct IDGetter
     if(state_!=NULL)
     {
       *state_=1;
-      while(*state_!=2)
+      const TestHelpers::TimeoutChecker tc(5);
+      while( *state_!=2 && tc() )
         usleep(10*1000);
     }
 
@@ -94,8 +96,9 @@ private:
 
 void waitState(volatile int *state)
 {
+  const TestHelpers::TimeoutChecker tc(5);
   ensure("NULL state", state!=NULL);
-  while(*state!=1)
+  while( *state!=1 && tc() )
     usleep(11*1000);
 } // waitState()
 } // unnamed namespace

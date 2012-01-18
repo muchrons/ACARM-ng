@@ -10,6 +10,7 @@
 #include "Input/TestConnection.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 
 using namespace std;
 using namespace Input;
@@ -83,7 +84,8 @@ void testObj::test<2>(void)
   {
     Base::Threads::ThreadJoiner th( Thread(r_, conn_, output_) );
     // run ~2-3 times
-    while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
+    const TestHelpers::TimeoutChecker tc(5);
+    while( (tr_->count_==0 || tr_->count_==1 || tr_->count_==2) && tc() )
       usleep(10*1000);
     th->interrupt();
     th->join();
