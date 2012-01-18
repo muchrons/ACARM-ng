@@ -8,6 +8,7 @@
 #include "Core/Types/Proc/Processor.hpp"
 #include "ConfigConsts/heartbeats.hpp"
 #include "ConfigConsts/inputs.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -71,12 +72,10 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   void waitForResponse(void)
   {
     // wait for the results up to 2[s]
-    for(int i=0; i<200; ++i)
-      if( mainQueue_.size() > 0 )
-        return;
-      else
-        usleep(10*1000);
-    tut::fail("timed out while waiting for response from processor");
+    const TestHelpers::TimeoutChecker tc(2);
+    while( mainQueue_.size()==0 && tc() )
+      usleep(10*1000);
+    return;
   }
 
   void checkECL(const EntryControlList &ecl, const std::string &callerTypeStr, const std::string &callerNameStr, bool shouldPass)

@@ -12,6 +12,7 @@
 #include "ConfigIO/Singleton.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
@@ -234,8 +235,9 @@ void testObj::test<5>(void)
   ensure_equals("interface already called", g_testInterfaceCalled, 0);
   fc.at(0)->process(sn_);
   // wait a while, until data is processed...
-  for(int i=0; i<30 && g_testInterfaceCalled!=1; ++i)
-    usleep(50*1000);
+  const TestHelpers::TimeoutChecker tc(2);
+  while( g_testInterfaceCalled!=1 && tc() )
+  { /* wait */ }
   usleep(20*1000);
   ensure_equals("call blocked by preprocessor", g_testInterfaceCalled, 1);
 }
