@@ -5,6 +5,7 @@
 #include <tut/tut.hpp>
 
 #include "TestHelpers/TimeoutChecker.hpp"
+#include "TestHelpers/delay.hpp"
 
 using namespace TestHelpers;
 
@@ -38,7 +39,7 @@ template<>
 void testObj::test<2>(void)
 {
   const TimeoutChecker tc(0);
-  sleep(1);
+  delay(1);
   bool error=false;
   try
   {
