@@ -68,8 +68,7 @@ template<>
 void testObj::test<1>(void)
 {
   const TestBase tb(someTestConfigContent);
-  ensure_equals("no persistency section",
-                system("grep -q '<persistency>' test_base_config_file.xml"), 0);
+  ensure_equals("no persistency section", system("grep -q '<persistency>' test_base_config_file.xml"), 0);
 }
 
 // check for logger section
@@ -78,8 +77,7 @@ template<>
 void testObj::test<2>(void)
 {
   const TestBase tb(someTestConfigContent);
-  ensure_equals("no logger section",
-                system("grep -q '<logger>' test_base_config_file.xml"), 0);
+  ensure_equals("no logger section", system("grep -q '<logger>' test_base_config_file.xml"), 0);
 }
 
 } // namespace tut
