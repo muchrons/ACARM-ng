@@ -120,3 +120,16 @@ now you'll have full information on what is happening inside the system.
 also make sure you have the latest, stable versions of dependent libraries
 installed on your system.
 if what you have found appears to be a bug, please report it.
+
+
+cannot connect with prelude-client
+==================================
+ensure that registration was made the right way. for most usages it should be
+something like this:
+(on prelude-manager server)
+prelude-adduser registration-server prelude-manager
+(on ACARM-ng host)
+prelude-adduser register acarm-ng_profile "idmef:r" 127.0.0.1 --uid XXX --gid YYY
+where XXX and YYY are ACARM-ng's user UID and GID, respectively. unfortunately
+Prelude is not too verbose about it's internal errors so one must pay a lot of
+attention on what is going on during configuration.
