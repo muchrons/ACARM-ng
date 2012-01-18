@@ -14,13 +14,13 @@
     </reject>
 
 
-    <!-- reject login admin reports, that are triggerd by some cron jobs on a given server -->
+    <!-- reject login admin reports, that are triggered by some cron jobs on a given server -->
     <reject>
       <and>
         <!-- only admin logins successful -->
         <rule path="metaalert.alert.name" equals="Admin login successful"/>
 
-        <!-- match proper adderesses -->
+        <!-- match proper addresses -->
         <or>
           <!-- 10.20.30.40 -> 10.20.x.x -->
           <and>
@@ -58,6 +58,6 @@
       </and>
     </reject>
 
-    <!-- alert will be accepted by deafult -->
+    <!-- alert will be accepted by default -->
 
 </include>

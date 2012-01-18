@@ -26,6 +26,10 @@
 * added more tests for external libraries, required for compilation.
 
 
+-- v1.0.3 --
+* assertion in new event filter fixed.
+
+
 -- v1.0.2 --
 * configuration file is now named 'main_config.xml'.
 * libraries and applications are now automatically striped when installing release build.
