@@ -87,7 +87,7 @@ void testObj::test<3>(void)
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed / 1", changed_.size(), 1u);
   changed_.clear();
-  delay(2);
+  delay(1);
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed / 2", changed_.size(), 0u);
   changed_.clear();
