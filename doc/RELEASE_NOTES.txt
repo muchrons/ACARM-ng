@@ -1,3 +1,7 @@
+-- v1.0.4 --
+* added default timezone for WUI.
+
+
 -- v1.0.3 --
 * assertion in new event filter fixed.
 
