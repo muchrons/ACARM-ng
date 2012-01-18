@@ -94,6 +94,8 @@ PostgreSQL
       dpf    - file with password for daemon.
       upf    - file with password for WUI user.
 
+note: on most systems this script has to be run from data base administrator's
+      account (in most cases 'postgres').
 note: if you want to run tests create 'acarm_ng_test' data base with
       'init_test_db' script (no parameters are required).
 
