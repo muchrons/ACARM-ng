@@ -9,6 +9,7 @@
 #include "Input/TestConnection.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 
 using namespace std;
 using namespace Input;
@@ -63,7 +64,8 @@ void testObj::test<1>(void)
 {
   {
     Interface iface(r_, conn_, output_);
-    while( output_.size()<2 )   // wait for few elements on output
+    const TestHelpers::TimeoutChecker tc(5);
+    while( output_.size()<2 && tc() )   // wait for few elements on output
       usleep(1*1000);
   }
   const size_t size=output_.size();
@@ -77,7 +79,8 @@ template<>
 void testObj::test<2>(void)
 {
   Interface iface(r_, conn_, output_);
-  while( output_.size()<2 )   // wait for few elements on output
+  const TestHelpers::TimeoutChecker tc(5);
+  while( output_.size()<2 && tc() )     // wait for few elements on output
     usleep(1*1000);
   iface.stop();
   usleep(100*1000);
