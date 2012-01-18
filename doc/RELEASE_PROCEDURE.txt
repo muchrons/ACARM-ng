@@ -2,7 +2,7 @@
 2 update doc/RELEASE_NOTES.txt file.
 3 branch new version.
 4 on the branch:
-  4.1 update version in src/configconsts/version.cpp.
+  4.1 update version in src/configconsts/ConfigConsts/version.cpp.
   4.2 remove TODO files - they reflect future features, not relevant for the release.
   4.3 remove misc/bzr_plugins and remove loading them from pre-delivery build.
   4.4 remove TODO documents from doc/.
