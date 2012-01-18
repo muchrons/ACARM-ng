@@ -9,9 +9,11 @@
 #include "Filter/DNSResolver/CachedDNS.hpp"
 #include "Filter/DNSResolver/TestIsValidLocalhost.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/delay.hpp"
 
 using namespace std;
 using namespace Filter::DNSResolver;
+using TestHelpers::delay;
 
 namespace
 {
@@ -59,7 +61,7 @@ void testObj::test<2>(void)
   // create new entry
   cache_[ ip("127.0.0.1") ];
   // remove entry
-  sleep(2);
+  delay(2);
   cache_.prune();
   // add entry once more
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
@@ -126,7 +128,7 @@ void testObj::test<6>(void)
   cache_[ ip("74.125.39.104") ];
   cache_[ ip("74.125.39.105") ];
   // timeout
-  sleep(2);
+  delay(2);
   // add some new
   cache_[ ip("127.0.0.1") ];
   // remove entries - smoke test
