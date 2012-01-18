@@ -51,13 +51,13 @@ template<>
 void testObj::test<1>(void)
 {
   s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 1u);
+  ensure_equals("something changed / 1", changed_.size(), 1u);
   changed_.clear();
   s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
+  ensure_equals("something changed / 2", changed_.size(), 0u);
   changed_.clear();
   s_.process( makeLeaf("some other name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 1u);
+  ensure_equals("something changed / 3", changed_.size(), 1u);
 }
 
 // test adding the same name after timeout has been reached for it.
@@ -68,12 +68,12 @@ void testObj::test<2>(void)
 
   Strategy s( InstanceName("strategyname"), Strategy::Parameters(1, 1, 0.3) );
   s.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 1u);
+  ensure_equals("something changed / 1", changed_.size(), 1u);
   changed_.clear();
   // processed set is prunned every second
   sleep(2);
   s.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 1u);
+  ensure_equals("something changed / 2", changed_.size(), 1u);
 }
 
 // test adding the same name multiple times, in some time span and checking if it
@@ -83,16 +83,16 @@ template<>
 void testObj::test<3>(void)
 {
   s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 1u);
+  ensure_equals("something changed / 1", changed_.size(), 1u);
   changed_.clear();
   sleep(2);
   s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
+  ensure_equals("something changed / 2", changed_.size(), 0u);
   changed_.clear();
   // processed set is prunned every 5 seconds
   sleep(1);
   s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
+  ensure_equals("something changed / 3", changed_.size(), 0u);
 
 }
 } // namespace tut
