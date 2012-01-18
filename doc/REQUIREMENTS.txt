@@ -16,10 +16,16 @@ marked with [o].
 [bro] libprelude >= 1.0.0     (used by: inputprelude)
 [bro] libgadu >= 1.8          (used by: triggergg)
 [bro] libgloox >= 1.0         (used by: triggerjabber)
-[bro] libvmime >= 0.9.1       (used by: triggermail)
+[bro] libvmime >= 0.9.1       (used by: triggermail triggerwhois)
+[bro] libgnutls >= 2.10.0     (used by: triggermail triggerwhois (1))
 [bro] libpython ==2.6         (used by: pythonapi, triggerpython)
 
 because of some system calls, used within in the system, minimal required
 kernel version is 2.6.32. note however that, though it is not officially
 supported, minor code changes can make it compile with previous kernel
 versions as well.
+
+(1) though gnutls is not used directly, versions before required on are known
+    to cause problems with vmime, when it comes to certificate validation.
+    when using mail functionality it is highly recommended to ensure at least
+    the required library version.

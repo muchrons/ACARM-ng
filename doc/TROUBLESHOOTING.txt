@@ -101,6 +101,14 @@ spare connections for other tasks (cleanup, initial setup, etc...). if you use W
 connections must be reserved for that purpose as well.
 
 
+problems with certificate validation
+====================================
+when using e-mail sending functionality, with valid certificates, while still
+getting errors like this:
+error: certificate validation failed: Cannot verify certificate against trusted certificates.
+upgrading libgnutls to the required version is known to help.
+
+
 found a bug?
 ============
 compile ACARM-ng in debug profile and check again - logging is much more
