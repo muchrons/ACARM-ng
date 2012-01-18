@@ -9,11 +9,13 @@
 #include "Filter/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/delay.hpp"
 
 using namespace Filter;
 using namespace Persistency;
 using namespace Core::Types::Proc;
 using namespace TestHelpers::Persistency;
+using TestHelpers::delay;
 
 namespace
 {
@@ -225,7 +227,7 @@ void testObj::test<11>(void)
   }
   tf_.node_=makeNewLeaf();                  // remove old pointer (by overwiriting, since it cannot be NULL)
   ensure("node has not been saved - probably bug in a test case", weakNode.lock().get()!=NULL );
-  sleep(2);                                 // timeout for tests
+  delay(2);                                 // timeout for tests
   tf_.process(tf_.node_, changed_);         // run process() again to remove timeouted entries
   ensure("node has not been removed - queue's not cleared", weakNode.lock().get()==NULL );
 }

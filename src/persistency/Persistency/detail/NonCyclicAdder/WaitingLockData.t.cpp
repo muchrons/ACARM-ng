@@ -12,12 +12,14 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 
 using namespace std;
 using namespace boost;
 using namespace Base::Threads;
 using namespace Persistency;
 using namespace Persistency::detail;
+using TestHelpers::TimeoutChecker;
 
 namespace
 {
@@ -145,7 +147,8 @@ void testObj::test<5>(void)
   TestThread          tt(&wld, &state, &mutexRW_);
   thread              th(tt);
   // wait for thread a little
-  while(state!=1)
+  const TimeoutChecker tc(5, "timed out while waiting for state to change");
+  while( state!=1 && tc() )
     boost::thread::yield();
   // release lock by setting new value
   wld.setPtr( leaf_.shared_ptr() );
@@ -165,7 +168,8 @@ void testObj::test<6>(void)
   TestThread          tt(&wld, &state, &mutexRW_);
   thread              th(tt);
   // wait for thread a little
-  while(state!=1)
+  const TimeoutChecker tc(5, "timed out while waiting for state to change");
+  while( state!=1 && tc() )
     boost::thread::yield();
   // release lock by releaseing write-lock
   wlock.reset();
