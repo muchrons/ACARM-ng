@@ -37,6 +37,7 @@ $0 options are:
 
   [--toolchain <tc>]       toolchain to build project with (gcc or intel; default is gcc)
   [--debug]                build in debug mode (2)
+  [--automatic-tests]      build automatic tests only
   [--list-plugins]         list all available plugin
   [--disable <plugin>]     do not compile given plugin (3)
 
@@ -236,6 +237,11 @@ do
       echo "enabling debug mode" >> "$LOG"
     ;;
 
+    "--automatic-tests")
+      PROFILE="test"
+      echo "enabling build of automatic tests only" >> "$LOG"
+    ;;
+
     "--list-plugins")
       echo "$PLUGINS" | sort
       exit 0
@@ -322,6 +328,19 @@ rm -f "$TMP"
 NEED_SIZEOF_MACROS_WORKAROUND="export ENABLE_SIZEOF_MACROS_WORKAROUND:=1"
 [ -z "$ENABLE_SIZEOF_MACROS_WORKAROUND" ] && NEED_SIZEOF_MACROS_WORKAROUND="#$NEED_SIZEOF_MACROS_WORKAROUND"
 
+# check if install should be allowed
+case "$PROFILE" in
+  "release")
+    CAN_INSTALL=true
+  ;;
+  "debug")
+    CAN_INSTALL=true
+  ;;
+  *)
+    CAN_INSTALL=false
+  ;;
+esac
+
 #
 # prepare proper make entries
 #
@@ -357,6 +376,7 @@ LOCALSTATEDIR:=$LOCALSTATEDIR
 # helpers
 BUILD_DIR:=src/gen/${PROFILE}_${TOOLCHAIN}_normal_default
 INSTSTRIP:=`[ "$PROFILE" = "release" ] && echo -s`
+CAN_INSTALL:=$CAN_INSTALL
 EOF
 
 
