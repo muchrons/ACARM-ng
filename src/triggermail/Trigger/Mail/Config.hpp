@@ -27,6 +27,7 @@ public:
   /** \brief create configration description, without authorization.
    *  \param th   threshold configuration - informs when run trigger.
    *  \param mc   mail configuration.
+   *  \param to   recipients list.
    */
   Config(const Simple::ThresholdConfig    &th,
          const ::Mail::Config             &mc,
