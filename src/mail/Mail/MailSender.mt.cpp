@@ -20,8 +20,8 @@ int main(int argc, char **argv)
 
   try
   {
-    MailSender ms( getTestConfig1(argv[1]) );
-    ms.send("message subject :)", "hello\nworld!");
+    MailSender ms( getTestConfig1() );
+    ms.send("message subject :)", "hello\nworld!", Mail::Config::Recipients(argv[1]));
     return 0;
   }
   catch(const std::exception &ex)
