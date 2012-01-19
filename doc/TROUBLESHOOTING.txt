@@ -109,19 +109,6 @@ error: certificate validation failed: Cannot verify certificate against trusted 
 upgrading libgnutls to the required version is known to help.
 
 
-found a bug?
-============
-compile ACARM-ng in debug profile and check again - logging is much more
-verbose then and extra assertions are present in the code. to do this run:
-$ ./configure --debug --prefix /my/debug/installation/dst/dir
-$ make
-$ make install
-now you'll have full information on what is happening inside the system.
-also make sure you have the latest, stable versions of dependent libraries
-installed on your system.
-if what you have found appears to be a bug, please report it.
-
-
 cannot connect with prelude-client
 ==================================
 ensure that registration was made the right way. for most usages it should be
@@ -142,3 +129,16 @@ synchronized between them. otherwise daemon will log its local time, while WUI
 will show time on data base server. since heartbeats are expected to arrive
 quite often (about 1 per minute) event small clock screw can make heartbeats
 information useless. one can use NTP daemon to keep time on hosts up to date.
+
+
+found a bug?
+============
+compile ACARM-ng in debug profile and check again - logging is much more
+verbose then and extra assertions are present in the code. to do this run:
+$ ./configure --debug --prefix /my/debug/installation/dst/dir
+$ make
+$ make install
+now you'll have full information on what is happening inside the system.
+also make sure you have the latest, stable versions of dependent libraries
+installed on your system.
+if what you have found appears to be a bug, please report it.
