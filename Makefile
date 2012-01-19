@@ -48,8 +48,21 @@ build-plugins: ensure-configure
 	  $(MAKE) $(LOCAL_MAKE_FLAGS) "$$pl" || exit $$? ;\
 	done
 
+# enable installation when in debug/release modes
+.PHONY: ensure-can-install
+ensure-can-install:
+	@if ! $(CAN_INSTALL) ; \
+    then \
+	  echo "------------------------------------------------------" >&2 ; \
+	  echo >&2 ; \
+      echo " installation can only be done in debug/release modes " >&2 ; \
+	  echo >&2 ; \
+	  echo "------------------------------------------------------" >&2 ; \
+    fi
+	@$(CAN_INSTALL)
+
 .PHONY: install
-install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui install-db-schemas install-wui
+install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui install-db-schemas ensure-can-install
 	@echo
 	@echo '---------------------------------------------------'
 	@echo
@@ -65,13 +78,13 @@ install: install-plugins install-libs install-bin install-includes install-confi
 	@echo
 
 .PHONY: install-libs
-install-libs: ensure-configure
+install-libs: ensure-configure ensure-can-install
 	@echo "installing libraries: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(LIBDIR))"
 	@install -d '$(INSTALL_DIR)/$(LIBDIR)'
 	@install $(INSTSTRIP) -m 644 '$(BUILD_DIR)/libs'/*.so '$(INSTALL_DIR)/$(LIBDIR)'
 
 .PHONY: install-bin
-install-bin: ensure-configure
+install-bin: ensure-configure ensure-can-install
 	@echo "installing binaries: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(BINDIR))"
 	@install -d '$(INSTALL_DIR)/$(BINDIR)'
 	@#
@@ -104,13 +117,13 @@ install-bin: ensure-configure
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-logsplitter'
 
 .PHONY: install-includes
-install-includes: ensure-configure
+install-includes: ensure-configure ensure-can-install
 	@echo "installing headers: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(INCLUDEDIR))"
 	@install -d '$(INSTALL_DIR)/$(INCLUDEDIR)/acarm-ng'
 	@cp -rL $(BUILD_DIR)/includes/* '$(INSTALL_DIR)/$(INCLUDEDIR)/acarm-ng/'
 
 .PHONY: install-config
-install-config: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/main_config.xml ensure-configure
+install-config: $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/main_config.xml ensure-configure ensure-can-install
 	@echo "installing conf-dir: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(SYSCONFDIR))"
 	@install -d '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng'
 
@@ -123,7 +136,7 @@ $(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/main_config.xml: configure-output.mk doc/e
 	@sed -i 's:\(<output>\).*\(</output>\):\1$(LOCALSTATEDIR)/log/acarm-ng/daemon.log\2:g' '$(INSTALL_DIR)/$(SYSCONFDIR)/acarm-ng/main_config.xml'
 
 .PHONY: install-doc
-install-doc: ensure-configure
+install-doc: ensure-configure ensure-can-install
 	@echo "installing documentation: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(DOCDIR))"
 	@install -d '$(INSTALL_DIR)/$(DOCDIR)'
 	@cp -rL doc/* '$(INSTALL_DIR)/$(DOCDIR)'
@@ -135,13 +148,13 @@ install-doc: ensure-configure
 	        '$(INSTALL_DIR)/$(DOCDIR)/init.d/acarm-ng'
 
 .PHONY: install-db-schemas
-install-db-schemas: ensure-configure
+install-db-schemas: ensure-configure ensure-can-install
 	@echo "installing data base schemas: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(MODELDIR))"
 	@install -d '$(INSTALL_DIR)/$(MODELDIR)'
 	@cp -rL data_model/* '$(INSTALL_DIR)/$(MODELDIR)'
 
 .PHONY: install-plugins
-install-plugins: install-libs ensure-configure
+install-plugins: install-libs ensure-configure ensure-can-install
 	@echo "installing plugins: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(PLUGINSDIR))"
 	@install -d '$(INSTALL_DIR)/$(PLUGINSDIR)'
 	@for f in '$(INSTALL_DIR)/$(LIBDIR)/'libinput?*.so \
@@ -157,7 +170,7 @@ install-plugins: install-libs ensure-configure
 	@install $(INSTSTRIP) -m 644 "$(INSTALL_DIR)/$(PLUGINSDIR)/libfilterhostcommon.acmp" "$(INSTALL_DIR)/$(LIBDIR)/libfilterhostcommon.so"
 
 .PHONY: install-wui
-install-wui: ensure-configure
+install-wui: ensure-configure ensure-can-install
 	@echo "installing Web User Interface: $(call F_PATH_STRIP,$(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng)"
 	@install -d '$(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng'
 	@cp -r wui/site/* '$(INSTALL_DIR)/$(LOCALSTATEDIR)/www/acarm-ng/'

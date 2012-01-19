@@ -11,6 +11,7 @@
 #include "Trigger/Factory.hpp"
 #include "Core/Processors.hpp"
 #include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Core;
@@ -162,11 +163,9 @@ void testObj::test<2>(void)
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed
-  const time_t deadline=time(NULL)+16;
-  while( ( filterCalls_<1 || triggerCalls_<1 )&& time(NULL)<=deadline )
-  {
+  const TestHelpers::TimeoutChecker tc(16);
+  while( ( filterCalls_<1 || triggerCalls_<1 )&& tc() )
     usleep(50*1000);
-  }
 
   // now check if every element has been processed
   ensure_equals("filter has not been called",  filterCalls_,  1);

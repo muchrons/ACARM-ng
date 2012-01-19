@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<include>
+
+    <!-- reject information on login-errors/scans from 10.20.30.40 to 10.20.30.41 and 10.20.30.42 -->
+    <reject>
+      <and>
+        <rule path="metaalert.alert.name"         equals="SSH Brute-Force attack"/>
+        <rule path="metaalert.alert.sources.*.ip" equals="10.20.30.40"/>
+        <or>
+          <rule path="metaalert.alert.targets.*.ip" equals="10.20.30.41"/>
+          <rule path="metaalert.alert.targets.*.ip" equals="10.20.30.42"/>
+        </or>
+      </and>
+    </reject>
+
+
+    <!-- reject login admin reports, that are triggered by some cron jobs on a given server -->
+    <reject>
+      <and>
+        <!-- only admin logins successful -->
+        <rule path="metaalert.alert.name" equals="Admin login successful"/>
+
+        <!-- match proper addresses -->
+        <or>
+          <!-- 10.20.30.40 -> 10.20.x.x -->
+          <and>
+            <rule path="metaalert.alert.sources.*.ip" equals="10.20.30.40"/>
+            <rule path="metaalert.alert.targets.*.ip" regexp="^10\.20\."/>
+          </and>
+          <!-- 10.20.30.45 -> 10.20.x.x -->
+          <and>
+            <rule path="metaalert.alert.sources.*.ip" equals="10.20.30.45"/>
+            <rule path="metaalert.alert.targets.*.ip" regexp="^10\.20\."/>
+          </and>
+        </or>
+
+        <!-- check proper timings -->
+        <or>
+          <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H:%M`)" equals="07:06"/>
+          <and>
+            <!-- minutes -->
+            <or>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%M`)" equals="01"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%M`)" equals="21"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%M`)" equals="41"/>
+            </or>
+            <!-- hours -->
+            <or>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H`)" equals="02"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H`)" equals="06"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H`)" equals="10"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H`)" equals="14"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H`)" equals="18"/>
+              <rule path="metaalert.alert.created" formatter="tsProc(value(), `%H`)" equals="22"/>
+            </or>
+          </and>
+        </or>
+      </and>
+    </reject>
+
+    <!-- alert will be accepted by default -->
+
+</include>

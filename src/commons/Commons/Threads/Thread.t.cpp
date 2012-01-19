@@ -6,6 +6,7 @@
 
 #include "Commons/Threads/Thread.hpp"
 #include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 
 using namespace std;
 using namespace Commons::Threads;
@@ -109,12 +110,12 @@ void testObj::test<3>(void)
   }
 
   // wait for response
-  const time_t timeout=time(NULL)+4;
+  const TestHelpers::TimeoutChecker tc(5);
   do
   {
     boost::this_thread::yield();
   }
-  while( done!=true && time(NULL)<timeout );
+  while( done!=true && tc() );
   ensure("thread has not been finished", done);
 }
 

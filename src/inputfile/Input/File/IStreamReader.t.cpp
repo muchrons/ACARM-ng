@@ -7,6 +7,7 @@
 #include "Input/File/IStreamReader.hpp"
 #include "Commons/Threads/Thread.hpp"
 #include "System/Timer.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 
 using namespace std;
 using namespace Input::File;
@@ -218,7 +219,8 @@ void testObj::test<10>(void)
   volatile int state=0;
   Commons::Threads::Thread th( (DeadlineTestThread(state)) );
   // wait until thread is started
-  while(state==0)
+  const TestHelpers::TimeoutChecker tc(5);
+  while( state==0 && tc() )
     boost::this_thread::yield();
   // interrupt and join it
   th->interrupt();

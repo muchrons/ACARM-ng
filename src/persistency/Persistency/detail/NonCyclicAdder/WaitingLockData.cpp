@@ -88,7 +88,10 @@ GraphNodePtr WaitingLockData::getWhenDifferOrLocked(GraphNodePtr                
   // while pointer has not changed and we're unable to lock try-lock mutex
   // for reading, on a given node, wait for the event.
   while( ptr_==ptr && rtl.tryLock()==false )
-    cond_.wait(lock);   // wait until something happens
+    // wait until something happens.
+    // NOTE: timeout is added here, since tryLock() can fail, even if lock is free,
+    //       thus making an infinite conditional/wait and effectively hanging program.
+    cond_.timed_wait( lock, boost::posix_time::seconds(2) );    // TODO: hardcoded value
   return ptr_;
 }
 

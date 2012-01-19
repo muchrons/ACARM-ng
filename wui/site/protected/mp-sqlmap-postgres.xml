@@ -568,7 +568,7 @@
   <select id="DMHeatMapRange" resultClass="CDMHeatMap" parameterClass="CDMPair"  cacheModel="querycache">
     <![CDATA[
        SELECT a.ip as source, b.ip as destination, count(*) as count from hosts as a
-         JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#key# AND a.id_alert<#value#
+         JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>=#key# AND a.id_alert<=#value#
          GROUP BY a.ip, b.ip;
      ]]>
   </select>

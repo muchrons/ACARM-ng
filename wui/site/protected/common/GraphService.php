@@ -4,7 +4,6 @@
 require_once('lib/jpgraph/jpgraph.php');
 require_once('lib/jpgraph/jpgraph_bar.php');
 require_once('lib/jpgraph/jpgraph_log.php');
-require_once('lib/jpgraph/jpgraph_led.php');
 require_once('lib/jpgraph/jpgraph_pie.php');
 require_once('lib/jpgraph/jpgraph_pie3d.php');
 require_once('lib/jpgraph/jpgraph_line.php');
