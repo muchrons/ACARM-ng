@@ -28,10 +28,12 @@ public:
    *  \param th   threshold configuration - informs when run trigger.
    *  \param mc   mail configuration.
    */
-  Config(const Simple::ThresholdConfig &th,
-         const ::Mail::Config      &mc):
+  Config(const Simple::ThresholdConfig    &th,
+         const ::Mail::Config             &mc,
+         const ::Mail::Config::Recipients &to):
     th_(th),
-    mc_(mc)
+    mc_(mc),
+    to_(to)
   {
   }
 
@@ -50,10 +52,18 @@ public:
   {
     return mc_;
   }
+  /** \brief get recipients e-mail addresses.
+   *  \return addresses (e-mails) of recipients.
+   */
+  const ::Mail::Config::Recipients &getRecipientsAddresses(void) const
+  {
+    return to_;
+  }
 
 private:
-  Simple::ThresholdConfig th_;
-  ::Mail::Config      mc_;
+  Simple::ThresholdConfig    th_;
+  ::Mail::Config             mc_;
+  ::Mail::Config::Recipients to_;
 }; // class Config
 
 } // namespace Mail

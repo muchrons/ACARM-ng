@@ -53,8 +53,6 @@ class Config
 public:
   /** \brief list of message recipients. */
   typedef Base::NonEmptyVector<std::string> Recipients;
-  /** \brief list of message copy recipients. */
-  typedef std::vector<std::string>          copyRecipients;
   /** \brief path in the filesystem. */
   typedef boost::filesystem::path           Path;
 
@@ -115,38 +113,28 @@ public:
 
   /** \brief create configration description, without authorization.
    *  \param from sender's e-mail address.
-   *  \param to   recipient address.
    *  \param srv  server to connect to.
    */
   Config(const std::string             &from,
-         const Recipients              &to,
-         const Server                  &srv,
-         const copyRecipients          cc=copyRecipients()):
+         const Server                  &srv):
     from_(from),
-    to_(to),
     srv_(srv),
     useAuth_(false),
-    auth_("", ""),
-    cc_(cc)
+    auth_("", "")
   {
   }
   /** \brief create configration description, with authorization request.
    *  \param from sender's e-mail address.
-   *  \param to   recipient address.
    *  \param srv  server to connect to.
    *  \param auth parameters required for authorization.
    */
   Config(const std::string             &from,
-         const Recipients              &to,
          const Server                  &srv,
-         const Authorization           &auth,
-         const copyRecipients          cc=copyRecipients()):
+         const Authorization           &auth):
     from_(from),
-    to_(to),
     srv_(srv),
     useAuth_(true),
-    auth_(auth),
-    cc_(cc)
+    auth_(auth)
   {
   }
   /** \brief get authorization configuration part.
@@ -172,21 +160,12 @@ public:
   {
     return from_;
   }
-  /** \brief get recipients e-mail addresses.
-   *  \return addresses (e-mails) of recipients.
-   */
-  const Recipients &getRecipientsAddresses(void) const
-  {
-    return to_;
-  }
 
 private:
   std::string             from_;
-  Recipients              to_;
   Server                  srv_;
   bool                    useAuth_;
   Authorization           auth_;
-  copyRecipients          cc_;
 }; // class Config
 
 } // namespace Mail

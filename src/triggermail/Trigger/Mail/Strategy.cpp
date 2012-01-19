@@ -35,7 +35,7 @@ void Strategy::triggerImpl(BackendFacade &/*bf*/, const ConstNode &n)
 
   // send message
   ::Mail::MailSender ms(cfg_.getMailConfig());
-  ms.send( subject, ss.str() );
+  ms.send( subject, ss.str(), cfg_.getRecipientsAddresses() );
 }
 
 } // namespace Mail

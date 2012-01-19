@@ -78,7 +78,7 @@ uint16_t getPort(const std::string &v)
   throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "security", v.c_str() );
 } // getSecurity()
 
-::Mail::Config::copyRecipients parseCopyRecipients(const Logger::Node &log, const string &str)
+Config::CopyRecipients parseCopyRecipients(const Logger::Node &log, const string &str)
 {
   typedef boost::char_separator<char> Separator;
   typedef boost::tokenizer<Separator> Tokenizer;
@@ -89,7 +89,7 @@ uint16_t getPort(const std::string &v)
   Tokenizer::const_iterator it=tokens.begin();
   if( it==tokens.end() )
     throw Exception(SYSTEM_SAVE_LOCATION, "no receivers specified");
-  ::Mail::Config::copyRecipients r;
+  Config::CopyRecipients r;
   LOGMSG_INFO_S(log)<<"adding receiver's e-mail "<<*it;
 
   // all other receivers are optional
@@ -153,7 +153,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const ThresholdConfig thCfg(sevTh, cntTh);
 
   // copy recipient adress
-  ::Mail::Config::copyRecipients cc;
+  Config::CopyRecipients cc;
   // check for copy recipients requirement
   const char *ccRecipients=fc.get("cc");
   if(ccRecipients != NULL)
@@ -171,25 +171,53 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     LOGMSG_INFO_S(log_)<<"setting user to "<<user;
     const std::string                   &pass=fc["password"];
     const ::Mail::Config::Authorization auth(user, pass);
-    const ::Mail::Config                mailCfg(from, to, serverCfg, auth, cc);
-    // create and return new handle, with configured authorization
-    LOGMSG_INFO(log_, "account configured with authorization required");
-    InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_,
-                                                      InstanceName(name),
-                                                      Whois::Config(templatefile, thCfg, mailCfg) ) );
-    return OutPtr(new InterfaceWrapper(ptr));
+    const ::Mail::Config                mailCfg(from, serverCfg, auth);
+    if(ccRecipients != NULL)
+    {
+      const Whois::Config whoisCfg(templatefile, thCfg, mailCfg, cc);
+      // create and return new handle, with configured authorization
+      LOGMSG_INFO(log_, "account configured with authorization required");
+      InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_,
+                                              InstanceName(name),
+                                              whoisCfg ) );
+      return OutPtr(new InterfaceWrapper(ptr));
+    }
+    else
+    {
+      const Whois::Config whoisCfg(templatefile, thCfg, mailCfg);
+      // create and return new handle, with configured authorization
+      LOGMSG_INFO(log_, "account configured with authorization required");
+      InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_,
+                                              InstanceName(name),
+                                              whoisCfg ) );
+      return OutPtr(new InterfaceWrapper(ptr));
+    }
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
       LOGMSG_WARN(log_, "user not configured, but password provided - skipping any way");
 
-  const ::Mail::Config mailCfg(from, to, serverCfg, cc);
-  // create and return new handle, with config without authorization
-  LOGMSG_INFO(log_, "account configured without authorization required");
-  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_,
-                                                    InstanceName(name),
-                                                    Whois::Config(templatefile, thCfg, mailCfg) ) );
-  return OutPtr(new InterfaceWrapper(ptr));
+  const ::Mail::Config mailCfg(from, serverCfg);
+  if(ccRecipients != NULL)
+  {
+    const Whois::Config whoisCfg(templatefile, thCfg, mailCfg, cc);
+    // create and return new handle, without config authorization
+    LOGMSG_INFO(log_, "account configured without authorization required");
+    InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_,
+                                            InstanceName(name),
+                                            whoisCfg ) );
+    return OutPtr(new InterfaceWrapper(ptr));
+  }
+  else
+  {
+    const Whois::Config whoisCfg(templatefile, thCfg, mailCfg);
+    // create and return new handle, without config authorization
+    LOGMSG_INFO(log_, "account configured without authorization required");
+    InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_,
+                                            InstanceName(name),
+                                            whoisCfg ) );
+    return OutPtr(new InterfaceWrapper(ptr));
+  }
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

@@ -23,8 +23,8 @@ struct TestClass
     to_("to"),
     //cc_("cc"),
     mc_( "from",
-         to_,
-         srv_ ),
+         srv_,
+         auth_ ),
     cfg_( path_, th_, mc_ )
   {
   }
@@ -46,6 +46,7 @@ factory tf("Trigger/Whois/Config");
 
 namespace tut
 {
+
 // test getting message template file path
 template<>
 template<>
