@@ -58,22 +58,26 @@ you can quickly check if there are any problems with system-environment
 cooperation.
 
 enter sources directory:
-$ cd acarmng/src
+$ cd acarmng
 
 and build tests:
-$ make PROFILE=test -j N
-where N is number of parallel jobs to execute.
+$ ./configure --automatic-tests
+$ make
+note that when running configure script you need to pass the same flags that
+were needed for configuring ACARM-ng for installation.
 
-run all tests with following script:
+run all tests with following commands:
+$ cd src
 $ ./run_all_tests
 
 you should see output from test applications for all compiled components. if
 something fails you'll get more verbose output.
 
 notice that before you'll configure data base, you'll get errors from given
-persistency engines about non-existing data bases, etc... see 'preparing
-environment' section for more details on setting up data base and
-CONFIGURATION.txt for details on setting up data base in config file.
+persistency engines about non-existing data bases, etc... the same goes for
+other plugins, that require some external subsystem to work.
+see 'preparing environment' section for more details on setting up data base
+and CONFIGURATION.txt for details on setting up data base in config file.
 
 
 data base
