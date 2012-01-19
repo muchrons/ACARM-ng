@@ -1,3 +1,7 @@
+-- ?? --
+* fixed error when displaying images on some systems.
+
+
 -- v1.0.4 --
 * added default timezone for WUI.
 
