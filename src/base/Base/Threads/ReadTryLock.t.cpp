@@ -134,4 +134,55 @@ void testObj::test<6>(void)
   }
 }
 
+// test timed locking when lock is free
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  auto_ptr<WriteLock> lock( new WriteLock(m_) );
+  ReadTryLock tlock(m_);
+  lock.reset();
+  ensure("lock obtained, though lock's busy", !tlock.ownsLock() );
+  ensure("lock not obtained (during call)", tlock.tryLock(1) );
+  ensure("lock not obtained", tlock.ownsLock() );
+}
+
+// test timed locking when lock is busy
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  auto_ptr<WriteLock> lock( new WriteLock(m_) );
+  ReadTryLock         tlock(m_);
+  ensure("lock obtained, though lock's busy", !tlock.ownsLock() );
+  ensure("lock not obtained", !tlock.tryLock(1) );
+  ensure("lock obtained, though lock's busy", !tlock.ownsLock() );
+}
+
+// test timed locking when lock is free and timeout is 0
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  auto_ptr<WriteLock> lock( new WriteLock(m_) );
+  ReadTryLock tlock(m_);
+  lock.reset();
+  ensure("lock obtained, though lock's busy", !tlock.ownsLock() );
+  ensure("lock not obtained (during call)", tlock.tryLock(0) );
+}
+
+// test if timed locking returns always true, when already locked
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  auto_ptr<WriteLock> lock( new WriteLock(m_) );
+  ReadTryLock tlock(m_);
+  lock.reset();
+  ensure("lock obtained, though lock's busy", !tlock.ownsLock() );
+  ensure("lock not obtained (during call)", tlock.tryLock(0) );
+  ensure("lock not obtained", tlock.ownsLock() );
+  ensure("locking fails, though lock is owned", tlock.tryLock(0) );
+}
+
 } // namespace tut
