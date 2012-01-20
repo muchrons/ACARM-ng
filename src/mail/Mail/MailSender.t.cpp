@@ -51,7 +51,7 @@ void testObj::test<2>(void)
   removeMessagesFromAccount( getTestConfig2() );
   // send report
   MailSender ms( getTestConfig1() );
-  ms.send("subject 1", "some\ndata parts\nwith\n\n\nnew lines");
+  ms.send("subject 1", "some\ndata parts\nwith\n\n\nnew lines", Config:: Recipients(MAIL1_TEST_ACCOUNT_ADDRESS));
   // check results
   const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
   ensure_equals("invalid number of messages removed", count, 1);
@@ -69,15 +69,14 @@ void testObj::test<3>(void)
                             "testdata/invalid_cert.pem" );
   ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
   const Config cfg( c1_.getSenderAddress(),
-                          c1_.getRecipientsAddresses(),
-                          srv,
-                          *c1_.getAuthorizationConfig() );
+                    srv,
+                    *c1_.getAuthorizationConfig() );
 
   // send report
   MailSender ms(cfg);
   try
   {
-    ms.send("subject", "content");  // should throw
+    ms.send("subject", "content", Config:: Recipients(MAIL2_TEST_ACCOUNT_ADDRESS));  // should throw
     fail("invalid certificate didn't raised an error");
   }
   catch(const ExceptionInvalidCertificate &)
@@ -101,12 +100,11 @@ void testObj::test<4>(void)
     to.push_back(MAIL2_TEST_ACCOUNT_ADDRESS);
     ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
     const Config cfg( c1_.getSenderAddress(),
-                      to,
                       c1_.getServerConfig(),
                       *c1_.getAuthorizationConfig() );
     // send report
     MailSender ms(cfg);
-    ms.send("subject", "content");
+    ms.send("subject", "content", to);
   }
 
   // check first account

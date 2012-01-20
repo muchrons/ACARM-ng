@@ -1,4 +1,6 @@
 -- dev --
+* configure script can now prepare test build as well.
+* added example Python scripts (triggers and filters) to the documentation.
 * implemented ppcheck application for testing preprocessor's configuration offline.
 * persistent storage's content to IDMEF dumper (pdump) is now installed, by default.
 * alerts dropped by the preprocessor are no longer saved in data base.
@@ -23,6 +25,10 @@
     - round - round to nearest integer
     - mod - compute modulo arithmetic
 * added more tests for external libraries, required for compilation.
+
+
+-- v1.0.3 --
+* assertion in new event filter fixed.
 
 
 -- v1.0.2 --

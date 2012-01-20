@@ -15,14 +15,12 @@ struct TestClass
 {
   TestClass(void):
     srv_("server", 1234, Config::Server::Protocol::SMTP, Config::Server::Security::SSL, "/cert/path"),
-    auth_("john", "doe"),
-    to_("to")
+    auth_("john", "doe")
   {
   }
 
   const Config::Server                   srv_;
   const Config::Authorization            auth_;
-  const Config::Recipients               to_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -40,7 +38,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Config c("from", to_, srv_);
+  const Config c("from", srv_);
   ensure("authorization required", c.getAuthorizationConfig()==NULL );
 }
 
@@ -49,7 +47,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Config c("from", to_, srv_, auth_);
+  const Config c("from", srv_, auth_);
   ensure("authorization not required", c.getAuthorizationConfig()!=NULL );
 }
 
@@ -74,15 +72,5 @@ void testObj::test<4>(void)
   ensure_equals("invalid password", auth_.pass_, "doe");
 }
 
-// test recipients addresses list
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  const Config c("from", to_, srv_, auth_);
-  ensure_equals("invalid from address", c.getSenderAddress(), "from");
-  ensure_equals("invalid number of recipients", c.getRecipientsAddresses().size(), 1u);
-  ensure_equals("invalid recipient", c.getRecipientsAddresses()[0], "to");
-}
 
 } // namespace tut

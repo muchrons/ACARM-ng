@@ -7,6 +7,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include "Mail/Config.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
 namespace Trigger
@@ -19,13 +20,35 @@ namespace Whois
 class Config
 {
 public:
+  /** \brief list of message copy recipients. */
+  typedef std::vector<std::string> CopyRecipients;
   /** \brief create configration description.
    *  \param templateFile path to file containing message template.
    *  \param th           threshold configuration - informs when run trigger.
+   *  \param mc           mail configuration.
    */
-  Config(const boost::filesystem::path &templateFile, const Simple::ThresholdConfig &th):
+  Config(const boost::filesystem::path &templateFile,
+         const Simple::ThresholdConfig &th,
+         const ::Mail::Config          &mc):
     templateFile_(templateFile),
-    th_(th)
+    th_(th),
+    mc_(mc)
+  {
+  }
+  /** \brief create configration description.
+   *  \param templateFile path to file containing message template.
+   *  \param th           threshold configuration - informs when run trigger.
+   *  \param mc           mail configuration.
+   *  \param cc           list of copy recipients.
+   */
+  Config(const boost::filesystem::path &templateFile,
+         const Simple::ThresholdConfig &th,
+         const ::Mail::Config          &mc,
+         const CopyRecipients          &cc):
+    templateFile_(templateFile),
+    th_(th),
+    mc_(mc),
+    cc_(cc)
   {
   }
 
@@ -44,10 +67,20 @@ public:
   {
     return th_;
   }
+  /** \brief get mail configuration.
+   *  \return mail config.
+   */
+  const ::Mail::Config &getMailConfig(void) const
+  {
+    return mc_;
+  }
+
 
 private:
   boost::filesystem::path templateFile_;
   Simple::ThresholdConfig th_;
+  ::Mail::Config          mc_;
+  CopyRecipients          cc_;
 }; // class Config
 
 } // namespace Whois

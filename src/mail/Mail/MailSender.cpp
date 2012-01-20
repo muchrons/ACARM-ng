@@ -133,7 +133,7 @@ string toString(const vmime::exception &ex)
 } // unnamed namespace
 
 
-void MailSender::send(const std::string &subject, const std::string &content)
+void MailSender::send(const std::string &subject, const std::string &content, const Config::Recipients &r)
 {
   vmime::ref<vmime::net::session>   session;
   vmime::ref<vmime::net::transport> transport;
@@ -171,20 +171,20 @@ void MailSender::send(const std::string &subject, const std::string &content)
   LOGMSG_DEBUG(log_, "sending e-mail...");
   try
   {
-    LOGMSG_DEBUG_S(log_)<<"sending to: "<<toString( cfg_.getRecipientsAddresses() );
-    MimeCreateHelper             mch( cfg_.getSenderAddress(), cfg_.getRecipientsAddresses(), subject, content );
+    LOGMSG_DEBUG_S(log_)<<"sending to: "<<toString( r );
+    MimeCreateHelper             mch( cfg_.getSenderAddress(), r, subject, content );
     MimeCreateHelper::MessagePtr msg=mch.createMimeMessage();
     transport->send(msg);
     LOGMSG_DEBUG(log_, "e-mail sent successfully");
   }
   catch(const vmime::exception &ex)
   {
-    LOGMSG_ERROR_S(log_)<<"error sending message (to: "<<toString( cfg_.getRecipientsAddresses() )
+    LOGMSG_ERROR_S(log_)<<"error sending message (to: "<<toString( r )
                         <<"): "<<toString(ex);
     // translate vmime-specific exception to project-wide exception
     throw ExceptionSendingError( SYSTEM_SAVE_LOCATION,
                                  cfg_.getSenderAddress().c_str(),
-                                 toString( cfg_.getRecipientsAddresses() ).c_str(),
+                                 toString( r ).c_str(),
                                  toString(ex).c_str() );
   }
 }

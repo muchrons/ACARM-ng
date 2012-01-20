@@ -7,9 +7,11 @@
 #include "Trigger/Jabber/MessageIO.hpp"
 #include "Trigger/Jabber/TestAccount.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/delay.hpp"
 
 using namespace Trigger::Jabber;
 using namespace TestHelpers::Persistency;
+using TestHelpers::delay;
 
 namespace
 {
@@ -81,7 +83,7 @@ void testObj::test<3>(void)
     // disconnect
   }
   // wait one second
-  sleep(1);
+  delay(1);
   // receive message
   const std::string recv=getMessageFromAccount3();
   ensure_equals("invalid message received", recv, msg);

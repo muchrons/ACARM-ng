@@ -8,6 +8,7 @@
 #include "Base/Threads/ThreadJoiner.hpp"
 #include "Core/WorkThreads.hpp"
 #include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/TimeoutChecker.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Core;
@@ -60,8 +61,9 @@ struct Stopper
 
   void operator()(void)
   {
+    const TestHelpers::TimeoutChecker tc(5);
     assert(ready_!=NULL);
-    while(!*ready_)
+    while( !*ready_ && tc() )
       usleep(30*1000);
     usleep(50*1000);
     assert(m_!=NULL);

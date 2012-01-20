@@ -155,20 +155,20 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     LOGMSG_INFO_S(log_)<<"setting user to "<<user;
     const std::string           &pass=fc["password"];
     const ::Mail::Config::Authorization  auth(user, pass);
-    const ::Mail::Config mailCfg(from, to, serverCfg, auth);
+    const ::Mail::Config mailCfg(from, serverCfg, auth);
     // create and return new handle, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
-    InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, mailCfg) ) );
+    InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, mailCfg, to) ) );
     return OutPtr(new InterfaceWrapper(ptr));
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
       LOGMSG_WARN(log_, "user not configured, but password provided - skipping any way");
 
-  const ::Mail::Config mailCfg(from, to, serverCfg);
+  const ::Mail::Config mailCfg(from, serverCfg);
   // create and return new handle, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
-  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, mailCfg) ) );
+  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, mailCfg, to) ) );
   return OutPtr(new InterfaceWrapper(ptr));
 }
 

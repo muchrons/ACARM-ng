@@ -10,12 +10,14 @@
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/delay.hpp"
 
 using namespace Persistency;
 using namespace Core::Types::Proc;
 using namespace Filter;
 using namespace Filter::NewEvent;
 using namespace TestHelpers::Persistency;
+using TestHelpers::delay;
 
 namespace
 {
@@ -74,14 +76,14 @@ void testObj::test<2>(void)
   ps_.prune();
   ensure("element with timeout 1 s has been pruned before timeout", ps_.update(h1_, 1) );
   ensure("element with timeout 2 s has been pruned before timeout", ps_.update(h2_, 3) );
-  sleep(2);
+  delay(2);
   ps_.prune();
   ensure("element with timeout 1 s has not been pruned after 2 seconds", ps_.update(h1_, 1)==false );
   ensure("element with timeout 2 s has been pruned after 2 seconds", ps_.update(h2_, 2) );
-  sleep(1);
+  delay(1);
   ps_.prune();
   ensure("element with timeout 2 s has been pruned after timeout update", ps_.update(h2_, 1) );
-  sleep(2);
+  delay(2);
   ps_.prune();
   ensure("element with timeout 1 s has not been pruned", ps_.update(h1_, 1)==false );
   ensure("element with timeout 2 s has not been pruned", ps_.update(h2_, 2)==false );
@@ -108,7 +110,7 @@ void testObj::test<4>(void)
     EntrySharedPtr e(new Entry(h1_, bf_, ts_));
     ps_.markAsProcessed(e, 1);
   }
-  sleep(2);
+  delay(2);
   ensure("element timeouted before prune", ts_.isTimeouted(h1_) == false );
   ps_.prune();
   ensure("element not-timeouted after prune", ts_.isTimeouted(h1_));

@@ -46,7 +46,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Config c(th_, ::Mail::Config("from", to_, srv_));
+  const Config c(th_, ::Mail::Config("from", srv_), to_);
   ensure("authorization required", c.getMailConfig().getAuthorizationConfig()==NULL );
 }
 
@@ -55,7 +55,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Config c(th_, ::Mail::Config("from", to_, srv_, auth_));
+  const Config c(th_, ::Mail::Config("from", srv_, auth_), to_);
   ensure("authorization not required", c.getMailConfig().getAuthorizationConfig()!=NULL );
 }
 
@@ -85,10 +85,10 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Config c(th_, ::Mail::Config("from", to_, srv_, auth_));
+  const Config c(th_, ::Mail::Config("from", srv_, auth_), to_);
   ensure_equals("invalid from address", c.getMailConfig().getSenderAddress(), "from");
-  ensure_equals("invalid number of recipients", c.getMailConfig().getRecipientsAddresses().size(), 1u);
-  ensure_equals("invalid recipient", c.getMailConfig().getRecipientsAddresses()[0], "to");
+  ensure_equals("invalid number of recipients", c.getRecipientsAddresses().size(), 1u);
+  ensure_equals("invalid recipient", c.getRecipientsAddresses()[0], "to");
 }
 
 } // namespace tut
