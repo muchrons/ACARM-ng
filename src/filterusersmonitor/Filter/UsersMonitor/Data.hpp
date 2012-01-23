@@ -60,11 +60,13 @@ public:
   void swap(Data &other);
 
 private:
-  void addFrom(const Persistency::Alert::Hosts &h, const Names &skip);
+  void addFrom(const Persistency::Alert::Hosts &h);
 
-  void pushAllowed(const Name &name, const Names &skip);
+  void pushAllowed(const Name &name);
+  bool isAllowed(const Name &name) const;
 
-  Names names_;
+  const Names *skip_;
+  Names        names_;
 }; // class Data
 
 } // namespace UsersMonitor
