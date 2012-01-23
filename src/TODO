@@ -12,8 +12,8 @@ configuration:
 triggers:
 ---------
 * trigger reporting "the most important events" aiming to rise about N most important event in some amount of time (thresholds are variable, depending on the input).
-* encrypted connections in Trigger::GG (NOTE: it appears that there are 2 standards now: GG-specific, and GNU).
-* encrypted connections in Trigger::Mail.
+* encrypted messages in Trigger::GG (NOTE: it appears that there are 2 standards now: GG-specific, and GNU).
+* encrypted messages in Trigger::Mail.
 * editable triggers' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * give possibility to pass config-file options to a python scripts (as is done by the factories).
 
@@ -23,7 +23,6 @@ filters:
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * give possibility to pass config-file options to a python scripts (as is done by the factories).
-* actions of user '' should be dropped by default - if username is empty, it means it is not set.
 
 docs:
 -----
@@ -36,5 +35,4 @@ misc:
 * add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
-* consider separating Persistency::IO as a separate comonent and derive p-postgres and p-stubs from it.
 * add configurable formatters to the logger.

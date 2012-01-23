@@ -1,5 +1,4 @@
 * correlation count for each filter type.
-* add checking of data model version in WUI with proper warning displaying, if needed.
 * add session mechanism to prevent CSRF in WUI.
 * implement more filtering power to alerts - dynamic query mechnism (trac-like) would be nice.
 * add "show meta-alerts with given alerts" button to alerts menu.
