@@ -353,7 +353,7 @@
 
     <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
       SELECT id, name, create_time FROM meta_alerts
-         WHERE id in (SELECT id FROM meta_alerts_roots)
+         WHERE id in (SELECT id_root FROM meta_alerts_roots)
         ORDER BY create_time DESC
         LIMIT #limit# offset #offset#
     </select>
@@ -362,7 +362,7 @@
     <select id="SelectMetaAlertsRootSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
       <![CDATA[
        SELECT id, name, create_time FROM meta_alerts
-         WHERE id in (SELECT id FROM meta_alerts_roots)
+         WHERE id in (SELECT id_root FROM meta_alerts_roots)
            AND create_time<=#date_to# AND create_time>=#date_from#
          ORDER BY create_time DESC
          limit #limit# offset #offset#
@@ -372,7 +372,7 @@
     <select id="SelectMetaAlertsRootSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
       <![CDATA[
        SELECT count(id) FROM meta_alerts
-         WHERE id in (SELECT id FROM meta_alerts_roots)
+         WHERE id in (SELECT id_root FROM meta_alerts_roots)
            AND create_time<=#date_to# AND create_time>=#date_from#;
       ]]>
   </select>
