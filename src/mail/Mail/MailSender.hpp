@@ -32,13 +32,14 @@ public:
    *  \param subject message's subject (note that '[acarmng]' prefix will be
    *         added in from of it automaticaly).
    *  \param content message's content.
+   *  \param r recipients list.
    */
-  void send(const std::string &subject, const std::string &content);
+  void send(const std::string &subject, const std::string &content, const Config::Recipients &r);
 
 private:
-  Logger::Node       log_;
-  VmimeHandleInit    vhi_;
-  const Config cfg_;
+  Logger::Node    log_;
+  VmimeHandleInit vhi_;
+  const Config    cfg_;
 }; // class MailSmtp
 
 } // namespace Mail

@@ -113,14 +113,11 @@ public:
 
   /** \brief create configration description, without authorization.
    *  \param from sender's e-mail address.
-   *  \param to   recipient address.
    *  \param srv  server to connect to.
    */
   Config(const std::string             &from,
-               const Recipients              &to,
-               const Server                  &srv):
+         const Server                  &srv):
     from_(from),
-    to_(to),
     srv_(srv),
     useAuth_(false),
     auth_("", "")
@@ -128,16 +125,13 @@ public:
   }
   /** \brief create configration description, with authorization request.
    *  \param from sender's e-mail address.
-   *  \param to   recipient address.
    *  \param srv  server to connect to.
    *  \param auth parameters required for authorization.
    */
   Config(const std::string             &from,
-         const Recipients              &to,
          const Server                  &srv,
          const Authorization           &auth):
     from_(from),
-    to_(to),
     srv_(srv),
     useAuth_(true),
     auth_(auth)
@@ -166,17 +160,9 @@ public:
   {
     return from_;
   }
-  /** \brief get recipients e-mail addresses.
-   *  \return addresses (e-mails) of recipients.
-   */
-  const Recipients &getRecipientsAddresses(void) const
-  {
-    return to_;
-  }
 
 private:
   std::string             from_;
-  Recipients              to_;
   Server                  srv_;
   bool                    useAuth_;
   Authorization           auth_;

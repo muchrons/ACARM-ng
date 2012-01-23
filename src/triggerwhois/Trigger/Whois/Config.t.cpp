@@ -14,11 +14,28 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    cfg_( "/tmp/message.tmpl", Trigger::Simple::ThresholdConfig("1.2", "4") )
+    path_( "/tmp/message.tmpl" ),
+    th_( "1.2", "4" ),
+    srv_("server", 1234,
+        ::Mail::Config::Server::Protocol::SMTP,
+        ::Mail::Config::Server::Security::SSL, "/cert/path"),
+    auth_("john", "doe"),
+    to_("to"),
+    //cc_("cc"),
+    mc_( "from",
+         srv_,
+         auth_ ),
+    cfg_( path_, th_, mc_ )
   {
   }
-
-  const Config cfg_;
+  const boost::filesystem::path          path_;
+  const Trigger::Simple::ThresholdConfig th_;
+  const ::Mail::Config::Server           srv_;
+  const ::Mail::Config::Authorization    auth_;
+  const ::Mail::Config::Recipients       to_;
+  //const ::Mail::Config::copyRecipients   cc_;
+  const ::Mail::Config                   mc_;
+  const Config                           cfg_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -29,6 +46,7 @@ factory tf("Trigger/Whois/Config");
 
 namespace tut
 {
+
 // test getting message template file path
 template<>
 template<>

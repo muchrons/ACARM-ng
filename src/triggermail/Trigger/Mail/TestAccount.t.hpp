@@ -31,9 +31,9 @@ Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
                                              Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
                                              Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
                                              "testdata/smtp_gmails_root_ca.pem");
-  const Mail::Config                     mc(MAIL1_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
+  const Mail::Config                     mc(MAIL1_TEST_ACCOUNT_ADDRESS, srv, auth);
   const Trigger::Simple::ThresholdConfig th("0", "0");
-  return Trigger::Mail::Config(th, mc);
+  return Trigger::Mail::Config(th, mc, Mail::Config::Recipients(to));
 }
 
 Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
@@ -45,9 +45,9 @@ Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
                                                  Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
                                                  Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
                                                  "testdata/smtp_gmails_root_ca.pem");
-  const Mail::Config                mc(MAIL2_TEST_ACCOUNT_ADDRESS, Mail::Config::Recipients(to), srv, auth);
+  const Mail::Config                mc(MAIL2_TEST_ACCOUNT_ADDRESS, srv, auth);
   const Trigger::Simple::ThresholdConfig th("0", "0");
-  return Trigger::Mail::Config(th, mc);
+  return Trigger::Mail::Config(th, mc, Mail::Config::Recipients(to));
 }
 
 

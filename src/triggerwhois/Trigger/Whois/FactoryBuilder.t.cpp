@@ -42,6 +42,16 @@ struct TestClass
   {
     opts_["name"]                  ="somename";
     opts_["template"]              ="testdata/message.tmpl";
+    opts_["from"]                  ="from@address";
+    opts_["server"]                ="server.address";
+    opts_["rootca"]                ="/cert/path";
+    opts_["port"]                  ="69";
+    opts_["protocol"]              ="smtp";
+    opts_["security"]              ="ssl";
+
+    opts_["user"]                  ="narf";
+    opts_["password"]              ="fran";
+
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";
   }
@@ -150,4 +160,94 @@ void testObj::test<9>(void)
   fb_.build(opts_);     // must not throw
 }
 
+// test creating valid config, w-out authorization
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  setValid();
+  opts_.erase("user");
+  opts_.erase("password");
+  fb_.build(opts_); // must not throw
+}
+
+// test for error when password is not set, but authorization is required
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  setValid();
+  opts_.erase("password");
+  ensureThrow(opts_);
+}
+
+// test exception when port is invalid
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  setValid();
+  opts_["port"]="-11";
+  ensureThrow(opts_);
+}
+
+// test when security is 'ssl'
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  setValid();
+  opts_["security"]="ssl";
+  fb_.build(opts_);     // must not throw
+}
+
+// test when security is 'starttls'
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  setValid();
+  opts_["security"]="starttls";
+  fb_.build(opts_);     // must not throw
+}
+
+// test throw on invalid security value
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  setValid();
+  opts_["security"]="none";
+  ensureThrow(opts_);
+}
+
+// test throw on missing protocol
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  setValid();
+  opts_.erase("protocol");
+  ensureThrow(opts_);
+}
+
+// test throw on invalid protocol
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  setValid();
+  opts_["protocol"]="nonexisting";
+  ensureThrow(opts_);
+}
+
+// test throw on missing certificate path
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  setValid();
+  opts_.erase("rootca");
+  ensureThrow(opts_);
+}
 } // namespace tut
