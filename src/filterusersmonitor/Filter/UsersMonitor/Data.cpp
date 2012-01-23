@@ -97,7 +97,15 @@ void Data::pushAllowed(const Name &name)
 bool Data::isAllowed(const Name &name) const
 {
   assert(skip_!=NULL);
-  return find(skip_->begin(), skip_->end(), name)==skip_->end();
+  // if entry is placed on the exceptions list, skip it
+  if( find(skip_->begin(), skip_->end(), name)!=skip_->end() )
+    return false;
+  // skip "" user name - sometimes it happens that such elements are reported by sensors
+  // though it does not make sense to correlate them.
+  if(name=="")
+    return false;
+  // if entry is not on any reject lists, accept it by default
+  return true;
 }
 
 } // namespace UsersMonitor

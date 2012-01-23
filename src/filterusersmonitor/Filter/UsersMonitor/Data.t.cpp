@@ -123,7 +123,7 @@ void testObj::test<8>(void)
   ensure_equals("invalid elements count", d.get().size(), 0u);
 }
 
-// test interesection of the name that is no skip list
+// test interesection of the name that is no the skip list
 template<>
 template<>
 void testObj::test<9>(void)
@@ -157,6 +157,18 @@ void testObj::test<11>(void)
   ensure_equals("invalid element 1", out[0], "alice");
   ensure_equals("invalid element 2", out[1], "cat"  );
   ensure_equals("invalid element 3", out[2], "doom" );
+}
+
+// check if "" name is rejected
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Data  d( mkAlert("abc", "", NULL, NULL), skip_ );
+  Data::Names out=d.get();
+  sort( out.begin(), out.end() );   // for sake of test's simplicity
+  ensure_equals("invalid number of elements", out.size(), 1u);
+  ensure_equals("invalid element", out[0], "abc");
 }
 
 } // namespace tut
