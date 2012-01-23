@@ -27,6 +27,16 @@
 * added more tests for external libraries, required for compilation.
 
 
+-- v1.0.5 --
+* fixed invalid selection of root meta alerts.
+* installation and troubleshooting documents contains now more hints.
+* fixed error when displaying images on some systems.
+
+
+-- v1.0.4 --
+* added default timezone for WUI.
+
+
 -- v1.0.3 --
 * assertion in new event filter fixed.
 
