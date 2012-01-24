@@ -1,2 +1,1 @@
 * consider porting as much configuration is possible to persistent storage and edit it via WUI.
-* add some example filters and triggers written in Python.

@@ -51,7 +51,7 @@ void testObj::test<2>(void)
   removeMessagesFromAccount( getTestConfig2() );
   // send report
   MailSender ms( getTestConfig1() );
-  ms.send("subject 1", "some\ndata parts\nwith\n\n\nnew lines", Config:: Recipients(MAIL1_TEST_ACCOUNT_ADDRESS));
+  ms.send("subject 1", "some\ndata parts\nwith\n\n\nnew lines", Config:: Recipients(MAIL2_TEST_ACCOUNT_ADDRESS));
   // check results
   const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
   ensure_equals("invalid number of messages removed", count, 1);
