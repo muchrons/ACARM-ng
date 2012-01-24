@@ -30,7 +30,7 @@ void Strategy::triggerImpl(BackendFacade &/*bf*/, const ConstNode &n)
 
   // prepare message's content
   stringstream ss;
-  // TODO: use more verbose Compose variant here - mails can be longger.
+  // TODO: use more verbose Compose variant here - mails can be longer.
   Compose::Full::append(ss, n);
 
   // send message
