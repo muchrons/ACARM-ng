@@ -52,6 +52,13 @@ class DataMiningAlertTypes extends TPage
   function getSelectedRows()
   {
     $selection=$this->Alerts->getSelectedTypes();
+
+    if($selection=="(^$)")
+      {
+        echo "No typed were selected. Maybe you have turned off JavaScript.";
+        die();
+      }
+
     $range=$this->Range->getRangeData();
     $link=$this->constructUrl($range->date_from, $range->date_to, $range->srct, $range->dstt, $range->severities, $selection);
     $this->Response->redirect($link);
