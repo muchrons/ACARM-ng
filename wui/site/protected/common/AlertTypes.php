@@ -85,6 +85,9 @@ class AlertTypes extends TTemplateControl
 
   public function getSelection()
   {
+    if ($this->CheckedRows->Value=="")
+      return array();
+
     $selectedRows=explode(',',$this->CheckedRows->Value);
     return $selectedRows;
   }
@@ -100,6 +103,7 @@ class AlertTypes extends TTemplateControl
           $first=true;
         else
           $names.="|";
+        assert($this->data_[$row]!=null);
         $names.=$this->data_[$row]->Name;
       }
     $names.="$)";
