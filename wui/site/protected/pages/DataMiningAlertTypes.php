@@ -51,7 +51,12 @@ class DataMiningAlertTypes extends TPage
 
   function getSelectedRows()
   {
-    $selection=$this->Alerts->getSelectedTypes();
+    $escape_from=array("(",")");
+    $escape_to  =array("\(","\)");
+
+    $selection=str_replace($escape_from,$escape_to,$this->Alerts->getSelectedTypes());
+
+    $selection="(".$selection.")";
 
     if($selection=="(^$)")
       {
