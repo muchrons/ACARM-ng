@@ -65,8 +65,13 @@ Persistency::Alert::Name IDMEFParserAlert::parseName(idmef_alert_t *alert) const
   //remove unwanted characters
   boost::replace_all(workaround,"(","{");
   boost::replace_all(workaround,"[","{");
+  boost::replace_all(workaround,"<","{");
   boost::replace_all(workaround,"]","}");
   boost::replace_all(workaround,")","}");
+  boost::replace_all(workaround,">","}");
+  boost::erase_all(workaround,"\'");
+  boost::erase_all(workaround,"\"");
+  boost::erase_all(workaround,"\\");
   boost::erase_all(workaround,"*");
   boost::erase_all(workaround,"^");
   return workaround;

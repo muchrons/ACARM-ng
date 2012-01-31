@@ -33,6 +33,26 @@ class DataMiningAlertTypes extends TPage
   {
     parent::onLoad($param);
 
+    if (!$this->isPostBack)
+      {
+        $srcip=$this->Request->itemAt('srcip');
+        if( $srcip!==null )
+          $this->Range->srcip->Text=$srcip;
+
+        $dstip=$this->Request->itemAt('dstip');
+        if( $dstip!==null )
+          $this->Range->dstip->Text=$dstip;
+
+        $date_from=$this->Request->itemAt('from');
+        if( $date_from!==null )
+          $this->Range->From->Text=$date_from;
+
+        $date_to=$this->Request->itemAt('to');
+        if( $date_to!==null )
+          $this->Range->To->Text=$date_to;
+      }
+
+
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();
   }

@@ -51,6 +51,7 @@ class DataMiningHeatMap extends TPage
     $this->NoAlerts->Text=$data;
 
     $this->AlertsLink->NavigateUrl=$this->constructUrlForCallbacks("Alerts",$longitude,$latitude,$this->Range->From->Text,$this->Range->To->Text);
+    $this->AlertTypesLink->NavigateUrl=$this->constructUrlForCallbacks("DataMiningAlertTypes",$longitude,$latitude,$this->Range->From->Text,$this->Range->To->Text);
     $this->SeveritiesLink->NavigateUrl=$this->constructUrlForCallbacks("DataMiningSeverity",$longitude,$latitude,$this->Range->From->Text,$this->Range->To->Text);
   }
 
