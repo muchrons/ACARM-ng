@@ -125,7 +125,7 @@
     </td>
     <td align="center">
       <com:TActiveHyperLink ID="AlertTypesLink">
-        <com:TImage ImageUrl="pics/buttons/buttDMAlertTypesD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMAlertTypesU.png'" Attributes.onMouseOut="$(this).src='pics/buttons/buttDMAlertTypesD.png'"/> 
+        <com:TImage ImageUrl="pics/buttons/buttDMAlertTypesD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMAlertTypesU.png'" Attributes.onMouseOut="$(this).src='pics/buttons/buttDMAlertTypesD.png'"/>
       </com:TActiveHyperLink>
     </td>
     <td align="center">
