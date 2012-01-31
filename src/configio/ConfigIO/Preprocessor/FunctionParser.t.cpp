@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "ConfigIO/Preprocessor/FunctionParser.hpp"
 
@@ -30,7 +31,7 @@ struct TestClass
 
   void testNumber(const string &num) const
   {
-    const string trm=trim(num);
+    const string trm=boost::algorithm::trim_copy(num);
     const double tmp=boost::lexical_cast<double>(trm);
     const string exp=boost::lexical_cast<string>(tmp);
     testNumber(num, exp);
@@ -52,16 +53,6 @@ struct TestClass
   void testNumberThrow(const string &num) const
   {
     testThrow("fun("+num+")", "non-number has been accepted");
-  }
-  // TODO: consider use (if possible) 'trim' function from boost::algorithm
-  string trim(const string &str) const
-  {
-    const string::size_type pos1=str.find_first_not_of(' ');
-    const string::size_type pos2=str.find_last_not_of(' ');
-    const string::size_type from=(pos1!=string::npos) ? pos1   : 0;
-    const string::size_type to  =(pos2!=string::npos) ? pos2+1 : str.length();
-    const string            out(str.begin()+from, str.begin()+to);
-    return out;
   }
 };
 

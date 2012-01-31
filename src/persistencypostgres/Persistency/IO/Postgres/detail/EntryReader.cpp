@@ -308,6 +308,22 @@ std::vector<DataBaseID> EntryReader::readRoots()
   return getRoots(r);
 }
 
+std::map<DataBaseID, std::vector<DataBaseID> > EntryReader::readAllMetaAlertsChildren()
+{
+  typedef std::vector<DataBaseID>  vectorIDs;
+  std::map<DataBaseID,  vectorIDs> allChildrenIDs;
+  stringstream ss;
+  ss << "SELECT * FROM tmp;";
+  const result r = SQL( ss.str(), log_ ).exec(t_);
+  for(size_t i=0; i<r.size(); ++i)
+  {
+    const DataBaseID idNode = ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_node"]);
+    const DataBaseID idChild = ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_child"]);
+    allChildrenIDs[idNode].push_back(idChild);
+  }
+  return allChildrenIDs;
+}
+
 std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Timestamp &to)
 {
   stringstream ss;
