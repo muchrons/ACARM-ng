@@ -104,10 +104,14 @@ public:
   std::vector<DataBaseID> readIDsMalertsBetween(const Timestamp &from, const Timestamp &to);
 
   /** \brief read IDs of root nodes
-   *  \return vector of IDs
-   */
+  *  \return vector of IDs
+  */
   std::vector<DataBaseID> readRoots();
 
+  /** \brief  read meta alerts' children ID's from data base for all meta alerts
+   *  \return map of IDs
+   */
+  std::map<DataBaseID, std::vector<DataBaseID> > readAllMetaAlertsChildren();
   /** \brief read IDs of root nodes
    *  \param  from begin of time interval
    *  \param  to end of time interval

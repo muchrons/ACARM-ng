@@ -246,11 +246,13 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                                    const Tree::IDsVector                          &malerts)
 {
-  for(Tree::IDsVector::const_iterator it = malerts.begin(); it != malerts.end(); ++it)
+
+  std::map<DataBaseID, std::vector<DataBaseID> > malertsAllChildren = er.readAllMetaAlertsChildren();
+  for(size_t i = 0; i < malerts.size(); ++i)
   {
-    const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
+    const Tree::IDsVector &malertChildren = malertsAllChildren[malerts[i]];
     // put this data to the tree which represents meta alerts tree structure
-    treeNodes_.add(*it, TreePtr(new Tree(*it, malertChildren) ));
+    treeNodes_.add(malerts[i], TreePtr(new Tree(malerts[i], malertChildren) ));
   }
 }
 
