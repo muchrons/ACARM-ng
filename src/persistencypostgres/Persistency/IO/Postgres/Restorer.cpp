@@ -244,12 +244,21 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                                    const Tree::IDsVector                          &malerts)
 {
-  for(Tree::IDsVector::const_iterator it = malerts.begin(); it != malerts.end(); ++it)
+  int p = 10;
+  const size_t malertsCount = malerts.size();
+  std::map<DataBaseID, std::vector<DataBaseID> > malertsAllChildren = er.readAllMetaAlertsChildren();
+  for(size_t i = 0; i < malertsCount; ++i)
   {
-    const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
+    const Tree::IDsVector &malertChildren = malertsAllChildren[malerts[i]];
     // put this data to the tree which represents meta alerts tree structure
-    treeNodes_.add(*it, TreePtr(new Tree(*it, malertChildren) ));
+    treeNodes_.add(malerts[i], TreePtr(new Tree(malerts[i], malertChildren) ));
+    if( ((double)(i+1)/malertsCount) > 0.01*p)
+    {
+      LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - " << p << " % " << "completed";
+      p+=10;
+    }
   }
+  LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - " << p << " % " << "completed";
 }
 
 void Restorer::markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver  &es,

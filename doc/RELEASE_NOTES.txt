@@ -1,3 +1,6 @@
+-- ?? --
+* SQL queries for restoring Acarm-mg state simplified.
+
 -- v1.0.5 --
 * fixed invalid selection of root meta alerts.
 * installation and troubleshooting documents contains now more hints.
