@@ -302,8 +302,8 @@ std::vector<DataBaseID> EntryReader::readRoots()
       " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);",
       log_).exec(t_);
 
-  const result r = SQL("SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
-                       "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );", log_).exec(t_);
+  const result r = SQL("SELECT id_node FROM tmp EXCEPT SELECT id_child FROM tmp;"
+                       , log_).exec(t_);
 
   return getRoots(r);
 }
