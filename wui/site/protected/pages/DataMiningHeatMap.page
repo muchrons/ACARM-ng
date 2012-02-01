@@ -109,18 +109,28 @@
     <td class="AlertTag">Number of alerts:</td>
     <td class="AlertContent" colspan="3"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
   </tr>
+</table>
+
+<table border="0" width="100%">
   <tr>
-    <td align="center" colspan="4">
+    <td align="center">
       <com:TActiveHyperLink ID="AlertsLink">
         <com:TImage ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>
       </com:TActiveHyperLink>
+    </td>
+    <td  align="center">
       <com:TActiveHyperLink  ID="SeveritiesLink">
         <com:TImage ImageUrl="pics/buttons/buttDMSeverityD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMSeverityU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDMSeverityD.png'"/>
       </com:TActiveHyperLink>
     </td>
+    <td align="center">
+      <com:TActiveHyperLink ID="AlertTypesLink">
+        <com:TImage ImageUrl="pics/buttons/buttDMAlertTypesD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMAlertTypesU.png'" Attributes.onMouseOut="$(this).src='pics/buttons/buttDMAlertTypesD.png'"/>
+      </com:TActiveHyperLink>
+    </td>
+    <td align="center">
+    </td>
   </tr>
 </table>
-
-
 </com:TPanel>
 </com:TContent>

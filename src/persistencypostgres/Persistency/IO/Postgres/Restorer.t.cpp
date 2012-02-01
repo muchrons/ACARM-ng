@@ -63,6 +63,7 @@ struct TestClass
     Restorer r(t_, dbh_);
     // restore data from data base
     r.restoreAllInUse(out);
+    t_.commit();
     // put tree in vector
     tut::ensure_equals("invalid size", out.size(), outVec.size());
     tut::ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
@@ -77,6 +78,7 @@ struct TestClass
     Restorer r(t_, dbh_);
     // restore data from data base
     r.restoreBetween(out, from, to);
+    t_.commit();
     // put tree in vector
 
     tut::ensure_equals("invalid size", out.size(), outVec.size());
@@ -402,6 +404,68 @@ struct TestClass
     first.push_back(root2);
   }
 
+  //
+  //                   root1       root2
+  //             node1                   node3
+  //       leaf1       leaf2       leaf3       leaf4
+  //
+  void makeNewTreeH(Restorer::NodesVector &first, Restorer::NodesVector &second)
+  {
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
+    first.push_back(leaf1);
+    first.push_back(leaf2);
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
+    first.push_back(node1);
+
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
+    first.push_back(leaf3);
+    first.push_back(leaf4);
+    GraphNodePtrNN node3 = makeNewNode(105u, leaf3, leaf4, "node3");
+    first.push_back(node3);
+
+    GraphNodePtrNN node2 = makeNewNode(106u, leaf2, leaf3, "node2");
+    first.push_back(node2);
+
+    GraphNodePtrNN root1 = makeNewNode(107u, node1, node2, "root1");
+    second.push_back(root1);
+
+    GraphNodePtrNN root2 = makeNewNode(108u, node2, node3, "root2");
+    first.push_back(root2);
+  }
+
+  //
+  //                   root1       root2
+  //             node1                   node3
+  //       leaf1       leaf2       leaf3       leaf4
+  //
+  void makeNewTreeI(Restorer::NodesVector &first, Restorer::NodesVector &second)
+  {
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
+    first.push_back(leaf1);
+    first.push_back(leaf2);
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
+    first.push_back(node1);
+
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
+    first.push_back(leaf3);
+    first.push_back(leaf4);
+    GraphNodePtrNN node3 = makeNewNode(105u, leaf3, leaf4, "node3");
+    first.push_back(node3);
+
+    GraphNodePtrNN node2 = makeNewNode(106u, leaf2, leaf3, "node2");
+    first.push_back(node2);
+
+    GraphNodePtrNN root1 = makeNewNode(107u, node1, node2, "root1");
+    second.push_back(root1);
+
+    GraphNodePtrNN root2 = makeNewNode(108u, node2, node3, "root2");
+    second.push_back(root2);
+  }
+
   DataCleaner         dc_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
@@ -646,6 +710,54 @@ void testObj::test<14>(void)
       ensure_equals("invalid node ID restored",(*it)->getMetaAlert()->getID().get() ,102u);
     }
   }
+}
+
+// trying restoring one leaf
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  Restorer::NodesVector outVec;
+  const GraphNodePtrNN leaf = makeNewLeaf(100u, "leaf");
+  check(outVec);
+}
+
+/*
+              root1   root2
+              /       /   \
+           node1  node2   node3
+           /   \  /   \   /   \
+        leaf1  leaf2  leaf3  leaf4
+*/
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  Restorer::NodesVector outVec;
+  Restorer::NodesVector tmp;
+  makeNewTreeH(outVec, tmp);
+  removeAndCheck(outVec, "root1", "node2");
+  t_.commit();
+}
+
+/*
+              root1   root2
+              /           \
+           node1  node2   node3
+           /   \  /   \   /   \
+        leaf1  leaf2  leaf3  leaf4
+*/
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  Restorer::NodesVector outVec;
+  Restorer::NodesVector tmp;
+  makeNewTreeI(outVec, tmp);
+  removeNodeConnection("root2", "node2");
+  removeNodeConnection("root1", "node2");
+  check(outVec);
+  t_.commit();
 }
 
 } // namespace tut

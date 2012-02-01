@@ -60,7 +60,7 @@
 
   <!-- Alert -->
   <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-    SELECT a.id, a.name, a.detect_time AS detect, a.create_time AS create, a.description, a.certainty, a.severity, m.id_meta_alert
+    SELECT a.id, a.name, to_char(a.detect_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS detect, to_char(a.create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create, a.description, a.certainty, a.severity, m.id_meta_alert
       FROM alerts as a
       LEFT JOIN alert_to_meta_alert_map AS m ON m.id_alert=a.id
         WHERE id=#VALUE#;
@@ -108,7 +108,7 @@
   <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
     <![CDATA[
-         SELECT alerts.id, alerts.name, create_time, severity FROM alerts
+         SELECT alerts.id, alerts.name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') as create_time, severity FROM alerts
             LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='src') as h1 on h1.id_alert=alerts.id
             LEFT JOIN (SELECT id_alert,ip FROM hosts WHERE role='dst') as h2 on h2.id_alert=alerts.id
           WHERE create_time<=#date_to#  AND create_time>=#date_from#
@@ -139,7 +139,7 @@
   <!--Meta Alert -->
 
   <select id="SelectMetaAlertID" resultClass="CMetaAlertEntry" parameterClass="int">
-    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
+    SELECT ma.id AS id, ma.name AS name, to_char(ma.create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time, to_char(ma.last_update_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
       FROM meta_alerts AS ma 
       LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
       WHERE id=#value#
@@ -228,7 +228,7 @@
     </select>
 
     <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-      SELECT id, name, create_time
+      SELECT id, name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time
         FROM meta_alerts
         ORDER BY create_time DESC limit #limit# offset #offset#
     </select>
@@ -244,7 +244,7 @@
 
     <select id="SelectMetaAlertsSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
       <![CDATA[
-        SELECT id, name, create_time FROM meta_alerts
+        SELECT id, name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time FROM meta_alerts
          WHERE create_time<=#date_to# AND create_time>=#date_from#
            AND (name ~ #type# OR 1=#ignoretype#)
          ORDER BY create_time DESC
@@ -283,7 +283,7 @@
 
     <select id="SelectMetaAlertsSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
     <![CDATA[
-        SELECT id,name,create_time from meta_alerts WHERE id in
+        SELECT id,name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time from meta_alerts WHERE id in
         (
           WITH RECURSIVE temp(id_node,id_child) AS
           (
@@ -316,7 +316,7 @@
 
     <!-- Select meta-alerts for given parent (for "showall" option) -->
     <select id="SelectMetaAlertsSummaryByParentRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
-      SELECT id, name, create_time FROM meta_alerts
+      SELECT id, name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time FROM meta_alerts
         WHERE id in (SELECT id_child from meta_alerts_tree WHERE id_node=#extra#)
           AND (name ~ #type# OR 1=#ignoretype#)
         ORDER BY create_time DESC
@@ -352,7 +352,7 @@
     </select>
 
     <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-      SELECT id, name, create_time FROM meta_alerts
+      SELECT id, name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time FROM meta_alerts
          WHERE id in (SELECT id_root FROM meta_alerts_roots)
         ORDER BY create_time DESC
         LIMIT #limit# offset #offset#
@@ -361,7 +361,7 @@
     <!-- query with time and/or type specified -->
     <select id="SelectMetaAlertsRootSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
       <![CDATA[
-       SELECT id, name, create_time FROM meta_alerts
+       SELECT id, name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time FROM meta_alerts
          WHERE id in (SELECT id_root FROM meta_alerts_roots)
            AND create_time<=#date_to# AND create_time>=#date_from#
          ORDER BY create_time DESC
@@ -409,7 +409,7 @@
     <!--TODO: fix to match the SelectMetaAlertsSummaryByIPRange -->
     <select id="SelectMetaAlertsRootSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
     <![CDATA[
-        SELECT id,name,create_time from meta_alerts
+        SELECT id,name, to_char(create_time, 'YYYY-MM-DD HH24:MI:SS UTC') AS create_time from meta_alerts
         JOIN meta_alerts_roots on id=id_root WHERE id in
         (
           WITH RECURSIVE temp(id_node,id_child) AS
@@ -568,7 +568,7 @@
   <select id="DMHeatMapRange" resultClass="CDMHeatMap" parameterClass="CDMPair"  cacheModel="querycache">
     <![CDATA[
        SELECT a.ip as source, b.ip as destination, count(*) as count from hosts as a
-         JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#key# AND a.id_alert<#value#
+         JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>=#key# AND a.id_alert<=#value#
          GROUP BY a.ip, b.ip;
      ]]>
   </select>
