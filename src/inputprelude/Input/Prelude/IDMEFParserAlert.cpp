@@ -3,6 +3,7 @@
  *
  */
 #include <cassert>
+#include <boost/algorithm/string.hpp>
 
 #include "Logger/Logger.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
@@ -12,6 +13,7 @@
 #include "Input/Prelude/IDMEFParserAlert.hpp"
 
 using namespace Persistency;
+
 
 namespace Input
 {
@@ -53,11 +55,25 @@ Persistency::Alert::Name IDMEFParserAlert::parseName(idmef_alert_t *alert) const
   if(idmef_name == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
-  const char * workaround=prelude_string_get_string(idmef_name);
-
-  if(workaround==NULL)
+  const char* name=prelude_string_get_string(idmef_name);
+  if(name == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
+  std::string workaround(name);
+  boost::trim(workaround); // remove leading and trailing spaces from alert's name
+
+  //remove unwanted characters
+  boost::replace_all(workaround,"(","{");
+  boost::replace_all(workaround,"[","{");
+  boost::replace_all(workaround,"<","{");
+  boost::replace_all(workaround,"]","}");
+  boost::replace_all(workaround,")","}");
+  boost::replace_all(workaround,">","}");
+  boost::erase_all(workaround,"\'");
+  boost::erase_all(workaround,"\"");
+  boost::erase_all(workaround,"\\");
+  boost::erase_all(workaround,"*");
+  boost::erase_all(workaround,"^");
   return workaround;
 }
 
@@ -78,6 +94,7 @@ std::string IDMEFParserAlert::parseDescription(idmef_alert_t *alert) const
   if(idmef_desc==NULL)
     return "";
 
+  // TODO: description should be trimmed as well
   return prelude_string_get_string(idmef_desc);
 }
 
