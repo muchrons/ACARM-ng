@@ -1,4 +1,4 @@
--- ?? --
+-- v1.0.6 --
 * displaying heatmap in WUI improved.
 * removal of unwanted characters in input prelude.
 * SQL queries for restoring Acarm-mg state simplified.
