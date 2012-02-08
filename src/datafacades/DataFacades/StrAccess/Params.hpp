@@ -40,6 +40,10 @@ private:
    */
   struct OnUnknownType
   {
+    /** \brief process parameters for main processing code.
+     *  \param p parameters for main processing code.
+     *  \return false if not throw on invalid path.
+     */
     template<typename T>
     static bool process(const T &/*e*/, const Params<THandleMap,TResultCallback> &p)
     {

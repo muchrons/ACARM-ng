@@ -62,13 +62,19 @@ public:
   }
 
 private:
+
   template<typename T>
   struct SignalMaskingOperator
   {
+    /** \brief signal masking operator.
+     *  \param t users code.
+     */
     explicit SignalMaskingOperator(const T &t):
       t_(t)
     {
     }
+    /** \brief operator ()
+     */
     void operator()(void)
     {
       // block sinals for this thread
@@ -76,6 +82,7 @@ private:
       // run user's code.
       t_();
     }
+    /// \brief user's code.
     T t_;
   };
 

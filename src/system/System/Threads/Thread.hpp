@@ -54,11 +54,16 @@ private:
   class FuncObj
   {
   public:
+    /** \brief user's function object template.
+     *  \param t user's function object.
+     */
     explicit FuncObj(const T &t):
       t_(t)
     {
     }
 
+    /** \brief operator ().
+     */
     void operator()(void)
     {
       try

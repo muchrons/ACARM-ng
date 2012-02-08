@@ -41,13 +41,17 @@ private:
   template<typename T>
   struct Operation
   {
+    /** \brief create object for catching all exceptions.
+     *  \param t callable function object to be used as thread's body.
+     */
     explicit Operation(const T &t):
       log_("commons.threads.thread"),
       t_(t)
     {
       LOGMSG_DEBUG(log_, "thread started");
     }
-
+    /** \brief catching exceptions from user's thread function.
+     */
     void operator()(void)
     {
       LOGMSG_DEBUG(log_, "starting user's thread function");

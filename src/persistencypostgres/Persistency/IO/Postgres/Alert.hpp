@@ -43,6 +43,7 @@ private:
 
   struct HostEnumType
   {
+    /** \brief type of host */
     typedef enum { SRC = 1, DST = 2 } Type;
   };
 

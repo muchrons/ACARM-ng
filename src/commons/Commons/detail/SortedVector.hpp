@@ -75,7 +75,15 @@ private:
   template<typename T>
   struct SWO
   {
+    /**
+     * typedef for reference.
+     */
     typedef T E;
+    /** \brief compare two references.
+     *  \param e1 first element to compare.
+     *  \param e2 second element to compare.
+     *  \return true if e1 is less than e2, false otherwise.
+     */
     bool operator()(const E &e1, const E &e2) const
     {
       return e1<e2;
@@ -85,7 +93,15 @@ private:
   template<typename T>
   struct SWO< boost::shared_ptr<T> >
   {
+    /**
+     * typedef for shared_ptr.
+     */
     typedef boost::shared_ptr<T> E;
+    /** \brief compare two shared_ptrs.
+     *  \param e1 first element to compare.
+     *  \param e2 second element to compare.
+     *  \return true if e1 is less than e2, false otherwise.
+     */
     bool operator()(const E &e1, const E &e2) const
     {
       return Base::ViaPointer::lessThan( e1.get(), e2.get() );
@@ -95,7 +111,15 @@ private:
   template<typename T>
   struct SWO< SharedPtrNotNULL<T> >
   {
+    /**
+     * typedef for not NULL shared_ptr
+     */
     typedef SharedPtrNotNULL<T> E;
+    /** \brief compate two not NULL shared_ptrs
+     *  \param e1 first element to compare.
+     *  \param e2 second element to compare.
+     *  \return true if e1 is less than e2, false otherwise.
+     */
     bool operator()(const E &e1, const E &e2) const
     {
       return Base::ViaPointer::lessThan( e1.get(), e2.get() );
@@ -105,13 +129,24 @@ private:
   template<typename T>
   struct SWO<T*>
   {
+    /**
+     * typedef for pointer.
+     */
     typedef T* E;
+    /** \brief compare two pointers
+     *  \param e1 first element to compare.
+     *  \param e2 second element to compare.
+     *  \return true if e1 is less than e2, false otherwise.
+     */
     bool operator()(const E &e1, const E &e2) const
     {
       return Base::ViaPointer::lessThan(e1, e2);
     }
   }; // struct SWO
 
+  /** \brief prepare collection
+   *  \param c collection to be prepared.
+   */
   void prepare(const TCol &c)
   {
     c_.reserve( c.size() );
@@ -119,7 +154,7 @@ private:
     assert( c.size()==c_.size() );
   }
 
-  Collection c_;
+  Collection c_; /// collection
 }; // class SortedVector
 
 

@@ -198,6 +198,10 @@ private:
     {
     }
 
+    /** \brief finiding timeouted element.
+     *  \param e element to be found.
+     *  \return true if element is timeouted, false othervise.
+     */
     bool operator()(const Element &e) const
     {
       return e.second<now_;
