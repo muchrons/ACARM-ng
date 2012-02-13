@@ -70,6 +70,11 @@ void Formatter::format(std::stringstream &ssOut,
   snprintf(tmp, sizeof(tmp), "%03d", ts.millitm);    // foramt zero-padded for readability
   assert( strlen(tmp)<sizeof(tmp) );
 
+  // convert timestamp to string
+  struct tm *timeinfo = localtime(&ts.time);
+  char *time = asctime(timeinfo);  // convert timeinfo structure to c-string
+  if(time != NULL)
+    time[strlen(time) - 1] = '\0';
   // ensure all strings will have some value:
   file=strFix(file);
   call=strFix(call);
@@ -79,7 +84,7 @@ void Formatter::format(std::stringstream &ssOut,
 
   // format string
   ssOut<<priStr<<"@"
-       <<ts.time<<"."<<tmp<<"/"
+       <<time<<"."<<tmp<<"/"
        <<nn.get()<<" ["
        <<idMap_.getThreadID()<<"] "
        <<file<<":"

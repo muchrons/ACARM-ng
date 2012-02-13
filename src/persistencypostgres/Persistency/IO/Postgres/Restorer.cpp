@@ -122,6 +122,9 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 {
   addTreeNodesToCache(er, malerts);
 
+  int p = 10;
+  const size_t rootsCount = roots.size();
+
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub_transaction") );
 
