@@ -1,3 +1,8 @@
+-- v1.0.7 --
+* bug fix for restorer added.
+* logging progress of restoring data base content added.
+
+
 -- v1.0.6 --
 * displaying heatmap in WUI improved.
 * removal of unwanted characters in input prelude.
