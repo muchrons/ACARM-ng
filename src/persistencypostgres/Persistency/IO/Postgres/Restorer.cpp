@@ -140,7 +140,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub_transaction") );
-
+  int lastp = 0;
   for(size_t i = 0; i < rootsCount; ++i)
   {
     try
@@ -162,9 +162,10 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                           << e.what();
     }
     int p = percent(static_cast<double>(i+1)/rootsCount);
-    if(p)
+    if(p != lastp)
     {
       LOGMSG_INFO_S(log_)<< "Restoring data base content - " << p << " % " << "completed";
+      lastp = p;
     }
   }
   LOGMSG_INFO_S(log_)<< "Restoring data base content - 100 \% completed";
@@ -269,6 +270,7 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                                    const Tree::IDsVector                          &malerts)
 {
+  int lastp = 0;
   const size_t malertsCount = malerts.size();
   std::map<DataBaseID, std::vector<DataBaseID> > malertsAllChildren = er.readAllMetaAlertsChildren();
   for(size_t i = 0; i < malertsCount; ++i)
@@ -277,9 +279,10 @@ void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReade
     // put this data to the tree which represents meta alerts tree structure
     treeNodes_.add(malerts[i], TreePtr(new Tree(malerts[i], malertChildren) ));
     int p = percent(static_cast<double>(i+1)/malertsCount);
-    if(p)
+    if(p != lastp)
     {
       LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - " << p << " % " << "completed";
+      lastp = p;
     }
   }
   LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - 100 \% completed";
