@@ -21,6 +21,20 @@ void removeDuplicates(std::vector<T> &out)
   out.clear();
   out.assign( s.begin(), s.end() );
 } // removeDuplicates()
+
+int percent(double p)
+{
+  int ret = 0;
+  for(int i=10; i<=100; i+=10)
+  {
+    if(p > 0.01*i)
+    {
+      ret = i;
+    }
+  }
+  return ret;
+}
+
 } // unnamed namespace
 
 
@@ -122,29 +136,39 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 {
   addTreeNodesToCache(er, malerts);
 
+  const size_t rootsCount = roots.size();
+
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub_transaction") );
-
-  for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
+  int lastp = 0;
+  for(size_t i = 0; i < rootsCount; ++i)
   {
     try
     {
-      deepFirstSearch(*it, out, er, connStubIO, tStubIO, restoredIDs);
-      restoredIDs.push_back(*it);
+      deepFirstSearch(roots[i], out, er, connStubIO, tStubIO, restoredIDs);
+      restoredIDs.push_back(roots[i]);
     }
     catch(const ExceptionNoSuchEntry &e)
     {
-      LOGMSG_WARN_S(log_)<<"root with id "<< *it << " doesn't exist in cache; exception message: "<< e.what();
+      LOGMSG_WARN_S(log_)<<"root with id "<< roots[i]
+                         << " doesn't exist in cache; exception message: "
+                         << e.what();
     }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
-      LOGMSG_WARN_S(log_) << "root with id " << *it
+      LOGMSG_WARN_S(log_) << "root with id " << roots[i]
                           << " has bad number of children"
                              " this subtree is being skipped; exception message: "
                           << e.what();
     }
+    int p = percent(static_cast<double>(i+1)/rootsCount);
+    if(p != lastp)
+    {
+      LOGMSG_INFO_S(log_)<< "Restoring data base content - " << p << " % " << "completed";
+      lastp = p;
+    }
   }
-
+  LOGMSG_INFO_S(log_)<< "Restoring data base content - 100 \% completed";
   // though this is only a stub, it is better to commit it since automatic
   // rollback leaves ugly warning in log file.
   tStubIO.commit();
@@ -176,6 +200,8 @@ GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                 
   // add Alert to cache
   addIfNew(alertPtr, alertID);
   const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, sysID, connStubIO, tStubIO ) );
+  // add Meta Alert to cache
+  addIfNew(graphNodeLeaf->getMetaAlert(), id);
   out.push_back(graphNodeLeaf);
   return graphNodeLeaf;
 }
@@ -244,7 +270,7 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                                    const Tree::IDsVector                          &malerts)
 {
-  int p = 10;
+  int lastp = 0;
   const size_t malertsCount = malerts.size();
   std::map<DataBaseID, std::vector<DataBaseID> > malertsAllChildren = er.readAllMetaAlertsChildren();
   for(size_t i = 0; i < malertsCount; ++i)
@@ -252,13 +278,14 @@ void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReade
     const Tree::IDsVector &malertChildren = malertsAllChildren[malerts[i]];
     // put this data to the tree which represents meta alerts tree structure
     treeNodes_.add(malerts[i], TreePtr(new Tree(malerts[i], malertChildren) ));
-    if( ((double)(i+1)/malertsCount) > 0.01*p)
+    int p = percent(static_cast<double>(i+1)/malertsCount);
+    if(p != lastp)
     {
       LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - " << p << " % " << "completed";
-      p+=10;
+      lastp = p;
     }
   }
-  LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - " << p << " % " << "completed";
+  LOGMSG_INFO_S(log_)<< "Reading meta-alerts tree - 100 \% completed";
 }
 
 void Restorer::markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver  &es,
