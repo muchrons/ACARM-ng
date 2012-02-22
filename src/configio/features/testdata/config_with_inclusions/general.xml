@@ -6,6 +6,7 @@
     <cleanupInterval>42</cleanupInterval>
     <cleanupOlder>13</cleanupOlder>
     <pluginsDir>/some/dir</pluginsDir>
+    <memoryLimit>1983</memoryLimit>
   </general>
 
 </include>

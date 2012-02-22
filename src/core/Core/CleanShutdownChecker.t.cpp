@@ -123,6 +123,7 @@ const char *g_configContent=
   "    <cleanupInterval>42</cleanupInterval>"
   "    <cleanupOlder>41</cleanupOlder>"
   "    <pluginsDir>/some/dir/name</pluginsDir>"
+  "    <memoryLimit>301</memoryLimit>"
   "  </general>"
   ""
   "  <persistency>"

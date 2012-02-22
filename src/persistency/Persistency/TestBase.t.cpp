@@ -15,6 +15,7 @@ const char *defaultConfigContent=
   "    <cleanupInterval>42</cleanupInterval>"
   "    <cleanupOlder>41</cleanupOlder>"
   "    <pluginsDir>/some/dir/name</pluginsDir>"
+  "    <memoryLimit>1983</memoryLimit>"
   "  </general>"
   ""
   "  <persistency>"

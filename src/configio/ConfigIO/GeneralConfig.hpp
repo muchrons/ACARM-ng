@@ -27,15 +27,20 @@ public:
   /** \brief interval between two time periods. */
   typedef unsigned int Interval;
 
+  /** \brief amount of memory. */
+  typedef unsigned int Megabytes;
+
   /** \brief create object instance with given configuration.
    *  \param wuiUrl          address to WUI of ACARM-ng.
    *  \param cleanupInterval interval between persistency cleanups.
    *  \param cleanupOlder    maximum age for alerts before removal (0 means never remove).
+   *  \param memoryLimit     mamimum amount of memory in megabytes that ACARM-ng can use
    *  \param pluginsDir      directory with plugins.
    */
   GeneralConfig(const URL                     &wuiUrl,
                 Interval                       cleanupInterval,
                 Interval                       cleanupOlder,
+                Megabytes                      memoryLimit,
                 const boost::filesystem::path &pluginsDir);
 
   /** \brief gets WUI address.
@@ -59,6 +64,13 @@ public:
   {
     return cleanupOlder_;
   }
+  /** \brief gets maximum amount of memory that ACARM-ng can use.
+   *  \return maximum number of megabytes to use.
+   */
+  Interval getMemoryLimit(void) const
+  {
+    return memoryLimit_;
+  }
   /** \brief returns path to directory with plugins.
    *  \return path to plugins' directory.
    */
@@ -71,6 +83,7 @@ private:
   URL                     wuiUrl_;
   Interval                cleanupInterval_;
   Interval                cleanupOlder_;
+  Megabytes               memoryLimit_;
   boost::filesystem::path pluginsDir_;
 }; // class GeneralConfig
 

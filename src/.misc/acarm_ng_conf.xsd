@@ -26,6 +26,7 @@
       <xsd:element name="url"              type="xsd:string"/>
       <xsd:element name="cleanupInterval"  type="xsd:unsignedInt"/>
       <xsd:element name="cleanupOlder"  type="xsd:unsignedInt"/>
+      <xsd:element name="memoryLimit"  type="xsd:unsignedInt"/>
     </xsd:sequence>
   </xsd:complexType>
 

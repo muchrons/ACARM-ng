@@ -68,7 +68,7 @@ void TestDBAccess::removeAllData(void)
 
 void TestDBAccess::fillWithContent1(void)
 {
-  const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql > /dev/null");
+  const int  ret=system("psql \"host=localhost dbname=acarm_ng_test user=acarm-ng-tests password=test.password\" -f testdata/test_data_001.sql > /dev/null");
   assert(ret==0 && "ooops - filling data base with test content failed");
 }
 

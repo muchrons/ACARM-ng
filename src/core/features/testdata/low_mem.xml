@@ -5,8 +5,8 @@
     <url>http://test.url</url>
     <cleanupInterval>42</cleanupInterval>
     <cleanupOlder>13</cleanupOlder>
-    <pluginsDir>/some/dir</pluginsDir>
-    <memoryLimit>1983</memoryLimit>
+    <pluginsDir>.</pluginsDir>
+    <memoryLimit>1</memoryLimit>
   </general>
 
   <persistency>
@@ -30,6 +30,8 @@
 
   <triggers/>
 
-  <inputs/>
+  <inputs>
+    <someinput name="someinput"/>
+  </inputs>
 
 </acarm_ng>

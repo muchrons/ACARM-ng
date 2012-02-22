@@ -45,16 +45,18 @@ std::string fixURL(const std::string &url)
 } // unnamed namespace
 
 GeneralConfig::GeneralConfig(const URL                     &wuiUrl,
-                             const Interval                 cleanupInterval,
-                             const Interval                 cleanupOlder,
+                             Interval                 cleanupInterval,
+                             Interval                 cleanupOlder,
+                             Megabytes                memoryLimit,
                              const boost::filesystem::path &pluginsDir):
   wuiUrl_( fixURL(wuiUrl) ),
   cleanupInterval_(cleanupInterval),
   cleanupOlder_(cleanupOlder),
+  memoryLimit_(memoryLimit),
   pluginsDir_(pluginsDir)
 {
   if(cleanupInterval_<1)
-    throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "cleanup-interval", cleanupInterval, "interval is too small");
+    throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "cleanup-interval", cleanupInterval_, "interval is too small");
 }
 
 } // namespace ConfigIO
