@@ -75,6 +75,7 @@ void testObj::test<1>(void)
     "    <cleanupInterval>42</cleanupInterval>"
     "    <cleanupOlder>997</cleanupOlder>"
     "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -99,6 +100,7 @@ void testObj::test<2>(void)
     "    <cleanupInterval>42</cleanupInterval>"
     "    <cleanupOlder>997</cleanupOlder>"
     "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -118,6 +120,7 @@ void testObj::test<3>(void)
 //    "    <cleanupInterval>42</cleanupInterval>"
     "    <cleanupOlder>997</cleanupOlder>"
     "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -137,6 +140,7 @@ void testObj::test<4>(void)
     "    <cleanupInterval>42</cleanupInterval>"
     "    <cleanupOlder>997</cleanupOlder>"
     "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -156,6 +160,7 @@ void testObj::test<5>(void)
     "    <cleanupInterval>-42</cleanupInterval>"
     "    <cleanupOlder>997</cleanupOlder>"
     "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -175,6 +180,7 @@ void testObj::test<6>(void)
     "    <cleanupInterval>42</cleanupInterval>"
 //    "    <cleanupOlder>997</cleanupOlder>"
     "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -194,10 +200,32 @@ void testObj::test<7>(void)
     "    <cleanupInterval>42</cleanupInterval>"
     "    <cleanupOlder>997</cleanupOlder>"
 //    "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>1983</memoryLimit>"
     "  </general>"
     "</acarm_ng>"
     "";
   testThrow(xml);
 }
+
+// test exception when memory limit is missing
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const char *xml=
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    "<acarm_ng>"
+    "  <general>"
+    "    <url>http://go.to.hell</url>"
+    "    <cleanupInterval>42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
+    "    <pluginsDir>/some/dir/name</pluginsDir>"
+//    "    <memoryLimit>1983</memoryLimit>"
+    "  </general>"
+    "</acarm_ng>"
+    "";
+  testThrow(xml);
+}
+
 
 } // namespace tut

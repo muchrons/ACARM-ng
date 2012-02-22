@@ -6,6 +6,7 @@
     <cleanupInterval>42</cleanupInterval>
     <cleanupOlder>360</cleanupOlder>
     <pluginsDir>/home/acarm-ng/plugins/</pluginsDir>
+    <memoryLimit>1983</memoryLimit>
   </general>
 
   <persistency>

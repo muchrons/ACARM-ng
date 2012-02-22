@@ -19,7 +19,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/IO/Postgres/TestConnection.t");
+factory tf("Persistency/IO/Postgres/TestConnection");
 } // unnamed namespace
 
 

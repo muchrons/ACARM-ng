@@ -23,7 +23,7 @@ export TC:=gcc
 # features to build with
 export FEATURES:= \
                  lock_on_write_graph_add \
-                 use_new_boost_filesystem
+                 use_old_boost_filesystem
 
 TMP:=
 TMP_OPT:=
