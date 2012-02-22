@@ -34,6 +34,7 @@ public:
    *  \param wuiUrl          address to WUI of ACARM-ng.
    *  \param cleanupInterval interval between persistency cleanups.
    *  \param cleanupOlder    maximum age for alerts before removal (0 means never remove).
+   *  \param memoryLimit     mamimum amount of memory in megabytes that ACARM-ng can use
    *  \param pluginsDir      directory with plugins.
    */
   GeneralConfig(const URL                     &wuiUrl,
