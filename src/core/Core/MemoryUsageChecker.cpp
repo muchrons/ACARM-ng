@@ -77,7 +77,7 @@ bool MemoryUsageChecker::iSmemoryLimitExceeded() const
     return false;
 
   //OOM
-  if ((clock()-lastNotification_)/CLOCKS_PER_SEC < 60)
+  if ((clock()-lastNotification_)/CLOCKS_PER_SEC > 60)
     {
       lastNotification_=clock();
       LOGMSG_WARN_S(log_) << "Memory exhausted. Slowing things down. Message suppressed for 60 seconds.";
