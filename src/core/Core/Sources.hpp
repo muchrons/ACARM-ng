@@ -13,6 +13,7 @@
 #include "Preprocessor/Logic.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Factory.hpp"
+#include "Core/MemoryUsageChecker.hpp"
 
 namespace Core
 {
@@ -39,6 +40,7 @@ private:
   Core::Types::AlertsFifo          queue_;
   Input::InputsCollection          inputs_;
   Preprocessor::Logic              preproc_;
+  const MemoryUsageChecker         memCheck_;
 }; // class Sources
 
 } // namespace Core
