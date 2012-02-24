@@ -32,9 +32,6 @@ Persistency::GraphNodePtrNN Sources::read(void)
   // loop here ensures that reading will not stop when alert has been read
   // but rejected by the preprocessor.
 
-  //wait if we are short of memory
-  if (memCheck_.iSmemoryLimitExceeded())
-    sleep(1);
   while(true)
   {
     // read alert from input(s)
@@ -56,6 +53,10 @@ Persistency::GraphNodePtrNN Sources::read(void)
     {
       LOGMSG_DEBUG_S(log_)<<"alert "<<id.get()<<" accepted by the preprocessor - commiting";
       t.commit();
+
+      //wait if we are short of memory
+      if (memCheck_.iSmemoryLimitExceeded())
+        sleep(1);
       return leaf;
     }
     LOGMSG_INFO_S(log_)<<"alert '"<<alert->getName().get()<<"' rejected by the preprocessor";
