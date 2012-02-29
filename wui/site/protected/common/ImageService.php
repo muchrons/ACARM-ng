@@ -7,7 +7,7 @@ function shutdown_func()
     Header("Content-Type: image/png");
     $aa=error_get_last();
     $bb=stripos($aa["message"],"Maximum execution time");
-    
+
     if ($bb===false)
         $message=$aa["message"];
       else
