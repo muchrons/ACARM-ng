@@ -16,7 +16,7 @@ class Home extends TPage
     return $number;
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
     $mainuse=SQLWrapper::queryForObject('SMetaAlertsInUse');
     $alerts=SQLWrapper::queryForObject('SAlertCount');

@@ -1,5 +1,53 @@
 <?php
 ini_set("memory_limit","256M"); //override default memory limit
+error_reporting(0); //suppress error message of execution time exceeded in order not to corrupt image
+
+function shutdown_func()
+{
+    Header("Content-Type: image/png");
+    $aa=error_get_last();
+    $bb=stripos($aa["message"],"Maximum execution time");
+    
+    if ($bb===false)
+        $message=$aa["message"];
+      else
+        $message="PHP execution time limit exceeded. Please choose smaller range, increase the execution time in php.ini or use faster hardware.";
+
+    printError($message,700,400);
+}
+
+register_shutdown_function("shutdown_func");
+
+function printError($message,$width,$height)
+{
+  $fontnum=2;
+
+  if ($height>1200)
+    $height=1200;
+  if($width>1920)
+    $width=1920;
+
+  $img = imagecreatetruecolor($width,$height);
+  $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
+  $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);
+  $fontw=imagefontwidth($fontnum);
+  assert($fontw!=0);
+  $numchars=((600-5)/$fontw);
+  $msg=explode("\n",wordwrap($message,$numchars,"\n")); //wrap long messages
+
+  imagestring($img, 3, 3, 3, "Exception has been thrown:", $red);
+
+  $hpos=imagefontwidth($fontnum)*4;
+  foreach ($msg as $m)
+    {
+      imagestring ($img, $fontnum, 5, $hpos, $m, $yellow);
+      $hpos+=imagefontwidth($fontnum)*2;
+    }
+
+  imagepng($img);
+  imagedestroy($img);
+}
+
 
 class ImageService extends TService
 {
@@ -17,7 +65,10 @@ class ImageService extends TService
     }
     catch(Exception $e)
     {
-      $this->printError($e->getMessage());
+      $width=($this->width===null)?600:$this->width;
+      $height=($this->height===null)?600:$this->height;
+
+      printError($e->getMessage(),$width,$height);
       return;
     }
 
@@ -29,38 +80,6 @@ class ImageService extends TService
       $this->height=0;
     if($this->width<0)
       $this->width=0;
-  }
-
-  private function printError($message)
-  {
-    $fontnum=2;
-    $width=($this->width===null)?600:$this->width;
-    $height=($this->height===null)?600:$this->height;
-
-    if ($this->height>1200)
-      $this->height=1200;
-    if($this->width>1920)
-      $this->width=1920;
-
-    $img = imagecreatetruecolor($width,$height);
-    $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
-    $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);
-    $fontw=imagefontwidth($fontnum);
-    assert($fontw!=0);
-    $numchars=((600-5)/$fontw);
-    $msg=explode("\n",wordwrap($message,$numchars,"\n")); //wrap long messages
-
-    imagestring($img, 3, 3, 3, "Exception was thrown:", $red);
-
-    $hpos=imagefontwidth($fontnum)*4;
-    foreach ($msg as $m)
-      {
-        imagestring ($img, $fontnum, 5, $hpos, $m, $yellow);
-        $hpos+=imagefontwidth($fontnum)*2;
-      }
-
-    imagepng($img);
-    imagedestroy($img);
   }
 
   private function getRequestOrThrow($request, $field, $text)
@@ -100,7 +119,7 @@ class ImageService extends TService
     }
     catch(Exception $e)
     {
-      $this->printError($e->getMessage());
+      printError($e->getMessage(),$this->width,$this->height);
     }
   }
 
