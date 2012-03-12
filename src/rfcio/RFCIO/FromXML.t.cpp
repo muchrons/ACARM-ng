@@ -1331,4 +1331,24 @@ void testObj::test<66>(void)
                 "stop-time(date-time): 2000-03-09T19:30:00-05:00");
 }
 
+// parse service without name
+template<>
+template<>
+void testObj::test<67>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Service>"
+                     //"<idmef:name>nameX</idmef:name>"
+                     "<idmef:port>42</idmef:port>"
+                   "</idmef:Service>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::ServiceVector out=fx_.parseService( parseXML(in) );
+  ensure("empty collection", out.begin()!=out.end() );
+  ensure_equals("invalid name", (*out.begin())->getName().get(), string("unknown") );
+  ensure_equals("invalid port", (*out.begin())->getPort().get(), 42);
+  ensure("protocol is not NULL", (*out.begin())->getProtocol().get()==NULL );
+  ensure("reference URL is not NULL", (*out.begin())->getReferenceURL()==NULL );
+}
+
 } // namespace tut
