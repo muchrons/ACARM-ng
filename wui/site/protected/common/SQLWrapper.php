@@ -8,7 +8,7 @@ function microtime_float()
 
 class SQLWrapper
 {
-  public function queryForObject($param,$value=null)
+  public static function queryForObject($param,$value=null)
   {
     SQLWrapper::check_dbversion();  // TODO: check db version only on page load (i.e. in page template)
     $start=microtime_float();
@@ -19,7 +19,7 @@ class SQLWrapper
     return $ret;
   }
 
-  public function queryForList($param,$value=null)
+  public static function queryForList($param,$value=null)
   {
     SQLWrapper::check_dbversion();  // TODO: check db version only on page load (i.e. in page template)
     $start=microtime_float();
@@ -31,7 +31,7 @@ class SQLWrapper
     return $ret;
   }
 
-  public function delete($param,$value)
+  public static function delete($param,$value)
   {
     $start=microtime_float();
     $ret=CSQLMap::get()->delete($param,$value);
@@ -42,7 +42,7 @@ class SQLWrapper
     return $ret;
   }
 
-  private function check_dbversion()
+  private static function check_dbversion()
   {
     $min_db_version=3;
     $max_db_version=5;

@@ -145,6 +145,17 @@ void testObj::test<8>(void)
   ensure_equals("Service Protocol",ips.getService()->getPort().get(),42);
 }
 
+// Check service with no name
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  td_.addAddressToSource(source_,"192.168.0.4",false);
+  td_.addServiceToSource(source_,NULL,"proto",80);
 
+  const IDMEFParserSource ips(source_);
+  ensure("Source service is null",ips.getService()!=NULL);
+  ensure_equals("Service Name",ips.getService()->getName().get(), std::string("unknown"));
+}
 
 } // namespace tut
