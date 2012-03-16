@@ -25,6 +25,14 @@
     - round - round to nearest integer
     - mod - compute modulo arithmetic
 * added more tests for external libraries, required for compilation.
+-- v1.0.8 --
+* input prelude bug fix for services without name added.
+* additional tests for input prelude and rfcio components added.
+* minor PHP style fixes in WUI added.
+* default WUI time set to 1 day.
+* handling execution time exceeded added.
+
+
 -- v1.0.7 --
 * bug fix for restorer added.
 * logging progress of restoring data base content added.
