@@ -220,7 +220,10 @@ private:
   class SingletonDeallocator: public AtExitResourceDeallocator
   {
   public:
-    // create member when initialized
+    /** \brief create member when initialized
+     *  \param d data container.
+     *  \param mutex pointer to mutex used for locking some operations.
+     */
     SingletonDeallocator(TSingletonData                   **d,
                          Threads::SafeInitLock::MutexType  *mutex):
       d_(*d),

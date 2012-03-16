@@ -43,13 +43,18 @@ public:
 private:
   struct EntryID
   {
+    /** \brief construct entry ID.
+     *  \param ptr shared ponter to object.
+     *  \param id ID connected with the object.
+     */
     EntryID(TSharedPtrNN ptr, DataBaseID id):
       ptr_( ptr.shared_ptr() ),
       id_(id)
     {
     }
-
+    /** \brief pointer to the object. */
     TWeakPtr   ptr_;
+    /** \brief ID connected with the object. */
     DataBaseID id_;
   }; // struct EntryID
 

@@ -62,10 +62,13 @@ public:
   }
 
 private:
-  // simple meta-program for automatic zeroing numbers
   template<typename V, bool IsNumber>
   struct IfNeeded           // number
   {
+    /** \brief automatic zeroing numbers
+     *  \param v value.
+     *  \return 0 if value is NULL, value othervise.
+     */
     static V getDefault(const V *v)
     {
       if(v==NULL)
@@ -76,6 +79,10 @@ private:
   template<typename V>
   struct IfNeeded<V, false> // non-number
   {
+    /** \brief automatic zeroing numbers
+     *  \param v value.
+     *  \return 0 if value is NULL, value othervise.
+     */
     static V getDefault(const V *v)
     {
       if(v==NULL)

@@ -104,6 +104,10 @@ private:
   // helper class for finiding unused elements
   struct IsUnused
   {
+    /** \brief finiding unused element.
+     *  \param e element to be found.
+     *  \return true if element is unused, false othervise.
+     */
     bool operator()(const T &e) const
     {
       return CRTP::isUnused(e);
