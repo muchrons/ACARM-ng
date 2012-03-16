@@ -150,10 +150,10 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  td_.addAddressToSource(source_,"192.168.0.4",false);
-  td_.addServiceToSource(source_,NULL,"proto",80);
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
+  td_.addServiceToTarget(target_,NULL,"proto",80);
 
-  const IDMEFParserSource ips(source_);
+  const IDMEFParserTarget ips(target_);
   ensure("Source service is null",ips.getService()!=NULL);
   ensure_equals("Service Name",ips.getService()->getName().get(), std::string("unknown"));
 }
