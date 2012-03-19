@@ -9,6 +9,7 @@
 #include "ConfigConsts/heartbeats.hpp"
 #include "ConfigConsts/inputs.hpp"
 #include "Commons/Convert.hpp"
+#include "Commons/setThreadName.hpp"
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
 
@@ -27,6 +28,7 @@ Thread::Thread(ReaderPtrNN                       reader,
   lastHeartbeat_(0u),
   creator_(new DataFacades::AnalyzersCreator)                   // local cache
 {
+  Commons::setThreadName(reader->getName().str());
 }
 
 
