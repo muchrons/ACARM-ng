@@ -6,7 +6,9 @@
 #include "ConfigConsts/heartbeats.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
+#include "Commons/setThreadName.hpp"
 #include "Core/Types/Proc/Processor.hpp"
+
 
 using namespace std;
 
@@ -30,7 +32,6 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
   return Logger::Node( str.c_str() );
 } // makeNodeName()
 
-
 class ThreadImpl
 {
 public:
@@ -45,6 +46,7 @@ public:
   {
     if(interface_==NULL)
       throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
+    Commons::setThreadName(interface->getName().str());
   }
 
   void operator()(void)

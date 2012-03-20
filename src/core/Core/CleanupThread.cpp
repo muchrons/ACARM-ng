@@ -8,6 +8,7 @@
 #include "ConfigIO/Singleton.hpp"
 #include "Logger/Logger.hpp"
 #include "Core/CleanupThread.hpp"
+#include "Commons/setThreadName.hpp"
 
 namespace Core
 {
@@ -89,6 +90,7 @@ CleanupThread::CleanupThread(void):
   th_( PeriodicalCleanup(pc_) )
 {
   LOGMSG_INFO(log_, "cleanup thread has been started");
+  Commons::setThreadName("cleanup_thread");
 }
 
 CleanupThread::~CleanupThread(void)

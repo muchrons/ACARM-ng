@@ -52,10 +52,8 @@ Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_ser
   if (idmef_service)
   {
     prelude_string_t *idmef_service_name = idmef_service_get_name(idmef_service);
-    if (idmef_service_name==NULL)
-      return service;
+    const Persistency::Service::Name name=(idmef_service_name==NULL)?"unknown":(prelude_string_get_string(idmef_service_name));
 
-    const Persistency::Service::Name name=prelude_string_get_string(idmef_service_name);
     Persistency::Service::Protocol protocol;
     const prelude_string_t *idmef_protocol_str = idmef_service_get_protocol(idmef_service);
     if (idmef_protocol_str)

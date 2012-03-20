@@ -7,6 +7,7 @@
 #include "System/SignalUnmasker.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/setThreadName.hpp"
 #include "Persistency/IO/create.hpp"
 #include "Core/Processors.hpp"
 #include "Core/Sources.hpp"
@@ -35,6 +36,8 @@ struct SignalHandlingCallable
    */
   void operator()(void)
   {
+    // set thread name
+    Commons::setThreadName("signals_handler");
     // unmasks all signals for this thread.
     System::SignalUnmasker unmask;
     try
