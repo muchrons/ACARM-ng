@@ -70,8 +70,6 @@ bool MemoryUsageChecker::iSmemoryLimitExceeded() const
     }
   value/=1024; //we want Mbytes
 
-  std::cerr << "Mamy " << value << ' ' << "mozemy " << maxMem_ << std::endl;
-
   //we're fitting in the declared memory
   if (maxMem_ > value)
     return false;
