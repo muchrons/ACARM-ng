@@ -5,6 +5,7 @@
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
 #include "Core/Types/Proc/Processor.hpp"
+#include "Commons/setThreadName.hpp"
 
 using namespace std;
 
@@ -43,6 +44,7 @@ public:
   {
     if(interface_==NULL)
       throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
+    Commons::setThreadName(interface->getName().str());
   }
 
   void operator()(void)

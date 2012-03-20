@@ -9,6 +9,7 @@
 #include "Commons/Convert.hpp"
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
+#include "Commons/setThreadName.hpp"
 
 using namespace Core::Types::Proc;
 
@@ -25,6 +26,7 @@ Thread::Thread(ReaderPtrNN                       reader,
   lastHeartbeat_(0u),
   creator_(new DataFacades::AnalyzersCreator)                   // local cache
 {
+  Commons::setThreadName(reader->getName().str());
 }
 
 

@@ -95,7 +95,7 @@ class AlertTypes extends TTemplateControl
   public function getSelectedTypes()
   {
     $selectedRows=$this->getSelection();
-    $names="^";
+    $names="";
     $first=false;
     foreach($selectedRows as $row)
       {
@@ -104,9 +104,9 @@ class AlertTypes extends TTemplateControl
         else
           $names.="|";
         assert($this->data_[$row]!=null);
-        $names.=$this->data_[$row]->Name;
+        $names.=str_replace("|", ":", $this->data_[$row]->Name); //remove '|' symbol
       }
-    $names.="$";
+    $names.="";
     return $names;
   }
 

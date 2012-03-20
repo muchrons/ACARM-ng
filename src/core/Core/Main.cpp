@@ -7,6 +7,7 @@
 #include "System/SignalUnmasker.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/setThreadName.hpp"
 #include "Persistency/IO/create.hpp"
 #include "Core/Processors.hpp"
 #include "Core/Sources.hpp"
@@ -35,6 +36,7 @@ struct SignalHandlingCallable
    */
   void operator()(void)
   {
+    Commons::setThreadName("signal_handling");
     // unmasks all signals for this thread.
     System::SignalUnmasker unmask;
     try
@@ -65,6 +67,8 @@ Main::Main(void):
   signals_(&threads_)                           // after all initialization is done, register real handles
 {
   LOGMSG_INFO(log_, "core is up and running");
+  // set thread name
+  Commons::setThreadName("acarm_ng");
 }
 
 Main::~Main(void)

@@ -87,7 +87,7 @@ class Alerts extends TPage
         $this->Range->setDates($date_from,$date_to);
 
         $type=$this->Request->itemAt('type');
-        $this->Range->setType($type);
+        $this->Range->setType("(^".$this->clearType($type)."$)");
 
         $severities=$this->Request->itemAt('severities');
         if( $severities!==null )
@@ -95,6 +95,13 @@ class Alerts extends TPage
       }
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();
+  }
+
+  private function clearType($param)
+  {
+    $escape_from=array("\\","(",")","^","$",".","*","?");
+    $escape_to  =array("\\\\","\(","\)","\^","\\$","\.","\\*","\\?");
+    return str_replace($escape_from,$escape_to,$param);
   }
 };
 
