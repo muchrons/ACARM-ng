@@ -146,22 +146,5 @@ void testObj::test<12>(void)
   ensure_equals("invalid memory limit", cfg_.getMemoryLimit(), 105u);
 }
 
-// test memorylimit throw
-template<>
-template<>
-void testObj::test<13>(void)
-{
-try
-  {
-    GeneralConfig tmp("http://url.org", 42u, 66u, 3u, "/a/b/c");
-    tut::fail("c-tor didn't throw on invalid URL");
-  }
- catch(const ExceptionInvalidValue &)
-   {
-     // this is expected
-   }
-}
-
-
 
 } // namespace tut

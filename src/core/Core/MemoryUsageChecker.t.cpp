@@ -42,7 +42,7 @@ template<>
 void testObj::test<2>(void)
 {
   MemoryUsageChecker pl;
-  tut::ensure_equals("Low mem indicated, should be hi mem.", pl.iSmemoryLimitExceeded(), false);
+  tut::ensure_equals("Hi mem indicated, should be low mem.", pl.iSmemoryLimitExceeded(), false);
 }
 
 // test for lomem scenario

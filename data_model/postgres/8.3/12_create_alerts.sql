@@ -18,7 +18,7 @@ CREATE TABLE    alerts
   CONSTRAINT severity_check       CHECK ( 0<=severity AND severity<=4 ),
   CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR detect_time<=create_time )
 );
-
+CREATE INDEX alerts_create_time_index ON alerts(create_time);
 
 -- reference urls
 CREATE SEQUENCE reference_urls_id_seq;

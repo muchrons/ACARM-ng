@@ -227,5 +227,25 @@ void testObj::test<8>(void)
   testThrow(xml);
 }
 
+// test throw on invalid memory limit
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const char *xml=
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    "<acarm_ng>"
+    "  <general>"
+    "    <url>http://go.to.hell</url>"
+    "    <cleanupInterval>42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
+    "    <pluginsDir>/some/dir/name</pluginsDir>"
+    "    <memoryLimit>-1983</memoryLimit>"
+    "  </general>"
+    "</acarm_ng>"
+    "";
+  testThrow(xml);
+}
+
 
 } // namespace tut

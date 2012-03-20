@@ -71,21 +71,14 @@ class DataMiningAlertTypes extends TPage
 
   function getSelectedRows()
   {
-    $escape_from=array("(",")");
-    $escape_to  =array("\(","\)");
-
-    $selection=str_replace($escape_from,$escape_to,$this->Alerts->getSelectedTypes());
-
-    $selection="(".$selection.")";
-
-    if($selection=="(^$)")
+    if($this->Alerts->getSelectedTypes()=="")
       {
         echo "No typed were selected. Maybe you have turned off JavaScript.";
         die();
       }
 
     $range=$this->Range->getRangeData();
-    $link=$this->constructUrl($range->date_from, $range->date_to, $range->srct, $range->dstt, $range->severities, $selection);
+    $link=$this->constructUrl($range->date_from, $range->date_to, $range->srct, $range->dstt, $range->severities, $this->Alerts->getSelectedTypes());
     $this->Response->redirect($link);
   }
 }

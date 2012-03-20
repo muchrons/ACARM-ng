@@ -116,6 +116,8 @@ following options are supported:
     <cleanupInterval>24</cleanupInterval> <!-- clean-up procedure running interval
                                                measured in hours. note that clean-up
                                                is NOT run during program startup. -->
+    <memoryLimit>1983</memoryLimit>       <!-- limit of memory that ACARM can use,
+                                               to be more specific this is the size of VmSize -->
     <pluginsDir>/my/path</pluginsDir>     <!-- path to directory with plugins -->
   </general>
 
