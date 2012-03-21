@@ -65,12 +65,12 @@ size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
   return impl_.removeEntriesOlderThan(days, t);
 }
 
-void Connection::issuePeriodicSystemQueriesImpl(Transaction &t)
+void Connection::issuePeriodicSystemQueriesImpl(Transaction &/*t*/)
 {
   ++periodicSystemQueries_;
 }
 
-void Connection::issuePeriodicUserQueriesImpl(Transaction &t)
+void Connection::issuePeriodicUserQueriesImpl(Transaction &/*t*/)
 {
   ++periodicUserQueries_;
 }

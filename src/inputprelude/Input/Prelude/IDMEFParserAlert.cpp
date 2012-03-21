@@ -61,19 +61,6 @@ Persistency::Alert::Name IDMEFParserAlert::parseName(idmef_alert_t *alert) const
 
   std::string workaround(name);
   boost::trim(workaround); // remove leading and trailing spaces from alert's name
-
-  //remove unwanted characters
-  boost::replace_all(workaround,"(","{");
-  boost::replace_all(workaround,"[","{");
-  boost::replace_all(workaround,"<","{");
-  boost::replace_all(workaround,"]","}");
-  boost::replace_all(workaround,")","}");
-  boost::replace_all(workaround,">","}");
-  boost::erase_all(workaround,"\'");
-  boost::erase_all(workaround,"\"");
-  boost::erase_all(workaround,"\\");
-  boost::erase_all(workaround,"*");
-  boost::erase_all(workaround,"^");
   return workaround;
 }
 
