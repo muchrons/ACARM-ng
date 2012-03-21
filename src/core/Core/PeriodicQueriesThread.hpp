@@ -1,35 +1,36 @@
 /*
- * AuxiliaryTablesThread.hpp
+ * PeriodicQueriesThread.hpp
  *
  */
-#ifndef INCLUDE_CORE_AUXILIARYTABLESTHREAD_HPP_FILE
-#define INCLUDE_CORE_AUXILIARYTABLESTHREAD_HPP_FILE
+#ifndef INCLUDE_CORE_PERIODICQUERIESTHREAD_HPP_FILE
+#define INCLUDE_CORE_PERIODICQUERIESTHREAD_HPP_FILE
 
 /* public header */
 
 #include "Logger/Node.hpp"
 #include "Commons/Threads/Thread.hpp"
-//#include "Core/PersistencyCleanup.hpp"
+#include "Core/PersistencyPeriodicQueries.hpp"
 
 namespace Core
 {
 
 /** \brief thread creating auxiliary tables periodically.
  */
-class AuxiliaryTablesThread
+class PeriodicQueriesThread
 {
 public:
   /** \brief creates an instance.
    */
-  AuxiliaryTablesThread(void);
+  PeriodicQueriesThread(void);
   /** \brief interrupts and joins thread.
    */
-  ~AuxiliaryTablesThread(void);
+  ~PeriodicQueriesThread(void);
 
 private:
   Logger::Node             log_;
+  PersistencyPeriodicQueries pt_;
   Commons::Threads::Thread th_;
-}; // class AuxiliaryTablesThread
+}; // class PeriodicQueriesThread
 
 } // namespace Core
 

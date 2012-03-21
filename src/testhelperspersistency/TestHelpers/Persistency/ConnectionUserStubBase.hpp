@@ -38,6 +38,8 @@ private:
                                                                     ::Persistency::IO::Transaction                &t);
   virtual ::Persistency::IO::RestorerAutoPtr restorerImpl(::Persistency::IO::Transaction &t);
   virtual size_t removeEntriesOlderThanImpl(size_t days, ::Persistency::IO::Transaction &t);
+  virtual void issuePeriodicSystemQueriesImpl(::Persistency::IO::Transaction &t);
+  virtual void issuePeriodicUserQueriesImpl(::Persistency::IO::Transaction &t);
   virtual ::Persistency::IO::HeartbeatsAutoPtr heartbeatsImpl(const ::Persistency::IO::Heartbeats::Owner &owner,
                                                               ::Persistency::IO::Transaction             &t);
 

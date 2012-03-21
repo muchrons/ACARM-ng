@@ -356,6 +356,16 @@ struct TestIOConnection: public Persistency::IO::Connection
     return 42;
   }
 
+  virtual void issuePeriodicSystemQueriesImpl(Persistency::IO::Transaction &/*t*/)
+  {
+    ++called_[8];
+  }
+
+  virtual void issuePeriodicUserQueriesImpl(Persistency::IO::Transaction &/*t*/)
+  {
+    ++called_[9];
+  }
+
   virtual Persistency::IO::HeartbeatsAutoPtr heartbeatsImpl(const Persistency::IO::Heartbeats::Owner &owner,
                                                             Persistency::IO::Transaction             &t)
   {
@@ -364,7 +374,7 @@ struct TestIOConnection: public Persistency::IO::Connection
   }
 
 
-  int called_[8];
+  int called_[10];
 }; // struct TestIOConnection
 
 } // unnamed namespace

@@ -15,6 +15,7 @@
 #include "Core/QueueRestorer.hpp"
 #include "Core/WorkThreads.hpp"
 #include "Core/CleanupThread.hpp"
+#include "Core/PeriodicQueriesThread.hpp"
 #include "Core/HandleSignals.hpp"
 #include "Core/SanityCheck.hpp"
 #include "Core/PluginsLoader.hpp"
@@ -68,6 +69,8 @@ private:
                                                 // cleanup can go in parallel with queue restoring, since first
                                                 // one operates only on records being used, while second one
                                                 // can remove only unsed elements, thus race is not possible.
+  PeriodicQueriesThread        cron_;           // thread for issuing some periodic queries to underlying
+                                                // persisten storage to generate some temporary tables.
 }; // class Main
 
 } // namespace Core

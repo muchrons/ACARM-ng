@@ -178,6 +178,10 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
   execSQL(log, t, "DELETE FROM meta_alerts WHERE id IN (SELECT id FROM cleanup_meta_alerts_ids)");
 }
 
+void createHostLists(Transaction &/*t*/, const Logger::Node &/*log*/)
+{
+}
+
 } // unnamed namespace
 
 
@@ -215,6 +219,23 @@ size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
     return removed;
   TRYCATCH_END
 }
+
+void Connection::issuePeriodicSystemQueriesImpl(Transaction &t)
+{
+  TRYCATCH_BEGIN
+    System::TimerThreadCPU tcpu;
+    System::TimerRT        trt;
+    createHostLists(t,log_);
+    LOGMSG_INFO_S(log_)<<"periodic system queries were executed in " << trt.elapsed()
+                    <<"[s] (thread-CPU "<<tcpu.elapsed()<<"[s]);";
+  TRYCATCH_END
+}
+
+  void Connection::issuePeriodicUserQueriesImpl(Transaction &/*t*/)
+{
+  //TODO: add user query issuer
+}
+
 
 } // namespace Postgres
 } // namespace IO

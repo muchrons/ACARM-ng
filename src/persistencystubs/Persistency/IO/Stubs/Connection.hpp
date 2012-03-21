@@ -48,6 +48,13 @@ private:
   {
     return 0;
   }
+  virtual void issuePeriodicSystemQueriesImpl(Transaction &/*t*/)
+  {
+  }
+  virtual void issuePeriodicUserQueriesImpl(Transaction &/*t*/)
+  {
+  }
+
 }; // class ConnectionImpl
 } // namespace detail
 
@@ -69,6 +76,8 @@ public:
   size_t restorerCalls_;            ///< number of calls to create restorers.
   size_t removeOldCalls_;           ///< number of calls to removing old entries.
   size_t heartbeatsCalls_;          ///< number of calls to heartbeats.
+  size_t periodicSystemQueries_;    ///< number of calls to periodic system queries.
+  size_t periodicUserQueries_;      ///< number of calls to periodic user queries.
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -79,6 +88,8 @@ private:
   virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t);
   virtual RestorerAutoPtr restorerImpl(Transaction &t);
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
+  virtual void issuePeriodicSystemQueriesImpl(Transaction &t);
+  virtual void issuePeriodicUserQueriesImpl(Transaction &t);
   virtual HeartbeatsAutoPtr heartbeatsImpl(const Heartbeats::Owner &owner, Transaction &t);
 
   detail::ConnectionImpl impl_;
