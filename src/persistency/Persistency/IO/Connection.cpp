@@ -69,6 +69,12 @@ size_t Connection::removeEntriesOlderThan(size_t days, Transaction &t)
   return removeEntriesOlderThanImpl(days, t);
 }
 
+void Connection::issuePeriodicQueries(Transaction &t)
+{
+  issuePeriodicSystemQueriesImpl(t);
+  issuePeriodicUserQueriesImpl(t);
+}
+
 HeartbeatsAutoPtr Connection::heartbeats(const Heartbeats::Owner &owner, Transaction &t)
 {
   return getNonNullAutoPtr( heartbeatsImpl(owner, t) );

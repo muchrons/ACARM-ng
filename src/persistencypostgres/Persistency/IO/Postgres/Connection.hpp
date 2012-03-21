@@ -49,6 +49,8 @@ public:
 
 private:
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
+  virtual void issuePeriodicSystemQueriesImpl(Transaction &t);
+  virtual void issuePeriodicUserQueriesImpl(Transaction &t);
 
   Logger::Node log_;
 }; // class Connection
