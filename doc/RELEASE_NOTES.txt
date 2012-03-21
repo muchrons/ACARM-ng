@@ -1,3 +1,7 @@
+-- v1.0.10 --
+* remove unwanted characters fixed.
+
+
 -- v1.0.9 --
 * WUI brackets fix added.
 * setting names for Acarm-ng working threads added.
