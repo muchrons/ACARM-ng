@@ -36,8 +36,7 @@ struct SignalHandlingCallable
    */
   void operator()(void)
   {
-    // set thread name
-    Commons::setThreadName("signals_handler");
+    Commons::setThreadName("signal_handling");
     // unmasks all signals for this thread.
     System::SignalUnmasker unmask;
     try
@@ -68,6 +67,8 @@ Main::Main(void):
   signals_(&threads_)                           // after all initialization is done, register real handles
 {
   LOGMSG_INFO(log_, "core is up and running");
+  // set thread name
+  Commons::setThreadName("acarm_ng");
 }
 
 Main::~Main(void)

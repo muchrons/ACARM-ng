@@ -7,6 +7,7 @@
 #include "Filter/Factory.hpp"
 #include "Trigger/Factory.hpp"
 #include "Core/Processors.hpp"
+#include "Commons/setThreadName.hpp"
 
 using namespace Persistency;
 using namespace Core::Types::Proc;
@@ -21,6 +22,7 @@ Processors::Processors(Core::Types::SignedNodesFifo &queue):
   LOGMSG_INFO(log_, "building processors");
   append( Filter::create(queue) );  // create filters
   append( Trigger::create(queue) ); // create triggers
+  Commons::setThreadName("processors");
   LOGMSG_INFO_S(log_)<<"total "<<procs_.size()<<" processors created";
 }
 

@@ -8,6 +8,7 @@
 #include "Trigger/Compose/Summary.hpp"
 #include "Trigger/GG/Strategy.hpp"
 #include "Trigger/GG/MessageIO.hpp"
+#include "Commons/setThreadName.hpp"
 
 using namespace std;
 using namespace Base::Threads;
@@ -26,6 +27,7 @@ struct PingThread
     log_("trigger.gg.pingthread"),
     s_(&s)
   {
+    Commons::setThreadName("gg_pingthread");
   }
 
   void operator()(void)
