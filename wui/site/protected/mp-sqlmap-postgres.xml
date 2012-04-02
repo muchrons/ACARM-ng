@@ -461,15 +461,15 @@
   </select>    
 
   <select id="SMetaAlertsInUse" resultClass="int">
-    SELECT count(*) FROM meta_alerts_in_use;
+    SELECT trim(to_char(reltuples,'999999999999')) FROM pg_class WHERE relname='meta_alerts_in_use';
   </select>
 
   <select id="SAlertCount" resultClass="int">
-    SELECT count(*) FROM alerts;
+    select trim(to_char(reltuples,'999999999999')) from pg_class WHERE relname='alerts';
   </select>
 
   <select id="SMetaAlertCount" resultClass="int">
-    SELECT count(*) FROM meta_alerts;
+    SELECT trim(to_char(reltuples,'999999999999')) FROM pg_class WHERE relname='meta_alerts';
   </select>
 1
   <select id="SelectLogRangeCount" resultClass="int">
