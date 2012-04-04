@@ -517,7 +517,7 @@
          OR (severity=2 AND #severities# LIKE '%low%')
          OR (severity=1 AND #severities# LIKE '%info%')
          OR (severity=0 AND #severities# LIKE '%debug%'))
-    GROUP BY (severity);
+    GROUP BY (severity) ORDER BY key DESC;
     ]]>
   </select>
 
