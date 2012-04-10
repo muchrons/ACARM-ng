@@ -182,6 +182,21 @@ void createHostLists(Transaction &/*t*/, const Logger::Node &/*log*/)
 {
 }
 
+void createAlertsSum(Transaction &t, const Logger::Node &log)
+{
+  execSQL(log, t, "insert into alert_sum select date_trunc('hour',create_time) as time,"
+          " sum(CASE when severity=4 THEN 1 ELSE 0 END) as col4,"
+          " sum(CASE when severity=3 THEN 1 ELSE 0 END) as col3,"
+          " sum(CASE when severity=2 THEN 1 ELSE 0 END) as col2,"
+          " sum(CASE when severity=1 THEN 1 ELSE 0 END) as col1,"
+          " sum(CASE when severity=0 THEN 1 ELSE 0 END) as col0"
+          " from alerts"
+          " WHERE create_time > (SELECT coalesce (max(create_time),'1970-01-01') from alert_sum as a) + interval '1 hour'"
+          " AND create_time<(select date_trunc('hour',max(create_time)) from alerts)"
+          " group by time order by time");
+}
+
+
 } // unnamed namespace
 
 
@@ -226,6 +241,7 @@ void Connection::issuePeriodicSystemQueriesImpl(Transaction &t)
     System::TimerThreadCPU tcpu;
     System::TimerRT        trt;
     createHostLists(t,log_);
+    createAlertsSum(t,log_);
     LOGMSG_INFO_S(log_)<<"periodic system queries were executed in " << trt.elapsed()
                     <<"[s] (thread-CPU "<<tcpu.elapsed()<<"[s]);";
   TRYCATCH_END

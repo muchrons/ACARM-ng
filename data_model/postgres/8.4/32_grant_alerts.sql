@@ -6,6 +6,7 @@
 GRANT SELECT
   ON TABLE alerts,
            hosts,
+           alert_sum,
            procs,
            analyzers,
            alert_analyzers,
@@ -28,6 +29,7 @@ GRANT SELECT
 -- daemon may add new data to DB
 GRANT INSERT
   ON TABLE alerts,
+           alert_sum,
            hosts,
            procs,
            analyzers,
@@ -57,6 +59,7 @@ GRANT DELETE
   ON TABLE alerts,
            hosts,
            procs,
+           alert_sum,
            analyzers,
            alert_analyzers,
            reference_urls,

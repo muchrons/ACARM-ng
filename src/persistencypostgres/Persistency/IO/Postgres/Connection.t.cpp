@@ -305,4 +305,26 @@ void testObj::test<8>(void)
   ensure_equals("invalid date/time returned by query - timezone is NOT UTC", fromQuery, ss.str() );
 }
 
+//test creating temporary tables: alerts_sum
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  dc_.fillWithContent1();
+  conn_->issuePeriodicQueries(t_);
+  ensure_equals("invalid alert_sum's size", count("alert_sum"), 3u);
+}
+
+//test creating temporary tables (incremental): alerts_sum
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  dc_.fillWithContent1();
+  conn_->issuePeriodicQueries(t_);
+  ensure_equals("invalid alert_sum's size", count("alert_sum"), 3u);
+  conn_->issuePeriodicQueries(t_);
+  ensure_equals("invalid alert_sum's size", count("alert_sum"), 3u);
+}
+
 } // namespace tut

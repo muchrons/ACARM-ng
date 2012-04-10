@@ -1,10 +1,10 @@
 /*
- * CleanupThread.t.cpp
+ * PeriodicQueriesThread.t.cpp
  *
  */
 #include <tut/tut.hpp>
 
-#include "Core/CleanupThread.hpp"
+#include "Core/PeriodicQueriesThread.hpp"
 #include "TestHelpers/TestBase.hpp"
 
 using namespace Core;
@@ -18,7 +18,7 @@ struct TestClass: public TestHelpers::TestBase
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
 
-factory tf("Core/CleanupThread");
+factory tf("Core/PeriodicQueriesThread");
 } // unnamed namespace
 
 
@@ -30,7 +30,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  CleanupThread ct;
+  PeriodicQueriesThread ct;
 }
 
 // check if sleeping is interruptible (stubbed cleanup will exit straight away)
@@ -38,7 +38,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  CleanupThread ct;
+  PeriodicQueriesThread ct;
   usleep(50*1000);
 }
 
