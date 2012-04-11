@@ -10,7 +10,7 @@ class Analyzer extends TPage
     $this->analyzer_=SQLWrapper::queryForObject('SelectAnalyzer', $analyzerID);
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
     if( $this->analyzer_===null )
       die("invalid analyzer / analyzer not set");

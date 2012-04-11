@@ -8,7 +8,7 @@ class WebLogs extends TPage
     $this->data_=SQLWrapper::queryForList('SelectWUILogs');
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
     // initialization of GridData
     if(!$this->IsPostBack)
