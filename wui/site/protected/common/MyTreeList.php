@@ -92,7 +92,7 @@ class MyTreeList extends TWebControl
     $this->setViewState('CssClass',TPropertyValue::ensureString($value),'');
   }
 
-  public function getID()
+  public function getID($param=true)
   {
     $id = $this->getViewState('ID', '');
     if($id != '')
