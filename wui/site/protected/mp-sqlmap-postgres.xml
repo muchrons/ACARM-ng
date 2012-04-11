@@ -522,19 +522,12 @@
   </select>
 
 
-  <select id="DMAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
-    <![CDATA[
-    SELECT key,value FROM 
-      (SELECT date_trunc(#extra#, create_time) AS key FROM
-        alerts WHERE create_time>=#date_from# AND create_time<=#date_to# GROUP BY key) AS a
-        LEFT JOIN (SELECT date_trunc(#extra#, create_time) AS date2, count(*) AS value FROM
-        alerts WHERE (severity=4 AND #severities# LIKE 'high')
-                  OR (severity=3 AND #severities# LIKE 'medium')
-                  OR (severity=2 AND #severities# LIKE 'low')
-                  OR (severity=1 AND #severities# LIKE 'info')
-                  OR (severity=0 AND #severities# LIKE 'debug') GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
-    ]]>
+  <select id="DMAlertCountTimeSeries" resultClass="CDMSeverities" parameterClass="CParamRange"  cacheModel="querycache">
+    SELECT * FROM alert_sum
+        WHERE create_time BETWEEN #date_from# AND #date_to#
+        ORDER BY create_time; 
   </select>
+
   <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
