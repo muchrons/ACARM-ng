@@ -10,7 +10,7 @@ class Host extends TPage
     $this->host_=SQLWrapper::queryForObject('SelectHost', $this->hostID_);
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
     if( $this->host_===null )
       die("invalid host / host not set");

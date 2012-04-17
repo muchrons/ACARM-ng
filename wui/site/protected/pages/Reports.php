@@ -15,7 +15,7 @@ class Reports extends TPage
     }
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
     // initialization of GridData
     if(!$this->IsPostBack)

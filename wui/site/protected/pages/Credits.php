@@ -2,7 +2,7 @@
 
 class Credits extends TPage
 {
-  public function onLoad()
+  public function onLoad($param)
   {
     $names=array("Bartosz Szurgot","Bartłomiej Balcerek","Mariusz Uchroński","Wojciech Waga");
     shuffle($names);

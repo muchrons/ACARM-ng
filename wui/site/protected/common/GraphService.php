@@ -89,8 +89,7 @@ class GraphParams
     if($this->width<0)
       $this->width=0;
 
-    $qparam=new CParamRange();
-
+    $this->qparam=new CParamRange();
     $this->qparam->src=$this->getRequestOrDefault($request, 'src', null);
     $this->qparam->dst=$this->getRequestOrDefault($request, 'dst', null);
 
@@ -178,11 +177,8 @@ class GraphService extends TService
     case "SeverityPie":
       $graph = $this->createSeverityChart();
       break;
-    case "AlertTypes":
-      $graph = $this->createAlertTypeChart();
-      break;
     case "MetaAlertTimeSeries":
-      $graph = $this->createAlertTimeSeries();
+      $graph = $this->createMetaAlertTimeSeries();
       break;
     default:
       $this->printError("Wrong graph type: ".$this->params->type);
@@ -251,6 +247,64 @@ class GraphService extends TService
       return;
     }
 
+    $cnt=count($pairs);
+    if ($cnt == 0)
+      return null;
+
+    $groupby=floor($cnt/168);
+    if ($groupby==0)
+      $groupby=1;
+
+    $div=floor($cnt/$groupby);
+    $mod=$cnt%$groupby;
+
+    $xdata=array();
+    $Hdata=array();
+    $Mdata=array();
+    $Ldata=array();
+    $Idata=array();
+    $Ddata=array();
+
+    for($i=$mod; $i<$cnt; $i+=$groupby)
+    {
+      $idx=floor(($i-$mod)/$groupby);
+      $xdata[$idx] = strtotime($pairs[$i-$mod]->create_time);
+      $Hdata[$idx] = $pairs[$i]->high;
+      $Mdata[$idx] = $pairs[$i]->medium;
+      $Ldata[$idx] = $pairs[$i]->low;
+      $Idata[$idx] = $pairs[$i]->info;
+      $Ddata[$idx] = $pairs[$i]->debug;
+
+      for($j=1; $j<$groupby; $j++)
+        {
+          $Hdata[$idx] += $pairs[$i+$j]->high;
+          $Mdata[$idx] += $pairs[$i+$j]->medium;
+          $Ldata[$idx] += $pairs[$i+$j]->low;
+          $Idata[$idx] += $pairs[$i+$j]->info;
+          $Ddata[$idx] += $pairs[$i+$j]->debug;
+        }
+      $Hdata[$idx]/=$groupby;
+      $Mdata[$idx]/=$groupby;
+      $Ldata[$idx]/=$groupby;
+      $Idata[$idx]/=$groupby;
+      $Ddata[$idx]/=$groupby;
+    }
+    $names=array("high","medium","low","info","debug");
+    return array($names, $xdata, $Hdata, $Mdata, $Ldata, $Idata, $Ddata);
+  }
+
+  private function issueQuery2dTime2($param)
+  {
+    try
+    {
+      $pairs=SQLWrapper::queryForList($param->query,$param->qparam);
+    }
+    catch(Exception $e)
+    {
+      $this->printError($e->getMessage());
+      return;
+    }
+
     if (count($pairs) == 0)
       return null;
 
@@ -262,6 +316,7 @@ class GraphService extends TService
 
     return array($xdata, $ydata, $param->qparam->severities);
   }
+
 
   private function createSeverityChart()
   {
@@ -276,13 +331,16 @@ class GraphService extends TService
     else
       $empty=false; //mark plot as empty for color proper color selection
 
+    // Create the Pie Graph.
+    $graph = new PieGraph($this->params->width,$this->params->height,'auto');
     // Create Plot
     $p1 = new PiePlot3D($data[1]);
+    $graph->Add($p1);
+
+
     $severities=array_map("severityToName",$data[0]);
-    $p1->SetLabels(array_map(function($i) {return $i." (%d)";}, $severities));
-    $p1->SetLabelPos(1);
     $p1->SetLabelType(PIE_VALUE_PER);
-    $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
+    $p1->value->SetFont(FF_ARIAL,FS_NORMAL,13);
     $p1->value->SetFormat("%d");
     $p1->SetLabelType(1);
 
@@ -294,78 +352,30 @@ class GraphService extends TService
         $p1->value->Show(false);
       }
 
-    $p1->SetSliceColors($colors);
-    $p1->SetSize(0.50);
 
-    // Create the Pie Graph.
-    $graph = new PieGraph($this->params->width,$this->params->height,'auto');
+    $p1->SetSize(0.50);
+    $p1->SetSliceColors($colors);
+    //$p1->SetGuideLines();
+    //$p1->SetGuideLinesAdjust(1.4);
+
 
     // Set different title for an empty plot
     if ($empty)
       $graph->title->Set("No data matching your criteria");
     else
-      $graph->title->Set($this->params->title);
+      {
+        $p1->SetLegends($severities);
+        $graph->title->Set($this->params->title);
+      }
 
-    $graph->title->SetMargin(8);
+    $graph->title->SetMargin(4);
     $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
     $graph->title->SetColor("darkred");
+
+    $graph->legend->SetPos(0.5,0.05,'center','top');
+    $graph->legend->SetColumns(5);
+
     $graph->SetAntiAliasing();
-    $graph->Add($p1);
-    return $graph;
-  }
-
-  private function createAlertTypeChart()
-  {
-    // Setup the graph.
-    $graph = new Graph($this->params->width,$this->params->height);
-    $graph->img->SetMargin(60,55,95,95);
-    $graph->SetScale("textlog");
-    $graph->SetAngle(90);
-    $graph->SetMarginColor("white");
-
-    // Set up the title for the graph
-    $graph->title->Set("Alert count by alert type (log scale)");
-    $graph->title->SetMargin(8);
-    $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
-    $graph->title->SetColor("darkred");
-
-    // Setup font for axis
-    $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
-    $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
-
-    // Show 0 label on Y-axis (default is not to show)
-    $graph->yscale->ticks->SupressZeroLabel(false);
-
-    $data=$this->issueQuery2d($this->params);
-
-    if ($data === null)
-    {
-      $data[0]=array("No data for given query, or empty database.");
-      $data[1]=array(1);
-    }
-
-    // Setup X-axis labels
-    $graph->xaxis->SetTickLabels($data[0]);
-    $graph->xaxis->SetLabelAngle(0);
-    $graph->xaxis->SetTitleMargin(0);
-    $graph->xaxis->SetLabelMargin(-50);
-    $graph->xaxis->SetLabelAlign('left','center');
-
-    // Create the bar pot
-    $bplot = new BarPlot($data[1]);
-    $bplot->SetWidth(0.6);
-    $bplot->value->Show();
-    $bplot->value->SetFont(FF_ARIAL,FS_BOLD,8);
-    $bplot->value->SetFormat("%d");
-    $bplot->value->SetColor("black");
-    $bplot->SetValuePos('bottom');
-
-    // Setup color for gradient fill style
-    $bplot->SetFillGradient("navy:1.9","navy:1.6",GRAD_HOR);
-
-    // Set color for the frame of each bar
-    $bplot->SetColor("white");
-    $graph->Add($bplot);
 
     return $graph;
   }
@@ -373,8 +383,66 @@ class GraphService extends TService
   private function createAlertTimeSeries()
   {
     $graph = new Graph($this->params->width,$this->params->height);
-    $graph->SetMargin(50,40,30,130);
-    $graph->SetScale('datlin',0,100);
+    $graph->title->Set($this->params->title);
+    $data=$this->issueQuery2dTime($this->params);
+
+    if($data[1]===null)
+      $tickType='TimeCallbackNull';
+    else
+      if ((end($data[1])-$data[1][0])>(7*24*3600))
+        $tickType='TimeCallbackDays';
+      else
+        $tickType='TimeCallbackHours';
+
+    $severities=$this->params->qparam->severities;
+
+    $types=count($data[0]);
+    $line=array();
+    $maxval=0;
+
+    for ($i=0; $i<$types; $i++)
+      {
+        if (strpos($severities,$data[0][$i])===false)
+          continue; //if we want to skip this severity
+
+        $type=$i+2; //skip labels and x axis
+        $maxval+=max($data[$type]);
+
+        $line[] = new LinePlot($data[$type],$data[1]);
+        end($line)->setLegend($data[0][$i]);
+        end($line)->SetFillColor(severityToColor(nameToSeverity($data[0][$i])));
+      }
+
+    if(count($line)==0)
+    {
+      $line[0] = new LinePlot(array(0),array(1));
+      $line[0]->setLegend("no data for given query");
+      $empty=true;
+    }
+
+    $graph->SetScale('datlin',0,$maxval);
+    $graph->xaxis->SetLabelAngle(60);
+
+    $graph->legend->SetPos(0.5,0.05,'center','top');
+    $graph->SetMargin(60,10,0,0);
+    $graph->legend->SetColumns(5);
+    $graph->SetTickDensity( TICKD_DENSE, TICKD_SPARSE );
+
+    $graph->xaxis->SetLabelFormatCallback($tickType);
+    $graph->yaxis->title->Set("Average number of alerts per hour.");
+    $graph->yaxis->title->SetMargin(16);
+    $graph->yaxis->title->SetFont(FF_ARIAL,FS_NORMAL,10);
+
+    $graph->xgrid->SetColor('gray');
+    $graph->xgrid->Show();
+    $accplot = new AccLinePlot($line);
+    $graph->Add($accplot);
+    return $graph;
+  }
+
+  private function createMetaAlertTimeSeries()
+  {
+    $graph = new Graph($this->params->width,$this->params->height);
     $graph->title->Set($this->params->title);
 
     $severities=explode(".",$this->params->qparam->severities);
@@ -384,18 +452,14 @@ class GraphService extends TService
     $diffF=strtotime($params->qparam->date_from);
     $diffT=strtotime($params->qparam->date_to);
 
-    //resolution of the plot depends on the range of data
-    if (($diffT-$diffF)>=(7*24*3600))
-      $params->qparam->extra='day';
-    else
-      $params->qparam->extra='hour';
+    $params->qparam->extra='hour';
 
     $data=array();
 
     foreach ($severities as $s)
     {
       $params->qparam->severities=$s;
-      $d=$this->issueQuery2dTime($params);
+      $d=$this->issueQuery2dTime2($params);
       if ($d != null)
       {
         $data[0][]=$d;
@@ -417,12 +481,13 @@ class GraphService extends TService
       $count=1;
     }
 
+
     $maxval=0;
     for ($i=0; $i<$count; $i++)
       $maxval+=max($data[0][$i][1]);
 
     $graph->SetScale('datlin',0,$maxval);
-    $graph->xaxis->SetLabelAngle(90);
+    $graph->xaxis->SetLabelAngle(60);
 
     for ($i=0; $i<$count; $i++)
     {
@@ -432,14 +497,33 @@ class GraphService extends TService
       end($line)->setLegend($data[1][$i]);
       end($line)->SetFillColor(severityToColor(nameToSeverity($data[1][$i])));
     }
-
+    $graph->legend->SetPos(0.5,0.05,'center','top');
+    $graph->legend->SetColumns(5);
+    $graph->SetTickDensity( TICKD_DENSE, TICKD_SPARSE );
+    $graph->xaxis->SetLabelFormatCallback('TimeCallbackHours');
+    $graph->xgrid->SetColor('gray');
+    $graph->xgrid->Show();
     $accplot = new AccLinePlot($line);
-
     $graph->Add($accplot);
     return $graph;
   }
 
   private $params;
+}
+
+function TimeCallbackHours($aVal)
+{
+  return  Date ( 'd-m-y H:i' , $aVal );
+}
+
+function TimeCallbackDays($aVal)
+{
+  return  Date ( 'd-m-y' , $aVal );
+}
+
+function TimeCallbackNull($aVal)
+{
+  return  "";
 }
 
 ?>

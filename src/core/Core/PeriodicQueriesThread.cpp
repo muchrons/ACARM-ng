@@ -41,7 +41,7 @@ struct PeriodicQueries
       while(true)
       {
         issue();
-        boost::this_thread::sleep( boost::posix_time::minutes(1) ); // sleep one minute
+        boost::this_thread::sleep( boost::posix_time::minutes(10) ); // sleep 10 minutes
       } // while(true)
     }
     catch(const boost::thread_interrupted &)

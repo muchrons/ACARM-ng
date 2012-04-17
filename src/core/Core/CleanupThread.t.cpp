@@ -33,7 +33,7 @@ void testObj::test<1>(void)
   CleanupThread ct;
 }
 
-// check if sleeping is interruptable (stubbed cleanup will exit stright away)
+// check if sleeping is interruptible (stubbed cleanup will exit straight away)
 template<>
 template<>
 void testObj::test<2>(void)

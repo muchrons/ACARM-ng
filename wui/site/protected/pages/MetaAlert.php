@@ -35,7 +35,7 @@ class MetaAlert extends TPage
       }
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
     if($this->metaAlert_===null && $this->alert_===null)
       die("invalid (meta-)alert ID");
