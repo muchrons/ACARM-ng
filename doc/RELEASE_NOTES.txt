@@ -1,4 +1,4 @@
--- dev --
+-- v1.1.0 --
 * configure script can now prepare test build as well.
 * added example Python scripts (triggers and filters) to the documentation.
 * implemented ppcheck application for testing preprocessor's configuration offline.
@@ -25,6 +25,9 @@
     - round - round to nearest integer
     - mod - compute modulo arithmetic
 * added more tests for external libraries, required for compilation.
+* JPGraph 3.5.0b1 introduced in WUI.
+* thread for system/user periodic queries added.
+* alerts time series performance in WUI increased.
 
 -- v1.0.10 --
 * remove unwanted characters fixed.
