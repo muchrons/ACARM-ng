@@ -247,17 +247,47 @@ class GraphService extends TService
       return;
     }
 
-    if (count($pairs) == 0)
+    $cnt=count($pairs);
+    if ($cnt == 0)
       return null;
 
-    foreach( $pairs as $e )
+    $groupby=floor($cnt/168);
+    if ($groupby==0)
+      $groupby=1;
+
+    $div=floor($cnt/$groupby);
+    $mod=$cnt%$groupby;
+
+    $xdata=array();
+    $Hdata=array();
+    $Mdata=array();
+    $Ldata=array();
+    $Idata=array();
+    $Ddata=array();
+
+    for($i=$mod; $i<$cnt; $i+=$groupby)
     {
-      $xdata[] = strtotime($e->create_time);
-      $Hdata[] = $e->high;
-      $Mdata[] = $e->medium;
-      $Ldata[] = $e->low;
-      $Idata[] = $e->info;
-      $Ddata[] = $e->debug;
+      $idx=floor(($i-$mod)/$groupby);
+      $xdata[$idx] = strtotime($pairs[$i-$mod]->create_time);
+      $Hdata[$idx] = $pairs[$i]->high;
+      $Mdata[$idx] = $pairs[$i]->medium;
+      $Ldata[$idx] = $pairs[$i]->low;
+      $Idata[$idx] = $pairs[$i]->info;
+      $Ddata[$idx] = $pairs[$i]->debug;
+
+      for($j=1; $j<$groupby; $j++)
+        {
+          $Hdata[$idx] += $pairs[$i+$j]->high;
+          $Mdata[$idx] += $pairs[$i+$j]->medium;
+          $Ldata[$idx] += $pairs[$i+$j]->low;
+          $Idata[$idx] += $pairs[$i+$j]->info;
+          $Ddata[$idx] += $pairs[$i+$j]->debug;
+        }
+      $Hdata[$idx]/=$groupby;
+      $Mdata[$idx]/=$groupby;
+      $Ldata[$idx]/=$groupby;
+      $Idata[$idx]/=$groupby;
+      $Ddata[$idx]/=$groupby;
     }
     $names=array("high","medium","low","info","debug");
     return array($names, $xdata, $Hdata, $Mdata, $Ldata, $Idata, $Ddata);
@@ -399,6 +429,10 @@ class GraphService extends TService
     $graph->SetTickDensity( TICKD_DENSE, TICKD_SPARSE );
 
     $graph->xaxis->SetLabelFormatCallback($tickType);
+    $graph->yaxis->title->Set("Average number of alerts per hour.");
+    $graph->yaxis->title->SetMargin(16);
+    $graph->yaxis->title->SetFont(FF_ARIAL,FS_NORMAL,10);
+
     $graph->xgrid->SetColor('gray');
     $graph->xgrid->Show();
     $accplot = new AccLinePlot($line);
