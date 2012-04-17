@@ -451,22 +451,6 @@ below are listed implemented triggers along with their implementation.
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </mail>
 
-<!-- send mail notification about problematic machines to admins found via WHOIS-->
-<whois name="">
-  <template>/path/to/message/template</template> <!-- path to file which contains e-mail message template -->
-  <from>robot@e.mail.org</from>                  <!-- e-mail to send from -->
-  <cc>admin@y.com otheradmin@y.com</cc>          <!-- e-mail(s) to send reports copy to (optional) -->
-  <rootca>/my/root/ca.pem</rootca>               <!-- certificate of root Certificate Authorith (PEM or DER format) of issuer for server's certificate -->
-  <port>465</port>                               <!-- port server's listening on -->
-  <protocol>smtp</protocol>                      <!-- protocol type (smtp) -->
-  <security>ssl</security>                       <!-- secure connection type (ssl/starttls) -->
-  <user>robot</user>                             <!-- user name to authenticate with (optional) -->
-  <password>topsi-kret</password>                <!-- password for user name (required when 'user' is set) -->
-
-  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
-  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
-<whois>
-
 <!-- trigger creating longer reports in files -->
 <file name="file_write">
   <outdir>/some/output/directory</outdir>             <!-- directory to write reports to -->

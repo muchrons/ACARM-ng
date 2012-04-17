@@ -1,4 +1,4 @@
-if grep -q -e '^triggermail$' -e '^triggerwhois$' <<< "$PLUGINS"
+if grep -q -e '^triggermail$' <<< "$PLUGINS"
 then
   # test for library's existance
   echo -n "checking for libvmime... "
@@ -8,7 +8,7 @@ then
     echo "ok"
   else
     echo "N/A"
-    echo "ERROR: install missing library or withdraw usage of plugins: triggermail, triggerwhois"
+    echo "ERROR: install missing library or withdraw usage of plugins: triggermail"
     rm -f "$TMP"
     exit 2
   fi

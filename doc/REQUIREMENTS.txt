@@ -16,8 +16,8 @@ marked with [o].
 [bro] libprelude >= 1.0.0     (used by: inputprelude)
 [bro] libgadu >= 1.8          (used by: triggergg)
 [bro] libgloox >= 1.0         (used by: triggerjabber)
-[bro] libvmime >= 0.9.1       (used by: triggermail triggerwhois)
-[bro] libgnutls >= 2.10.0     (used by: triggermail triggerwhois (1))
+[bro] libvmime >= 0.9.1       (used by: triggermail)
+[bro] libgnutls >= 2.10.0     (used by: triggermail)
 [bro] libpython ==2.6         (used by: pythonapi, triggerpython)
 
 because of some system calls, used within in the system, minimal required
