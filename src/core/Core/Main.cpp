@@ -49,7 +49,7 @@ struct SignalHandlingCallable
     {
       // thread should be abandoned now.
     }
-    // exit the thread. noice that this restores maks for signals.
+    // exit the thread. noice that this restores mask for signals.
     // since by default mask will block all signals, they will be ignored from now on.
   }
 }; // struct SignalHandlingCallable

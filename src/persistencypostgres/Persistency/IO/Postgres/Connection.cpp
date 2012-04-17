@@ -247,7 +247,7 @@ void Connection::issuePeriodicSystemQueriesImpl(Transaction &t)
   TRYCATCH_END
 }
 
-  void Connection::issuePeriodicUserQueriesImpl(Transaction &/*t*/)
+void Connection::issuePeriodicUserQueriesImpl(Transaction &/*t*/)
 {
   //TODO: add user query issuer
 }
