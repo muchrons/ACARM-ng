@@ -63,12 +63,12 @@ size_t ConnectionUserStubBase::removeEntriesOlderThanImpl(size_t days, Transacti
   return getStub()->removeEntriesOlderThan(days,t );
 }
 
-void ConnectionUserStubBase::issuePeriodicSystemQueriesImpl(Transaction &t)
+void ConnectionUserStubBase::issuePeriodicSystemQueriesImpl(Transaction &/*t*/)
 {
   //TODO
 }
 
-void ConnectionUserStubBase::issuePeriodicUserQueriesImpl(Transaction &t)
+void ConnectionUserStubBase::issuePeriodicUserQueriesImpl(Transaction &/*t*/)
 {
   //TODO
 }
