@@ -199,12 +199,12 @@ void createAlertsSum(Transaction &t, const Logger::Node &log)
 void createMetaAlertsSum(Transaction &t, const Logger::Node &log)
 {
   execSQL(log, t, "insert into meta_alert_sum select date_trunc('hour',create_time) as time,"
-          "count(*) as count,"
-          "count(id_root) as id_root"
-          "from meta_alerts LEFT JOIN meta_alerts_roots ON id=id_root"
-          "WHERE create_time > (SELECT coalesce (max(create_time),'1970-01-01') from meta_alert_sum as a) + interval '1 hour'"
+          " count(*) as count,"
+          " count(id_root) as id_root"
+          " from meta_alerts LEFT JOIN meta_alerts_roots ON id=id_root"
+          " WHERE create_time > (SELECT coalesce (max(create_time),'1970-01-01') from meta_alert_sum as a) + interval '1 hour'"
           " AND create_time<(select date_trunc('hour',max(create_time)) from meta_alerts)"
-          "group by time order by time;");
+          " group by time order by time;");
 }
 
 } // unnamed namespace
