@@ -1,0 +1,4 @@
+<com:TContent ID="content">
+  <com:TImage ID="TS" Height="400" />
+  <com:RangeSelector ID="Range" View="1"/>
+</com:TContent>

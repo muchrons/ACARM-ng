@@ -16,6 +16,15 @@ CREATE TABLE    meta_alerts
   last_update_time timestamp    NOT NULL DEFAULT now()
 );
 
+-- alerts preprocessed
+CREATE TABLE    meta_alert_sum
+(
+  create_time timestamp PRIMARY KEY,
+  meta_alerts           bigint,
+  meta_alerts_root      bigint
+);
+CREATE INDEX meta_alert_sum_create_time_index ON meta_alert_sum(create_time);
+
 
 -- alert to meta-alert mapping table
 CREATE TABLE alert_to_meta_alert_map

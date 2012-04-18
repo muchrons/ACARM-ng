@@ -14,7 +14,10 @@ class RangeSelector extends TTemplateControl
     $range=new CParamRange();
     $range->date_from=date("Y-m-d 00:00:00",strtotime($this->From->Date));
     $range->date_to=date("Y-m-d 23:59:59",strtotime($this->To->Date));
-    $range->severities=implode('.',$this->CB->SelectedValues);
+    if($this->SeverityType->ActiveViewIndex==0)
+      $range->severities=implode('.',$this->CB1->SelectedValues);
+    else
+      $range->severities=implode('.',$this->CB2->SelectedValues);
 
     if($this->srcip->Text=='')
       $this->srcip->Text='any';
@@ -61,6 +64,10 @@ class RangeSelector extends TTemplateControl
     parent::onInit($param);
     if($this->view!=null)
       $this->MultiView->ActiveViewIndex=$this->view;
+    if($this->sev=="Alert")
+      $this->SeverityType->ActiveViewIndex=0;
+    if($this->sev=="MetaAlert")
+      $this->SeverityType->ActiveViewIndex=1;
   }
 
   public function FromDate()
@@ -102,6 +109,20 @@ class RangeSelector extends TTemplateControl
     $this->view=$p;
   }
 
+  public function setSev($p)
+  {
+    $this->sev=$p;
+    if($this->sev=="Alert")
+      $this->SeverityType->ActiveViewIndex=0;
+    if($this->sev=="MetaAlert")
+      $this->SeverityType->ActiveViewIndex=1;
+  }
+
+  public function getSev()
+  {
+    return ($this->SeverityType->ActiveViewIndex==0)?"Alert":"MetaAlert";
+  }
+
   public function setDates($from, $to)
   {
     if( $from!==null )
@@ -120,11 +141,6 @@ class RangeSelector extends TTemplateControl
       $this->dstip->Text=$dst;
   }
 
-  public function setSeverities($var)
-  {
-    $this->CB->setEnabled($var);
-  }
-
   public function setWarning($text)
   {
     $this->Warning->Text=$text;
@@ -137,6 +153,7 @@ class RangeSelector extends TTemplateControl
   }
 
   public $view;
+  public $sev;
 }
 
 ?>

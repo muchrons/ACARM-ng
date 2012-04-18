@@ -31,9 +31,13 @@ class DataMiningSeverity extends TPage
           $this->Range->To->Text=$date_to;
       }
 
+    $this->Range->srcip->setEnabled(false);
+    $this->Range->dstip->setEnabled(false);
+
     $from=$this->Range->From->Date;
     $to=$this->Range->To->Date;
-    $severities=implode('.',$this->Range->CB->SelectedValues);
+    $severities=$this->Range->getRangeData()->severities;
+
     $src=$this->Range->srcip->Text;
     $dst=$this->Range->dstip->Text;
 
