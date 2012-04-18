@@ -5,7 +5,7 @@ class RangeSelector extends TTemplateControl
   function __construct()
   {
     parent::__construct();
-    $this->From->Timestamp=strtotime("-1 day");
+    $this->From->Timestamp=strtotime("-1 month");
     $this->To->Timestamp=strtotime("today");
   }
 
