@@ -327,4 +327,6 @@ void testObj::test<10>(void)
   ensure_equals("invalid alert_sum's size", count("alert_sum"), 3u);
 }
 
+// TODO: consider adding test when alert_sum content should change
+
 } // namespace tut

@@ -25,6 +25,16 @@
     - round - round to nearest integer
     - mod - compute modulo arithmetic
 * added more tests for external libraries, required for compilation.
+
+-- v1.0.10 --
+* remove unwanted characters fixed.
+
+
+-- v1.0.9 --
+* WUI brackets fix added.
+* setting names for Acarm-ng working threads added.
+
+
 -- v1.0.8 --
 * input prelude bug fix for services without name added.
 * additional tests for input prelude and rfcio components added.
