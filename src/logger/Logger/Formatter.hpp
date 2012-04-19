@@ -44,6 +44,9 @@ public:
 
 private:
   const char *pri2str(Priority pri) const;
+  const std::string formatTime(const int n) const;
+  const char *int2Day(const int dn) const;
+  const char *int2Month(const int mn) const;
   const char *strFix(const char *str) const;
   void appendValidMessage(std::stringstream &ssOut, const char *msg) const;
 
