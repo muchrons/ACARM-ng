@@ -13,13 +13,23 @@
         <tr>
           <td class="AlertTag" rowspan="2">Severity:</td>
           <td class="AlertContent" rowspan="2">
-            <com:TCheckBoxList ID="CB" RepeatColumns="3">
-              <com:TListItem ID="CBcritical" Value="high" Text="High" Selected="true" />
-              <com:TListItem ID="CBerror" Value="medium" Text="Medium" Selected="true" />
-              <com:TListItem ID="CBproblem" Value="low" Text="Low" Selected="true" />
-              <com:TListItem ID="CBwarning" Value="info" Text="Info" Selected="true" />
-              <com:TListItem ID="CBdebug" Value="debug" Text="Debug" Selected="false" />
-            </com:TCheckBoxList>
+            <com:TMultiView ID="SeverityType" ActiveViewIndex="1">
+              <com:TView ID="Severities">
+                <com:TCheckBoxList ID="CB1" RepeatColumns="3">
+                  <com:TListItem ID="CBcritical" Value="high" Text="High" Selected="true" />
+                  <com:TListItem ID="CBerror" Value="medium" Text="Medium" Selected="true" />
+                  <com:TListItem ID="CBproblem" Value="low" Text="Low" Selected="true" />
+                  <com:TListItem ID="CBwarning" Value="info" Text="Info" Selected="true" />
+                  <com:TListItem ID="CBdebug" Value="debug" Text="Debug" Selected="false" />
+                </com:TCheckBoxList>
+              </com:TView>
+              <com:TView ID="MetaAlerts">
+                <com:TCheckBoxList ID="CB2" RepeatColumns="1">
+                  <com:TListItem ID="CBall" Value="all" Text="All" Selected="true"/>
+                  <com:TListItem ID="CBroot" Value="root" Text="Root" Selected="true"/>
+                </com:TCheckBoxList>
+              </com:TView>
+            </com:TMultiView>
           </td>
           <td class="AlertTag">src IP:</td><td class="AlertContent"><com:TTextBox ID="srcip" Text="any" /></td>
         </tr>

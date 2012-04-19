@@ -76,7 +76,7 @@
   </tr>
   <tr>
     <td align="right">
-      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningAlertTimeSeries') %>">
+      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningTimeSeries',array('type'=>'Alert')) %>">
         <com:TImage ImageUrl="pics/buttons/buttDMAlertCountD.png"
                     Attributes.onMouseOver="$(this).src='pics/buttons/buttDMAlertCountU.png'"
                     Attributes.onMouseOut="$(this).src='pics/buttons/buttDMAlertCountD.png'"/> 
@@ -85,7 +85,7 @@
   </tr>
   <tr>
     <td align="right">
-      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningMetaAlertTimeSeries') %>">
+      <com:THyperLink  NavigateUrl=<%=$this->Service->constructUrl('DataMiningTimeSeries',array('type'=>'MetaAlert')) %>>
         <com:TImage ImageUrl="pics/buttons/buttDMMetaAlertCountD.png"
                     Attributes.onMouseOver="$(this).src='pics/buttons/buttDMMetaAlertCountU.png'"
                     Attributes.onMouseOut="$(this).src='pics/buttons/buttDMMetaAlertCountD.png'"/> 

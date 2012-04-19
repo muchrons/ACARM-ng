@@ -1,7 +1,7 @@
 <?php
 
   //DataMining severities
-class CDMseverities
+class CDMSeverities
 {
   public $create_time;
   public $high;

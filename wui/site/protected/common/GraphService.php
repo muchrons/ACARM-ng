@@ -9,134 +9,86 @@ require_once('lib/jpgraph/jpgraph_pie3d.php');
 require_once('lib/jpgraph/jpgraph_line.php');
 require_once('lib/jpgraph/jpgraph_date.php');
 
-function severityToName($sev)
+function severityNameToColor($sev)
 {
-  //$name=substr($sev,0,4); //strip "(%d)"
-
-  switch ($sev)
-    {
-    case 4:
-      return "high";
-    case 3:
-      return "medium";
-    case 2:
-      return "low";
-    case 1:
-      return "info";
-    case 0:
-      return "debug";
-    }
-  return "unknown";
-}
-
-function nameToSeverity($sev)
-{
-  $name=substr($sev,0,4); //strip "(%d)"
+  $name=substr($sev,0,4);
 
   switch ($name)
     {
-    case "high":
-      return 4;
-    case "medi":
-      return 3;
-    case 'low':
-      return 2;
-    case 'info':
-      return 1;
-    case 'debu':
-      return 0;
-    }
-  return -1;
-}
-
-function severityToColor($sev)
-{
-  //$name=substr($sev,0,4); //strip "(%d)"
-
-  switch ($sev)
-    {
-    case 4:
+    case 'root':
+    case 'high':
       return "#ff0000";
-    case 3:
+    case 'medi':
       return "#ff8800";
-    case 2:
+    case 'low':
       return "#ffee00";
-    case 1:
+    case 'info':
       return "#00ff00";
-    case 0:
+    case 'all':
+    case 'debu':
       return "#2d88ff";
     }
   return "#cccccc";
 }
 
-
-class GraphParams
+function TimeCallbackHours($aVal)
 {
-  function __construct($request)
-  {
-    $this->type  = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'graph', 'You must specify the type of the graph'));
-    $this->width = TPropertyValue::ensureInteger($this->getRequestOrDefault($request, 'width',  300));
-    $this->height= TPropertyValue::ensureInteger($this->getRequestOrDefault($request, 'height', 200));
-    $this->title = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'title', 'No title'));
-    $this->query = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'query', null));
-
-    if ($this->height>1200)
-      $this->height=1200;
-    if($this->width>1920)
-      $this->width=1920;
-    if ($this->height<0)
-      $this->height=0;
-    if($this->width<0)
-      $this->width=0;
-
-    $this->qparam=new CParamRange();
-    $this->qparam->src=$this->getRequestOrDefault($request, 'src', null);
-    $this->qparam->dst=$this->getRequestOrDefault($request, 'dst', null);
-
-    if ($this->qparam->dst=='any')
-    {
-      $this->qparam->dst='0.0.0.0';
-      $this->qparam->ignoredst=1;
-    }
-    else
-      $this->qparam->ignoredst=0;
-
-    if ($this->qparam->src=='any')
-    {
-      $this->qparam->src='0.0.0.0';
-      $this->qparam->ignoresrc=1;
-    }
-    else
-      $this->qparam->ignoresrc=0;
-    $this->qparam->date_from=$this->getRequestOrDefault($request, 'from', '1970-01-01');
-    $this->qparam->date_to=$this->getRequestOrDefault($request, 'to', date("Y-m-d H:i:s"));
-    $this->qparam->severities=$this->getRequestOrDefault($request, 'severities', null);
-    //set hour in date_to to 23:59:59 regardless of its actual value
-    $this->qparam->date_to=date("Y-m-d 23:59:59",strtotime($this->qparam->date_to));
-  }
-
-  private function getRequestOrDefault($request, $field, $value)
-  {
-    if ($request->contains($field))
-      return $request[$field];
-    return $value;
-  }
-
-  private function getRequestOrThrow($request, $field, $text)
-  {
-    if (!$request->contains($field))
-      throw new TConfigurationException($text);
-    return $request[$field];
-  }
-
-  public $type;  //type of the graph
-  public $width;
-  public $height;
-  public $title;
-  public $query; //DB query name
-  public $qparam; //parameters for queries
+  return  Date ( 'd-m-y H:i' , $aVal );
 }
 
+function TimeCallbackDays($aVal)
+{
+  return  Date ( 'd-m-y' , $aVal );
+}
+
+function TimeCallbackNull($aVal)
+{
+  return  "";
+}
+
+function getRequestOrDefault($request, $field, $value)
+{
+  if ($request->contains($field))
+    return $request[$field];
+  return $value;
+}
+
+function getRequestOrThrow($request, $field, $text)
+{
+  if (!$request->contains($field))
+    throw new TConfigurationException($text);
+  return $request[$field];
+}
+
+function getCParamRange($request)
+{
+  $qparam=new CParamRange();
+  $qparam->src=getRequestOrDefault($request, 'src', null);
+  $qparam->dst=getRequestOrDefault($request, 'dst', null);
+
+  if ($qparam->dst=='any')
+    {
+      $qparam->dst='0.0.0.0';
+      $qparam->ignoredst=1;
+    }
+    else
+      $qparam->ignoredst=0;
+
+    if ($qparam->src=='any')
+    {
+      $qparam->src='0.0.0.0';
+      $qparam->ignoresrc=1;
+    }
+    else
+      $qparam->ignoresrc=0;
+
+    $qparam->date_from=getRequestOrDefault($request, 'from', '1970-01-01');
+    $qparam->date_to=getRequestOrDefault($request, 'to', date("Y-m-d H:i:s"));
+    $qparam->severities=getRequestOrDefault($request, 'severities', null);
+    //set hour in date_to to 23:59:59 regardless of its actual value
+    $qparam->date_to=date("Y-m-d 23:59:59",strtotime($qparam->date_to));
+    return $qparam;
+}
 
 class GraphService extends TService
 {
@@ -144,7 +96,86 @@ class GraphService extends TService
   {
     $this->Response->ContentType="image/png";
     $request = Prado::getApplication()->getRequest();
-    $this->params=new GraphParams($request);
+
+    $width = TPropertyValue::ensureInteger(getRequestOrDefault($request, 'width',  300));
+    $height= TPropertyValue::ensureInteger(getRequestOrDefault($request, 'height', 200));
+
+    if($height>1200) $height=1200;
+    if($width>1920)  $width=1920;
+    if($height<0)    $height=0;
+    if($width<0)     $width=0;
+
+    $this->setWidth($width);
+    $this->setHeight($height);
+
+    $title = TPropertyValue::ensureString(getRequestOrDefault($request, 'title', 'No title'));
+    $type  = TPropertyValue::ensureString(getRequestOrDefault($request, 'graph', 'You must specify the type of the graph'));
+
+    $this->setTitle($title);
+    $this->setType($type);
+
+    $query = TPropertyValue::ensureString(getRequestOrDefault($request, 'query', null));
+    $this->setQuery($query);
+
+    $queryParams=getCParamRange($request);
+    $this->setQueryParams($queryParams);
+  }
+
+  public function run()
+  {
+    switch($this->getType())
+    {
+    case "TimeSeries":
+      $graph = $this->createTimeSeries();
+      break;
+    case "SeverityPie":
+      $graph = $this->createSeverityChart();
+      break;
+    default:
+      $this->printError("Wrong graph type: ".$this->getType());
+      return;
+    }
+    $graph->Stroke();
+  }
+
+  private function getType()
+  {
+    return $this->type;
+  }
+
+  private function setType($type)
+  {
+    $this->type=$type;
+  }
+
+  private function getQuery()
+  {
+    return $this->query;
+  }
+
+  private function setQuery($query)
+  {
+    $this->query=$query;
+  }
+
+  private function getTitle()
+  {
+    return $this->title;
+  }
+
+  private function setTitle($title)
+  {
+    $this->title=$title;
+  }
+
+  private function getQueryParams()
+  {
+    return $this->queryParams;
+  }
+
+  private function setQueryParams($queryParams)
+  {
+    $this->queryParams=$queryParams;
   }
 
   public function getWidth()
@@ -167,35 +198,15 @@ class GraphService extends TService
     $this->height = TPropertyValue::ensureInteger($value);
   }
 
-  public function run()
-  {
-    switch( $this->params->type )
-    {
-    case "AlertTimeSeries":
-      $graph = $this->createAlertTimeSeries();
-      break;
-    case "SeverityPie":
-      $graph = $this->createSeverityChart();
-      break;
-    case "MetaAlertTimeSeries":
-      $graph = $this->createMetaAlertTimeSeries();
-      break;
-    default:
-      $this->printError("Wrong graph type: ".$this->params->type);
-      return;
-    }
-    $graph->Stroke();
-  }
-
   private function printError($message)
   {
     $fontnum=2;
-    $img = imagecreatetruecolor($this->params->width,$this->params->height);
+    $img = imagecreatetruecolor($this->getWidth(),$this->getHeight());
     $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
     $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);
     $fontw=imagefontwidth($fontnum);
     assert($fontw!=0);
-    $numchars=(($this->params->width-5)/$fontw);
+    $numchars=(($this->getWidth()-5)/$fontw);
     $msg=explode("\n",wordwrap($message,$numchars,"\n")); //wrap long messages
 
     imagestring($img, 3, 3, 3, "Exception was thrown:", $red);
@@ -211,35 +222,32 @@ class GraphService extends TService
     imagedestroy($img);
   }
 
-  private function issueQuery2d($param)
+  private function issueQuery2d()
   {
     try
-    {
-      $pairs=SQLWrapper::queryForList($param->query,$param->qparam);
-    }
+      {
+        $pairs=SQLWrapper::queryForObject($this->getQuery(),$this->getQueryParams());
+      }
     catch(Exception $e)
-    {
-      $this->printError($e->getMessage());
-      return;
-    }
+      {
+        $this->printError($e->getMessage());
+        return;
+      }
 
-    if (count($pairs) == 0)
-      return null;
-
-    foreach( $pairs as $e )
-    {
-      $xdata[] = trim($e->key);
-      $ydata[] = $e->value;
-    }
-
-    return array($xdata, $ydata);
+    $names=array("high","medium","low","info","debug");
+    $ydata[0] = $pairs->high===null?0:$pairs->high;
+    $ydata[1] = $pairs->medium===null?0:$pairs->medium;
+    $ydata[2] = $pairs->low===null?0:$pairs->low;
+    $ydata[3] = $pairs->info===null?0:$pairs->info;
+    $ydata[4] = $pairs->debug===null?0:$pairs->debug;
+    return array($names, $ydata);
   }
 
-  private function issueQuery2dTime($param)
+  private function issueQuery2dTime()
   {
     try
     {
-      $pairs=SQLWrapper::queryForList($param->query,$param->qparam);
+      $pairs=SQLWrapper::queryForList($this->getQuery(),$this->getQueryParams());
     }
     catch(Exception $e)
     {
@@ -259,132 +267,105 @@ class GraphService extends TService
     $mod=$cnt%$groupby;
 
     $xdata=array();
-    $Hdata=array();
-    $Mdata=array();
-    $Ldata=array();
-    $Idata=array();
-    $Ddata=array();
+    $ydata=array();
+
+    $names=array();
+    foreach($pairs[0] as $a=>$b)
+      {
+        if ($a=="create_time")
+          continue;
+        $names[]=$a;
+        $ydata[$a]=array();
+      }
 
     for($i=$mod; $i<$cnt; $i+=$groupby)
     {
       $idx=floor(($i-$mod)/$groupby);
       $xdata[$idx] = strtotime($pairs[$i-$mod]->create_time);
-      $Hdata[$idx] = $pairs[$i]->high;
-      $Mdata[$idx] = $pairs[$i]->medium;
-      $Ldata[$idx] = $pairs[$i]->low;
-      $Idata[$idx] = $pairs[$i]->info;
-      $Ddata[$idx] = $pairs[$i]->debug;
+
+      foreach($names as $name)
+        $ydata[$name][$idx]=$pairs[$i]->$name;
 
       for($j=1; $j<$groupby; $j++)
-        {
-          $Hdata[$idx] += $pairs[$i+$j]->high;
-          $Mdata[$idx] += $pairs[$i+$j]->medium;
-          $Ldata[$idx] += $pairs[$i+$j]->low;
-          $Idata[$idx] += $pairs[$i+$j]->info;
-          $Ddata[$idx] += $pairs[$i+$j]->debug;
-        }
-      $Hdata[$idx]/=$groupby;
-      $Mdata[$idx]/=$groupby;
-      $Ldata[$idx]/=$groupby;
-      $Idata[$idx]/=$groupby;
-      $Ddata[$idx]/=$groupby;
+        foreach($names as $name)
+          $ydata[$name][$idx]=$pairs[$i+$j]->$name;
+
+      foreach($names as $name)
+        $ydata[$name][$idx]/=$groupby;
     }
-    $names=array("high","medium","low","info","debug");
-    return array($names, $xdata, $Hdata, $Mdata, $Ldata, $Idata, $Ddata);
+
+    return array_merge(array($names, $xdata), $ydata);
   }
-
-  private function issueQuery2dTime2($param)
-  {
-    try
-    {
-      $pairs=SQLWrapper::queryForList($param->query,$param->qparam);
-    }
-    catch(Exception $e)
-    {
-      $this->printError($e->getMessage());
-      return;
-    }
-
-    if (count($pairs) == 0)
-      return null;
-
-    foreach( $pairs as $e )
-    {
-      $xdata[] = strtotime($e->key);
-      $ydata[] = ($e->value === null)?0:$e->value;
-    }
-
-    return array($xdata, $ydata, $param->qparam->severities);
-  }
-
 
   private function createSeverityChart()
   {
-    $data=$this->issueQuery2d($this->params);
+    $raw_data=$this->issueQuery2d();
+    $severities=$this->getQueryParams()->severities;
 
-    if ($data === null)
-    {
-      $data[0]=array(0);
-      $data[1]=array(1);
-      $empty=true;
-    }
+    $data=array();
+    $data[0]=array();
+    $data[1]=array();
+
+    for ($i=0; $i<count($raw_data[0]); $i++)
+      {
+        if (strpos($severities,$raw_data[0][$i])===false)
+          continue;
+        $data[0][]=$raw_data[0][$i];
+        $data[1][]=$raw_data[1][$i];
+      }
+
+    if (array_sum($data[1])==0)
+      {
+        $data[0]=array(0);
+        $data[1]=array(1);
+        $empty=true;
+      }
     else
       $empty=false; //mark plot as empty for color proper color selection
 
     // Create the Pie Graph.
-    $graph = new PieGraph($this->params->width,$this->params->height,'auto');
+    $graph = new PieGraph($this->getWidth(),$this->getHeight(),'auto');
     // Create Plot
     $p1 = new PiePlot3D($data[1]);
     $graph->Add($p1);
+    $graph->SetShadow();
 
-
-    $severities=array_map("severityToName",$data[0]);
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,13);
     $p1->value->SetFormat("%d");
     $p1->SetLabelType(1);
-
-    $colors=array_map("severityToColor",$data[0]);
+    $colors=array_map("severityNameToColor",$data[0]);
 
     if ($empty)
       {
         $colors=array('#aaaaaa');
         $p1->value->Show(false);
       }
-
-
-    $p1->SetSize(0.50);
     $p1->SetSliceColors($colors);
-    //$p1->SetGuideLines();
-    //$p1->SetGuideLinesAdjust(1.4);
-
 
     // Set different title for an empty plot
     if ($empty)
       $graph->title->Set("No data matching your criteria");
     else
       {
-        $p1->SetLegends($severities);
-        $graph->title->Set($this->params->title);
+        $p1->SetLegends($data[0]);
+        $graph->title->Set($this->getTitle());
       }
 
     $graph->title->SetMargin(4);
-    $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
-    $graph->title->SetColor("darkred");
-
+    $graph->SetMargin(60,10,0,0);
     $graph->legend->SetPos(0.5,0.05,'center','top');
     $graph->legend->SetColumns(5);
 
     $graph->SetAntiAliasing();
-
     return $graph;
   }
 
-  private function createAlertTimeSeries()
+  private function createTimeSeries()
   {
-    $graph = new Graph($this->params->width,$this->params->height);
-    $graph->title->Set($this->params->title);
-    $data=$this->issueQuery2dTime($this->params);
+    $graph = new Graph($this->getWidth(),$this->getHeight());
+    $graph->title->Set($this->getTitle());
+    $data=$this->issueQuery2dTime();
 
     if($data[1]===null)
       $tickType='TimeCallbackNull';
@@ -394,31 +375,26 @@ class GraphService extends TService
       else
         $tickType='TimeCallbackHours';
 
-    $severities=$this->params->qparam->severities;
+    $severities=$this->getQueryParams()->severities;
 
-    $types=count($data[0]);
     $line=array();
     $maxval=0;
 
-    for ($i=0; $i<$types; $i++)
-      {
-        if (strpos($severities,$data[0][$i])===false)
-          continue; //if we want to skip this severity
-
-        $type=$i+2; //skip labels and x axis
-        $maxval+=max($data[$type]);
-
-        $line[] = new LinePlot($data[$type],$data[1]);
-        end($line)->setLegend($data[0][$i]);
-        end($line)->SetFillColor(severityToColor(nameToSeverity($data[0][$i])));
-      }
-
+    if($data!=null)
+      foreach($data[0] as $name)
+        {
+          if (strpos($severities,$name)===false)
+            continue; //if we want to skip this severity
+          $maxval+=max($data[$name]);
+          $line[] = new LinePlot($data[$name],$data[1]);
+          end($line)->setLegend($name);
+          end($line)->SetFillColor(severityNameToColor($name));
+        }
     if(count($line)==0)
-    {
-      $line[0] = new LinePlot(array(0),array(1));
-      $line[0]->setLegend("no data for given query");
-      $empty=true;
-    }
+      {
+        $line[0] = new LinePlot(array(0),array(1));
+        $line[0]->setLegend("no data for given query");
+      }
 
     $graph->SetScale('datlin',0,$maxval);
     $graph->xaxis->SetLabelAngle(60);
@@ -440,90 +416,10 @@ class GraphService extends TService
     return $graph;
   }
 
-  private function createMetaAlertTimeSeries()
-  {
-    $graph = new Graph($this->params->width,$this->params->height);
-    $graph->title->Set($this->params->title);
-
-    $severities=explode(".",$this->params->qparam->severities);
-
-    $params=$this->params;
-
-    $diffF=strtotime($params->qparam->date_from);
-    $diffT=strtotime($params->qparam->date_to);
-
-    $params->qparam->extra='hour';
-
-    $data=array();
-
-    foreach ($severities as $s)
-    {
-      $params->qparam->severities=$s;
-      $d=$this->issueQuery2dTime2($params);
-      if ($d != null)
-      {
-        $data[0][]=$d;
-        $data[1][]=$s;
-      }
-    }
-
-    $count=0;
-
-    if (isset($data[0]))
-      $count=count($data[0]);
-
-    //if there is no data series or x-axis is empty (wrong data range)
-    if (($count==0) || ($count>0 && count($data[0][0][1])==0))
-    {
-      $data[0][0][1]=array(1);
-      $data[0][0][0]=array(1);
-      $data[1][0]="no data for given query";
-      $count=1;
-    }
-
-
-    $maxval=0;
-    for ($i=0; $i<$count; $i++)
-      $maxval+=max($data[0][$i][1]);
-
-    $graph->SetScale('datlin',0,$maxval);
-    $graph->xaxis->SetLabelAngle(60);
-
-    for ($i=0; $i<$count; $i++)
-    {
-      if (count($data[0][$i][1])==0)
-        continue;
-      $line[] = new LinePlot($data[0][$i][1],$data[0][$i][0]);
-      end($line)->setLegend($data[1][$i]);
-      end($line)->SetFillColor(severityToColor(nameToSeverity($data[1][$i])));
-    }
-    $graph->legend->SetPos(0.5,0.05,'center','top');
-    $graph->legend->SetColumns(5);
-    $graph->SetTickDensity( TICKD_DENSE, TICKD_SPARSE );
-    $graph->xaxis->SetLabelFormatCallback('TimeCallbackHours');
-    $graph->xgrid->SetColor('gray');
-    $graph->xgrid->Show();
-    $accplot = new AccLinePlot($line);
-    $graph->Add($accplot);
-    return $graph;
-  }
-
-  private $params;
-}
-
-function TimeCallbackHours($aVal)
-{
-  return  Date ( 'd-m-y H:i' , $aVal );
-}
-
-function TimeCallbackDays($aVal)
-{
-  return  Date ( 'd-m-y' , $aVal );
-}
-
-function TimeCallbackNull($aVal)
-{
-  return  "";
+  private $title;
+  private $type;
+  private $query;
+  private $queryParams;
 }
 
 ?>

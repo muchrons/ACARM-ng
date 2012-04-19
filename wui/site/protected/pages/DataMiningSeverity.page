@@ -1,6 +1,6 @@
 <com:TContent ID="content">
   <com:TImage ID="SeveritiesImg" Height="400" />
-  <com:RangeSelector ID="Range" />
+  <com:RangeSelector ID="Range" Sev="Alert"/>
   <com:THyperLink ID="AlertsLink">
     <com:TImage ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>
   </com:THyperLink>
