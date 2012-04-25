@@ -42,8 +42,8 @@ class SQLWrapper
 
   public static function check_dbversion()
   {
-    $min_db_version=8;
-    $max_db_version=8;
+    $min_db_version=9;
+    $max_db_version=9;
 
     $ret=CSQLMap::get()->queryForObject("DBversion");
     if($ret< $min_db_version || $ret> $max_db_version)
