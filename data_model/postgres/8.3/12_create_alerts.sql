@@ -20,6 +20,18 @@ CREATE TABLE    alerts
 );
 CREATE INDEX alerts_create_time_index ON alerts(create_time);
 
+-- alerts preprocessed
+CREATE TABLE    alert_sum
+(
+  create_time timestamp PRIMARY KEY,
+  high    bigint,
+  medium  bigint,
+  low     bigint,
+  info    bigint,
+  debug   bigint
+);
+CREATE INDEX alert_sum_create_time_index ON alert_sum(create_time);
+
 -- reference urls
 CREATE SEQUENCE reference_urls_id_seq;
 CREATE TABLE    reference_urls
