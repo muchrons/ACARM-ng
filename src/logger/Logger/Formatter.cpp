@@ -64,17 +64,14 @@ void Formatter::format(std::stringstream &ssOut,
   const char *priStr=pri2str(pri);
   assert(priStr!=NULL);
 
+  struct tm *timeinfo = localtime(&ts.time);
+
   // get zero-padded millisecond part of timestamp
   char tmp[4+1];    // 1000 is max.
   assert(ts.millitm<1000);
   snprintf(tmp, sizeof(tmp), "%03d", ts.millitm);    // foramt zero-padded for readability
   assert( strlen(tmp)<sizeof(tmp) );
 
-  // convert timestamp to string
-  struct tm *timeinfo = localtime(&ts.time);
-  char *time = asctime(timeinfo);  // convert timeinfo structure to c-string
-  if(time != NULL)
-    time[strlen(time) - 1] = '\0';
   // ensure all strings will have some value:
   file=strFix(file);
   call=strFix(call);
@@ -82,9 +79,18 @@ void Formatter::format(std::stringstream &ssOut,
   // make path less verbose
   file=truncatePath(file);
 
+  std::string mon((timeinfo->tm_wday<10?"0":""));
+
   // format string
   ssOut<<priStr<<"@"
-       <<time<<"."<<tmp<<"/"
+       <<int2Day(timeinfo->tm_wday)<<" "
+       <<int2Month(timeinfo->tm_mon)<<" "
+       <<timeinfo->tm_mday<<" "
+       <<timeinfo->tm_year+1900<<" "
+       <<formatTime(timeinfo->tm_hour)<<":"
+       <<formatTime(timeinfo->tm_min)<<":"
+       <<formatTime(timeinfo->tm_sec)
+       <<"."<<tmp<<"/"
        <<nn.get()<<" ["
        <<idMap_.getThreadID()<<"] "
        <<file<<":"
@@ -106,6 +112,57 @@ const char *Formatter::pri2str(Priority pri) const
     case Priority::FATAL: return "FATAL";
     default:
          assert( !"invalid priority spoted (?!)" );
+  }
+  // code never reaches here
+  return "?";
+}
+
+const std::string Formatter::formatTime(const int n) const
+{
+  std::stringstream ss;
+  if(n<10)
+    ss<<"0"<<n;
+  else
+    ss<<n;
+  return ss.str();
+}
+
+const char *Formatter::int2Day(const int dn) const
+{
+  switch(dn)
+  {
+    case 0: return "Sun";
+    case 1: return "Mon";
+    case 2: return "Tue";
+    case 3: return "Wed";
+    case 4: return "Thu";
+    case 5: return "Fri";
+    case 6: return "Sat";
+    default:
+         assert( !"invalid day number spoted (?!)" );
+  }
+  // code never reaches here
+  return "?";
+}
+
+const char *Formatter::int2Month(const int mn) const
+{
+  switch(mn)
+  {
+    case 0: return "Jan";
+    case 1: return "Feb";
+    case 2: return "Mar";
+    case 3: return "Apr";
+    case 4: return "May";
+    case 5: return "Jun";
+    case 6: return "Jul";
+    case 7: return "Aug";
+    case 8: return "Sep";
+    case 9: return "Oct";
+    case 10: return "Nov";
+    case 11: return "Dec";
+    default:
+         assert( !"invalid month number spoted (?!)" );
   }
   // code never reaches here
   return "?";

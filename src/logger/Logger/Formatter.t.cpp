@@ -24,7 +24,7 @@ struct FormatterTestClass: private TestHelpers::TestBase
     std::stringstream ss;
     timeb             ts={4,2,0,0};
     fmt_.format(ss, ts, "node.1", pri, "file", "call", 123, "hello log!");
-    tut::ensure_equals("invalid format", ss.str(), priStr + "@Thu Jan  1 01:00:04 1970.002/node.1 [0] file:123 call: hello log!");
+    tut::ensure_equals("invalid format", ss.str(), priStr + "@Thu Jan 1 1970 01:00:04.002/node.1 [0] file:123 call: hello log!");
   }
 
   std::string makeStr(const size_t len) const
@@ -41,7 +41,7 @@ struct FormatterTestClass: private TestHelpers::TestBase
     const std::string str=makeStr(len);
     const timeb       ts={4,2,0,0};
     fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, str.c_str() );
-    tut::ensure_equals("invalid message content", ss.str(), "DEBUG@Thu Jan  1 01:00:04 1970.002/node.1 [0] NULL:123 NULL: "+str);
+    tut::ensure_equals("invalid message content", ss.str(), "DEBUG@Thu Jan 1 1970 01:00:04.002/node.1 [0] NULL:123 NULL: "+str);
   }
 
   Logger::Formatter fmt_;
@@ -106,7 +106,7 @@ void testObj::test<6>(void)
   std::stringstream ss;
   const timeb       ts={4,2,0,0};
   fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, NULL);
-  tut::ensure_equals("invalid format", ss.str(), "DEBUG@Thu Jan  1 01:00:04 1970.002/node.1 [0] NULL:123 NULL: NULL");
+  tut::ensure_equals("invalid format", ss.str(), "DEBUG@Thu Jan 1 1970 01:00:04.002/node.1 [0] NULL:123 NULL: NULL");
 }
 
 // test large message (over buffer size)
@@ -126,7 +126,7 @@ void testObj::test<8>(void)
   const timeb       ts={4,2,0,0};
   fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, "A \n6\tc/\\?<,.>:;\"'[{]}+=_-)(*&^%$#@!~`\x07");
   tut::ensure_equals("special chars not removed", ss.str(),
-                     "DEBUG@Thu Jan  1 01:00:04 1970.002/node.1 [0] NULL:123 NULL: A .6.c/\\?<,.>:;\"'[{]}+=_-)(*&^%$#@!~`.");
+                     "DEBUG@Thu Jan 1 1970 01:00:04.002/node.1 [0] NULL:123 NULL: A .6.c/\\?<,.>:;\"'[{]}+=_-)(*&^%$#@!~`.");
 }
 
 // test formatting empty (but not NULL!) message
@@ -137,7 +137,7 @@ void testObj::test<9>(void)
   std::stringstream ss;
   const timeb       ts={4,2,0,0};
   fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, "");
-  tut::ensure_equals("special chars not removed", ss.str(), "DEBUG@Thu Jan  1 01:00:04 1970.002/node.1 [0] NULL:123 NULL: ");
+  tut::ensure_equals("special chars not removed", ss.str(), "DEBUG@Thu Jan 1 1970 01:00:04.002/node.1 [0] NULL:123 NULL: ");
 }
 
 // test message of a buffer size
