@@ -10,8 +10,7 @@
 
 <com:RangeSelector
    ID="Range"
-   View="1"
-   Severities="true"
-   Warning="Warning: Setting source or destination IP address implies an execution of a complex SQL query. This can take a long time."/>
+   View="0"
+/>
 
 </com:TContent>

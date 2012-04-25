@@ -58,20 +58,20 @@
   </tr> 
   <tr>
     <td align="right">
-      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningSeverity') %>">
-        <com:TImage ImageUrl="pics/buttons/buttDMSeverityD.png"
-                    Attributes.onMouseOver="$(this).src='pics/buttons/buttDMSeverityU.png'"
-                    Attributes.onMouseOut="$(this).src='pics/buttons/buttDMSeverityD.png'"/> 
-      </com:THyperLink>                
-    </td>
-  </tr>
-  <tr>
-    <td align="right">
       <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningAlertTypes') %>">
         <com:TImage ImageUrl="pics/buttons/buttDMAlertTypesD.png"
                     Attributes.onMouseOver="$(this).src='pics/buttons/buttDMAlertTypesU.png'"
                     Attributes.onMouseOut="$(this).src='pics/buttons/buttDMAlertTypesD.png'"/> 
       </com:THyperLink>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningSeverity') %>">
+        <com:TImage ImageUrl="pics/buttons/buttDMSeverityD.png"
+                    Attributes.onMouseOver="$(this).src='pics/buttons/buttDMSeverityU.png'"
+                    Attributes.onMouseOut="$(this).src='pics/buttons/buttDMSeverityD.png'"/> 
+      </com:THyperLink>                
     </td>
   </tr>
   <tr>
