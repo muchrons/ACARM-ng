@@ -3,6 +3,6 @@
 --
 
 INSERT INTO config_rdonly VALUES
-  ('acarm-ng', 'db-version',  '7'),
+  ('acarm-ng', 'db-version',  '9'),
   ('acarm-ng', 'create_time', now() )
 ;

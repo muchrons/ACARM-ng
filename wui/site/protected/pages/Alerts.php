@@ -82,6 +82,8 @@ class Alerts extends TPage
         $dstip=$this->Request->itemAt('dstip');
         $this->Range->setSrcDst($srcip,$dstip);
 
+        $this->Range->setSev("Alert");
+
         $date_from=$this->Request->itemAt('from');
         $date_to=$this->Request->itemAt('to');
         $this->Range->setDates($date_from,$date_to);

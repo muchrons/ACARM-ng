@@ -20,11 +20,11 @@ function severityNameToColor($sev)
       return "#ff0000";
     case 'medi':
       return "#ff8800";
+    case 'all':
     case 'low':
       return "#ffee00";
     case 'info':
       return "#00ff00";
-    case 'all':
     case 'debu':
       return "#2d88ff";
     }
@@ -259,13 +259,6 @@ class GraphService extends TService
     if ($cnt == 0)
       return null;
 
-    $groupby=floor($cnt/168);
-    if ($groupby==0)
-      $groupby=1;
-
-    $div=floor($cnt/$groupby);
-    $mod=$cnt%$groupby;
-
     $xdata=array();
     $ydata=array();
 
@@ -277,6 +270,38 @@ class GraphService extends TService
         $names[]=$a;
         $ydata[$a]=array();
       }
+
+    $result[]=$pairs[0];
+    $last_result=strtotime($pairs[0]->create_time);
+
+    for($i=1; $i<$cnt; $i++)
+      {
+        $min=strtotime($pairs[$i]->create_time);
+
+        if(($min-$last_result)>3600)
+          for ($j=($last_result+3600); $j<$min; $j+=3600)
+            {
+              $tmp=clone $pairs[0];
+              $tmp->create_time=date('Y-m-d H:00:00',$j);
+              foreach($names as $name)
+                $tmp->$name=0;
+              $result[]=$tmp;
+            }
+        $result[]=$pairs[$i];
+        $last_result=strtotime($pairs[$i]->create_time);
+      }
+
+    $pairs=$result;
+
+    $cnt=count($pairs);
+
+    $groupby=floor($cnt/168);
+    if ($groupby==0)
+      $groupby=1;
+
+    $div=floor($cnt/$groupby);
+    $mod=$cnt%$groupby;
+
 
     for($i=$mod; $i<$cnt; $i+=$groupby)
     {
@@ -366,6 +391,7 @@ class GraphService extends TService
     $graph = new Graph($this->getWidth(),$this->getHeight());
     $graph->title->Set($this->getTitle());
     $data=$this->issueQuery2dTime();
+
 
     if($data[1]===null)
       $tickType='TimeCallbackNull';

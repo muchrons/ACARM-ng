@@ -461,7 +461,7 @@
   </select>    
 
   <select id="SMetaAlertsInUse" resultClass="int">
-    SELECT trim(to_char(reltuples,'999999999999')) FROM pg_class WHERE relname='meta_alerts_in_use';
+    SELECT count(*) from meta_alerts_in_use;
   </select>
 
   <select id="SAlertCount" resultClass="int">
