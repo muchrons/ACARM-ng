@@ -1,4 +1,7 @@
 -- dev --
+* miliseconds after years in log files moved after seconds.
+* incorrect path to acarm binary fixed.
+
 
 -- v1.1.0 --
 * configure script can now prepare test build as well.
