@@ -1,6 +1,10 @@
 -- dev --
-* miliseconds after years in log files moved after seconds.
-* incorrect path to acarm binary fixed.
+
+
+-- v1.1.1 --
+* time format in logger changed.
+* alert count and meta alert count performance in WUI increased.
+* bug fix in thread for system/user periodic queries added.
 
 
 -- v1.1.0 --
