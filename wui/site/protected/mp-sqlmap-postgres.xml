@@ -461,7 +461,7 @@
   </select>    
 
   <select id="SMetaAlertsInUse" resultClass="int">
-    SELECT trim(to_char(reltuples,'999999999999')) FROM pg_class WHERE relname='meta_alerts_in_use';
+    SELECT count(*) from meta_alerts_in_use;
   </select>
 
   <select id="SAlertCount" resultClass="int">
@@ -491,42 +491,22 @@
 
 
 <!-- Queries for Data Mining -->
-  <!--TODO: fix to return recods with ony src/dst as well (note: check if this is the case for this query) -->
-  <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
-  <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
-    <![CDATA[
-    SELECT severity as key,count(*) as value FROM alerts
-         JOIN hosts as h1 ON alerts.id=h1.id_alert AND h1.role='src'
-         JOIN hosts as h2 ON alerts.id=h2.id_alert AND h2.role='dst'
-         WHERE (h1.ip=#src# OR 1=#ignoresrc#) AND (h2.ip=#dst# OR 1=#ignoredst#)
-           AND create_time<=#date_to# AND create_time>=#date_from#
-           AND ((severity=4 AND #severities# LIKE '%high%')
-             OR (severity=3 AND #severities# LIKE '%medium%')
-             OR (severity=2 AND #severities# LIKE '%low%') 
-             OR (severity=1 AND #severities# LIKE '%info%')  
-             OR (severity=0 AND #severities# LIKE '%debug%')) GROUP BY (severity);
-    ]]>
+  <select id="DMSeverities" resultClass="CDMSeverities" parameterClass="CParamRange"  cacheModel="querycache">
+    SELECT sum(high) as high, sum(medium) as medium, sum(low) as low, sum(info) as info, sum(debug) as debug from alert_sum WHERE create_time BETWEEN #date_from# AND #date_to#;
   </select>
-
-<!-- The same query but with two joins removed for the sake of performance -->
-  <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
-    <![CDATA[
-    SELECT severity as key,count(*) as value FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#
-        AND ((severity=4 AND #severities# LIKE '%high%')
-         OR (severity=3 AND #severities# LIKE '%medium%')
-         OR (severity=2 AND #severities# LIKE '%low%')
-         OR (severity=1 AND #severities# LIKE '%info%')
-         OR (severity=0 AND #severities# LIKE '%debug%'))
-    GROUP BY (severity) ORDER BY key DESC;
-    ]]>
-  </select>
-
 
   <select id="DMAlertCountTimeSeries" resultClass="CDMSeverities" parameterClass="CParamRange"  cacheModel="querycache">
     SELECT * FROM alert_sum
         WHERE create_time BETWEEN #date_from# AND #date_to#
         ORDER BY create_time; 
   </select>
+
+  <select id="DMMetaAlertCountTimeSeries" resultClass="CDMMetaAlerts" parameterClass="CParamRange"  cacheModel="querycache">
+    SELECT create_time, meta_alerts as all, meta_alerts_root as root FROM meta_alert_sum
+        WHERE create_time BETWEEN #date_from# AND #date_to#
+        ORDER BY create_time;
+  </select>
+
 
   <!--TODO: optimize performance of this query by cutting unneccesary data at early stages -->
   <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
@@ -544,16 +524,6 @@
            OR (severity='0' AND #severities# LIKE '%debug%'))
        GROUP BY name
        ORDER BY count(name) DESC;
-    ]]>
-  </select>
-
-  <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
-    <![CDATA[
-      SELECT date_trunc(#extra#, create_time) AS key ,count(*) AS value
-        FROM meta_alerts
-          WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0
-        GROUP BY key
-        ORDER BY key;
     ]]>
   </select>
 

@@ -5,6 +5,7 @@
 -- ui/daemon may read everything
 GRANT SELECT
   ON TABLE meta_alerts,
+           meta_alert_sum,
            meta_alerts_tree,
            meta_alerts_roots,
            alert_to_meta_alert_map
@@ -19,6 +20,7 @@ GRANT SELECT
 -- daemon may add new data to DB
 GRANT INSERT
   ON TABLE meta_alerts,
+           meta_alert_sum,
            meta_alerts_tree,
            meta_alerts_roots,
            alert_to_meta_alert_map
@@ -39,6 +41,7 @@ GRANT UPDATE(last_update_time,
 -- daemon may cleanup old data from DB
 GRANT DELETE
   ON TABLE meta_alerts,
+           meta_alert_sum,
            meta_alerts_tree,
            meta_alerts_roots,
            alert_to_meta_alert_map

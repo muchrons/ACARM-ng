@@ -91,7 +91,7 @@ install-bin: ensure-configure ensure-can-install
 	@# ACARM-ng
 	@echo '#!/bin/sh'                                           > '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@echo '$(SHELL_ENV_SCRIPT)'                                >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
-	@echo 'exec "$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
+	@echo 'exec "$(BINDIR)/acarm-ng.bin" "$$@"' >> '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/$(BINDIR)/acarm-ng'
 	@install $(INSTSTRIP) -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/$(BINDIR)/acarm-ng.bin'
 	@#

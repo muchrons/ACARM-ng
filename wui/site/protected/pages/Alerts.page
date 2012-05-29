@@ -8,5 +8,5 @@
         Query="SelectAlertsSummary"/>
 </div>
 
-<com:RangeSelector ID="Range" />
+<com:RangeSelector ID="Range" View="1"/>
 </com:TContent>
