@@ -51,7 +51,7 @@ class DataMiningAlertTypes extends TPage
         if( $date_to!==null )
           $this->Range->To->Text=$date_to;
       }
-
+    $this->Range->setSev("Alert");
 
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();
