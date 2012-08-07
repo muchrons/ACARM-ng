@@ -480,7 +480,7 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
   ap.append(ss, value.get());
   ss << ")";
   SQL( ss.str().c_str(), log_ ).exec(t_);
-  LOGMSG_DEBUG(log_, "new entry has been added");
+  LOGMSG_DEBUG(log_, "new entry has been added"); //TODO: Fix message. When transaction is rolled back nothing is added.
 }
 
 void EntrySaver::saveRootID(DataBaseID rootID)

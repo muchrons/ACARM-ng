@@ -149,12 +149,15 @@ private:
     const time_t now=time(NULL);
     if(nextPrune_>now)
       return;
-    LOGMSG_DEBUG(log_, "prunning time has come");
+    LOGMSG_DEBUG(log_, "pruning time has come");
+    const size_t size=ntq_.size();
     const size_t pruned=ntq_.prune();   // do periodical queue's clean-up
+    System::ignore(size);
     System::ignore(pruned);
-    LOGMSG_DEBUG_S(log_)<<"pruned "<<pruned<<" elements";
+
+    LOGMSG_DEBUG_S(log_)<<"pruned "<<pruned<<" of "<<size<<" elements";
     nextPrune_=now+1;                   // it does not make sense to make it more often than once per 1[s]
-    LOGMSG_DEBUG_S(log_)<<"next prunning on "<<nextPrune_;
+    LOGMSG_DEBUG_S(log_)<<"next pruning on "<<nextPrune_;
   }
 
   NodesTimeoutQueue ntq_;
