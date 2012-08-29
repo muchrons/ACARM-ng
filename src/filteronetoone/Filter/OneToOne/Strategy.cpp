@@ -72,9 +72,6 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   // sanityt check
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
-  // compute unique hosts
-  const Algo::GatherHosts<ConstHostPtrNN> ghThis (thisEntry.node_);
-  const Algo::GatherHosts<ConstHostPtrNN> ghOther(otherEntry.node_);
 
   if( thisEntry.t_.from_!=otherEntry.t_.from_ )
     return false;
