@@ -9,6 +9,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/unordered_map.hpp>
 #include <cassert>
 
 #include "Base/Threads/Mutex.hpp"
@@ -46,16 +47,20 @@ private:
     /** \brief construct entry ID.
      *  \param ptr shared ponter to object.
      *  \param id ID connected with the object.
+     *  \param pid ID connected with the DB partition.
      */
-    EntryID(TSharedPtrNN ptr, DataBaseID id):
+    EntryID(TSharedPtrNN ptr, DataBaseID id, int pid):
       ptr_( ptr.shared_ptr() ),
-      id_(id)
+      id_(id),
+      pid_(pid)
     {
     }
     /** \brief pointer to the object. */
     TWeakPtr   ptr_;
     /** \brief ID connected with the object. */
     DataBaseID id_;
+    /** \brief ID connected with the DB partition. */
+    int        pid_;
   }; // struct EntryID
 
   typedef std::map<TPtr, EntryID> ObjectIDMapping;  // std::map is used instead of the std::set
@@ -63,7 +68,10 @@ private:
                                                     // would cause problems with finding with
                                                     // indexes.
 
+  typedef boost::unordered_map<int, int> PartitionIDMapping;
+
   typedef typename ObjectIDMapping::const_iterator ObjectIDMappingIt;
+
 
 public:
 
@@ -111,7 +119,8 @@ public:
   {
     LOGMSG_DEBUG_S(Logger::Node("persistency.io.postgres.storagedatacache"))
       <<"adding mapping "<< ptr.get() <<" -> "<<id<<" (obj type "<<typeid(ptr).name()<<")";
-    const EntryID                      tmp(ptr, id);
+    // TODO: replace hardcoded value by number of current DB partition
+    const EntryID                      tmp(ptr, id, 7);
     Base::Threads::Lock                lock(mutex_);
     typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );
     // check for duplicates
@@ -127,6 +136,17 @@ public:
     {
       // insert new entry to collection
       oidm_.insert( typename ObjectIDMapping::value_type( ptr.get(), tmp ) );
+      // TODO: replace hardcoded value by number of current DB partition
+      typename PartitionIDMapping::iterator it = pidm_.find(7);
+      if( it != pidm_.end() )
+      {
+        it->second++;
+      }
+      else
+      {
+        // TODO: replace hardcoded value by number of current DB partition
+        pidm_.insert(typename PartitionIDMapping::value_type(7, 1));
+      }
     }
     // however we got here (overwriting dangling pointer, or inserting totaly
     // new entry) following conditions must hold (note: since we're still in
@@ -143,6 +163,7 @@ public:
   {
     Base::Threads::Lock lock(mutex_);
     typename ObjectIDMapping::iterator it=oidm_.begin();
+    typename PartitionIDMapping::iterator pit;
     while( it!=oidm_.end() )
     {
       // is anything to do for this element?
@@ -151,6 +172,9 @@ public:
         ++it;
         continue;
       }
+      int pID = it->second.pid_;
+      pit = pidm_.find(pID);
+      pit->second--;
       // remove this element
       typename ObjectIDMapping::iterator tmp=it;
       ++it;
@@ -169,6 +193,22 @@ public:
     return oidm_.size();
   }
 
+  /** \brief get partitions to deatach
+   *  \return vector with DB partitions IDs
+   *
+   */
+  std::vector<int> getPartitionsToDeatach()
+  {
+    std::vector<int> partitions;
+    typename PartitionIDMapping::iterator it = pidm_.begin();
+    while( it != pidm_.end() )
+    {
+      if(it->second == 0)
+        partitions.push_back(it->first);
+    }
+
+    return partitions;
+  }
 private:
 
   ObjectIDMappingIt getImpl(TSharedPtrNN ptr) const
@@ -186,6 +226,7 @@ private:
 
   mutable Base::Threads::Mutex mutex_;
   ObjectIDMapping              oidm_;
+  PartitionIDMapping           pidm_;
 }; // class StorageDataCache
 
 } // namespace Postgres

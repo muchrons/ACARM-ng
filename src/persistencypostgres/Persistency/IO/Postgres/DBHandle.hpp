@@ -8,6 +8,8 @@
 #include <boost/noncopyable.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/setThreadName.hpp"
+#include "Commons/Threads/Thread.hpp"
 #include "Persistency/IO/Postgres/DBConnection.hpp"
 #include "Persistency/IO/Postgres/IDCache.hpp"
 
@@ -18,6 +20,57 @@ namespace IO
 {
 namespace Postgres
 {
+
+// TODO: add thread for periodically IDCache cleanup
+
+namespace
+{
+struct IDCachePruneThread
+{
+  explicit IDCachePruneThread(IDCachePtrNN  idCache):
+    log_("persistency.io.postgres.idcacheprunethread"),
+    idCache_(idCache)
+  {
+    Commons::setThreadName("id_prunethread");
+  }
+
+  void operator()(void)
+  {
+    LOGMSG_DEBUG(log_, "IDCache prune thread started");
+
+    bool quit=false;
+    // prune IDCache every 10[s]
+    while(!quit)
+    {
+      try
+      {
+        // wait a while before next polling (NOTE: this try{}catch MUST start with
+        // interruptable event, in case pinging or discarding messages would throw).
+        boost::this_thread::sleep( boost::posix_time::seconds(10) );
+        idCache_->prune();
+        // TODO
+      }
+      catch(const boost::thread_interrupted &)
+      {
+        // ok - thread has been interrupted
+        LOGMSG_DEBUG(log_, "interruption requested - exiting");
+        quit=true;
+      }
+      catch(const std::exception &ex)
+      {
+        // hmmm...
+        LOGMSG_WARN_S(log_)<<"exception caught: "<<ex.what();
+      }
+    } // while(true)
+
+    LOGMSG_DEBUG(log_, "IDCache prune thread terminated");
+  }
+
+private:
+  Logger::Node  log_;
+  IDCachePtrNN  idCache_;
+}; // struct IDCachePruneThread
+} // unnamed nmespace
 
 /** \brief class reprenseting all data required to work with data base.
  */
@@ -31,7 +84,8 @@ public:
   DBHandle(const DBConnection::Parameters &connParams,
            IDCachePtrNN                    idCache):
     conn_(connParams),
-    idCache_(idCache)
+    idCache_(idCache),
+    pruneThread_( IDCachePruneThread(idCache) )
   {
   }
   /** \brief gets connection object.
@@ -50,8 +104,9 @@ public:
   }
 
 private:
-  DBConnection conn_;
-  IDCachePtrNN idCache_;
+  DBConnection             conn_;
+  IDCachePtrNN             idCache_;
+  Commons::Threads::Thread pruneThread_;
 }; // class DBHandle
 
 
