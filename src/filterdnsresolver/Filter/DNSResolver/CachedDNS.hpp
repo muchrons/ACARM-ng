@@ -7,6 +7,7 @@
 
 #include <map>
 #include <boost/noncopyable.hpp>
+#include <ctime>
 
 #include "Logger/Node.hpp"
 #include "Filter/DNSResolver/CachedEntry.hpp"
@@ -42,14 +43,20 @@ public:
    *  mapping much faster.
    */
   Entry operator[](const IP &ip);
+
+private:
+  typedef std::map<IP, CachedEntry> Cache;
+
+  /** \brief periodically call prune
+   */
+  void pruneCache(void);
+
   /** \brief remove outdated entries from cache.
    *  \note this is a separete call for performance reasons.
    */
   void prune(void);
 
-private:
-  typedef std::map<IP, CachedEntry> Cache;
-
+  time_t             nextPrune_;
   const Logger::Node log_;
   unsigned int       timeout_;
   Cache              cache_;

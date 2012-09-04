@@ -19,6 +19,7 @@ void CachedEntry::resolve(const IP &ip)
   try
   {
     io_service                  ios;
+
     ip::tcp::endpoint           ep(ip, 0);
     ip::tcp::resolver           resolver(ios);
     ip::tcp::resolver::iterator it=resolver.resolve(ep);

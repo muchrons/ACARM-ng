@@ -52,26 +52,10 @@ void testObj::test<1>(void)
   ensure("invalid name", isValidLocalhost( name.get() ) );
 }
 
-// test pruning
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  CachedDNS cache(0);       // we make this explicitly here, to set small timeout
-  // create new entry
-  cache_[ ip("127.0.0.1") ];
-  // remove entry
-  delay(2);
-  cache_.prune();
-  // add entry once more
-  const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
-  ensure("invalid name", isValidLocalhost( name.get() ) );
-}
-
 // test resolving non-exisiting entry
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<2>(void)
 {
   const CachedDNS::Entry e=cache_[ ip("192.168.255.252") ];
   ensure("invalid name", !e.first );
@@ -81,7 +65,7 @@ void testObj::test<3>(void)
 // test timing when reading from cache.
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
   // measure first call, when DNS query is performed
   const System::Timer    t1;
@@ -101,7 +85,7 @@ void testObj::test<4>(void)
 // test timing when reading query-miss (i.e. non-existing entry) from cache.
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<4>(void)
 {
   // measure first call, when DNS query is performed
   const System::Timer    t1;
@@ -118,21 +102,5 @@ void testObj::test<5>(void)
   ensure("cached read took more time than query", elapsed1>elapsed2);
 }
 
-// test pruning only some of the elements
-template<>
-template<>
-void testObj::test<6>(void)
-{
-  // create new entry
-  cache_[ ip("74.125.39.103") ];
-  cache_[ ip("74.125.39.104") ];
-  cache_[ ip("74.125.39.105") ];
-  // timeout
-  delay(2);
-  // add some new
-  cache_[ ip("127.0.0.1") ];
-  // remove entries - smoke test
-  cache_.prune();
-}
 
 } // namespace tut
