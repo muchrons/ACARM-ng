@@ -20,7 +20,7 @@ const char *someTestConfigContent=
       "    <cleanupInterval>42</cleanupInterval>"
       "    <cleanupOlder>41</cleanupOlder>"
       "    <pluginsDir>/some/dir/name</pluginsDir>"
-      "    <memoryLimit>1983</memoryLimit>"
+      "    <alertsLimit>1983</alertsLimit>"
       "  </general>"
       ""
       "  <persistency>"

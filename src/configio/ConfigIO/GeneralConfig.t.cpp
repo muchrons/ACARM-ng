@@ -53,7 +53,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid URL", tmp.getWUIUrl(), cfg_.getWUIUrl() );
   ensure_equals("invalid cleanup interval", tmp.getCleanupInterval(), cfg_.getCleanupInterval() );
   ensure_equals("cleanup older value is invalid", tmp.getCleanupOlder(), cfg_.getCleanupOlder() );
-  ensure_equals("memory limit is invalid", tmp.getMemoryLimit(), cfg_.getMemoryLimit() );
+  ensure_equals("alerts limit is invalid", tmp.getAlertsLimit(), cfg_.getAlertsLimit() );
   ensure_equals("path to plugins is invalid", tmp.getPluginsDir(), cfg_.getPluginsDir() );
 }
 
@@ -138,12 +138,12 @@ void testObj::test<11>(void)
   ensure_equals("invalid plugins directory", cfg_.getPluginsDir(), "/a/b/c");
 }
 
-// test memorylimit
+// test alerts limit
 template<>
 template<>
 void testObj::test<12>(void)
 {
-  ensure_equals("invalid memory limit", cfg_.getMemoryLimit(), 105u);
+  ensure_equals("invalid alerts limit", cfg_.getAlertsLimit(), 105u);
 }
 
 

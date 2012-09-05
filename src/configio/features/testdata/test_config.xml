@@ -1,1 +1,65 @@
-sample_config.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+    <cleanupOlder>13</cleanupOlder>
+    <pluginsDir>/some/dir</pluginsDir>
+    <alertsLimit>1983</alertsLimit>
+  </general>
+
+  <persistency>
+    <type>postgres</type>
+    <user>john</user>
+    <pass>$3cr3t</pass>
+    <host>db.server.my.domain.org</host>
+    <port>5432</port>
+    <dbname>kszy</dbname>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="default">
+        <output>loggerfile.log</output>
+      </file>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <preprocessor/>
+
+  <filters>
+    <noopts name="noopts">
+    </noopts>
+
+    <something name="something">
+      <opt2>abc</opt2>
+      <opt1>narf</opt1>
+    </something>
+  </filters>
+
+  <triggers>
+
+    <noopts name="noopts">
+    </noopts>
+
+    <something name="someothername">
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
+  </triggers>
+
+  <inputs>
+    <noopts name="noopts">
+    </noopts>
+
+    <something name="something">
+      <opt9>XOR</opt9>
+      <opt6>or</opt6>
+    </something>
+  </inputs>
+
+</acarm_ng>

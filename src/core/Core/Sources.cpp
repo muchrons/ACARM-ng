@@ -13,11 +13,12 @@ using namespace Persistency;
 namespace Core
 {
 
-Sources::Sources(void):
+Sources::Sources(const MemoryUseChecker* memCheck):
   log_("core.sources"),
   conn_( IO::create() ),
   inputs_( Input::create(queue_) ),
-  preproc_( ConfigIO::Singleton::get()->preprocessorConfig() )
+  preproc_( ConfigIO::Singleton::get()->preprocessorConfig() ),
+  memCheck_(memCheck)
 {
   LOGMSG_INFO(log_, "created");
 }
@@ -54,9 +55,10 @@ Persistency::GraphNodePtrNN Sources::read(void)
       LOGMSG_DEBUG_S(log_)<<"alert "<<id.get()<<" accepted by the preprocessor - commiting";
       t.commit();
 
-      //wait if we are short of memory
-      if (memCheck_.iSmemoryLimitExceeded())
+      //wait if we are full of alerts
+      while (memCheck_->alertsLimitExceeded())
         sleep(1);
+
       return leaf;
     }
     LOGMSG_INFO_S(log_)<<"alert '"<<alert->getName().get()<<"' rejected by the preprocessor";

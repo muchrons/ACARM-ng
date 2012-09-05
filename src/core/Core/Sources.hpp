@@ -13,7 +13,7 @@
 #include "Preprocessor/Logic.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Factory.hpp"
-#include "Core/MemoryUsageChecker.hpp"
+#include "Core/MemoryUseChecker.hpp"
 
 namespace Core
 {
@@ -24,8 +24,9 @@ class Sources: private boost::noncopyable
 {
 public:
   /** \brief create all inputs and start reading from them.
+   * \param memCheck source limiter object
    */
-  Sources(void);
+  Sources(const MemoryUseChecker* memCheck);
   /** \brief clean-up data.
    */
   ~Sources(void);
@@ -40,7 +41,7 @@ private:
   Core::Types::AlertsFifo          queue_;
   Input::InputsCollection          inputs_;
   Preprocessor::Logic              preproc_;
-  const MemoryUsageChecker         memCheck_;
+  const MemoryUseChecker*          memCheck_;
 }; // class Sources
 
 } // namespace Core

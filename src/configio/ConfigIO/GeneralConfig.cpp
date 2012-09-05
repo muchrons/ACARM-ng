@@ -47,12 +47,12 @@ std::string fixURL(const std::string &url)
 GeneralConfig::GeneralConfig(const URL                     &wuiUrl,
                              Interval                 cleanupInterval,
                              Interval                 cleanupOlder,
-                             Megabytes                memoryLimit,
+                             size_t                alertsLimit,
                              const boost::filesystem::path &pluginsDir):
   wuiUrl_( fixURL(wuiUrl) ),
   cleanupInterval_(cleanupInterval),
   cleanupOlder_(cleanupOlder),
-  memoryLimit_(memoryLimit),
+  alertsLimit_(alertsLimit),
   pluginsDir_(pluginsDir)
 {
   if(cleanupInterval_<1)

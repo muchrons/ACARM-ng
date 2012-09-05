@@ -10,6 +10,7 @@
 #include "Core/Processors.hpp"
 #include "Core/Sources.hpp"
 #include "Core/WorkThreads.hpp"
+#include "Core/MemoryUseChecker.hpp"
 
 using namespace Core::Types::Proc;
 namespace CC=ConfigConsts;
@@ -23,8 +24,9 @@ struct SourcesThread
 {
   explicit SourcesThread(Core::Types::SignedNodesFifo &queue):
     log_("core.workthreads.sourcesthread"),
-    srcs_(new Sources),
-    queue_(&queue)
+    queue_(queue),
+    memCheck_(new MemoryUseChecker(queue_)),
+    srcs_(new Sources(memCheck_.get()))
   {
   }
 
@@ -37,10 +39,9 @@ struct SourcesThread
       try
       {
         boost::this_thread::interruption_point();
-        assert(queue_!=NULL);
         assert(srcs_.get()!=NULL);
-        // forward all read data to main queue.
-        queue_->push( Types::SignedNode(srcs_->read(), TypeName(CC::defaultInputTypeName), InstanceName(CC::defaultInputInstanceName) ) );
+        //forward all read data to the main queue.
+        queue_.push( Types::SignedNode(srcs_->read(), TypeName(CC::defaultInputTypeName), InstanceName(CC::defaultInputInstanceName) ) );
       }
       catch(const boost::thread_interrupted &)
       {
@@ -55,9 +56,10 @@ struct SourcesThread
     LOGMSG_INFO(log_, "thread ends");
   }
 
-  Logger::Node                        log_;
-  Commons::SharedPtrNotNULL<Sources>  srcs_;
-  Core::Types::SignedNodesFifo       *queue_;
+  Logger::Node                                log_;
+  Core::Types::SignedNodesFifo&               queue_;
+  Commons::SharedPtrNotNULL<MemoryUseChecker> memCheck_;
+  Commons::SharedPtrNotNULL<Sources>          srcs_;
 }; // struct SourcesThread
 
 struct ProcessorsThread
