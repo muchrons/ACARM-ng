@@ -57,7 +57,10 @@ Persistency::GraphNodePtrNN Sources::read(void)
 
       //wait if we are full of alerts
       while (memCheck_->alertsLimitExceeded())
-        sleep(1);
+        {
+          LOGMSG_INFO_S(log_)<<"Alerts limit reached, slowing down for a moment. If problem occures often consider increasing the limit.";
+          sleep(1);
+        }
 
       return leaf;
     }
