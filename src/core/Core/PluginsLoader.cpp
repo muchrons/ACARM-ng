@@ -18,13 +18,13 @@ PluginsLoader::PluginsLoader(void):
   const path pluginsDir=ConfigIO::Singleton::get()->generalConfig().getPluginsDir();
   LOGMSG_INFO_S(log_)<<"loading plugins from '"<<pluginsDir<<"' directory";
   Plugins::Loader loader(pluginsDir);       // load all plugins
-  LOGMSG_INFO_S(log_)<<"all "<<loader.loadedCount()<<" plugins laoded and initialized successfully";
+  LOGMSG_INFO_S(log_)<<"all "<<loader.loadedCount()<<" plugins loaded and initialized successfully";
 }
 
 PluginsLoader::~PluginsLoader(void)
 {
-  LOGMSG_INFO_S(log_)<<"destroying... note that plugins will remain loaded as "
-                       "long as last object is using it (i.e. holds reference to it)";
+  LOGMSG_INFO_S(log_)<<"destroying... note that plugins will remain loaded until "
+                       "the last object stops using it (i.e. holds reference to it)";
 }
 
 } // namespace Core
