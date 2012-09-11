@@ -94,7 +94,7 @@ class Alerts extends TPage
 
         $severities=$this->Request->itemAt('severities');
         if( $severities!==null )
-          $this->Range->CB->setSelectedValues(explode('.',$severities));
+          $this->Range->CB1->setSelectedValues(explode('.',$severities));
       }
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();

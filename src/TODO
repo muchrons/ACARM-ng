@@ -2,6 +2,7 @@ Persistency::Postgres:
 ----------------------
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
+* use Postgres table partitioning. This will speed up Cleanup Process twofold.
 
 configuration:
 --------------
